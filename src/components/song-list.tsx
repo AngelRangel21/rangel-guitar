@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Grid, List } from "lucide-react";
+import { mockSongs } from "@/lib/data";
 import type { Song } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { SongCard } from "@/components/song-card";
@@ -16,17 +17,10 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 
-const mockSongs: Song[] = Array.from({ length: 42 }, (_, i) => ({
-  id: i + 1,
-  title: `Guitar Ballad No. ${i + 1}`,
-  artist: `Musician ${Math.floor(i / 5) + 1}`,
-  coverArt: `https://placehold.co/400x400.png?a=${i}`,
-}));
-
 const SONGS_PER_PAGE = 16;
 
 export function SongList() {
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"grid" | "list">("list");
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(mockSongs.length / SONGS_PER_PAGE);
