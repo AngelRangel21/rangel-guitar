@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   }
 
   return {
-    title: `${song.title} by ${song.artist} | Rangel Guitar Hub`,
+    title: `${song.title} by ${song.artist} | Rangel Guitar`,
     description: `Learn to play ${song.title} on guitar with chords and lyrics.`,
   }
 }

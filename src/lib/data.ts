@@ -53,8 +53,10 @@ export const songs: Song[] = [
   después vine a Culiacán,
   G                   D
   ahí me metí en el ambiente
-  Bm           A               D
-  buscando billete para progresar.
+  Bm           A
+  buscando billete para 
+         D
+  progresar.
   
   
   Se me empezó a ver dinero,
@@ -62,8 +64,10 @@ export const songs: Song[] = [
   Los Ángeles trafique,
   G        A              D
   pero nunca falta un perro
-  Bm               A                   D
-  que mirando el hueso no quiera morder.
+  Bm               A
+  que mirando el hueso 
+                  D
+  no quiera morder.
   
   Bm
   Querían un secuestro exprés
@@ -71,8 +75,10 @@ export const songs: Song[] = [
   con mis hijas de rehén,
   G      A           D
   a mi familia el precio
-  Bm                A                  D
-  no vendrá un pendejo a quererlo poner.
+  Bm                A
+  no vendrá un pendejo 
+                  D
+  a quererlo poner.
   
   Bm
   Deseaba estar yo también
@@ -80,8 +86,10 @@ export const songs: Song[] = [
   pa' podérmelos comer,
   G            A           D
   veo que me tenían respeto,
-  Bm               A                    D
-  sabían que con pleitos no iban a poder.
+  Bm               A
+  sabían que con pleitos 
+                 D
+  no iban a poder.
   
   (Requinto)
   
@@ -91,16 +99,20 @@ export const songs: Song[] = [
   y esa deuda fui a cobrar,
   G                      D
   dije de una vez al cuello
-  Bm              A                D
-  por bravo ese perro lo voy amarrar.
+  Bm              A
+  por bravo ese perro 
+                D
+  lo voy amarrar.
   
   Llegue tumbando la puerta,
                       A
   el agua clara no está,
   G         A             D
   ya me tenían la respuesta
-  Bm           A                D
-  el 4 en la mesa me vine a topar.
+  Bm           A
+  el 4 en la mesa 
+                 D
+  me vine a topar.
   
   Bm
   Mi browning hice accionar
@@ -108,8 +120,10 @@ export const songs: Song[] = [
   pero no me dio pa' mas,
   G      A         D
   me contesto un R-15,
-  Bm           A                 D
-  esos proyectiles fueron mi final.
+  Bm           A
+  esos proyectiles 
+                 D
+  fueron mi final.
   
   Bm
   El karma viene y se va,
@@ -117,7 +131,9 @@ export const songs: Song[] = [
   también se escucha por ahí
   G        A          D
   que ese R-15 descansa,
-  Bm             A                D
-  nadie de la parca se puede escapar.`
+  Bm             A
+  nadie de la parca 
+                  D
+  se puede escapar.`
   }
 ];

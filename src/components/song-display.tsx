@@ -4,8 +4,9 @@ import { useState } from "react";
 import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
 import { ChordSheet } from "./chord-sheet";
+import { Minus, Plus, Facebook, Twitter } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons";
 import Image from "next/image";
 
 export function SongDisplay({ song }: { song: Song }) {
@@ -34,7 +35,7 @@ export function SongDisplay({ song }: { song: Song }) {
             <CardDescription>{song.artist}</CardDescription>
           </CardHeader>
           <CardContent>
-            <h3 className="text-lg font-semibold mb-2">Transpose</h3>
+            <h3 className="text-lg font-semibold mb-2 text-center">Cambiar Tono</h3>
             <div className="flex items-center justify-between gap-4">
               <Button variant="outline" size="icon" onClick={() => setTranspose(t => t - 1)}>
                 <Minus className="h-4 w-4" />
@@ -46,9 +47,32 @@ export function SongDisplay({ song }: { song: Song }) {
             </div>
              {transpose !== 0 && (
               <Button variant="ghost" size="sm" onClick={() => setTranspose(0)} className="w-full mt-4">
-                Reset
+                Resetear Tono
               </Button>
             )}
+
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-2 text-center">Compartir</h3>
+              <div className="flex justify-center gap-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")}
+                >
+                  <Facebook className="h-5 w-5 text-blue-600" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}&text=${encodeURIComponent(`Check out this song: ${song.title} by ${song.artist}`)}`, "_blank")}
+                >
+                  <Twitter className="h-5 w-5 text-blue-400" />
+                </Button>
+                 <Button variant="outline" size="icon" onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this song: ${song.title} by ${song.artist} ${window.location.href}`)}`, "_blank")}>
+                  <WhatsAppIcon className="h-5 w-5 text-green-500" />
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

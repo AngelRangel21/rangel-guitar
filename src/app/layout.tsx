@@ -5,7 +5,7 @@ import { AuthProvider } from '@/context/auth-context';
 
 
 export const metadata: Metadata = {
-  title: 'Rangel Guitar Hub',
+  title: 'Rangel Guitar',
   description: 'Your destination for guitar tabs and songs.',
 };
 
