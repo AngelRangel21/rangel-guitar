@@ -5,7 +5,7 @@ export const songs: Song[] = [
     id: 1,
     title: 'El Karma',
     artist: 'Ariel Camacho',
-    coverArt: 'https://placehold.co/400x400.png', // Reemplazar con una imagen real
+    coverArt: 'https://placehold.co/400x400.png',
     lyrics:`
   Nací en el agua caliente,
   después vine a Culiacán,
