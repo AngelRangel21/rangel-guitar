@@ -18,15 +18,15 @@ export function SongDisplay({ song }: { song: Song }) {
   };
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
-      <div className="md:col-span-1">
-        <Card className="overflow-hidden sticky top-24">
+    <div className="grid lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-1">
+        <Card className="overflow-hidden lg:sticky lg:top-24">
           <Image
             src={song.coverArt}
             alt={`Cover art for ${song.title}`}
             width={600}
-            height={600}
-            className="aspect-square object-cover w-full"
+            height={400}
+            className="object-cover w-full h-64 lg:h-auto lg:aspect-square"
             data-ai-hint="guitar music"
           />
           <CardHeader>
@@ -52,7 +52,7 @@ export function SongDisplay({ song }: { song: Song }) {
           </CardContent>
         </Card>
       </div>
-      <div className="md:col-span-2">
+      <div className="lg:col-span-2">
         <Card>
           <CardContent className="p-6">
             <ChordSheet text={song.chords || ""} transpose={transpose} />
