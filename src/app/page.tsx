@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SongList } from "@/components/song-list";
-import { mockSongs } from "@/lib/data";
+import { songs } from "@/lib/data";
 import type { Song } from "@/lib/types";
 
 export default function Home() {
@@ -12,9 +12,9 @@ export default function Home() {
 
   const filteredSongs = useMemo(() => {
     if (!searchTerm) {
-      return mockSongs;
+      return songs;
     }
-    return mockSongs.filter(song =>
+    return songs.filter(song =>
       song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );

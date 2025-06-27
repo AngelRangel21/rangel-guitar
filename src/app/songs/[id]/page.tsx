@@ -1,12 +1,12 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { mockSongs } from "@/lib/data";
+import { songs } from "@/lib/data";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SongDisplay } from "@/components/song-display";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const song = mockSongs.find(s => s.id === parseInt(params.id));
+  const song = songs.find(s => s.id === parseInt(params.id));
 
   if (!song) {
     return {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 export default function SongPage({ params }: { params: { id: string } }) {
-  const song = mockSongs.find(s => s.id === parseInt(params.id));
+  const song = songs.find(s => s.id === parseInt(params.id));
 
   if (!song) {
     notFound();
