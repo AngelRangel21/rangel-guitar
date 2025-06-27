@@ -6,7 +6,47 @@ export const songs: Song[] = [
     title: 'El Karma',
     artist: 'Ariel Camacho',
     coverArt: 'https://placehold.co/400x400.png', // Reemplazar con una imagen real
-    lyrics: `
+    lyrics:`
+  Nací en el agua caliente,
+  después vine a Culiacán,
+  ahí me metí en el ambiente
+  buscando billete para progresar.
+  
+  Se me empezó a ver dinero,
+  Los Ángeles trafique,
+  pero nunca falta un perro
+  que mirando el hueso no quiera morder.
+
+  Querían un secuestro exprés
+  con mis hijas de rehén,
+  a mi familia el precio
+  no vendrá un pendejo a quererlo poner.
+
+  Deseaba estar yo también
+  pa' podérmelos comer,
+  veo que me tenían respeto,
+  sabían que con pleitos no iban a poder.
+
+  No tarde pa' dar con ellos,
+  y esa deuda fui a cobrar,
+  dije de una vez al cuello
+  por bravo ese perro lo voy amarrar.
+  
+  Llegue tumbando la puerta,
+  el agua clara no está,
+  ya me tenían la respuesta
+  el 4 en la mesa me vine a topar.
+
+  Mi browning hice accionar
+  pero no me dio pa' mas,
+  me contesto un R-15,
+  esos proyectiles fueron mi final.
+
+  El karma viene y se va,
+  también se escucha por ahí
+  que ese R-15 descansa,
+  nadie de la parca se puede escapar.`,
+  chords:`
   D
   Nací en el agua caliente,
                      A
@@ -78,46 +118,6 @@ export const songs: Song[] = [
   G        A          D
   que ese R-15 descansa,
   Bm             A                D
-  nadie de la parca se puede escapar.`,
-  chords: `
-  Nací en el agua caliente,
-  después vine a Culiacán,
-  ahí me metí en el ambiente
-  buscando billete para progresar.
-  
-  Se me empezó a ver dinero,
-  Los Ángeles trafique,
-  pero nunca falta un perro
-  que mirando el hueso no quiera morder.
-
-  Querían un secuestro exprés
-  con mis hijas de rehén,
-  a mi familia el precio
-  no vendrá un pendejo a quererlo poner.
-
-  Deseaba estar yo también
-  pa' podérmelos comer,
-  veo que me tenían respeto,
-  sabían que con pleitos no iban a poder.
-
-  No tarde pa' dar con ellos,
-  y esa deuda fui a cobrar,
-  dije de una vez al cuello
-  por bravo ese perro lo voy amarrar.
-  
-  Llegue tumbando la puerta,
-  el agua clara no está,
-  ya me tenían la respuesta
-  el 4 en la mesa me vine a topar.
-
-  Mi browning hice accionar
-  pero no me dio pa' mas,
-  me contesto un R-15,
-  esos proyectiles fueron mi final.
-
-  El karma viene y se va,
-  también se escucha por ahí
-  que ese R-15 descansa,
   nadie de la parca se puede escapar.`
   }
 ];
