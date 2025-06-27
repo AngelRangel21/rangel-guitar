@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Grid, List } from "lucide-react";
-import { mockSongs } from "@/lib/data";
 import type { Song } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { SongCard } from "@/components/song-card";
@@ -19,17 +18,21 @@ import {
 
 const SONGS_PER_PAGE = 16;
 
-export function SongList() {
+export function SongList({ songs }: { songs: Song[] }) {
   const [view, setView] = useState<"grid" | "list">("list");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(mockSongs.length / SONGS_PER_PAGE);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [songs]);
+
+  const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE);
 
   const currentSongs = useMemo(() => {
     const start = (currentPage - 1) * SONGS_PER_PAGE;
     const end = start + SONGS_PER_PAGE;
-    return mockSongs.slice(start, end);
-  }, [currentPage]);
+    return songs.slice(start, end);
+  }, [currentPage, songs]);
   
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -120,26 +123,35 @@ export function SongList() {
           </Button>
         </div>
       </div>
-
-      <div
-        className={`transition-all duration-300 ${
-          view === 'grid'
-            ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
-            : 'flex flex-col space-y-3'
-        }`}
-      >
-        {currentSongs.map((song, index) => (
-          <div key={song.id} style={{ animationDelay: `${index * 50}ms` }} className="opacity-0 animate-fade-in-up">
-            {view === 'grid' ? <SongCard song={song} /> : <SongListItem song={song} />}
-          </div>
-        ))}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="pt-6">
-          {renderPagination()}
+        
+      {songs.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground">No songs found. Try a different search term.</p>
         </div>
+      ) : (
+        <>
+        <div
+            className={`transition-all duration-300 ${
+            view === 'grid'
+                ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
+                : 'flex flex-col space-y-3'
+            }`}
+        >
+            {currentSongs.map((song, index) => (
+            <div key={song.id} style={{ animationDelay: `${index * 50}ms` }} className="opacity-0 animate-fade-in-up">
+                {view === 'grid' ? <SongCard song={song} /> : <SongListItem song={song} />}
+            </div>
+            ))}
+        </div>
+
+        {totalPages > 1 && (
+            <div className="pt-6">
+            {renderPagination()}
+            </div>
+        )}
+        </>
       )}
+
     </div>
   );
 }

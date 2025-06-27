@@ -15,7 +15,7 @@ import {
 import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-export function Header() {
+export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout } = useAuth();
 
   return (
@@ -32,7 +32,10 @@ export function Header() {
             <Input
               type="search"
               placeholder="Search by song or artist..."
-              className="w-full rounded-full bg-background text-foreground placeholder:text-muted-foreground pl-10 border-2 border-transparent focus-visible:ring-accent focus-visible:border-accent"
+              className="w-full rounded-full bg-background text-foreground placeholder:text-muted-foreground pl-10 border-2 border-transparent focus-visible:ring-accent focus-visible:border-accent disabled:cursor-not-allowed disabled:bg-muted/50"
+              value={searchTerm ?? ''}
+              onChange={(e) => onSearchChange?.(e.target.value)}
+              disabled={onSearchChange === undefined}
             />
           </div>
         </div>
@@ -79,7 +82,14 @@ export function Header() {
                <div className="md:hidden p-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input type="search" placeholder="Search..." className="w-full rounded-md pl-10" />
+                  <Input 
+                    type="search" 
+                    placeholder="Search..." 
+                    className="w-full rounded-md pl-10 disabled:cursor-not-allowed disabled:bg-muted/50" 
+                    value={searchTerm ?? ''}
+                    onChange={(e) => onSearchChange?.(e.target.value)}
+                    disabled={onSearchChange === undefined}
+                  />
                 </div>
               </div>
               <DropdownMenuSeparator className="md:hidden" />

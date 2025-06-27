@@ -7,14 +7,6 @@ export function SongListItem({ song }: { song: Song }) {
   return (
     <Link href={`/songs/${song.id}`} className="block transition-colors duration-200 rounded-lg hover:bg-secondary/80 group">
       <div className="flex items-center gap-4 p-2 ">
-        <Image
-          src={song.coverArt}
-          alt={`Cover art for ${song.title}`}
-          width={48}
-          height={48}
-          className="rounded-md aspect-square object-cover"
-          data-ai-hint="guitar music"
-        />
         <div className="flex-grow">
           <p className="font-semibold text-foreground">{song.title}</p>
           <p className="text-sm text-muted-foreground">{song.artist}</p>
