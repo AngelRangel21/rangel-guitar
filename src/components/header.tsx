@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search } from "lucide-react";
+import { Menu, Music, Search, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,10 +9,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
+  DropdownMenuLabel
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/auth-context";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function Header() {
+  const { isAuthenticated, user, logout } = useAuth();
+
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -35,12 +40,43 @@ export function Header() {
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10" aria-label="Open menu">
-                <Menu className="h-6 w-6" />
-              </Button>
+                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">
+                  {isAuthenticated && user ? (
+                      <Avatar className="h-10 w-10">
+                         <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                  ) : (
+                      <Menu className="h-6 w-6" />
+                  )}
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
-              <div className="md:hidden p-2">
+              {isAuthenticated && user ? (
+                <>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">Signed in as</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user.name}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/login">Login</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/register">Register</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuSeparator />
+               <div className="md:hidden p-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input type="search" placeholder="Search..." className="w-full rounded-md pl-10" />
@@ -48,16 +84,13 @@ export function Header() {
               </div>
               <DropdownMenuSeparator className="md:hidden" />
               <DropdownMenuItem asChild>
-                <Link href="#">Home</Link>
+                <Link href="/">Home</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+               <DropdownMenuItem asChild>
                 <Link href="#">Artists</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="#">Top Charts</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="#">About</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
