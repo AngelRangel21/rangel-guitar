@@ -9,8 +9,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
   type User as FirebaseUser,
 } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { useI18n } from './i18n-context';
 
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY_HERE",
@@ -35,11 +40,19 @@ interface User {
   name: string;
 }
 
+interface AuthCredentials {
+  email: string;
+  password: string;
+  name?: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   favorites: number[];
   signInWithGoogle: () => Promise<void>;
+  registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
+  signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
   logout: () => void;
   toggleFavorite: (songId: number) => void;
   isFavorite: (songId: number) => boolean;
@@ -52,6 +65,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
+  const { t } = useI18n();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
@@ -91,6 +106,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const registerWithEmail = async ({ email, password, name }: AuthCredentials) => {
+    if (!name) return;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, { displayName: name });
+      
+      const updatedUser = { uid: userCredential.user.uid, name: name };
+      setUser(updatedUser);
+      router.push('/');
+      toast({
+        title: t('accountCreatedTitle'),
+        description: t('accountCreatedDescription'),
+      });
+    } catch (error: any) {
+      console.error("Error signing up", error);
+      toast({
+        variant: "destructive",
+        title: t('registerErrorTitle'),
+        description: t(error.code) || error.message,
+      });
+    }
+  };
+  
+  const signInWithEmail = async ({ email, password }: AuthCredentials) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/');
+       toast({
+        title: t('loggedInTitle'),
+        description: t('loggedInDescription'),
+      });
+    } catch (error: any) {
+      console.error("Error signing in", error);
+       toast({
+        variant: "destructive",
+        title: t('loginErrorTitle'),
+        description: t(error.code) || error.message,
+      });
+    }
+  };
+
   const logout = async () => {
     try {
         await signOut(auth);
@@ -118,6 +174,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user, 
     favorites, 
     signInWithGoogle, 
+    registerWithEmail,
+    signInWithEmail,
     logout, 
     toggleFavorite, 
     isFavorite 

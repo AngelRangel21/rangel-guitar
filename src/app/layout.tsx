@@ -39,11 +39,11 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
       <body className="font-body antialiased">
-        <AuthProvider>
-          <I18nProvider>
+        <I18nProvider>
+          <AuthProvider>
             {children}
-          </I18nProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </I18nProvider>
         <Toaster />
       </body>
     </html>
