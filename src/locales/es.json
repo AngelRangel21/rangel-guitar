@@ -76,5 +76,19 @@
   "auth/user-not-found": "No se encontró ningún usuario con este correo electrónico.",
   "auth/wrong-password": "Contraseña incorrecta. Por favor, inténtalo de nuevo.",
   "auth/email-already-in-use": "Este correo electrónico ya está registrado.",
-  "auth/weak-password": "La contraseña es demasiado débil. Por favor, utiliza una más segura."
+  "auth/weak-password": "La contraseña es demasiado débil. Por favor, utiliza una más segura.",
+  "requestSong": "Solicitar Canción",
+  "requestSongTitle": "Solicitar una Canción",
+  "requestSongDescription": "¿No encuentras una canción? ¡Pídela aquí!",
+  "songTitleLabel": "Título de la Canción",
+  "artistLabel": "Artista",
+  "songTitlePlaceholder": "Ej., Bohemian Rhapsody",
+  "artistPlaceholder": "Ej., Queen",
+  "songTitleRequired": "El título de la canción es obligatorio.",
+  "artistNameRequired": "El nombre del artista es obligatorio.",
+  "sendRequest": "Enviar Solicitud",
+  "sending": "Enviando",
+  "requestSentTitle": "¡Solicitud Enviada!",
+  "requestErrorTitle": "Error",
+  "requestErrorDescription": "Ocurrió un error al enviar tu solicitud. Por favor, intenta de nuevo."
 }

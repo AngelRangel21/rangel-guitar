@@ -76,5 +76,19 @@
   "auth/user-not-found": "No user found with this email.",
   "auth/wrong-password": "Incorrect password. Please try again.",
   "auth/email-already-in-use": "This email is already registered.",
-  "auth/weak-password": "Password is too weak. Please use a stronger password."
+  "auth/weak-password": "Password is too weak. Please use a stronger password.",
+  "requestSong": "Request a Song",
+  "requestSongTitle": "Request a Song",
+  "requestSongDescription": "Don't see a song you like? Let us know!",
+  "songTitleLabel": "Song Title",
+  "artistLabel": "Artist",
+  "songTitlePlaceholder": "e.g., Bohemian Rhapsody",
+  "artistPlaceholder": "e.g., Queen",
+  "songTitleRequired": "Song title is required.",
+  "artistNameRequired": "Artist name is required.",
+  "sendRequest": "Send Request",
+  "sending": "Sending",
+  "requestSentTitle": "Request Sent!",
+  "requestErrorTitle": "Error",
+  "requestErrorDescription": "There was an error sending your request. Please try again."
 }

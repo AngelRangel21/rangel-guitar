@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -110,6 +110,12 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               </DropdownMenuItem>
                <DropdownMenuItem asChild>
                 <Link href="/artists">{t('artists')}</Link>
+              </DropdownMenuItem>
+               <DropdownMenuItem asChild>
+                <Link href="/request-song">
+                  <GitPullRequest className="mr-2 h-4 w-4" />
+                  <span>{t('requestSong')}</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="#">{t('topCharts')}</Link>
