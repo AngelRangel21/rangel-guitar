@@ -30,7 +30,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
   authDomain: "rangel-guitar.firebaseapp.com",
   projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
+  storageBucket: "rangel-guitar.appspot.com",
   messagingSenderId: "354082670866",
   appId: "1:354082670866:web:6bee882127bdeae5034bcb"
 };
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
         };
         setUser(userData);
-        setIsAdmin(firebaseUser.email === "angel145256@gmail.com");
+        setIsAdmin(firebaseUser.email === "admin@example.com");
 
         const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
         if (storedFavorites) {
