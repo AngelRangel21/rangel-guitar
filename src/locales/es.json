@@ -90,5 +90,12 @@
   "sending": "Enviando",
   "requestSentTitle": "¡Solicitud Enviada!",
   "requestErrorTitle": "Error",
-  "requestErrorDescription": "Ocurrió un error al enviar tu solicitud. Por favor, intenta de nuevo."
+  "requestErrorDescription": "Ocurrió un error al enviar tu solicitud. Por favor, intenta de nuevo.",
+  "admin": "Admin",
+  "songRequestsTitle": "Solicitudes de Canciones",
+  "songRequestsDescription": "Aquí están las canciones solicitadas por los usuarios.",
+  "tableTitle": "Título",
+  "tableArtist": "Artista",
+  "tableRequestDate": "Fecha de Solicitud",
+  "noPendingRequests": "No hay solicitudes pendientes."
 }

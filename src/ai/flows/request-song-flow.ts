@@ -8,6 +8,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { addSongRequest } from '@/services/requests-service';
 import {z} from 'zod';
 
 const RequestSongInputSchema = z.object({
@@ -32,9 +33,9 @@ const requestSongFlow = ai.defineFlow(
     outputSchema: RequestSongOutputSchema,
   },
   async (input) => {
-    // In a real application, you might save this to a database,
-    // send an email, or call another service.
-    // For this prototype, we'll generate a friendly confirmation.
+    // In a real application, you might save this to a database.
+    // For this prototype, we'll save it to an in-memory array.
+    await addSongRequest(input);
     
     const { output } = await ai.generate({
         prompt: `Un usuario ha solicitado la canción "${input.title}" de "${input.artist}". Escribe un mensaje de confirmación muy corto, amigable y alentador en español. Por ejemplo: "¡Gracias! Hemos recibido tu solicitud para '${input.title}' y la revisaremos pronto." o "¡Genial! Tu solicitud para '${input.title}' ha sido enviada." No incluyas el nombre del artista en la respuesta.`

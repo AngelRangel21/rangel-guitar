@@ -90,5 +90,12 @@
   "sending": "Sending",
   "requestSentTitle": "Request Sent!",
   "requestErrorTitle": "Error",
-  "requestErrorDescription": "There was an error sending your request. Please try again."
+  "requestErrorDescription": "There was an error sending your request. Please try again.",
+  "admin": "Admin",
+  "songRequestsTitle": "Song Requests",
+  "songRequestsDescription": "Here are the songs requested by users.",
+  "tableTitle": "Title",
+  "tableArtist": "Artist",
+  "tableRequestDate": "Request Date",
+  "noPendingRequests": "No pending requests."
 }

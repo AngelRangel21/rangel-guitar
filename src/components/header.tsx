@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { t, setLanguage } = useI18n();
 
   return (
@@ -69,6 +69,14 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin/requests">
+                        <Shield className="mr-2 h-4 w-4" />
+                        <span>{t('admin')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem asChild>
                     <Link href="/favorites">
                       <Heart className="mr-2 h-4 w-4" />

@@ -26,6 +26,10 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID_HERE",
 };
 
+// IMPORTANT: For the prototype, this is the admin email.
+// In a real app, you would have a more robust role management system.
+const ADMIN_EMAIL = "admin@example.com";
+
 let app: FirebaseApp;
 if (!getApps().length) {
   app = initializeApp(firebaseConfig);
@@ -49,6 +53,7 @@ interface AuthCredentials {
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
+  isAdmin: boolean;
   favorites: number[];
   signInWithGoogle: () => Promise<void>;
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
@@ -62,6 +67,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
@@ -76,6 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
         };
         setUser(userData);
+        setIsAdmin(firebaseUser.email === ADMIN_EMAIL);
+
         const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
         if (storedFavorites) {
           try {
@@ -89,6 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } else {
         setUser(null);
+        setIsAdmin(false);
         setFavorites([]);
       }
       setIsLoaded(true);
@@ -172,6 +181,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = { 
     isAuthenticated: isLoaded && !!user, 
     user, 
+    isAdmin,
     favorites, 
     signInWithGoogle, 
     registerWithEmail,
