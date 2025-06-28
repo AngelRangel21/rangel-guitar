@@ -29,7 +29,7 @@ import { useI18n } from './i18n-context';
 const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8", // REEMPLAZAR
   authDomain: "rangel-guitar.firebaseapp.com", // REEMPLAZAR
-  projectId: "guitarra-rangel", // REEMPLAZAR
+  projectId: "rangel-rangel", // REEMPLAZAR
   storageBucket: "rangel-guitar.firebasestorage.app", // REEMPLAZAR
   messagingSenderId: "354082670866", // REEMPLAZAR
   appId: "1:354082670866:web:6bee882127bdeae5034bcb" // REEMPLAZAR
