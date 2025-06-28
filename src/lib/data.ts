@@ -135,5 +135,255 @@ export const songs: Song[] = [
   nadie de la parca 
                   D
   se puede escapar.`
+  },
+  {
+    id: 2,
+    title: 'AFS',
+    artist: 'Natanael Cano',
+    coverArt: 'https://placehold.co/400x400.png',
+    video: 'Y_IELatof9g?si=P1J2jsoO5a4gf_j8',
+    lyrics:  `
+Empezamos a temprana edad
+Solito se enseñó a trabajar
+Ahora la vida le sonrió y no la hace cambiar
+No se ocupará ni mencionar
+Apoyo que carga es de familia
+Con su gente siempre pa' arriba
+
+
+Bien preparados pa' lo que pueda pasar
+No se agüiten, que hay Chapo pa' más
+Con mi gente para lo que digan
+Ellos saben que aquí no hay salida
+
+
+Andamos chambeando en la movida
+Y andamos matando al azar
+No ando preguntando, y pa' qué hablar
+Y aquí somos puros de verdad
+
+
+Recuerdos quedaron de aquel día
+Se la pelaron, ya los traían
+Arriba de la blindada con un corridón
+Compa Kaby, póngase en acción
+Que al cabo la brecha me la sé yo
+Los plebes allá traen un refuegón
+
+
+Más los carros que traemos acá en el convoy
+En el radio se escucha el señor
+De aquí salgo, pero como pueda
+Ustedes plebes quédense en guerra
+
+
+Que para eso cargan la bandera
+Y no es cualquiera, es un charolón
+Aquí andamos en el desierto
+Salazar, para el que preguntó
+
+
+Pa'l gabacho no pueden cruzar
+No se ocupa, aquí hay jale de más
+La bandera de aquel viejo aquí se respeta
+Que se escuche Alfredo Salazar
+Y por los pueblos los kilos cruzar
+Las avionetas las miran bajar
+
+
+Se van cargadas con peso pero de más
+Buen piloto los que van fuera
+El carrito para lo que digan
+Con el equipo al frente lo miran
+
+
+Andamos chambeando en la movida
+Peleando lo que ocupe pelear
+El miedo no existe, aquí hay lealtad
+Y el billete ese ni se diga
+
+Empezamos a temprana edad
+Solito se enseñó a trabajar
+Ahora la vida le sonrió y no la hace cambiar
+No se ocupará ni mencionar
+Apoyo que carga es de familia
+Con su gente siempre pa' arriba
+
+Bien preparados pa' lo que pueda pasar
+No se agüiten, que hay Chapo pa' más
+Con mi gente para lo que digan
+Ellos saben que aquí no hay salida
+
+Andamos chambeando en la movida
+Y andamos matando al azar
+No ando preguntando, y pa' qué hablar
+Y aquí somos puros de verdad`,
+    chords: `
+D
+Empezamos a temprana edad
+
+E7
+Solito se enseñó a trabajar
+
+F#m
+Ahora la vida le sonrió y no la hace cambiar
+
+                       D
+No se ocupará ni mencionar
+
+                          E7
+Apoyo que carga es de familia
+
+                           F#m
+Con su gente siempre pa' arriba
+
+
+Bien preparados pa' lo que pueda pasar
+
+                         D
+No se agüiten, que hay Chapo pa' más
+
+                  E7
+Con mi gente para lo que digan
+
+                        F#m
+Ellos saben que aquí no hay salida
+
+
+Andamos chambeando en la movida
+
+                  D
+Y andamos matando al azar
+
+                       D
+No ando preguntando, y pa' qué hablar
+
+                 F#m
+Y aquí somos puros de verdad
+
+
+D
+Recuerdos quedaron de aquel día
+
+E7
+Se la pelaron, ya los traían
+
+F#m
+Arriba de la blindada con un corridón
+
+                          D
+Compa Kaby, póngase en acción
+
+                               E7
+Que al cabo la brecha me la sé yo
+
+                             F#m
+Los plebes allá traen un refuegón
+
+
+Más los carros que traemos acá en el convoy
+
+                    D
+En el radio se escucha el señor
+
+                     E7
+De aquí salgo, pero como pueda
+
+                 F#m
+Ustedes plebes quédense en guerra
+
+
+Que para eso cargan la bandera
+
+                           D
+Y no es cualquiera, es un charolón
+
+                   E7
+Aquí andamos en el desierto
+
+                    F#m
+Salazar, para el que preguntó
+
+
+D
+Pa'l gabacho no pueden cruzar
+
+E7
+No se ocupa, aquí hay jale de más
+
+F#m
+La bandera de aquel viejo aquí se respeta
+
+                           D
+Que se escuche Alfredo Salazar
+
+                               E7
+Y por los pueblos los kilos cruzar
+
+                         F#m
+Las avionetas las miran bajar
+
+
+Se van cargadas con peso pero de más
+
+                    D
+Buen piloto los que van fuera
+
+                E7
+El carrito para lo que digan
+
+                   F#m
+Con el equipo al frente lo miran
+
+
+Andamos chambeando en la movida
+
+                   D
+Peleando lo que ocupe pelear
+
+                         E7
+El miedo no existe, aquí hay lealtad
+
+                  F#m
+Y el billete ese ni se diga
+
+D
+Empezamos a temprana edad
+E7
+Solito se enseñó a trabajar
+
+F#m
+Ahora la vida le sonrió y no la hace cambiar
+
+                       D
+No se ocupará ni mencionar
+
+                          E7
+Apoyo que carga es de familia
+
+                           F#m
+Con su gente siempre pa' arriba
+
+Bien preparados pa' lo que pueda pasar
+
+                         D
+No se agüiten, que hay Chapo pa' más
+
+                  E7
+Con mi gente para lo que digan
+
+                        F#m
+Ellos saben que aquí no hay salida
+
+Andamos chambeando en la movida
+
+                  D
+Y andamos matando al azar
+
+                       D
+No ando preguntando, y pa' qué hablar
+
+                 F#m
+Y aquí somos puros de verdad`
   }
 ];

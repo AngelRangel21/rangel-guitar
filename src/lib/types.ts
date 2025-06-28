@@ -5,4 +5,5 @@ export type Song = {
   coverArt: string;
   lyrics?: string;
   chords?: string;
+  video?: string;
 };

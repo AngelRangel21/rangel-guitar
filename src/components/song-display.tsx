@@ -26,14 +26,28 @@ export function SongDisplay({ song }: { song: Song }) {
     <div className="grid lg:grid-cols-3 gap-8">
       <div className="lg:col-span-1">
         <Card className="overflow-hidden lg:sticky lg:top-24">
-          <Image
-            src={song.coverArt}
-            alt={`Cover art for ${song.title}`}
-            width={600}
-            height={400}
-            className="object-cover w-full h-64 lg:h-auto lg:aspect-square"
-            data-ai-hint="guitar music"
-          />
+          {song.video ? (
+            <div className="w-full aspect-video">
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${song.video}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+          ) : (
+            <Image
+              src={song.coverArt}
+              alt={`Cover art for ${song.title}`}
+              width={400}
+              height={400}
+              className="w-full h-auto object-cover"
+              data-ai-hint="guitar music"
+            />
+          )}
           <CardHeader>
             <CardTitle className="text-2xl">{song.title}</CardTitle>
             <CardDescription>{song.artist}</CardDescription>
