@@ -53,7 +53,7 @@ interface User {
 interface AuthCredentials {
   email: string;
   password: string;
-  name?: string;
+  name: string;
 }
 
 interface AuthContextType {
