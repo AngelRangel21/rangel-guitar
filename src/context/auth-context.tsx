@@ -28,7 +28,7 @@ import { useI18n } from './i18n-context';
 // =================================================================
 const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "localhost",
+  authDomain: "rangel-guitar.firebaseapp.com",
   projectId: "rangel-guitar",
   storageBucket: "rangel-guitar.firebasestorage.app",
   messagingSenderId: "354082670866",
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
         };
         setUser(userData);
-        setIsAdmin(firebaseUser.email === "admin@example.com");
+        setIsAdmin(firebaseUser.email === "angel145256@gmail.com");
 
         const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
         if (storedFavorites) {
