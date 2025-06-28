@@ -1,3 +1,4 @@
+
 {
   "appName": "Rangel Guitar",
   "appDescription": "Your destination for guitar tabs and songs.",
@@ -53,5 +54,11 @@
   "spanish": "Spanish",
   "english": "English",
   "allArtists": "All Artists",
-  "songsBy": "Songs by {artist}"
+  "songsBy": "Songs by {artist}",
+  "favorites": "Favorites",
+  "addToFavorites": "Add to favorites",
+  "removeFromFavorites": "Remove from favorites",
+  "noFavorites": "You haven't added any favorite songs yet.",
+  "myFavorites": "My Favorites",
+  "loading": "Loading"
 }

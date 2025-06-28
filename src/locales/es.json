@@ -1,3 +1,4 @@
+
 {
   "appName": "Rangel Guitar",
   "appDescription": "Tu destino para tablaturas y canciones de guitarra.",
@@ -53,5 +54,11 @@
   "spanish": "Español",
   "english": "Inglés",
   "allArtists": "Todos los Artistas",
-  "songsBy": "Canciones de {artist}"
+  "songsBy": "Canciones de {artist}",
+  "favorites": "Favoritos",
+  "addToFavorites": "Añadir a favoritos",
+  "removeFromFavorites": "Quitar de favoritos",
+  "noFavorites": "Aún no has agregado canciones favoritas.",
+  "myFavorites": "Mis Favoritos",
+  "loading": "Cargando"
 }

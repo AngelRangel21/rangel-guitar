@@ -5,14 +5,16 @@ import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChordSheet } from "./chord-sheet";
-import { Minus, Plus, Facebook, Twitter } from "lucide-react";
+import { Minus, Plus, Facebook, Twitter, Heart } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
+import { useAuth } from "@/context/auth-context";
 
 export function SongDisplay({ song }: { song: Song }) {
   const [transpose, setTranspose] = useState(0);
   const { t } = useI18n();
+  const { isAuthenticated, isFavorite, toggleFavorite } = useAuth();
   const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
@@ -54,8 +56,23 @@ export function SongDisplay({ song }: { song: Song }) {
             />
           )}
           <CardHeader>
-            <CardTitle className="text-2xl">{song.title}</CardTitle>
-            <CardDescription>{song.artist}</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-2xl">{song.title}</CardTitle>
+                <CardDescription>{song.artist}</CardDescription>
+              </div>
+              {isAuthenticated && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => toggleFavorite(song.id)}
+                  aria-label={isFavorite(song.id) ? t('removeFromFavorites') : t('addToFavorites')}
+                  className="rounded-full"
+                >
+                  <Heart className={`h-6 w-6 transition-colors ${isFavorite(song.id) ? 'fill-red-500 text-red-500' : 'text-foreground/70'}`} />
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             <h3 className="text-lg font-semibold mb-2 text-center">{t('changeTone')}</h3>
