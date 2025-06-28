@@ -1,13 +1,34 @@
 import type {Metadata} from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/context/auth-context';
 import { I18nProvider } from '@/context/i18n-context';
 
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
-  title: 'Rangel Guitar',
-  description: 'Tu destino para tablaturas y canciones de guitarra.',
+  title: {
+    default: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
+    template: '%s | Rangel Guitar',
+  },
+  description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
+  metadataBase: new URL('https://rangel-guitar.firebaseapp.com'),
+  openGraph: {
+    title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
+    description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
+    type: 'website',
+    locale: 'es_ES',
+    siteName: 'Rangel Guitar',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rangel Guitar',
+    description: 'Tu destino para tablaturas y canciones de guitarra.',
+  },
 };
 
 export default function RootLayout({
@@ -16,12 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="!scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
       <body className="font-body antialiased">
         <AuthProvider>
           <I18nProvider>

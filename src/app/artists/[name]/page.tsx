@@ -1,16 +1,36 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { SongList } from "@/components/song-list";
 import { songs } from "@/lib/data";
-import { useI18n } from "@/context/i18n-context";
 import { notFound } from "next/navigation";
+import { ArtistDetailContent } from '@/components/artist-detail-content';
+
+export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
+    const artistName = decodeURIComponent(params.name);
+    const artistSongs = songs.filter(song => song.artist === artistName);
+
+    if (artistSongs.length === 0) {
+        return {
+            title: 'Artista no encontrado'
+        }
+    }
+
+    const description = `Explora todas las canciones y tablaturas de ${artistName} en Rangel Guitar. Aprende a tocar sus éxitos en guitarra.`;
+
+    return {
+        title: `Canciones de ${artistName}`,
+        description: description,
+        openGraph: {
+            title: `Canciones de ${artistName}`,
+            description: description,
+        },
+    }
+}
+
 
 export default function ArtistDetailPage({ params }: { params: { name: string } }) {
   const artistName = decodeURIComponent(params.name);
   const artistSongs = songs.filter(song => song.artist === artistName);
-  const { t } = useI18n();
 
   if (artistSongs.length === 0) {
     notFound();
@@ -19,10 +39,7 @@ export default function ArtistDetailPage({ params }: { params: { name: string } 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-8 space-y-6">
-        <h1 className="text-4xl font-bold">{t('songsBy', { artist: artistName })}</h1>
-        <SongList songs={artistSongs} />
-      </main>
+      <ArtistDetailContent artistName={artistName} songs={artistSongs} />
       <Footer />
     </div>
   );

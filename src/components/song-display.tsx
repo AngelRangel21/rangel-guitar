@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,11 @@ import { useI18n } from "@/context/i18n-context";
 export function SongDisplay({ song }: { song: Song }) {
   const [transpose, setTranspose] = useState(0);
   const { t } = useI18n();
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
 
   const getTransposedKeyText = () => {
     if (transpose === 0) return t('originalKey');
@@ -55,11 +60,11 @@ export function SongDisplay({ song }: { song: Song }) {
           <CardContent>
             <h3 className="text-lg font-semibold mb-2 text-center">{t('changeTone')}</h3>
             <div className="flex items-center justify-between gap-4">
-              <Button variant="outline" size="icon" onClick={() => setTranspose(t => t - 1)}>
+              <Button variant="outline" size="icon" onClick={() => setTranspose(t => t - 1)} aria-label={t('decreaseSemitone')}>
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="font-bold text-lg w-32 text-center">{getTransposedKeyText()}</span>
-              <Button variant="outline" size="icon" onClick={() => setTranspose(t => t + 1)}>
+              <span className="font-bold text-lg w-32 text-center" aria-live="polite">{getTransposedKeyText()}</span>
+              <Button variant="outline" size="icon" onClick={() => setTranspose(t => t + 1)} aria-label={t('increaseSemitone')}>
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -75,18 +80,20 @@ export function SongDisplay({ song }: { song: Song }) {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, "_blank")}
+                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, "_blank")}
+                  aria-label={t('shareOnFacebook')}
                 >
                   <Facebook className="h-5 w-5 text-blue-600" />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}&text=${encodeURIComponent(shareText)}`, "_blank")}
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")}
+                  aria-label={t('shareOnTwitter')}
                 >
                   <Twitter className="h-5 w-5 text-blue-400" />
                 </Button>
-                 <Button variant="outline" size="icon" onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${window.location.href}`)}`, "_blank")}>
+                 <Button variant="outline" size="icon" onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${currentUrl}`)}`, "_blank")} aria-label={t('shareOnWhatsApp')}>
                   <WhatsAppIcon className="h-5 w-5 text-green-500" />
                 </Button>
               </div>

@@ -10,13 +10,28 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   if (!song) {
     return {
-      title: "Song Not Found",
+      title: "Canción no encontrada",
     }
   }
 
+  const description = `Aprende a tocar ${song.title} de ${song.artist} en guitarra. Letra, acordes y video tutorial disponibles en Rangel Guitar.`;
+
   return {
-    title: `${song.title} by ${song.artist} | Rangel Guitar`,
-    description: `Learn to play ${song.title} on guitar with chords and lyrics.`,
+    title: `${song.title} - ${song.artist}`,
+    description: description,
+    openGraph: {
+        title: `${song.title} - ${song.artist}`,
+        description: description,
+        type: 'music.song',
+        images: [
+            {
+                url: song.coverArt,
+                width: 400,
+                height: 400,
+                alt: `Portada de ${song.title}`,
+            }
+        ],
+    },
   }
 }
 
