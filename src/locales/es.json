@@ -15,13 +15,13 @@
   "cookiePolicy": "Política de Cookies",
   "copyright": "© {year} Rangel Guitar Hub. Todos los derechos reservados.",
   "loginTitle": "Iniciar Sesión",
-  "loginDescription": "Ingresa tus credenciales para acceder a tu cuenta.",
+  "loginDescription": "Inicia sesión con tu cuenta de Google para continuar.",
   "emailLabel": "Correo Electrónico",
   "passwordLabel": "Contraseña",
   "noAccount": "¿No tienes una cuenta?",
   "registerLink": "Regístrate",
   "registerTitle": "Registrarse",
-  "registerDescription": "Crea tu cuenta y guarda tus canciones favoritas.",
+  "registerDescription": "Crea tu cuenta usando Google para empezar.",
   "nameLabel": "Nombre",
   "createAccount": "Crear Cuenta",
   "haveAccount": "¿Ya tienes una cuenta?",
@@ -60,5 +60,7 @@
   "removeFromFavorites": "Quitar de favoritos",
   "noFavorites": "Aún no has agregado canciones favoritas.",
   "myFavorites": "Mis Favoritos",
-  "loading": "Cargando"
+  "loading": "Cargando",
+  "loginWithGoogle": "Iniciar sesión con Google",
+  "registerWithGoogle": "Registrarse con Google"
 }
