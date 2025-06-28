@@ -46,5 +46,7 @@
   "keyboard": "Keyboard",
   "language": "Language",
   "spanish": "Spanish",
-  "english": "English"
+  "english": "English",
+  "allArtists": "All Artists",
+  "songsBy": "Songs by {artist}"
 }

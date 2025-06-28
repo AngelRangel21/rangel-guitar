@@ -46,5 +46,7 @@
   "keyboard": "Teclado",
   "language": "Idioma",
   "spanish": "Español",
-  "english": "Inglés"
+  "english": "Inglés",
+  "allArtists": "Todos los Artistas",
+  "songsBy": "Canciones de {artist}"
 }

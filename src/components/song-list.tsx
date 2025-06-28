@@ -114,8 +114,7 @@ export function SongList({ songs }: { songs: Song[] }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-foreground">{t('allSongs')}</h2>
+      <div className="flex justify-end items-center">
         <div className="flex items-center gap-2">
           <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
             <Grid className="h-5 w-5" />
