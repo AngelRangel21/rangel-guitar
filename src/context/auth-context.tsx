@@ -27,12 +27,12 @@ import { useI18n } from './i18n-context';
 // 5. Selecciona "Configuración" y copia el objeto `firebaseConfig`.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.appspot.com",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb"
+  apiKey: "TU_API_KEY_AQUI",
+  authDomain: "TU_AUTH_DOMAIN_AQUI",
+  projectId: "TU_PROJECT_ID_AQUI",
+  storageBucket: "TU_STORAGE_BUCKET_AQUI",
+  messagingSenderId: "TU_MESSAGING_SENDER_ID_AQUI",
+  appId: "TU_APP_ID_AQUI"
 };
 
 
