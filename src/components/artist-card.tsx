@@ -8,7 +8,7 @@ export function ArtistCard({ artist }: { artist: string }) {
     <Link href={`/artists/${encodeURIComponent(artist)}`}>
       <Card className="group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full cursor-pointer text-center">
         <div className="relative">
-           <Image
+          <Image
             src={`https://placehold.co/400x400.png`}
             alt={`Photo of ${artist}`}
             width={400}
