@@ -19,20 +19,23 @@ import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
 
 // =================================================================
-// IMPORTANTE: REEMPLAZA ESTO CON TUS PROPIAS CREDENCIALES DE FIREBASE
+// ¡IMPORTANTE! INSERTA AQUÍ TUS CREDENCIALES DE FIREBASE
 // 1. Ve a la consola de Firebase: https://console.firebase.google.com/
-// 2. Entra a tu proyecto (o créalo).
+// 2. Entra a TU proyecto (el que tú creaste).
 // 3. Haz clic en el ícono de engranaje (Configuración del proyecto).
 // 4. En la pestaña "General", baja hasta "Tus apps".
-// 5. Selecciona "Configuración" y copia el objeto `firebaseConfig`.
+// 5. Si no tienes una app web, créala (ícono </>).
+// 6. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
+// 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "TU_API_KEY_AQUI",
-  authDomain: "TU_AUTH_DOMAIN_AQUI",
-  projectId: "TU_PROJECT_ID_AQUI",
-  storageBucket: "TU_STORAGE_BUCKET_AQUI",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID_AQUI",
-  appId: "TU_APP_ID_AQUI"
+  // Pega tu objeto firebaseConfig aquí. Ejemplo:
+  // apiKey: "AIzaSy...xxxxx",
+  // authDomain: "tu-proyecto.firebaseapp.com",
+  // projectId: "tu-proyecto",
+  // storageBucket: "tu-proyecto.appspot.com",
+  // messagingSenderId: "1234567890",
+  // appId: "1:1234567890:web:..."
 };
 
 
@@ -53,7 +56,7 @@ interface User {
 interface AuthCredentials {
   email: string;
   password: string;
-  name: string;
+  name?: string;
 }
 
 interface AuthContextType {
@@ -152,8 +155,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: t('loggedInTitle'),
         description: t('loggedInDescription'),
       });
-    } catch (error: any) {
-      console.error("Error signing in", error);
+    } catch (error: any)
+      {
+      console.error("Error signing in with email:", error);
        toast({
         variant: "destructive",
         title: t('loginErrorTitle'),
