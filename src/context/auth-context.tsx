@@ -17,13 +17,17 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
 
+// =================================================================
+// IMPORTANTE: REEMPLAZA ESTO CON TUS PROPIAS CREDENCIALES DE FIREBASE
+// Las puedes obtener desde la configuración de tu proyecto en la consola de Firebase.
+// =================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb"
+  apiKey: "YOUR_API_KEY_HERE",
+  authDomain: "YOUR_AUTH_DOMAIN_HERE",
+  projectId: "YOUR_PROJECT_ID_HERE",
+  storageBucket: "YOUR_STORAGE_BUCKET_HERE",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID_HERE",
+  appId: "YOUR_APP_ID_HERE"
 };
 
 // IMPORTANT: For the prototype, this is the admin email.
