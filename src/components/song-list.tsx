@@ -15,12 +15,14 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import { useI18n } from "@/context/i18n-context";
 
 const SONGS_PER_PAGE = 16;
 
 export function SongList({ songs }: { songs: Song[] }) {
   const [view, setView] = useState<"grid" | "list">("list");
   const [currentPage, setCurrentPage] = useState(1);
+  const { t } = useI18n();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -113,12 +115,12 @@ export function SongList({ songs }: { songs: Song[] }) {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-foreground">All Songs</h2>
+        <h2 className="text-3xl font-bold text-foreground">{t('allSongs')}</h2>
         <div className="flex items-center gap-2">
-          <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label="Grid view">
+          <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
             <Grid className="h-5 w-5" />
           </Button>
-          <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('list')} aria-label="List view">
+          <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('list')} aria-label={t('listView')}>
             <List className="h-5 w-5" />
           </Button>
         </div>
@@ -126,7 +128,7 @@ export function SongList({ songs }: { songs: Song[] }) {
         
       {songs.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-muted-foreground">No songs found. Try a different search term.</p>
+          <p className="text-muted-foreground">{t('noSongsFound')}</p>
         </div>
       ) : (
         <>

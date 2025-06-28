@@ -1,15 +1,19 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import { useI18n } from "@/context/i18n-context";
 
 export function ChordDiagrams({ chordName }: { chordName: string }) {
+  const { t } = useI18n();
   return (
     <div>
-      <h4 className="font-bold text-lg mb-2">Chord: {chordName}</h4>
+      <h4 className="font-bold text-lg mb-2">{t('chord')}: {chordName}</h4>
       <Tabs defaultValue="guitar" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="guitar">Guitar</TabsTrigger>
-          <TabsTrigger value="keyboard">Keyboard</TabsTrigger>
+          <TabsTrigger value="guitar">{t('guitar')}</TabsTrigger>
+          <TabsTrigger value="keyboard">{t('keyboard')}</TabsTrigger>
         </TabsList>
         <TabsContent value="guitar">
           <Card>

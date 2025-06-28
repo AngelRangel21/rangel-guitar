@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useI18n } from "@/context/i18n-context";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const { login } = useAuth();
   const { toast } = useToast();
+  const { t } = useI18n();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,21 +38,19 @@ export function LoginForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, you'd verify credentials. Here, we'll just log in.
-    // We'll extract a dummy name from the email.
     const name = values.email.split('@')[0];
     login(name);
     toast({
-        title: "Logged In",
-        description: "Welcome back!",
+        title: t('loggedInTitle'),
+        description: t('loggedInDescription'),
     });
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials to access your account.</CardDescription>
+        <CardTitle>{t('loginTitle')}</CardTitle>
+        <CardDescription>{t('loginDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -60,7 +60,7 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('emailLabel')}</FormLabel>
                   <FormControl>
                     <Input placeholder="you@example.com" {...field} />
                   </FormControl>
@@ -73,7 +73,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('passwordLabel')}</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -81,11 +81,11 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Login</Button>
+            <Button type="submit" className="w-full">{t('login')}</Button>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              {t('noAccount')}{" "}
               <Link href="/register" className="underline text-accent">
-                Register
+                {t('registerLink')}
               </Link>
             </div>
           </form>

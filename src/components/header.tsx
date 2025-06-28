@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,20 +10,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-  DropdownMenuLabel
+  DropdownMenuLabel,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useI18n } from "@/context/i18n-context";
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout } = useAuth();
+  const { t, setLanguage } = useI18n();
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home">
           <Music className="h-8 w-8 text-accent" />
-          <span className="text-2xl font-bold whitespace-nowrap">Rangel Guitar</span>
+          <span className="text-2xl font-bold whitespace-nowrap">{t('appName')}</span>
         </Link>
 
         <div className="hidden md:flex flex-1 max-w-md items-center ml-8">
@@ -31,7 +37,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by song or artist..."
+              placeholder={t('searchPlaceholder')}
               className="w-full rounded-full bg-background text-foreground placeholder:text-muted-foreground pl-10 border-2 border-transparent focus-visible:ring-accent focus-visible:border-accent disabled:cursor-not-allowed disabled:bg-muted/50"
               value={searchTerm ?? ''}
               onChange={(e) => onSearchChange?.(e.target.value)}
@@ -58,23 +64,23 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 <>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">Signed in as</p>
+                      <p className="text-sm font-medium leading-none">{t('signedInAs')}</p>
                       <p className="text-xs leading-none text-muted-foreground">{user.name}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
+                    <span>{t('logout')}</span>
                   </DropdownMenuItem>
                 </>
               ) : (
                 <>
                   <DropdownMenuItem asChild>
-                    <Link href="/login">Login</Link>
+                    <Link href="/login">{t('login')}</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/register">Register</Link>
+                    <Link href="/register">{t('register')}</Link>
                   </DropdownMenuItem>
                 </>
               )}
@@ -84,7 +90,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input 
                     type="search" 
-                    placeholder="Search..." 
+                    placeholder={t('searchPlaceholder')} 
                     className="w-full rounded-md pl-10 disabled:cursor-not-allowed disabled:bg-muted/50" 
                     value={searchTerm ?? ''}
                     onChange={(e) => onSearchChange?.(e.target.value)}
@@ -94,14 +100,27 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               </div>
               <DropdownMenuSeparator className="md:hidden" />
               <DropdownMenuItem asChild>
-                <Link href="/">Home</Link>
+                <Link href="/">{t('home')}</Link>
               </DropdownMenuItem>
                <DropdownMenuItem asChild>
-                <Link href="#">Artists</Link>
+                <Link href="#">{t('artists')}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="#">Top Charts</Link>
+                <Link href="#">{t('topCharts')}</Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <Globe className="mr-2 h-4 w-4" />
+                    <span>{t('language')}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={() => setLanguage('es')}>{t('spanish')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setLanguage('en')}>{t('english')}</DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

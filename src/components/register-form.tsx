@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { useI18n } from "@/context/i18n-context";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -27,6 +28,7 @@ const formSchema = z.object({
 export function RegisterForm() {
   const { login } = useAuth();
   const { toast } = useToast();
+  const { t } = useI18n();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,19 +40,18 @@ export function RegisterForm() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // In a real app, you'd create a new user. Here, we'll just log in.
     login(values.name);
     toast({
-        title: "Account Created",
-        description: "Welcome to Rangel Guitar Hub!",
+        title: t('accountCreatedTitle'),
+        description: t('accountCreatedDescription'),
     });
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Register</CardTitle>
-        <CardDescription>Create an account to save your favorite songs.</CardDescription>
+        <CardTitle>{t('registerTitle')}</CardTitle>
+        <CardDescription>{t('registerDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -60,7 +61,7 @@ export function RegisterForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t('nameLabel')}</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
@@ -73,7 +74,7 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('emailLabel')}</FormLabel>
                   <FormControl>
                     <Input placeholder="you@example.com" {...field} />
                   </FormControl>
@@ -86,7 +87,7 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('passwordLabel')}</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="••••••••" {...field} />
                   </FormControl>
@@ -94,11 +95,11 @@ export function RegisterForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Create Account</Button>
+            <Button type="submit" className="w-full">{t('createAccount')}</Button>
              <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
+              {t('haveAccount')}{" "}
               <Link href="/login" className="underline text-accent">
-                Login
+                {t('loginLink')}
               </Link>
             </div>
           </form>
