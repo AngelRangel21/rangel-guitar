@@ -28,7 +28,7 @@ import { useI18n } from './i18n-context';
 // =================================================================
 const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
+  authDomain: "localhost",
   projectId: "rangel-guitar",
   storageBucket: "rangel-guitar.firebasestorage.app",
   messagingSenderId: "354082670866",
