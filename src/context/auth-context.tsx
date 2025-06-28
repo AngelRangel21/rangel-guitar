@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -19,20 +20,28 @@ import { useI18n } from './i18n-context';
 
 // =================================================================
 // IMPORTANTE: REEMPLAZA ESTO CON TUS PROPIAS CREDENCIALES DE FIREBASE
-// Las puedes obtener desde la configuración de tu proyecto en la consola de Firebase.
+// 1. Ve a la consola de Firebase: https://console.firebase.google.com/
+// 2. Entra a tu proyecto (o créalo).
+// 3. Haz clic en el ícono de engranaje (Configuración del proyecto).
+// 4. En la pestaña "General", baja hasta "Tus apps".
+// 5. Selecciona "Configuración" y copia el objeto `firebaseConfig`.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "guitarra-rangel",
-  storageBucket: "rangel-guitar.firebasestorage.app",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb"
+  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8", // REEMPLAZAR
+  authDomain: "rangel-guitar.firebaseapp.com", // REEMPLAZAR
+  projectId: "guitarra-rangel", // REEMPLAZAR
+  storageBucket: "rangel-guitar.firebasestorage.app", // REEMPLAZAR
+  messagingSenderId: "354082670866", // REEMPLAZAR
+  appId: "1:354082670866:web:6bee882127bdeae5034bcb" // REEMPLAZAR
 };
 
-// IMPORTANT: For the prototype, this is the admin email.
-// In a real app, you would have a more robust role management system.
-const ADMIN_EMAIL = "admin@example.com";
+// --- PASO DE DEPURACIÓN ---
+// Esta línea imprimirá el ID de tu proyecto en la consola del navegador.
+// Abre las herramientas de desarrollador (F12) y comprueba que este ID
+// coincide con el de tu proyecto en Firebase.
+console.log('Firebase Project ID Initializing:', firebaseConfig.projectId);
+// --------------------------
+
 
 let app: FirebaseApp;
 if (!getApps().length) {
@@ -75,8 +84,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
   const { t } = useI18n();
+  const { toast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
@@ -86,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
         };
         setUser(userData);
-        setIsAdmin(firebaseUser.email === ADMIN_EMAIL);
+        setIsAdmin(firebaseUser.email === "admin@example.com");
 
         const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
         if (storedFavorites) {
