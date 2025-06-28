@@ -35,13 +35,6 @@ const firebaseConfig = {
   appId: "1:354082670866:web:6bee882127bdeae5034bcb" // REEMPLAZAR
 };
 
-// --- PASO DE DEPURACIÓN ---
-// Esta línea imprimirá el ID de tu proyecto en la consola del navegador.
-// Abre las herramientas de desarrollador (F12) y comprueba que este ID
-// coincide con el de tu proyecto en Firebase.
-console.log('Firebase Project ID Initializing:', firebaseConfig.projectId);
-// --------------------------
-
 
 let app: FirebaseApp;
 if (!getApps().length) {
