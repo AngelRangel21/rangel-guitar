@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/context/auth-context';
 import { I18nProvider } from '@/context/i18n-context';
+import { ThemeProvider } from '@/context/theme-provider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -39,11 +40,18 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
       <body className="font-body antialiased">
-        <I18nProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-        </I18nProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <I18nProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </I18nProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

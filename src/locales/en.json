@@ -97,5 +97,8 @@
   "tableTitle": "Title",
   "tableArtist": "Artist",
   "tableRequestDate": "Request Date",
-  "noPendingRequests": "No pending requests."
+  "noPendingRequests": "No pending requests.",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System"
 }

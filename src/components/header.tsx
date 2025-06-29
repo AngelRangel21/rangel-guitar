@@ -19,6 +19,7 @@ import {
 import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
@@ -47,6 +48,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
         </div>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">

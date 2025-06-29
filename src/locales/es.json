@@ -97,5 +97,8 @@
   "tableTitle": "Título",
   "tableArtist": "Artista",
   "tableRequestDate": "Fecha de Solicitud",
-  "noPendingRequests": "No hay solicitudes pendientes."
+  "noPendingRequests": "No hay solicitudes pendientes.",
+  "light": "Claro",
+  "dark": "Oscuro",
+  "system": "Sistema"
 }
