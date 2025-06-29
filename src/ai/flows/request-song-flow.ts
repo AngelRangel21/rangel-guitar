@@ -33,20 +33,10 @@ const requestSongFlow = ai.defineFlow(
     outputSchema: RequestSongOutputSchema,
   },
   async (input) => {
-    // In a real application, you might save this to a database.
-    // For this prototype, we'll save it to an in-memory array.
     await addSongRequest(input);
     
-    const { output } = await ai.generate({
-        prompt: `Un usuario ha solicitado la canción "${input.title}" de "${input.artist}". Escribe un mensaje de confirmación muy corto, amigable y alentador en español. Por ejemplo: "¡Gracias! Hemos recibido tu solicitud para '${input.title}' y la revisaremos pronto." o "¡Genial! Tu solicitud para '${input.title}' ha sido enviada." No incluyas el nombre del artista en la respuesta.`
-    });
-
-    if (!output) {
-      throw new Error("Could not generate a confirmation message.");
-    }
-    
     return {
-      message: output.text
+      message: `¡Tu solicitud para "${input.title}" ha sido enviada! La revisaremos pronto.`
     };
   }
 );
