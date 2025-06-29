@@ -29,13 +29,12 @@ import { useI18n } from './i18n-context';
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  // Pega tu objeto firebaseConfig aquí. Ejemplo:
-  // apiKey: "AIzaSy...xxxxx",
-  // authDomain: "tu-proyecto.firebaseapp.com",
-  // projectId: "tu-proyecto",
-  // storageBucket: "tu-proyecto.appspot.com",
-  // messagingSenderId: "1234567890",
-  // appId: "1:1234567890:web:..."
+  apiKey: "AIzaSyBamUaJa2k52EBsdBDyyxcMzwIqqLqrtkg",
+  authDomain: "tunestack-e78iq.firebaseapp.com",
+  projectId: "tunestack-e78iq",
+  storageBucket: "tunestack-e78iq.firebasestorage.app",
+  messagingSenderId: "956570356007",
+  appId: "1:956570356007:web:dcdb8b7f2bf3ecc25a8102"
 };
 
 
