@@ -15,7 +15,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  const staticRoutes = ['/', '/artists', '/login', '/register', '/favorites'].map((route) => ({
+  const staticRoutes = [
+    '/',
+    '/artists',
+    '/login',
+    '/register',
+    '/favorites',
+    '/request-song',
+    '/privacy-policy',
+    '/security',
+    '/cookie-policy'
+  ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
   }));

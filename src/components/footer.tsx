@@ -25,9 +25,9 @@ export function Footer() {
             </Link>
           </div>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <Link href="#" className="hover:text-accent transition-colors">{t('privacyPolicy')}</Link>
-            <Link href="#" className="hover:text-accent transition-colors">{t('security')}</Link>
-            <Link href="#" className="hover:text-accent transition-colors">{t('cookiePolicy')}</Link>
+            <Link href="/privacy-policy" className="hover:text-accent transition-colors">{t('privacyPolicy')}</Link>
+            <Link href="/security" className="hover:text-accent transition-colors">{t('security')}</Link>
+            <Link href="/cookie-policy" className="hover:text-accent transition-colors">{t('cookiePolicy')}</Link>
           </div>
           <div className="text-sm text-primary-foreground/70 text-center md:text-right">
             {t('copyright', { year: currentYear })}
