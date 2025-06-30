@@ -1,11 +1,10 @@
 'use server';
 
-import type { RequestSongInput } from '@/ai/flows/request-song-flow';
-import { getSongRequests } from '@/services/requests-service';
+import { getSongRequests, type SongRequest } from '@/services/requests-service';
 
 export async function getAdminNotifications(): Promise<{
   count: number;
-  recentRequests: (RequestSongInput & { requestedAt: Date })[];
+  recentRequests: SongRequest[];
 }> {
   const requests = await getSongRequests();
   return {

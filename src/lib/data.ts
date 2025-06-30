@@ -1,6 +1,6 @@
 import type { Song } from "@/lib/types";
 
-export const songs: Song[] = [
+const initialSongs: Song[] = [
   {
     id: 1,
     title: 'El Karma',
@@ -388,3 +388,30 @@ No ando preguntando, y pa' qué hablar
 Y aquí somos puros de verdad`
   }
 ];
+
+declare global {
+  var __songs: Song[] | undefined;
+}
+
+let songs: Song[];
+
+if (process.env.NODE_ENV === 'production') {
+  songs = [...initialSongs];
+} else {
+  if (!global.__songs) {
+    global.__songs = [...initialSongs];
+  }
+  songs = global.__songs;
+}
+
+export { songs };
+
+export function addSong(songData: Omit<Song, 'id'>): Song {
+    const newId = songs.length > 0 ? Math.max(...songs.map(s => s.id)) + 1 : 1;
+    const newSong: Song = {
+        id: newId,
+        ...songData,
+    };
+    songs.unshift(newSong);
+    return newSong;
+}

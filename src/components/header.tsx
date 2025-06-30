@@ -22,20 +22,20 @@ import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState } from "react";
 import { getAdminNotifications } from "@/app/admin/requests/actions";
-import type { RequestSongInput } from "@/ai/flows/request-song-flow";
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
+import type { SongRequest } from "@/services/requests-service";
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { t, language, setLanguage } = useI18n();
-  const [notifications, setNotifications] = useState<{ count: number; recentRequests: (RequestSongInput & { requestedAt: string })[] }>({ count: 0, recentRequests: [] });
+  const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
   useEffect(() => {
     if (isAdmin) {
         const fetchNotifications = async () => {
             const data = await getAdminNotifications();
-            setNotifications(data as any);
+            setNotifications(data);
         };
         
         fetchNotifications();
@@ -86,8 +86,8 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 <DropdownMenuLabel>{t('notificationsTitle')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {notifications.recentRequests.length > 0 ? (
-                  notifications.recentRequests.map((req, index) => (
-                    <DropdownMenuItem key={index} asChild className="cursor-pointer">
+                  notifications.recentRequests.map((req) => (
+                    <DropdownMenuItem key={req.id} asChild className="cursor-pointer">
                       <Link href="/admin/requests" className="grid gap-1 !pl-2 w-full">
                           <p className="font-semibold">{req.title}</p>
                           <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
