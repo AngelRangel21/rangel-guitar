@@ -104,5 +104,10 @@
   "dark": "Dark",
   "system": "System",
   "chordsAndLyrics": "Chords & Lyrics",
-  "lyricsOnly": "Lyrics Only"
+  "lyricsOnly": "Lyrics Only",
+  "notifications": "Notifications",
+  "notificationsTitle": "Recent Song Requests",
+  "noNewRequests": "No new requests",
+  "viewAllRequests": "View all requests",
+  "byArtist": "by {artist}"
 }

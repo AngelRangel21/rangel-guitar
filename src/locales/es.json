@@ -104,5 +104,10 @@
   "dark": "Oscuro",
   "system": "Sistema",
   "chordsAndLyrics": "Letra y Acordes",
-  "lyricsOnly": "Solo Letra"
+  "lyricsOnly": "Solo Letra",
+  "notifications": "Notificaciones",
+  "notificationsTitle": "Solicitudes de Canciones Recientes",
+  "noNewRequests": "No hay nuevas solicitudes",
+  "viewAllRequests": "Ver todas las solicitudes",
+  "byArtist": "de {artist}"
 }

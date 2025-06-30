@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,10 +20,32 @@ import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
+import { useEffect, useState } from "react";
+import { getAdminNotifications } from "@/app/admin/requests/actions";
+import type { RequestSongInput } from "@/ai/flows/request-song-flow";
+import { formatDistanceToNow } from "date-fns";
+import { es, enUS } from 'date-fns/locale';
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
-  const { t, setLanguage } = useI18n();
+  const { t, language, setLanguage } = useI18n();
+  const [notifications, setNotifications] = useState<{ count: number; recentRequests: (RequestSongInput & { requestedAt: string })[] }>({ count: 0, recentRequests: [] });
+
+  useEffect(() => {
+    if (isAdmin) {
+        const fetchNotifications = async () => {
+            const data = await getAdminNotifications();
+            setNotifications(data as any);
+        };
+        
+        fetchNotifications();
+        const interval = setInterval(fetchNotifications, 15000); // Poll every 15 seconds
+
+        return () => clearInterval(interval);
+    }
+  }, [isAdmin]);
+
+  const locale = language === 'es' ? es : enUS;
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
@@ -48,6 +70,49 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
         </div>
 
         <div className="flex items-center gap-2">
+          {isAdmin && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label={t('notifications')}>
+                  <Bell className="h-6 w-6" />
+                  {notifications.count > 0 && (
+                    <span className="absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground">
+                      {notifications.count}
+                    </span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <DropdownMenuLabel>{t('notificationsTitle')}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {notifications.recentRequests.length > 0 ? (
+                  notifications.recentRequests.map((req, index) => (
+                    <DropdownMenuItem key={index} asChild className="cursor-pointer">
+                      <Link href="/admin/requests" className="grid gap-1 !pl-2 w-full">
+                          <p className="font-semibold">{req.title}</p>
+                          <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
+                          <p className="text-xs text-muted-foreground">
+                              {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
+                          </p>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <DropdownMenuItem disabled>{t('noNewRequests')}</DropdownMenuItem>
+                )}
+                {notifications.count > 0 && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/admin/requests" className="justify-center">
+                        {t('viewAllRequests')}
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
