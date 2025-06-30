@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 export async function addSongRequest(request: RequestSongInput): Promise<void> {
     const newRequest: SongRequest = {
         ...request,
-        id: Date.now().toString(),
+        id: crypto.randomUUID(),
         requestedAt: new Date(),
     };
     songRequests.push(newRequest);
