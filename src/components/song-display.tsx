@@ -6,17 +6,19 @@ import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChordSheet } from "./chord-sheet";
-import { Minus, Plus, Facebook, Twitter, Heart } from "lucide-react";
+import { Minus, Plus, Facebook, Twitter, Heart, Pencil, Trash2 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
 import { useAuth } from "@/context/auth-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DeleteSongDialog } from "./delete-song-dialog";
+import Link from 'next/link';
 
 export function SongDisplay({ song }: { song: Song }) {
   const [transpose, setTranspose] = useState(0);
   const { t } = useI18n();
-  const { isAuthenticated, isFavorite, toggleFavorite } = useAuth();
+  const { isAuthenticated, isFavorite, toggleFavorite, isAdmin } = useAuth();
   const [currentUrl, setCurrentUrl] = useState('');
 
   useEffect(() => {
@@ -77,6 +79,24 @@ export function SongDisplay({ song }: { song: Song }) {
             </div>
           </CardHeader>
           <CardContent>
+            {isAdmin && (
+              <div className="mb-8 p-4 bg-secondary/50 rounded-lg">
+                <h3 className="text-lg font-semibold mb-3 text-center">{t('adminActions')}</h3>
+                <div className="flex justify-center gap-4">
+                  <Button asChild variant="outline">
+                    <Link href={`/songs/${song.id}/edit`}>
+                      <Pencil className="mr-2" /> {t('edit')}
+                    </Link>
+                  </Button>
+                  <DeleteSongDialog song={song}>
+                    <Button variant="destructive">
+                      <Trash2 className="mr-2" /> {t('delete')}
+                    </Button>
+                  </DeleteSongDialog>
+                </div>
+              </div>
+            )}
+
             <h3 className="text-lg font-semibold mb-2 text-center">{t('changeTone')}</h3>
             <div className="flex items-center justify-between gap-4">
               <Button variant="outline" size="icon" onClick={() => setTranspose(t => t - 1)} aria-label={t('decreaseSemitone')}>

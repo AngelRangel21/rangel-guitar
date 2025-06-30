@@ -415,3 +415,22 @@ export function addSong(songData: Omit<Song, 'id'>): Song {
     songs.unshift(newSong);
     return newSong;
 }
+
+export function updateSong(id: number, songData: Partial<Omit<Song, 'id'>>): Song | undefined {
+    const songIndex = songs.findIndex(s => s.id === id);
+    if (songIndex === -1) {
+        return undefined;
+    }
+    const updatedSong = { ...songs[songIndex], ...songData };
+    songs[songIndex] = updatedSong;
+    return updatedSong;
+}
+
+export function deleteSong(id: number): boolean {
+    const songIndex = songs.findIndex(s => s.id === id);
+    if (songIndex === -1) {
+        return false;
+    }
+    songs.splice(songIndex, 1);
+    return true;
+}
