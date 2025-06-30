@@ -35,6 +35,8 @@
   "accountCreatedDescription": "¡Bienvenido a Rangel Guitar!",
   "loginErrorTitle": "Error al Iniciar Sesión",
   "registerErrorTitle": "Error en el Registro",
+  "popupBlockedTitle": "Ventana emergente bloqueada",
+  "popupBlockedDescription": "Tu navegador bloqueó la ventana de inicio de sesión. Por favor, permite las ventanas emergentes para este sitio e inténtalo de nuevo.",
   "originalKey": "Tono Original",
   "semitones": "semitonos",
   "resetTone": "Resetear Tono",

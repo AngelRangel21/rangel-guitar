@@ -35,6 +35,8 @@
   "accountCreatedDescription": "Welcome to Rangel Guitar!",
   "loginErrorTitle": "Login Failed",
   "registerErrorTitle": "Registration Failed",
+  "popupBlockedTitle": "Popup Blocked",
+  "popupBlockedDescription": "Your browser blocked the sign-in popup. Please allow popups for this site and try again.",
   "originalKey": "Original Key",
   "semitones": "semitones",
   "resetTone": "Reset Tone",

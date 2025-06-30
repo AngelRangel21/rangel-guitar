@@ -29,13 +29,12 @@ import { useI18n } from './i18n-context';
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
-  measurementId: "G-8J82455QVE"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 
@@ -64,7 +63,7 @@ interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
   favorites: number[];
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: () => void;
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
   logout: () => void;
@@ -115,18 +114,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      router.push('/');
-    } catch (error: any) {
-      console.error("Error signing in with Google", error);
-      toast({
-        variant: "destructive",
-        title: t('loginErrorTitle'),
-        description: t(error.code) || error.message,
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(() => {
+        router.push('/');
+      })
+      .catch((error: any) => {
+        console.error("Error signing in with Google", error);
+        if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+          toast({
+            variant: "destructive",
+            title: t('popupBlockedTitle'),
+            description: t('popupBlockedDescription'),
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: t('loginErrorTitle'),
+            description: t(error.code) || error.message,
+          });
+        }
       });
-    }
   };
 
   const registerWithEmail = async ({ email, password, name }: AuthCredentials) => {
