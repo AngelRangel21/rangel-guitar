@@ -7,21 +7,31 @@ import { useAuth } from '@/context/auth-context';
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { RequestSongForm } from "@/components/request-song-form";
+import { useI18n } from '@/context/i18n-context';
 
 export default function RequestSongPage() {
-  const { isAuthenticated } = useAuth();
+  const { isLoaded, isAuthenticated } = useAuth();
   const router = useRouter();
+  const { t } = useI18n();
 
   useEffect(() => {
-    // Redirect to login if not authenticated
-    // No timer needed now as AuthProvider handles loading state
-    if (!isAuthenticated) {
+    if (isLoaded && !isAuthenticated) {
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [isLoaded, isAuthenticated, router]);
 
-  // The AuthProvider now shows a loading screen, so we can assume isAuthenticated is stable here.
-  // If still not authenticated, it means the user should not be here.
+  if (!isLoaded) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+            <p>{t('loading')}...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return null;
   }

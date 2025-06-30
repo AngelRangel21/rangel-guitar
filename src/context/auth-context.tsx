@@ -17,8 +17,6 @@ import {
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
 
 // =================================================================
 // ¡IMPORTANTE! INSERTA AQUÍ TUS CREDENCIALES DE FIREBASE
@@ -65,6 +63,7 @@ interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
   favorites: number[];
+  isLoaded: boolean;
   signInWithGoogle: () => void;
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
@@ -106,11 +105,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setFavorites([]);
         }
-
-        if (pathname === '/login' || pathname === '/register') {
-          router.push('/');
-        }
-        
       } else {
         setUser(null);
         setIsAdmin(false);
@@ -120,7 +114,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     return () => unsubscribe();
-  }, [pathname, router]);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const isAuthPage = pathname === '/login' || pathname === '/register';
+
+    if (user && isAuthPage) {
+      router.push('/');
+    }
+
+  }, [isLoaded, user, pathname, router]);
+
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
@@ -203,10 +209,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
   
   const value = { 
-    isAuthenticated: isLoaded && !!user, 
+    isAuthenticated: !!user, 
     user, 
     isAdmin,
     favorites, 
+    isLoaded,
     signInWithGoogle, 
     registerWithEmail,
     signInWithEmail,
@@ -217,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoaded ? children : <div className="flex flex-col min-h-screen"><Header /><main className="flex-grow flex items-center justify-center"><p>{t('loading')}...</p></main><Footer/></div>}
+      {children}
     </AuthContext.Provider>
   );
 }

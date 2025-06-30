@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuth } from "@/context/auth-context";
@@ -15,24 +16,19 @@ interface AdminRequestsContentProps {
 }
 
 export function AdminRequestsContent({ requests }: AdminRequestsContentProps) {
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isLoaded, isAuthenticated, isAdmin } = useAuth();
   const router = useRouter();
   const { t, language } = useI18n();
 
   useEffect(() => {
-    // Redirect if not authenticated or not an admin
-    const timer = setTimeout(() => {
-      if (!isAuthenticated || !isAdmin) {
-        router.push('/');
-      }
-    }, 100); // Small delay to allow auth context to initialize
-    return () => clearTimeout(timer);
-  }, [isAuthenticated, isAdmin, router]);
+    if (isLoaded && (!isAuthenticated || !isAdmin)) {
+      router.push('/');
+    }
+  }, [isLoaded, isAuthenticated, isAdmin, router]);
 
-  if (!isAuthenticated || !isAdmin) {
-    // Render a loading state while checking for auth
+  if (!isLoaded || !isAuthenticated || !isAdmin) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex items-center justify-center py-24">
         <p>{t('loading')}...</p>
       </div>
     );

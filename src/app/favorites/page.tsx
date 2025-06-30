@@ -12,24 +12,32 @@ import { useEffect } from "react";
 import { Heart } from "lucide-react";
 
 export default function FavoritesPage() {
-  const { isAuthenticated, favorites } = useAuth();
+  const { isLoaded, isAuthenticated, favorites } = useAuth();
   const { t } = useI18n();
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to login if not authenticated
-    // No timer needed now as AuthProvider handles loading state
-    if (!isAuthenticated) {
+    if (isLoaded && !isAuthenticated) {
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [isLoaded, isAuthenticated, router]);
 
   const favoriteSongs = songs.filter(song => favorites.includes(song.id));
 
-  // The AuthProvider now shows a loading screen, so we can assume isAuthenticated is stable here.
-  // If still not authenticated, it means the user should not be here.
+  if (!isLoaded) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+            <p>{t('loading')}...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+  
   if (!isAuthenticated) {
-    return null; // Or a redirect could happen here too, but useEffect handles it.
+    return null;
   }
 
   return (
