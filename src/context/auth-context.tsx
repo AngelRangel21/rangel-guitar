@@ -29,13 +29,13 @@ import { useI18n } from './i18n-context';
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "TU_API_KEY_VA_AQUI",
-  authDomain: "TU_AUTH_DOMAIN_VA_AQUI",
-  projectId: "TU_PROJECT_ID_VA_AQUI",
-  storageBucket: "TU_STORAGE_BUCKET_VA_AQUI",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID_VA_AQUI",
-  appId: "TU_APP_ID_VA_AQUI",
-  // measurementId es opcional
+  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
+  authDomain: "rangel-guitar.firebaseapp.com",
+  projectId: "rangel-guitar",
+  storageBucket: "rangel-guitar.firebasestorage.app",
+  messagingSenderId: "354082670866",
+  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
+  measurementId: "G-8J82455QVE"
 };
 
 
