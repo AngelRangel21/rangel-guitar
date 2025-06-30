@@ -9,7 +9,7 @@
   "register": "Registrarse",
   "home": "Inicio",
   "artists": "Artistas",
-  "topCharts": "Acordes",
+  "topCharts": "Aprender",
   "privacyPolicy": "Política de Privacidad",
   "security": "Seguridad",
   "cookiePolicy": "Política de Cookies",
@@ -138,5 +138,9 @@
   "majorChords": "Acordes Mayores",
   "minorChords": "Acordes Menores",
   "seventhChords": "Acordes de Séptima",
-  "chordsPageTitle": "Biblioteca de Acordes"
+  "chordsPageTitle": "Biblioteca de Acordes",
+  "learnPageTitle": "Aprende Música",
+  "learnPageDescription": "Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales.",
+  "chordLibrary": "Biblioteca de Acordes",
+  "chordLibraryDescription": "Busca y visualiza cualquier acorde de guitarra o teclado."
 }

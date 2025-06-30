@@ -9,7 +9,7 @@
   "register": "Register",
   "home": "Home",
   "artists": "Artists",
-  "topCharts": "Chords",
+  "topCharts": "Learn",
   "privacyPolicy": "Privacy Policy",
   "security": "Security",
   "cookiePolicy": "Cookie Policy",
@@ -138,5 +138,9 @@
   "majorChords": "Major Chords",
   "minorChords": "Minor Chords",
   "seventhChords": "Seventh Chords",
-  "chordsPageTitle": "Chord Library"
+  "chordsPageTitle": "Chord Library",
+  "learnPageTitle": "Learn Music",
+  "learnPageDescription": "Explore our tools and lessons to improve your musical skills.",
+  "chordLibrary": "Chord Library",
+  "chordLibraryDescription": "Look up and view any guitar or keyboard chord."
 }

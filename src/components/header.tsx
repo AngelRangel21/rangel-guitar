@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -233,7 +233,10 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/chords">{t('topCharts')}</Link>
+                <Link href="/learn">
+                  <GraduationCap className="mr-2 h-4 w-4" />
+                  <span>{t('topCharts')}</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuSub>
