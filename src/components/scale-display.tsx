@@ -3,6 +3,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { KeyboardChordDiagram } from './keyboard-chord-diagram';
 import { useI18n } from '@/context/i18n-context';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { GuitarScaleDiagram } from './guitar-scale-diagram';
 
 interface ScaleDisplayProps {
     rootNote: string;
@@ -29,8 +31,30 @@ export function ScaleDisplay({ rootNote, scaleType, scaleNotes }: ScaleDisplayPr
                         </Badge>
                     ))}
                 </div>
-                <div>
-                    <KeyboardChordDiagram notes={scaleNotes} className="w-full h-auto" />
+                 <div>
+                    <Tabs defaultValue="keyboard" className="w-full">
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="keyboard">{t('keyboard')}</TabsTrigger>
+                            <TabsTrigger value="guitar">{t('guitar')}</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="keyboard">
+                            <Card>
+                                <CardContent className="p-4 flex justify-center items-center">
+                                    <KeyboardChordDiagram notes={scaleNotes} className="w-full h-auto max-w-2xl"/>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="guitar">
+                           <Card>
+                                <CardContent className="p-2 sm:p-4">
+                                    <GuitarScaleDiagram 
+                                        scaleNotes={scaleNotes} 
+                                        rootNote={rootNote} 
+                                    />
+                                </CardContent>
+                           </Card>
+                        </TabsContent>
+                    </Tabs>
                 </div>
             </CardContent>
         </Card>

@@ -1,7 +1,7 @@
-const notesSharp = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+export const notesSharp = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
 const notesFlat = ['A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab'];
 
-const getNoteIndex = (note: string): number => {
+export const getNoteIndex = (note: string): number => {
   const sharpIndex = notesSharp.indexOf(note);
   if (sharpIndex !== -1) return sharpIndex;
   
