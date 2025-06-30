@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -86,8 +87,8 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 <DropdownMenuLabel>{t('notificationsTitle')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {notifications.recentRequests.length > 0 ? (
-                  notifications.recentRequests.map((req) => (
-                    <DropdownMenuItem key={req.id} asChild className="cursor-pointer">
+                  notifications.recentRequests.map((req, index) => (
+                    <DropdownMenuItem key={`${req.id}-${index}`} asChild className="cursor-pointer">
                       <Link href="/admin/requests" className="grid gap-1 !pl-2 w-full">
                           <p className="font-semibold">{req.title}</p>
                           <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
