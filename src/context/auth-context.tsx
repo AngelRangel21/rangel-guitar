@@ -28,21 +28,14 @@ import { useI18n } from './i18n-context';
 // 6. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
-
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
-  measurementId: "G-8J82455QVE"
+  apiKey: "TU_API_KEY_VA_AQUI",
+  authDomain: "TU_AUTH_DOMAIN_VA_AQUI",
+  projectId: "TU_PROJECT_ID_VA_AQUI",
+  storageBucket: "TU_STORAGE_BUCKET_VA_AQUI",
+  messagingSenderId: "TU_MESSAGING_SENDER_ID_VA_AQUI",
+  appId: "TU_APP_ID_VA_AQUI",
+  // measurementId es opcional
 };
 
 
@@ -126,8 +119,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await signInWithPopup(auth, googleProvider);
       router.push('/');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in with Google", error);
+      toast({
+        variant: "destructive",
+        title: t('loginErrorTitle'),
+        description: t(error.code) || error.message,
+      });
     }
   };
 
