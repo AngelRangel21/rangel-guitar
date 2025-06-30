@@ -127,5 +127,12 @@
   "deleteSongConfirmDescription": "This action cannot be undone. This will permanently delete \"{title}\" from the library.",
   "songDeletedTitle": "Song Deleted",
   "songDeletedDescription": "\"{title}\" has been deleted.",
-  "songDeleteError": "Could not delete the song. Please try again."
+  "songDeleteError": "Could not delete the song. Please try again.",
+  "notificationDeleteError": "Could not delete the notification.",
+  "deleteNotification": "Delete notification",
+  "actions": "Actions",
+  "deleteRequest": "Delete request",
+  "songRequestDeleteError": "Failed to delete song request.",
+  "requestDeletedTitle": "Request Deleted",
+  "requestDeletedDescription": "The song request has been successfully deleted."
 }

@@ -127,5 +127,12 @@
   "deleteSongConfirmDescription": "Esta acción no se puede deshacer. Esto eliminará permanentemente \"{title}\" de la biblioteca.",
   "songDeletedTitle": "Canción Eliminada",
   "songDeletedDescription": "\"{title}\" ha sido eliminada.",
-  "songDeleteError": "No se pudo eliminar la canción. Inténtalo de nuevo."
+  "songDeleteError": "No se pudo eliminar la canción. Inténtalo de nuevo.",
+  "notificationDeleteError": "No se pudo eliminar la notificación.",
+  "deleteNotification": "Eliminar notificación",
+  "actions": "Acciones",
+  "deleteRequest": "Eliminar solicitud",
+  "songRequestDeleteError": "No se pudo eliminar la solicitud de canción.",
+  "requestDeletedTitle": "Solicitud Eliminada",
+  "requestDeletedDescription": "La solicitud de canción ha sido eliminada exitosamente."
 }

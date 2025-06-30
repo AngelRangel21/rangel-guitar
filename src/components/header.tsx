@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,31 +22,56 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState } from "react";
-import { getAdminNotifications } from "@/app/admin/requests/actions";
+import { getAdminNotifications, deleteRequestAction } from "@/app/admin/requests/actions";
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
 import type { SongRequest } from "@/services/requests-service";
+import { useToast } from "@/hooks/use-toast";
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { t, language, setLanguage } = useI18n();
+  const { toast } = useToast();
   const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
-  useEffect(() => {
+  const fetchNotifications = async () => {
     if (isAdmin) {
-        const fetchNotifications = async () => {
-            const data = await getAdminNotifications();
-            setNotifications(data);
-        };
-        
-        fetchNotifications();
-        const interval = setInterval(fetchNotifications, 15000); // Poll every 15 seconds
-
-        return () => clearInterval(interval);
+      const data = await getAdminNotifications();
+      setNotifications(data);
     }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 15000); // Poll every 15 seconds
+
+    return () => clearInterval(interval);
   }, [isAdmin]);
 
   const locale = language === 'es' ? es : enUS;
+
+  const handleDeleteNotification = async (e: React.MouseEvent, requestId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Optimistic UI update
+    setNotifications(prev => ({
+        count: Math.max(0, prev.count - 1),
+        recentRequests: prev.recentRequests.filter(req => req.id !== requestId),
+    }));
+    
+    const result = await deleteRequestAction(requestId);
+    if (!result.success) {
+        toast({
+            variant: 'destructive',
+            title: t('error'),
+            description: t('notificationDeleteError'),
+        });
+        // Re-fetch to get the true state back
+        fetchNotifications();
+    }
+  };
+
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
@@ -88,14 +113,28 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 <DropdownMenuSeparator />
                 {notifications.recentRequests.length > 0 ? (
                   notifications.recentRequests.map((req, index) => (
-                    <DropdownMenuItem key={`${req.id}-${index}`} asChild className="cursor-pointer">
-                      <Link href="/admin/requests" className="grid gap-1 !pl-2 w-full">
-                          <p className="font-semibold">{req.title}</p>
-                          <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
-                          <p className="text-xs text-muted-foreground">
-                              {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
-                          </p>
-                      </Link>
+                    <DropdownMenuItem key={`${req.id}-${index}`} onSelect={(e) => e.preventDefault()} className="p-0 focus:bg-transparent">
+                      <div className="flex items-center justify-between w-full hover:bg-accent rounded-sm">
+                          <Link 
+                            href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`} 
+                            className="flex-grow grid gap-1 px-2 py-1.5"
+                          >
+                              <p className="font-semibold">{req.title}</p>
+                              <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
+                              <p className="text-xs text-muted-foreground">
+                                  {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
+                              </p>
+                          </Link>
+                          <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 mr-1 shrink-0 rounded-full"
+                              onClick={(e) => handleDeleteNotification(e, req.id)}
+                              aria-label={t('deleteNotification')}
+                          >
+                              <X className="h-4 w-4" />
+                          </Button>
+                      </div>
                     </DropdownMenuItem>
                   ))
                 ) : (
