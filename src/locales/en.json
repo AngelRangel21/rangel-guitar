@@ -100,5 +100,7 @@
   "noPendingRequests": "No pending requests.",
   "light": "Light",
   "dark": "Dark",
-  "system": "System"
+  "system": "System",
+  "chordsAndLyrics": "Chords & Lyrics",
+  "lyricsOnly": "Lyrics Only"
 }

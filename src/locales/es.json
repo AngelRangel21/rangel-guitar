@@ -100,5 +100,7 @@
   "noPendingRequests": "No hay solicitudes pendientes.",
   "light": "Claro",
   "dark": "Oscuro",
-  "system": "Sistema"
+  "system": "Sistema",
+  "chordsAndLyrics": "Letra y Acordes",
+  "lyricsOnly": "Solo Letra"
 }

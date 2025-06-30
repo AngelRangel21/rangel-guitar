@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -10,6 +11,7 @@ import { WhatsAppIcon } from "@/components/icons";
 import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
 import { useAuth } from "@/context/auth-context";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function SongDisplay({ song }: { song: Song }) {
   const [transpose, setTranspose] = useState(0);
@@ -119,11 +121,28 @@ export function SongDisplay({ song }: { song: Song }) {
         </Card>
       </div>
       <div className="lg:col-span-2">
-        <Card>
-          <CardContent className="p-6">
-            <ChordSheet text={song.chords || ""} transpose={transpose} />
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="chords" className="w-full">
+          <TabsList>
+            <TabsTrigger value="chords">{t('chordsAndLyrics')}</TabsTrigger>
+            <TabsTrigger value="lyrics">{t('lyricsOnly')}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="chords">
+            <Card>
+              <CardContent className="p-6">
+                <ChordSheet text={song.chords || ""} transpose={transpose} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="lyrics">
+            <Card>
+              <CardContent className="p-6">
+                <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
+                  {song.lyrics || ""}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
