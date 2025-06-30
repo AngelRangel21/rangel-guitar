@@ -142,5 +142,6 @@
   "learnPageTitle": "Learn Music",
   "learnPageDescription": "Explore our tools and lessons to improve your musical skills.",
   "chordLibrary": "Chord Library",
-  "chordLibraryDescription": "Look up and view any guitar or keyboard chord."
+  "chordLibraryDescription": "Look up and view any guitar or keyboard chord.",
+  "chordDiagramNotAvailable": "Chord diagram not available."
 }

@@ -142,5 +142,6 @@
   "learnPageTitle": "Aprende Música",
   "learnPageDescription": "Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales.",
   "chordLibrary": "Biblioteca de Acordes",
-  "chordLibraryDescription": "Busca y visualiza cualquier acorde de guitarra o teclado."
+  "chordLibraryDescription": "Busca y visualiza cualquier acorde de guitarra o teclado.",
+  "chordDiagramNotAvailable": "Diagrama de acorde no disponible."
 }
