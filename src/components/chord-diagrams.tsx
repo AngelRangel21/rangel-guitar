@@ -2,14 +2,15 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
 import { GuitarChordDiagram } from "./guitar-chord-diagram";
-import { guitarChordShapes } from "@/lib/chord-shapes";
+import { guitarChordShapes, keyboardChordNotes } from "@/lib/chord-shapes";
+import { KeyboardChordDiagram } from "./keyboard-chord-diagram";
 
 export function ChordDiagrams({ chordName }: { chordName: string }) {
   const { t } = useI18n();
   const chordShapeData = guitarChordShapes[chordName];
+  const chordNoteData = keyboardChordNotes[chordName];
 
   return (
     <div>
@@ -39,8 +40,13 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
         <TabsContent value="keyboard">
           <Card>
             <CardContent className="p-4 flex justify-center items-center gap-4 overflow-x-auto">
-                {/* Placeholder diagrams */}
-                <Image src="https://placehold.co/200x100.png" width={200} height={100} alt={`Keyboard chord diagram for ${chordName}`} data-ai-hint="piano chord" />
+                {chordNoteData ? (
+                    <KeyboardChordDiagram notes={chordNoteData} className="w-48 h-auto"/>
+                ) : (
+                     <p className="text-sm text-muted-foreground p-4">
+                        {t('chordDiagramNotAvailable')}
+                    </p>
+                )}
             </CardContent>
           </Card>
         </TabsContent>

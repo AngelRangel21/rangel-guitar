@@ -52,3 +52,53 @@ export const guitarChordShapes: ChordShapes = {
   'G7': { positions: [3, 2, 0, 0, 0, 1] },
   'G#7': { positions: [4, 6, 4, 5, 4, 4], baseFret: 4 },
 };
+
+
+export interface KeyboardChordNotes {
+  [key: string]: string[];
+}
+
+// Notes in each chord for keyboard. Includes enharmonic equivalents.
+export const keyboardChordNotes: KeyboardChordNotes = {
+  // Major
+  'A': ['A', 'C#', 'E'],
+  'A#': ['A#', 'D', 'F'], 'Bb': ['Bb', 'D', 'F'],
+  'B': ['B', 'D#', 'F#'],
+  'C': ['C', 'E', 'G'],
+  'C#': ['C#', 'F', 'G#'], 'Db': ['Db', 'F', 'Ab'],
+  'D': ['D', 'F#', 'A'],
+  'D#': ['D#', 'G', 'A#'], 'Eb': ['Eb', 'G', 'Bb'],
+  'E': ['E', 'G#', 'B'],
+  'F': ['F', 'A', 'C'],
+  'F#': ['F#', 'A#', 'C#'], 'Gb': ['Gb', 'Bb', 'Db'],
+  'G': ['G', 'B', 'D'],
+  'G#': ['G#', 'C', 'D#'], 'Ab': ['Ab', 'C', 'Eb'],
+
+  // Minor
+  'Am': ['A', 'C', 'E'],
+  'A#m': ['A#', 'C#', 'F'], 'Bbm': ['Bb', 'Db', 'F'],
+  'Bm': ['B', 'D', 'F#'],
+  'Cm': ['C', 'Eb', 'G'],
+  'C#m': ['C#', 'E', 'G#'], 'Dbm': ['Db', 'E', 'Ab'],
+  'Dm': ['D', 'F', 'A'],
+  'D#m': ['D#', 'F#', 'A#'], 'Ebm': ['Eb', 'Gb', 'Bb'],
+  'Em': ['E', 'G', 'B'],
+  'Fm': ['F', 'Ab', 'C'],
+  'F#m': ['F#', 'A', 'C#'], 'Gbm': ['Gb', 'A', 'Db'],
+  'Gm': ['G', 'Bb', 'D'],
+  'G#m': ['G#', 'B', 'D#'], 'Abm': ['Ab', 'B', 'Eb'],
+
+  // 7th
+  'A7': ['A', 'C#', 'E', 'G'],
+  'A#7': ['A#', 'D', 'F', 'G#'], 'Bb7': ['Bb', 'D', 'F', 'Ab'],
+  'B7': ['B', 'D#', 'F#', 'A'],
+  'C7': ['C', 'E', 'G', 'Bb'],
+  'C#7': ['C#', 'F', 'G#', 'B'], 'Db7': ['Db', 'F', 'Ab', 'B'],
+  'D7': ['D', 'F#', 'A', 'C'],
+  'D#7': ['D#', 'G', 'A#', 'C#'], 'Eb7': ['Eb', 'G', 'Bb', 'Db'],
+  'E7': ['E', 'G#', 'B', 'D'],
+  'F7': ['F', 'A', 'C', 'Eb'],
+  'F#7': ['F#', 'A#', 'C#', 'E'], 'Gb7': ['Gb', 'Bb', 'Db', 'E'], // E is enharmonic of Fb
+  'G7': ['G', 'B', 'D', 'F'],
+  'G#7': ['G#', 'C', 'D#', 'F#'], 'Ab7': ['Ab', 'C', 'Eb', 'Gb'],
+};
