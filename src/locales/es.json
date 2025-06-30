@@ -143,5 +143,13 @@
   "learnPageDescription": "Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales.",
   "chordLibrary": "Biblioteca de Acordes",
   "chordLibraryDescription": "Busca y visualiza cualquier acorde de guitarra o teclado.",
-  "chordDiagramNotAvailable": "Diagrama de acorde no disponible."
+  "chordDiagramNotAvailable": "Diagrama de acorde no disponible.",
+  "scaleLibrary": "Biblioteca de Escalas",
+  "scaleLibraryDescription": "Explora y visualiza escalas musicales en teclado y guitarra.",
+  "scalesPageTitle": "Biblioteca de Escalas",
+  "selectRootNote": "Selecciona una nota raíz",
+  "selectScaleType": "Selecciona un tipo de escala",
+  "major": "Mayor",
+  "minor": "Menor",
+  "scaleNotes": "Notas de la Escala"
 }

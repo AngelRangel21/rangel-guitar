@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/context/i18n-context";
 import { LearnCard } from "./learn-card";
-import { Library } from "lucide-react";
+import { Library, Scale } from "lucide-react";
 
 export function LearnPageContent() {
     const { t } = useI18n();
@@ -20,6 +20,12 @@ export function LearnPageContent() {
                     icon={<Library className="h-8 w-8 text-accent" />}
                     title={t('chordLibrary')}
                     description={t('chordLibraryDescription')}
+                />
+                <LearnCard 
+                    href="/scales"
+                    icon={<Scale className="h-8 w-8 text-accent" />}
+                    title={t('scaleLibrary')}
+                    description={t('scaleLibraryDescription')}
                 />
                 {/* Future learning modules can be added here */}
             </div>

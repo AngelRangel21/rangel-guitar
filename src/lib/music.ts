@@ -43,3 +43,33 @@ export const transposeChord = (chord: string, amount: number): string => {
 
   return newRoot + rest;
 };
+
+const MAJOR_SCALE_INTERVALS = [0, 2, 4, 5, 7, 9, 11]; // In semitones from the root
+const MINOR_SCALE_INTERVALS = [0, 2, 3, 5, 7, 8, 10]; // Natural minor
+
+export const getScaleNotes = (rootNote: string, scaleType: 'major' | 'minor'): string[] => {
+    const rootIndex = getNoteIndex(rootNote);
+    if (rootIndex === -1) {
+        return [];
+    }
+
+    const intervals = scaleType === 'major' ? MAJOR_SCALE_INTERVALS : MINOR_SCALE_INTERVALS;
+    
+    // For scales, it's often better to start with the standard chromatic scale from C
+    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const startingNoteIndex = chromaticScale.indexOf(rootNote);
+     if (startingNoteIndex === -1) {
+        // Fallback for flat names if needed, though our rootNotes are sharp
+        const flatChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const flatIndex = flatChromatic.indexOf(rootNote);
+        if(flatIndex === -1) return [];
+        
+        // Re-map to sharp scale for consistency
+        return getScaleNotes(chromaticScale[flatIndex], scaleType);
+    }
+    
+    return intervals.map(interval => {
+        const noteIndex = (startingNoteIndex + interval) % 12;
+        return chromaticScale[noteIndex];
+    });
+};

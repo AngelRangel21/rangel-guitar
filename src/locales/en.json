@@ -143,5 +143,13 @@
   "learnPageDescription": "Explore our tools and lessons to improve your musical skills.",
   "chordLibrary": "Chord Library",
   "chordLibraryDescription": "Look up and view any guitar or keyboard chord.",
-  "chordDiagramNotAvailable": "Chord diagram not available."
+  "chordDiagramNotAvailable": "Chord diagram not available.",
+  "scaleLibrary": "Scale Library",
+  "scaleLibraryDescription": "Explore and visualize musical scales on keyboard and guitar.",
+  "scalesPageTitle": "Scale Library",
+  "selectRootNote": "Select a root note",
+  "selectScaleType": "Select a scale type",
+  "major": "Major",
+  "minor": "Minor",
+  "scaleNotes": "Scale Notes"
 }

@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/artists',
     '/chords',
     '/learn',
+    '/scales',
     '/login',
     '/register',
     '/favorites',
