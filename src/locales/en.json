@@ -134,5 +134,9 @@
   "deleteRequest": "Delete request",
   "songRequestDeleteError": "Failed to delete song request.",
   "requestDeletedTitle": "Request Deleted",
-  "requestDeletedDescription": "The song request has been successfully deleted."
+  "requestDeletedDescription": "The song request has been successfully deleted.",
+  "majorChords": "Major Chords",
+  "minorChords": "Minor Chords",
+  "seventhChords": "Seventh Chords",
+  "chordsPageTitle": "Chord Library"
 }

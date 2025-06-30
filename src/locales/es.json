@@ -134,5 +134,9 @@
   "deleteRequest": "Eliminar solicitud",
   "songRequestDeleteError": "No se pudo eliminar la solicitud de canción.",
   "requestDeletedTitle": "Solicitud Eliminada",
-  "requestDeletedDescription": "La solicitud de canción ha sido eliminada exitosamente."
+  "requestDeletedDescription": "La solicitud de canción ha sido eliminada exitosamente.",
+  "majorChords": "Acordes Mayores",
+  "minorChords": "Acordes Menores",
+  "seventhChords": "Acordes de Séptima",
+  "chordsPageTitle": "Biblioteca de Acordes"
 }

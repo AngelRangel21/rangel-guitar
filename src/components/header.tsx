@@ -233,7 +233,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="#">{t('topCharts')}</Link>
+                <Link href="/chords">{t('topCharts')}</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuSub>
