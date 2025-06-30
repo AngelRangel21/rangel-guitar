@@ -1,36 +1,13 @@
-'use client';
-
-import { useState, useMemo } from "react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { SongList } from "@/components/song-list";
+import { HomeClient } from "@/components/home-client";
 import { songs } from "@/lib/data";
-import { useI18n } from "@/context/i18n-context";
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { t } = useI18n();
+  // This is a Server Component. It will get the most up-to-date
+  // version of the `songs` array from the server's memory.
+  const allSongs = songs;
 
-  const filteredSongs = useMemo(() => {
-    if (!searchTerm) {
-      return songs;
-    }
-    return songs.filter(song =>
-      song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      song.artist.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm]);
-
-  return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-      <main className="flex-grow container mx-auto px-4 py-8 space-y-6">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-foreground">{t('allSongs')}</h2>
-        </div>
-        <SongList songs={filteredSongs} />
-      </main>
-      <Footer />
-    </div>
-  );
+  // It then passes this data as a prop to the client component.
+  // The client will receive this exact snapshot of data, preventing
+  // any hydration mismatch.
+  return <HomeClient initialSongs={allSongs} />;
 }
