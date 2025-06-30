@@ -2,7 +2,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
   getAuth,
@@ -17,6 +17,8 @@ import {
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 
 // =================================================================
 // ¡IMPORTANTE! INSERTA AQUÍ TUS CREDENCIALES DE FIREBASE
@@ -36,7 +38,6 @@ const firebaseConfig = {
   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
-
 
 let app: FirebaseApp;
 if (!getApps().length) {
@@ -79,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const { t } = useI18n();
   const { toast } = useToast();
 
@@ -103,6 +105,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setFavorites([]);
         }
+
+        if (pathname === '/login' || pathname === '/register') {
+          router.push('/');
+        }
+        
       } else {
         setUser(null);
         setIsAdmin(false);
@@ -112,13 +119,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [pathname, router]);
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
-      .then(() => {
-        router.push('/');
-      })
       .catch((error: any) => {
         console.error("Error signing in with Google", error);
         if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
@@ -143,9 +147,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: name });
       
-      const updatedUser = { uid: userCredential.user.uid, name: name };
-      setUser(updatedUser);
-      router.push('/');
       toast({
         title: t('accountCreatedTitle'),
         description: t('accountCreatedDescription'),
@@ -163,7 +164,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithEmail = async ({ email, password }: AuthCredentials) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push('/');
        toast({
         title: t('loggedInTitle'),
         description: t('loggedInDescription'),
@@ -216,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoaded ? children : null}
+      {isLoaded ? children : <div className="flex flex-col min-h-screen"><Header /><main className="flex-grow flex items-center justify-center"><p>{t('loading')}...</p></main><Footer/></div>}
     </AuthContext.Provider>
   );
 }
