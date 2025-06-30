@@ -7,7 +7,6 @@
  * - RequestSongOutput - The return type for the requestSong function.
  */
 
-import {ai} from '@/ai/genkit';
 import { addSongRequest } from '@/services/requests-service';
 import {z} from 'zod';
 
@@ -23,20 +22,15 @@ const RequestSongOutputSchema = z.object({
 export type RequestSongOutput = z.infer<typeof RequestSongOutputSchema>;
 
 export async function requestSong(input: RequestSongInput): Promise<RequestSongOutput> {
-  return requestSongFlow(input);
-}
-
-const requestSongFlow = ai.defineFlow(
-  {
-    name: 'requestSongFlow',
-    inputSchema: RequestSongInputSchema,
-    outputSchema: RequestSongOutputSchema,
-  },
-  async (input) => {
-    await addSongRequest(input);
-    
-    return {
-      message: `¡Tu solicitud para "${input.title}" ha sido enviada! La revisaremos pronto.`
-    };
+  const parsedInput = RequestSongInputSchema.safeParse(input);
+  
+  if (!parsedInput.success) {
+    throw new Error('Invalid song request data.');
   }
-);
+
+  await addSongRequest(parsedInput.data);
+  
+  return {
+    message: `¡Tu solicitud para "${input.title}" ha sido enviada! La revisaremos pronto.`
+  };
+}
