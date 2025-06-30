@@ -49,12 +49,15 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
         setIsLoading(true);
         try {
             await addSongAndRemoveRequest({ ...values, requestId });
-            toast({
-                title: "Canción Agregada",
-                description: `"${values.title}" se ha añadido a la biblioteca y la solicitud ha sido eliminada.`,
-            });
-            // The action will handle redirection
-        } catch (error) {
+            // The action will handle redirection on success.
+        } catch (error: any) {
+            // The `redirect` in a server action throws an error, which we need to catch.
+            // However, we don't want to show an error toast for a successful redirect.
+            if (error.digest?.startsWith('NEXT_REDIRECT')) {
+                return; // Let Next.js handle the redirect
+            }
+
+            // Handle actual errors
             toast({
                 variant: "destructive",
                 title: "Error",

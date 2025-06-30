@@ -33,12 +33,15 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
     setIsLoading(true);
     try {
       await deleteSongAction(song.id);
-      toast({
-        title: t('songDeletedTitle'),
-        description: t('songDeletedDescription', { title: song.title }),
-      });
-      // Redirect is handled by the server action
-    } catch (error) {
+      // The action will handle redirection on success.
+    } catch (error: any) {
+      // The `redirect` in a server action throws an error, which we need to catch.
+      // However, we don't want to show an error toast for a successful redirect.
+      if (error.digest?.startsWith('NEXT_REDIRECT')) {
+          return; // Let Next.js handle the redirect
+      }
+      
+      // Handle actual errors
       toast({
         variant: 'destructive',
         title: t('error'),
