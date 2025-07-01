@@ -151,5 +151,8 @@
   "selectScaleType": "Selecciona un tipo de escala",
   "major": "Mayor",
   "minor": "Menor",
-  "scaleNotes": "Notas de la Escala"
+  "scaleNotes": "Notas de la Escala",
+  "uploadSong": "Subir Canción",
+  "uploadSongDescription": "Añade una nueva canción a la biblioteca directamente.",
+  "uploadSongError": "No se pudo subir la canción. Inténtalo de nuevo."
 }

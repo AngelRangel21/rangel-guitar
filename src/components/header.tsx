@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -177,12 +177,20 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {isAdmin && (
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin/requests">
-                        <Shield className="mr-2 h-4 w-4" />
-                        <span>{t('admin')}</span>
-                      </Link>
-                    </DropdownMenuItem>
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/requests">
+                          <Shield className="mr-2 h-4 w-4" />
+                          <span>{t('songRequestsTitle')}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/upload-song">
+                          <FilePlus2 className="mr-2 h-4 w-4" />
+                          <span>{t('uploadSong')}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
                   )}
                   <DropdownMenuItem asChild>
                     <Link href="/favorites">
