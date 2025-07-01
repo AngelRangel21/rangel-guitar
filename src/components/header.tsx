@@ -21,7 +21,7 @@ import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getAdminNotifications, deleteRequestAction } from "@/app/admin/requests/actions";
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
@@ -34,19 +34,19 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
   const { toast } = useToast();
   const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (isAdmin) {
       const data = await getAdminNotifications();
       setNotifications(data);
     }
-  };
+  }, [isAdmin]);
 
   useEffect(() => {
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 15000); // Poll every 15 seconds
 
     return () => clearInterval(interval);
-  }, [isAdmin]);
+  }, [fetchNotifications]);
 
   const locale = language === 'es' ? es : enUS;
 
