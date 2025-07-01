@@ -21,7 +21,7 @@ Rangel Guitar is a modern, interactive web application designed for guitar enthu
 - **Framework:** [Next.js](https://nextjs.org/) (with React)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **UI Components:** [ShadCN UI](https://ui.shadcn.com/)
-- **Backend & Authentication:** [Firebase](https://firebase.google.com/)
+- **Backend & Authentication:** [Firebase](https://firebase.google.com/) (App Hosting & Auth)
 - **AI Functionality:** [Google's Genkit](https://firebase.google.com/docs/genkit)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 
@@ -34,6 +34,7 @@ To run this project on your local machine, follow these steps.
 Make sure you have the following installed:
 - [Node.js](https://nodejs.org/) (v18 or later)
 - [Google Cloud SDK (gcloud CLI)](https://cloud.google.com/sdk/docs/install)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
 
 ### 1. Clone or Download the Project
 
@@ -80,3 +81,28 @@ This application requires two separate processes to run concurrently.
     ```
 
 Your application should now be running at `http://localhost:9002`.
+
+### 6. Deploying to Firebase
+
+After setting up your local environment, you can deploy your application to Firebase App Hosting to make it accessible to the world.
+
+1.  **Login to Firebase CLI:**
+    If you haven't already, log in to Firebase from your terminal:
+    ```bash
+    firebase login
+    ```
+
+2.  **Initialize App Hosting:**
+    Run the initialization command in your project's root directory:
+    ```bash
+    firebase init apphosting
+    ```
+    -   Follow the prompts to connect to your existing Firebase project (`rangel-guitar`).
+    -   This will create a `.firebaserc` file, linking your local code to your Firebase project.
+
+3.  **Deploy:**
+    Finally, build and deploy your application with a single command:
+    ```bash
+    firebase deploy
+    ```
+    This command will build your Next.js app and deploy it to the App Hosting backend configured in `apphosting.yaml`. After it's done, you can connect your custom domain in the Firebase console.
