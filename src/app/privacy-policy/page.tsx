@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
             <p>
-              En Rangel Guitar Hub, accesible desde rangelguitar.com, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene tipos de información que son recopilados y registrados por Rangel Guitar Hub y cómo la usamos.
+              En Rangel Guitar, accesible desde rangelguitar.com, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene tipos de información que son recopilados y registrados por Rangel Guitar y cómo la usamos.
             </p>
             <h2 className="text-xl font-semibold text-foreground pt-4">Consentimiento</h2>
             <p>

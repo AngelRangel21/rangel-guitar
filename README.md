@@ -1,6 +1,6 @@
-# Rangel Guitar Hub
+# Rangel Guitar
 
-Rangel Guitar Hub is a modern, interactive web application designed for guitar enthusiasts. It provides a comprehensive platform to find, view, and learn songs with accurate tablatures and chords. Built with a powerful tech stack, it offers a seamless and feature-rich user experience.
+Rangel Guitar is a modern, interactive web application designed for guitar enthusiasts. It provides a comprehensive platform to find, view, and learn songs with accurate tablatures and chords. Built with a powerful tech stack, it offers a seamless and feature-rich user experience.
 
 ## Key Features
 

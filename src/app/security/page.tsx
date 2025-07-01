@@ -13,7 +13,7 @@ export default function SecurityPage() {
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
             <p>
-              La seguridad de su información es de suma importancia para nosotros en Rangel Guitar Hub. Hemos implementado una variedad de medidas de seguridad para mantener la seguridad de su información personal cuando realiza un pedido o ingresa, envía o accede a su información personal.
+              La seguridad de su información es de suma importancia para nosotros en Rangel Guitar. Hemos implementado una variedad de medidas de seguridad para mantener la seguridad de su información personal cuando realiza un pedido o ingresa, envía o accede a su información personal.
             </p>
             <h2 className="text-xl font-semibold text-foreground pt-4">Protección de Datos</h2>
             <p>

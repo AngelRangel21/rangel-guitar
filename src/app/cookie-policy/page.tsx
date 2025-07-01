@@ -13,7 +13,7 @@ export default function CookiePolicyPage() {
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
             <p>
-              Este sitio web, Rangel Guitar Hub, utiliza cookies para mejorar su experiencia mientras navega por el sitio web. De estas, las cookies que se clasifican como necesarias se almacenan en su navegador, ya que son esenciales para el funcionamiento de las funcionalidades básicas del sitio web.
+              Este sitio web, Rangel Guitar, utiliza cookies para mejorar su experiencia mientras navega por el sitio web. De estas, las cookies que se clasifican como necesarias se almacenan en su navegador, ya que son esenciales para el funcionamiento de las funcionalidades básicas del sitio web.
             </p>
             <h2 className="text-xl font-semibold text-foreground pt-4">¿Qué son las cookies?</h2>
             <p>
