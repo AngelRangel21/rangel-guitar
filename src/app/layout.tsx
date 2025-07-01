@@ -30,6 +30,11 @@ export const metadata: Metadata = {
     title: 'Rangel Guitar',
     description: 'Tu destino para tablaturas y canciones de guitarra.',
   },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  }
 };
 
 export default function RootLayout({

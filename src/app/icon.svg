@@ -1,0 +1,13 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="black"/>
+  <defs>
+    <g id="guitar" fill="none" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M208.83,295.17A64,64,0,1,0,303.17,200.83L144,41.67,41.67,144Z"/>
+      <circle cx="256" cy="248" r="40"/>
+      <path d="M139.33,45.14,45.14,139.33,176,260.19,200.83,200.83"/>
+      <path d="M303.17,303.17,212,394.33,117.67,300,200.83,216.83"/>
+    </g>
+  </defs>
+  <use href="#guitar" transform="translate(-70, 0) rotate(-10 256 256) scale(0.9)"/>
+  <use href="#guitar" transform="translate(70, 0) rotate(10 256 256) scale(0.9)"/>
+</svg>
