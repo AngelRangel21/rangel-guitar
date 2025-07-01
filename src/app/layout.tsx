@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: '%s | Rangel Guitar',
   },
   description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
-  metadataBase: new URL('https://rangel-guitar.firebaseapp.com'),
+  metadataBase: new URL('https://rangelguitar.com'),
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
