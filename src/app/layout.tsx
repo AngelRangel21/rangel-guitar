@@ -18,6 +18,16 @@ export const metadata: Metadata = {
   },
   description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
   metadataBase: new URL('https://rangelguitar.com'),
+  manifest: '/manifest.json',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#eef0f3' },
+    { media: '(prefers-color-scheme: dark)', color: '#1d232a' },
+  ],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Rangel Guitar',
+  },
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
