@@ -14,13 +14,13 @@ export function Footer() {
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex gap-6">
-          <Link href="#" aria-label="Facebook" className="text-accent hover:text-accent/60 transition-colors">
+          <Link href="https://www.facebook.com/share/1Akd7FErLL/?mibextid=wwXlfr" aria-label="Facebook" className="text-accent hover:text-accent/60 transition-colors">
               <Facebook className="h-6 w-6" />
             </Link>
-            <Link href="#" aria-label="WhatsApp" className="text-accent hover:text-accent/60 transition-colors">
+            <Link href="https://chat.whatsapp.com/HbtrOlzFG4u4AGvAStj6WJ?mode=r_c" aria-label="WhatsApp" className="text-accent hover:text-accent/60 transition-colors">
               <WhatsAppIcon className="h-6 w-6" />
             </Link>
-            <Link href="#" aria-label="Telegram" className="text-accent hover:text-accent/60 transition-colors">
+            <Link href="https://t.me/Rangelguitar" aria-label="Telegram" className="text-accent hover:text-accent/60 transition-colors">
               <TelegramIcon className="h-6 w-6" />
             </Link>
           </div>
