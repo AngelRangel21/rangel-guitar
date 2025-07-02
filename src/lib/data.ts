@@ -5,7 +5,7 @@ const initialSongs: Song[] = [
     id: 1,
     title: 'El Karma',
     artist: 'Ariel Camacho',
-    video: 'tJrdAPZXN6I?si=s1U4w0wph5sseqxI',
+    video: 'tJrdAPZXN6I',
     coverArt: 'https://placehold.co/400x400.png',
     lyrics:`
   Nací en el agua caliente,
@@ -142,7 +142,7 @@ const initialSongs: Song[] = [
     title: 'AFS',
     artist: 'Natanael Cano',
     coverArt: 'https://placehold.co/400x400.png',
-    video: 'Y_IELatof9g?si=P1J2jsoO5a4gf_j8',
+    video: 'Y_IELatof9g',
     lyrics:  `
 Empezamos a temprana edad
 Solito se enseñó a trabajar
