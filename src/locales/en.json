@@ -115,6 +115,7 @@
   "delete": "Delete",
   "deleting": "Deleting...",
   "cancel": "Cancel",
+  "close": "Close",
   "adminActions": "Admin Actions",
   "editSongTitle": "Edit Song",
   "editSongDescription": "Editing the details for \"{title}\"",
@@ -174,5 +175,9 @@
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
-  "suggestedSongs": "Suggested Songs"
+  "suggestedSongs": "Suggested Songs",
+  "analyzeWithAI": "Analyze with AI",
+  "chordAnalysis": "Chord Analysis",
+  "analyzing": "Analyzing...",
+  "analysisError": "Could not analyze the chords. Please try again."
 }

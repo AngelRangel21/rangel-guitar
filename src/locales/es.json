@@ -115,6 +115,7 @@
   "delete": "Eliminar",
   "deleting": "Eliminando...",
   "cancel": "Cancelar",
+  "close": "Cerrar",
   "adminActions": "Acciones de Administrador",
   "editSongTitle": "Editar Canción",
   "editSongDescription": "Editando los detalles para \"{title}\"",
@@ -174,5 +175,9 @@
   "beta": "Pruebas",
   "new": "Nuevo",
   "seeMore": "Ver más",
-  "suggestedSongs": "Canciones Sugeridas"
+  "suggestedSongs": "Canciones Sugeridas",
+  "analyzeWithAI": "Analizar con IA",
+  "chordAnalysis": "Análisis de Acordes",
+  "analyzing": "Analizando...",
+  "analysisError": "No se pudieron analizar los acordes. Por favor, intenta de nuevo."
 }
