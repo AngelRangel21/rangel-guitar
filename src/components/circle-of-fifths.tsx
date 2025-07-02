@@ -61,7 +61,7 @@ export function CircleOfFifths() {
                 key={key.major}
                 transform={`translate(${x}, ${y})`}
                 onClick={() => setSelectedIndex(i)}
-                className="cursor-pointer transition-transform duration-300 ease-out hover:scale-110"
+                className="cursor-pointer"
               >
                 <circle r="30" className={cn('transition-colors', highlightClass)} filter="url(#shadow)" />
                 <text textAnchor="middle" dy="0" className={cn('font-bold text-lg transition-colors', textHighlightClass)}>{key.major}</text>
