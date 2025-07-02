@@ -5,7 +5,7 @@ const initialSongs: Song[] = [
     id: 1,
     title: 'El Karma',
     artist: 'Ariel Camacho',
-    video: '',
+    video: 'tJrdAPZXN6I?si=s1U4w0wph5sseqxI',
     coverArt: 'https://placehold.co/400x400.png',
     lyrics:`
   Nací en el agua caliente,
