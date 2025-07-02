@@ -1,7 +1,7 @@
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { CircleOfFifths } from "@/components/circle-of-fifths";
+import { CircleOfFifthsWrapper } from "@/components/circle-of-fifths-wrapper";
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function CircleOfFifthsPage() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 flex justify-center items-center">
-        <CircleOfFifths />
+        <CircleOfFifthsWrapper />
       </main>
       <Footer />
     </div>
