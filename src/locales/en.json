@@ -154,5 +154,12 @@
   "scaleNotes": "Scale Notes",
   "uploadSong": "Upload Song",
   "uploadSongDescription": "Add a new song to the library directly.",
-  "uploadSongError": "Could not upload the song. Please try again."
+  "uploadSongError": "Could not upload the song. Please try again.",
+  "metronome": "Metronome",
+  "metronomeDescription": "Practice your timing with an interactive metronome.",
+  "metronomePageTitle": "Metronome Tool",
+  "bpm": "BPM",
+  "beatsPerMeasure": "Beats per Measure",
+  "play": "Play",
+  "stop": "Stop"
 }

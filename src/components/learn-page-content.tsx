@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/context/i18n-context";
 import { LearnCard } from "./learn-card";
-import { Library, Scale } from "lucide-react";
+import { Library, Scale, Gauge } from "lucide-react";
 
 export function LearnPageContent() {
     const { t } = useI18n();
@@ -27,7 +27,12 @@ export function LearnPageContent() {
                     title={t('scaleLibrary')}
                     description={t('scaleLibraryDescription')}
                 />
-                {/* Future learning modules can be added here */}
+                <LearnCard 
+                    href="/learn/metronome"
+                    icon={<Gauge className="h-8 w-8 text-accent" />}
+                    title={t('metronome')}
+                    description={t('metronomeDescription')}
+                />
             </div>
         </main>
     );

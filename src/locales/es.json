@@ -154,5 +154,12 @@
   "scaleNotes": "Notas de la Escala",
   "uploadSong": "Subir Canción",
   "uploadSongDescription": "Añade una nueva canción a la biblioteca directamente.",
-  "uploadSongError": "No se pudo subir la canción. Inténtalo de nuevo."
+  "uploadSongError": "No se pudo subir la canción. Inténtalo de nuevo.",
+  "metronome": "Metrónomo",
+  "metronomeDescription": "Practica tu tempo con un metrónomo interactivo.",
+  "metronomePageTitle": "Herramienta de Metrónomo",
+  "bpm": "BPM",
+  "beatsPerMeasure": "Pulsos por Compás",
+  "play": "Tocar",
+  "stop": "Parar"
 }
