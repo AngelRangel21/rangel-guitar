@@ -141,7 +141,6 @@ export function SongList({ songs }: { songs: Song[] }) {
             {currentSongs.map((song, index) => (
             <div 
               key={song.id} 
-              id={index === 0 && currentPage === 1 ? 'first-song-card-tour-target' : undefined}
               style={{ animationDelay: `${index * 50}ms` }} 
               className="opacity-0 animate-fade-in-up"
             >

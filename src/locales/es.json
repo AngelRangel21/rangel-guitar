@@ -174,18 +174,5 @@
   "beta": "Pruebas",
   "new": "Nuevo",
   "seeMore": "Ver más",
-  "suggestedSongs": "Canciones Sugeridas",
-  "tourWelcomeTitle": "¡Bienvenido a Rangel Guitar!",
-  "tourWelcomeContent": "Hagamos un recorrido rápido por las características principales.",
-  "tourSearchTitle": "Busca Canciones",
-  "tourSearchContent": "Usa esta barra para encontrar cualquier canción o artista en nuestra biblioteca.",
-  "tourSongCardTitle": "Explora Canciones",
-  "tourSongCardContent": "Haz clic en cualquier canción para ver su letra, acordes y video tutorial.",
-  "tourUserMenuTitle": "Tu Cuenta y Más",
-  "tourUserMenuContent": "Haz clic aquí para iniciar sesión, registrarte, acceder a tus favoritos, solicitar canciones o usar nuestras herramientas de aprendizaje.",
-  "tourSkip": "Saltar",
-  "tourNext": "Siguiente",
-  "tourBack": "Atrás",
-  "tourLast": "Finalizar",
-  "tourClose": "Cerrar"
+  "suggestedSongs": "Canciones Sugeridas"
 }

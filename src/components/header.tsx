@@ -82,7 +82,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
           <span className="text-2xl font-bold whitespace-nowrap">{t('appName')}</span>
         </Link>
 
-        <div className="hidden md:flex flex-1 max-w-md items-center ml-8" id="search-bar-tour-target">
+        <div className="hidden md:flex flex-1 max-w-md items-center ml-8">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
@@ -157,7 +157,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu" id="user-menu-tour-target">
+                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">
                   {isAuthenticated && user ? (
                       <Avatar className="h-10 w-10">
                          <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
