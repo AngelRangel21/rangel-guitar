@@ -33,6 +33,8 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --chart-6: 300 50% 55%;
+    --info: 221 83% 53%;
+    --info-foreground: 210 40% 98%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -69,6 +71,8 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --chart-6: 300 60% 65%;
+    --info: 221 83% 53%;
+    --info-foreground: 210 40% 98%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

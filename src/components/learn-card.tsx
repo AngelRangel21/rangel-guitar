@@ -1,6 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { useI18n } from '@/context/i18n-context';
 
 interface LearnCardProps {
     href: string;
@@ -10,9 +14,11 @@ interface LearnCardProps {
 }
 
 export function LearnCard({ href, icon, title, description }: LearnCardProps) {
+    const { t } = useI18n();
     return (
         <Link href={href} className="group block">
-            <Card className="h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col">
+            <Card className="relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col">
+                <Badge variant="info" className="absolute top-4 right-4">{t('beta')}</Badge>
                 <CardHeader>
                     {icon}
                 </CardHeader>
@@ -24,7 +30,7 @@ export function LearnCard({ href, icon, title, description }: LearnCardProps) {
                         {description}
                     </CardDescription>
                     <div className="mt-4 flex items-center font-semibold text-accent">
-                        <span>Ver más</span>
+                        <span>{t('seeMore')}</span>
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                 </CardContent>

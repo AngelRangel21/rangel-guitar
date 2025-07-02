@@ -170,5 +170,7 @@
   "circleOfFifthsPageTitle": "Interactive Circle of Fifths",
   "playNote": "Play Note",
   "score": "Score",
-  "keyOf": "Key of {key}"
+  "keyOf": "Key of {key}",
+  "beta": "Beta",
+  "seeMore": "See more"
 }

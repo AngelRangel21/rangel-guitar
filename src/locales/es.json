@@ -170,5 +170,7 @@
   "circleOfFifthsPageTitle": "Círculo de Quintas Interactivo",
   "playNote": "Tocar Nota",
   "score": "Puntaje",
-  "keyOf": "Tonalidad de {key}"
+  "keyOf": "Tonalidad de {key}",
+  "beta": "Pruebas",
+  "seeMore": "Ver más"
 }
