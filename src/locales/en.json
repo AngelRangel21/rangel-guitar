@@ -175,5 +175,17 @@
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
-  "suggestedSongs": "Suggested Songs"
+  "suggestedSongs": "Suggested Songs",
+  "premium": "Premium",
+  "aiSongwriter": "AI Songwriter",
+  "aiSongwriterTitle": "AI Songwriter",
+  "aiSongwriterDescription": "Describe a theme and a genre, and let our AI compose a unique song for you with lyrics and chords.",
+  "songTopicLabel": "Song Theme or Topic",
+  "songTopicPlaceholder": "e.g., A rainy afternoon in the city",
+  "songGenreLabel": "Musical Genre",
+  "songGenrePlaceholder": "e.g., Acoustic Folk",
+  "generateSongButton": "Generate Song",
+  "generatingSong": "Generating song...",
+  "aiSongwriterError": "Sorry, the AI composer is a bit tired. Please try again.",
+  "aiComposer": "AI Composer"
 }

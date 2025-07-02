@@ -175,5 +175,17 @@
   "beta": "Pruebas",
   "new": "Nuevo",
   "seeMore": "Ver más",
-  "suggestedSongs": "Canciones Sugeridas"
+  "suggestedSongs": "Canciones Sugeridas",
+  "premium": "Premium",
+  "aiSongwriter": "Compositor con IA",
+  "aiSongwriterTitle": "Compositor con IA",
+  "aiSongwriterDescription": "Describe un tema y un género, y deja que nuestra IA componga una canción única para ti con letra y acordes.",
+  "songTopicLabel": "Tema o Asunto de la Canción",
+  "songTopicPlaceholder": "Ej., Una tarde lluviosa en la ciudad",
+  "songGenreLabel": "Género Musical",
+  "songGenrePlaceholder": "Ej., Folk Acústico",
+  "generateSongButton": "Generar Canción",
+  "generatingSong": "Generando canción...",
+  "aiSongwriterError": "Lo sentimos, el compositor de IA está un poco cansado. Por favor, inténtalo de nuevo.",
+  "aiComposer": "Compositor IA"
 }
