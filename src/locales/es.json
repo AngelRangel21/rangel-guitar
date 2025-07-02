@@ -161,5 +161,14 @@
   "bpm": "BPM",
   "beatsPerMeasure": "Pulsos por Compás",
   "play": "Tocar",
-  "stop": "Parar"
+  "stop": "Parar",
+  "earTrainer": "Entrenador de Oído",
+  "earTrainerDescription": "Mejora tu oído musical identificando notas por su sonido.",
+  "earTrainerPageTitle": "Herramienta de Entrenamiento de Oído",
+  "circleOfFifths": "Círculo de Quintas",
+  "circleOfFifthsDescription": "Explora las relaciones entre tonalidades con esta herramienta interactiva.",
+  "circleOfFifthsPageTitle": "Círculo de Quintas Interactivo",
+  "playNote": "Tocar Nota",
+  "score": "Puntaje",
+  "keyOf": "Tonalidad de {key}"
 }

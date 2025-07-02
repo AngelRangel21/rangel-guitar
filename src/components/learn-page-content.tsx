@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useI18n } from "@/context/i18n-context";
 import { LearnCard } from "./learn-card";
-import { Library, Scale, Gauge } from "lucide-react";
+import { Library, Scale, Gauge, Ear, Album } from "lucide-react";
 
 export function LearnPageContent() {
     const { t } = useI18n();
@@ -32,6 +33,18 @@ export function LearnPageContent() {
                     icon={<Gauge className="h-8 w-8 text-accent" />}
                     title={t('metronome')}
                     description={t('metronomeDescription')}
+                />
+                <LearnCard 
+                    href="/learn/ear-trainer"
+                    icon={<Ear className="h-8 w-8 text-accent" />}
+                    title={t('earTrainer')}
+                    description={t('earTrainerDescription')}
+                />
+                <LearnCard 
+                    href="/learn/circle-of-fifths"
+                    icon={<Album className="h-8 w-8 text-accent" />}
+                    title={t('circleOfFifths')}
+                    description={t('circleOfFifthsDescription')}
                 />
             </div>
         </main>

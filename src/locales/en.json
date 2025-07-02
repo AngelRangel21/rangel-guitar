@@ -161,5 +161,14 @@
   "bpm": "BPM",
   "beatsPerMeasure": "Beats per Measure",
   "play": "Play",
-  "stop": "Stop"
+  "stop": "Stop",
+  "earTrainer": "Ear Trainer",
+  "earTrainerDescription": "Improve your musical ear by identifying notes by sound.",
+  "earTrainerPageTitle": "Ear Training Tool",
+  "circleOfFifths": "Circle of Fifths",
+  "circleOfFifthsDescription": "Explore key relationships with this interactive music theory tool.",
+  "circleOfFifthsPageTitle": "Interactive Circle of Fifths",
+  "playNote": "Play Note",
+  "score": "Score",
+  "keyOf": "Key of {key}"
 }
