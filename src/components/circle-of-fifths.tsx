@@ -84,7 +84,7 @@ export function CircleOfFifths() {
         }
         
         if (highlightClass) {
-            return { path: highlightClass, text: 'fill-destructive-foreground' };
+            return { path: highlightClass, text: 'fill-primary-foreground' };
         }
         
         return {
