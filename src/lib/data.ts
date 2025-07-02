@@ -391,76 +391,251 @@ Y aquí somos puros de verdad`
     title: 'Botella Tras Botella',
     artist: 'Gera MX & Christian Nodal',
     coverArt: 'https://placehold.co/400x400.png',
-    video: 'X4833E71zIA',
+    video: 'XegHMc35Bo8',
     lyrics: `
-Botella tras botella, ando tomando pa' olvidarme de ella
-De ella, de ella, nomás hablo de ella
-Chingo a mi madre, si no vuelvo a beber por ella
-Chingue a su madre, si no le vuelvo a escribir
-Pero es que esa pinche vieja, me trae bien loco a mí
+Botella tras botella ando tomando
+Pa' olvidarme de ella 
+(Pa' olvidarme de ella)
 
-Y me puse a pensar
-Que también a ti te reza, pero a otro le rezas
-Y me puse a tomar
-Y cuando senti acordé, la desvestía en la cama, de esas
-De esas que nomás se dan una vez
-De esas que si sabes no le dices a nadie
-De esas que nomás se dan una vez
-Y las que valen la pena, nunca son pa' siempre, ey
+De ella, de ella no más hablo
+En todas mis pedas 
+(En todas mis pedas)
 
-Y por eso
-Botella tras botella, ando tomando pa' olvidarme de ella
-De ella, de ella, nomás hablo de ella
-Chingo a mi madre, si no vuelvo a beber por ella
-Chingue a su madre, si no le vuelvo a escribir
-Pero es que esa pinche vieja, me trae bien loco a mí
+A mis compas bien hartos traigo ya
+Me dicen "Wey ya la tienes que superar"
+Pero yo no puedo, pa' ser sinceros yo ni quiero
+Mejor su recuerdo me lo bebo, 
+los tragos me saben mejor así
 
-Y aquí sigo tomando con los plebes
-Los mismos de siempre
-Los que nunca me han dejado abajo
-Ni tú, ni el presidente
+Estaba pensando en llamarte y yo
+Te miro por todas partes
+Pero ya no nos vemos
+Puede que lo olvidemos
 
-Un saludo pa' los que no creyeron
-Y pa' los que aquí siguen
-Un salud por la que se fue
-Y las bendiciones que vienen
+Dos tragos y vuelvo a pensarte
+Me aferro no quiero olvidarte
+Sentimientos ajenos
+Los celos no son buenos
 
-Ando como Chris y Will Smith
-Buscando la felicidad que nunca vi
-Buscando un amor pa' mí
-Pero sin buscarte a ti
+Y si me llamas contesto
+Aunque nunca va a pasar eso 
+(Aunque nunca va a pasar eso)
 
-Te topé sin planearlo
-Y aunque pa'l amor soy un villano
-Contigo se me olvida
-Me siento un ser humano
+Ya mejor ni te molesto
+Porque se que vuelvo a joderlo
+(a huevo que vuelvo a joderlo)
 
-Un simple borracho que te extraña en las pedas
-Y que solo habla de ti, donde quiera que va
-Pero tú bien sabes que...`,
+Y ahora que ando tomando bebida
+Me siento triste y ya va a amanecer
+
+A veces borracho las penas se olvidan
+Pero nunca te dejé de querer
+
+Fui mal partido querida
+Todas mis pedas marcándote al cel
+
+Le puse sal a la herida
+cómo quisiera volver al ayer
+
+Sentimental yo me pongo
+Siempre me acuerdo de ti 
+(Yo siempre me acuerdo de ti)
+
+Me agarra la depre seguido
+Ya hasta te escribí un CD 
+(Ya hasta te escribí un CD)
+
+Botella tras botella vo’a tomarme
+Pa' olvidarme de ella 
+(Pa' olvidarme de ella)
+
+De ella, de ella estoy hablando
+Como siempre en mis pedas 
+(Como siempre en mis pedas)
+
+a mis compas bien hartos traigo ya
+Me dicen "Wey ya la tienes que superar"
+Pero yo no puedo, pa' 
+ser sinceros yo ni quiero
+Mejor su recuerdo me lo bebo,
+los tragos me saben mejor así
+
+Estaba pensando en llamarte y yo
+Estaba pensando en llamarte y yo
+Pero ya no nos vemos
+Pero ya no nos vemos
+
+Sentimental yo me pongo
+Siempre me acuerdo de ti 
+(Yo siempre me acuerdo de ti)
+
+Me agarra la depre seguido
+Ya hasta te escribí un CD 
+(Ya hasta te escribí un CD)
+
+
+Y si amas a alguien no la dejes ir
+Para que no tengas que dedicarle 
+una canción como esta, paz`,
     chords: `
-[Intro]
-Am G C F
+C
+Botella tras botella ando tomando
 
-[Verse 1]
-    Am
-Botella tras botella, ando tomando
-           G
-pa' olvidarme de ella
-    C
-De ella, de ella,
-                      F
-nomás hablo de ella
+                 Am
+Pa' olvidarme de ella
+(Pa' olvidarme de ella)
 
-[Chorus]
-                   Am
-Chingo a mi madre, si no vuelvo a beber por ella
-                   G
-Chingue a su madre, si no le vuelvo a escribir
+C
+De ella, de ella no más hablo
+
+              Am
+En todas mis pedas 
+(En todas mis pedas)
+
+
+   F
+a mis compas bien hartos traigo ya
+
+           F
+Me dicen "Wey ya la tienes que superar"
+
            C
-Pero es que esa pinche vieja,
-                     F
-me trae bien loco a mí`
+Pero yo no puedo, pa' ser 
+                G
+sinceros yo ni quiero
+
+                        Am
+Mejor su recuerdo me lo bebo, 
+           F          Fm
+los tragos me saben mejor así
+
+
+C
+Estaba pensando en llamarte y yo
+Te miro por todas partes
+
+     Am
+Pero ya no nos vemos
+Puede que lo olvidemos
+
+
+    C
+Dos tragos y vuelvo a pensarte
+Me aferro no quiero olvidarte
+
+     Am
+Sentimientos ajenos
+Los celos no son buenos
+
+
+C
+Y si me llamas contesto
+
+                        Am
+Aunque nunca va a pasar eso 
+(Aunque nunca va a pasar eso)
+
+C
+Ya mejor ni te molesto
+
+                         Am
+Porque se que vuelvo a joderlo 
+(a huevo que vuelvo a joderlo)
+
+
+C
+Y ahora que ando tomando bebida
+Me siento triste y ya va a amanecer
+
+Am
+a veces borracho las penas se olvidan
+Pero nunca te dejé de querer
+
+
+C
+Fui mal partido querida
+Todas mis pedas marcándote al cel
+
+Am
+Le puse sal a la herida
+cómo quisiera volver al ayer
+
+
+C
+Sentimental yo me pongo
+
+                      Am
+Siempre me acuerdo de ti 
+(Yo siempre me acuerdo de ti)
+
+C
+Me agarra la depre seguido
+
+                       Am
+Ya hasta te escribí un CD 
+(Ya hasta te escribí un CD)
+
+
+C
+Botella tras botella vo’a tomarme
+
+                 Am
+Pa' olvidarme de ella 
+(Pa' olvidarme de ella)
+
+C
+De ella, de ella estoy hablando
+
+                    Am
+Como siempre en mis pedas 
+(Como siempre en mis pedas)
+
+
+F
+a mis compas bien hartos traigo ya
+
+           F
+Me dicen "Wey ya la tienes que superar"
+
+           C
+Pero yo no puedo, pa' ser 
+               G
+sinceros yo ni quiero
+
+                        Am
+Mejor su recuerdo me lo bebo, 
+           F          Fm
+los tragos me saben mejor así
+
+
+C
+Estaba pensando en llamarte y y
+Estaba pensando en llamarte y yo
+
+     Am
+Pero ya no nos vemos
+Pero ya no nos vemos
+
+
+C
+Sentimental yo me pongo
+
+                      Am
+Siempre me acuerdo de ti 
+(Yo siempre me acuerdo de ti)
+
+C
+Me agarra la depre seguido
+
+                       Am
+Ya hasta te escribí un CD
+(Ya hasta te escribí un CD)
+
+C
+Y si amas a alguien no la dejes ir
+                    Am
+Para que no tengas que dedicarle 
+una canción como esta, paz`
   }
 ];
 
