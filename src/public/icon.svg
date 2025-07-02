@@ -1,0 +1,5 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M128 0C128 0 42.6667 32 0 128C53.3333 224 128 256 128 256C128 256 202.667 224 256 128C213.333 32 128 0 128 0Z" fill="hsl(var(--accent))"/>
+<path d="M128 20C128 20 56.5333 46.4 21.3333 128C60.2667 209.6 128 236 128 236C128 236 195.733 209.6 234.667 128C200.533 46.4 128 20 128 20Z" fill="black"/>
+<text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="100" fill="white" font-weight="bold">RG</text>
+</svg>
