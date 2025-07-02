@@ -92,3 +92,46 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* React Joyride Tooltip Styles */
+.react-joyride__tooltip {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.react-joyride__tooltip h4 {
+  color: hsl(var(--card-foreground)) !important;
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.react-joyride__tooltip div[class^="react-joyride__tooltip-content"] {
+    color: hsl(var(--muted-foreground)) !important;
+}
+
+.react-joyride__button--primary {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.react-joyride__button--default {
+  color: hsl(var(--foreground)) !important;
+  font-weight: 500 !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.react-joyride__arrow {
+  fill: hsl(var(--card)) !important;
+}
+
+.react-joyride__spotlight {
+    border-radius: var(--radius) !important;
+}

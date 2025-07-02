@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { SongList } from "@/components/song-list";
 import type { Song } from "@/lib/types";
 import { useI18n } from "@/context/i18n-context";
+import { FeatureTour } from "./feature-tour";
 
 export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,6 +32,7 @@ export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
         <SongList songs={filteredSongs} />
       </main>
       <Footer />
+      <FeatureTour />
     </div>
   );
 }
