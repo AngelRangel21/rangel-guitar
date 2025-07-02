@@ -175,9 +175,5 @@
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
-  "suggestedSongs": "Suggested Songs",
-  "analyzeWithAI": "Analyze with AI",
-  "chordAnalysis": "Chord Analysis",
-  "analyzing": "Analyzing...",
-  "analysisError": "Could not analyze the chords. Please try again."
+  "suggestedSongs": "Suggested Songs"
 }

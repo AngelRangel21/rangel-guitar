@@ -6,7 +6,7 @@ import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChordSheet } from "./chord-sheet";
-import { Minus, Plus, Facebook, Twitter, Heart, Pencil, Trash2, Sparkles, Loader2 } from "lucide-react";
+import { Minus, Plus, Facebook, Twitter, Heart, Pencil, Trash2 } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons";
 import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
@@ -15,53 +15,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeleteSongDialog } from "./delete-song-dialog";
 import Link from 'next/link';
 import { SongCard } from "./song-card";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-} from '@/components/ui/alert-dialog';
-import { explainProgression } from "@/ai/flows/explain-progression-flow";
-import { useToast } from "@/hooks/use-toast";
 
 export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSongs: Song[] }) {
   const [transpose, setTranspose] = useState(0);
   const { t } = useI18n();
-  const { toast } = useToast();
   const { isAuthenticated, isFavorite, toggleFavorite, isAdmin } = useAuth();
   const [currentUrl, setCurrentUrl] = useState('');
-
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState('');
-  const [isAnalysisDialogOpen, setIsAnalysisDialogOpen] = useState(false);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
   }, []);
-
-  const handleAnalysis = async () => {
-    if (!song.chords) return;
-    setIsAnalyzing(true);
-    setIsAnalysisDialogOpen(true);
-    try {
-      const result = await explainProgression({ chords: song.chords });
-      setAnalysis(result.explanation);
-    } catch (error) {
-      console.error("Error analyzing chords:", error);
-      toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: t('analysisError'),
-      });
-      setIsAnalysisDialogOpen(false); // Close dialog on error
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
 
   const getTransposedKeyText = () => {
     if (transpose === 0) return t('originalKey');
@@ -154,11 +117,6 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                     </Button>
                   )}
                 </div>
-
-                <Button onClick={handleAnalysis} disabled={!song.chords} className="w-full">
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  {t('analyzeWithAI')}
-                </Button>
               </div>
 
               <div className="mt-8">
@@ -223,28 +181,6 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
           </div>
         </div>
       )}
-
-      <AlertDialog open={isAnalysisDialogOpen} onOpenChange={setIsAnalysisDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('chordAnalysis')}</AlertDialogTitle>
-              {isAnalyzing ? (
-                 <div className="flex flex-col items-center justify-center py-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-accent" />
-                    <p className="mt-4 text-muted-foreground">{t('analyzing')}</p>
-                 </div>
-              ) : (
-                <AlertDialogDescription className="text-foreground whitespace-pre-wrap pt-4">
-                  {analysis}
-                </AlertDialogDescription>
-              )}
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t('close')}</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
     </div>
   );
 }
