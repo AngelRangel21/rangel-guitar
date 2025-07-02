@@ -221,129 +221,92 @@ Y aquí somos puros de verdad`,
     chords: `
 D
 Empezamos a temprana edad
-
 E7
 Solito se enseñó a trabajar
-
 F#m
-Ahora la vida le sonrió y no la hace cambiar
+Ahora la vida le sonrió
+y no la hace cambiar
 
                        D
 No se ocupará ni mencionar
-
                           E7
 Apoyo que carga es de familia
-
                            F#m
 Con su gente siempre pa' arriba
 
-
 Bien preparados pa' lo que pueda pasar
-
                          D
 No se agüiten, que hay Chapo pa' más
-
                   E7
 Con mi gente para lo que digan
-
                         F#m
 Ellos saben que aquí no hay salida
 
-
 Andamos chambeando en la movida
-
                   D
 Y andamos matando al azar
-
                        D
 No ando preguntando, y pa' qué hablar
-
                  F#m
 Y aquí somos puros de verdad
 
-
 D
 Recuerdos quedaron de aquel día
-
 E7
 Se la pelaron, ya los traían
-
 F#m
 Arriba de la blindada con un corridón
-
                           D
 Compa Kaby, póngase en acción
-
                                E7
 Que al cabo la brecha me la sé yo
-
                              F#m
 Los plebes allá traen un refuegón
 
-
-Más los carros que traemos acá en el convoy
-
+Más los carros que traemos
+acá en el convoy
                     D
 En el radio se escucha el señor
-
                      E7
 De aquí salgo, pero como pueda
-
                  F#m
 Ustedes plebes quédense en guerra
 
-
 Que para eso cargan la bandera
-
                            D
 Y no es cualquiera, es un charolón
-
                    E7
 Aquí andamos en el desierto
-
                     F#m
 Salazar, para el que preguntó
 
-
 D
 Pa'l gabacho no pueden cruzar
-
 E7
 No se ocupa, aquí hay jale de más
-
 F#m
-La bandera de aquel viejo aquí se respeta
-
+La bandera de aquel
+viejo aquí se respeta
                            D
 Que se escuche Alfredo Salazar
-
                                E7
 Y por los pueblos los kilos cruzar
-
                          F#m
 Las avionetas las miran bajar
 
-
 Se van cargadas con peso pero de más
-
                     D
 Buen piloto los que van fuera
-
                 E7
 El carrito para lo que digan
-
                    F#m
 Con el equipo al frente lo miran
 
-
 Andamos chambeando en la movida
-
                    D
 Peleando lo que ocupe pelear
-
                          E7
 El miedo no existe, aquí hay lealtad
-
                   F#m
 Y el billete ese ni se diga
 
@@ -351,38 +314,27 @@ D
 Empezamos a temprana edad
 E7
 Solito se enseñó a trabajar
-
 F#m
-Ahora la vida le sonrió y no la hace cambiar
-
+Ahora la vida le sonrió
+y no la hace cambiar
                        D
 No se ocupará ni mencionar
-
                           E7
 Apoyo que carga es de familia
-
                            F#m
 Con su gente siempre pa' arriba
-
 Bien preparados pa' lo que pueda pasar
-
                          D
 No se agüiten, que hay Chapo pa' más
-
                   E7
 Con mi gente para lo que digan
-
                         F#m
 Ellos saben que aquí no hay salida
-
 Andamos chambeando en la movida
-
                   D
 Y andamos matando al azar
-
                        D
 No ando preguntando, y pa' qué hablar
-
                  F#m
 Y aquí somos puros de verdad`
   },
@@ -617,6 +569,117 @@ Y si amas a alguien no la dejes ir
                     Am
 Para que no tengas que dedicarle 
 una canción como esta, paz`
+  },
+  {
+    id: 4,
+    title: 'Hablemos',
+    artist: 'Ariel Camacho',
+    coverArt: 'https://placehold.co/400x400.png',
+    video: 'VcNjRmWjKH4',
+    lyrics: `
+Es necesario amor, que platiquemos
+un segundo solamente
+para que no haya malas interpretaciones,
+es necesario amor que me consedas 
+un segundo tu atencion,
+y que sepas que estoy desesperado,
+cuando no vienes, cuando no vienes amor.
+
+
+hace ya tiempo que no dices que me amas,
+y a ti ese detalle jamas se te pasaba,
+por eso quiero que hablemos claro
+que me consedas un segundo tu atencion.
+
+Hay algo que esta empañando 
+nuestras vidas
+no es necesario que lo digas,
+eso lo siento aqui en la piel
+
+no temas, que yo jamas te dejaria,
+aunque ella haya sido siempre
+lo mas sagrado que hay en mi.
+
+Amor, quiero pensar que somos yo y mi soledad,
+la que, la que me impide esas cosas a pensar,
+por eso quiero que hablemos claro,
+que me consedas un segundo tu atencion.
+
+
+Hay algo que esta empañando nuestras vidas
+no es necesario que lo digas,
+eso lo siento aqui en la piel
+
+no temas, que yo jamas te dejaria,
+aunque ella haya sido siempre
+lo mas sagrado que hay en mi.`,
+    chords: `
+    E                       G#m
+Es necesario amor, que platiquemos
+                 C#m
+un segundo solamente
+A                     B            E
+para que no haya malas interpretaciones,
+E                       G#m
+es necesario amor que me consedas
+              C#m
+un segundo tu atencion,
+A                 B           E
+y que sepas que estoy desesperado,
+
+cuando no vienes, cuando no vienes amor.
+
+G#m                               C#m
+hace ya tiempo que no dices que me amas,
+A             B                   E
+y a ti ese detalle jamas se te pasaba,
+A               B             E
+por eso quiero que hablemos claro
+            B                     E
+que me consedas un segundo tu atencion.
+
+E
+Hay algo que esta empañando
+             B
+nuestras vidas
+                        A
+no es necesario que lo digas,
+                           B
+eso lo siento aqui en la pieel
+E                            B
+no temas, que yo jamas te dejaria,
+                          A
+aunque ella haya sido siempre
+     B                  E
+lo mas sagrado que hay en mi.
+
+E            G#m
+Amor, quiero pensar que somos
+        C#m
+yo y mi soledad,
+A               B
+la que, la que me impide esas
+        E
+cosas a pensar,
+A               B             E
+por eso quiero que hablemos claro,
+            B                     E
+que me consedas un segundo tu atencion.
+
+E
+Hay algo que esta empañando
+             B
+nuestras vidas
+                        A
+no es necesario que lo digas,
+                           B
+eso lo siento aqui en la pieel
+E                            B
+no temas, que yo jamas te dejaria,
+                          A
+aunque ella haya sido siempre
+     B                  E
+lo mas sagrado que hay en mi.`
   }
 ];
 
