@@ -487,7 +487,6 @@ Pa' olvidarme de ella
 
 C
 De ella, de ella no más hablo
-
               Am
 En todas mis pedas 
 (En todas mis pedas)
@@ -495,20 +494,16 @@ En todas mis pedas
 
    F
 a mis compas bien hartos traigo ya
-
            F
 Me dicen "Wey ya la tienes que superar"
-
            C
 Pero yo no puedo, pa' ser 
                 G
 sinceros yo ni quiero
-
                         Am
 Mejor su recuerdo me lo bebo, 
            F          Fm
 los tragos me saben mejor así
-
 
 C
 Estaba pensando en llamarte y yo
@@ -518,7 +513,6 @@ Te miro por todas partes
 Pero ya no nos vemos
 Puede que lo olvidemos
 
-
     C
 Dos tragos y vuelvo a pensarte
 Me aferro no quiero olvidarte
@@ -527,17 +521,14 @@ Me aferro no quiero olvidarte
 Sentimientos ajenos
 Los celos no son buenos
 
-
 C
 Y si me llamas contesto
-
                         Am
 Aunque nunca va a pasar eso 
 (Aunque nunca va a pasar eso)
 
 C
 Ya mejor ni te molesto
-
                          Am
 Porque se que vuelvo a joderlo 
 (a huevo que vuelvo a joderlo)
@@ -551,7 +542,6 @@ Am
 a veces borracho las penas se olvidan
 Pero nunca te dejé de querer
 
-
 C
 Fui mal partido querida
 Todas mis pedas marcándote al cel
@@ -559,7 +549,6 @@ Todas mis pedas marcándote al cel
 Am
 Le puse sal a la herida
 cómo quisiera volver al ayer
-
 
 C
 Sentimental yo me pongo
@@ -575,25 +564,20 @@ Me agarra la depre seguido
 Ya hasta te escribí un CD 
 (Ya hasta te escribí un CD)
 
-
 C
 Botella tras botella vo’a tomarme
-
                  Am
 Pa' olvidarme de ella 
 (Pa' olvidarme de ella)
 
 C
 De ella, de ella estoy hablando
-
                     Am
 Como siempre en mis pedas 
 (Como siempre en mis pedas)
 
-
 F
 a mis compas bien hartos traigo ya
-
            F
 Me dicen "Wey ya la tienes que superar"
 
@@ -616,17 +600,14 @@ Estaba pensando en llamarte y yo
 Pero ya no nos vemos
 Pero ya no nos vemos
 
-
 C
 Sentimental yo me pongo
-
                       Am
 Siempre me acuerdo de ti 
 (Yo siempre me acuerdo de ti)
 
 C
 Me agarra la depre seguido
-
                        Am
 Ya hasta te escribí un CD
 (Ya hasta te escribí un CD)
