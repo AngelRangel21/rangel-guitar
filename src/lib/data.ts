@@ -385,6 +385,82 @@ No ando preguntando, y pa' qué hablar
 
                  F#m
 Y aquí somos puros de verdad`
+  },
+  {
+    id: 3,
+    title: 'Botella Tras Botella',
+    artist: 'Gera MX & Christian Nodal',
+    coverArt: 'https://placehold.co/400x400.png',
+    video: 'X4833E71zIA',
+    lyrics: `
+Botella tras botella, ando tomando pa' olvidarme de ella
+De ella, de ella, nomás hablo de ella
+Chingo a mi madre, si no vuelvo a beber por ella
+Chingue a su madre, si no le vuelvo a escribir
+Pero es que esa pinche vieja, me trae bien loco a mí
+
+Y me puse a pensar
+Que también a ti te reza, pero a otro le rezas
+Y me puse a tomar
+Y cuando senti acordé, la desvestía en la cama, de esas
+De esas que nomás se dan una vez
+De esas que si sabes no le dices a nadie
+De esas que nomás se dan una vez
+Y las que valen la pena, nunca son pa' siempre, ey
+
+Y por eso
+Botella tras botella, ando tomando pa' olvidarme de ella
+De ella, de ella, nomás hablo de ella
+Chingo a mi madre, si no vuelvo a beber por ella
+Chingue a su madre, si no le vuelvo a escribir
+Pero es que esa pinche vieja, me trae bien loco a mí
+
+Y aquí sigo tomando con los plebes
+Los mismos de siempre
+Los que nunca me han dejado abajo
+Ni tú, ni el presidente
+
+Un saludo pa' los que no creyeron
+Y pa' los que aquí siguen
+Un salud por la que se fue
+Y las bendiciones que vienen
+
+Ando como Chris y Will Smith
+Buscando la felicidad que nunca vi
+Buscando un amor pa' mí
+Pero sin buscarte a ti
+
+Te topé sin planearlo
+Y aunque pa'l amor soy un villano
+Contigo se me olvida
+Me siento un ser humano
+
+Un simple borracho que te extraña en las pedas
+Y que solo habla de ti, donde quiera que va
+Pero tú bien sabes que...`,
+    chords: `
+[Intro]
+Am G C F
+
+[Verse 1]
+    Am
+Botella tras botella, ando tomando
+           G
+pa' olvidarme de ella
+    C
+De ella, de ella,
+                      F
+nomás hablo de ella
+
+[Chorus]
+                   Am
+Chingo a mi madre, si no vuelvo a beber por ella
+                   G
+Chingue a su madre, si no le vuelvo a escribir
+           C
+Pero es que esa pinche vieja,
+                     F
+me trae bien loco a mí`
   }
 ];
 
