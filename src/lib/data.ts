@@ -81,7 +81,6 @@ const initialSongs: Song[] = [
                   D
   a quererlo poner.
   
-  Bm
   Deseaba estar yo también
   D
   pa' podérmelos comer,
@@ -400,6 +399,16 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   if (!global.__songs) {
     global.__songs = [...initialSongs];
+  } else {
+    // This block fixes HMR issues by merging the initialSongs data into the 
+    // existing global.__songs array. This ensures that updates to the hardcoded
+    // songs are reflected, without losing any songs added at runtime.
+    const songMap = new Map(global.__songs.map(song => [song.id, song]));
+    initialSongs.forEach(song => {
+      // Update the song in the map with the fresh data from initialSongs
+      songMap.set(song.id, { ...songMap.get(song.id), ...song });
+    });
+    global.__songs = Array.from(songMap.values());
   }
   songs = global.__songs;
 }
