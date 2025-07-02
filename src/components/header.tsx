@@ -236,9 +236,12 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 <Link href="/artists">{t('artists')}</Link>
               </DropdownMenuItem>
                <DropdownMenuItem asChild>
-                <Link href="/request-song">
-                  <GitPullRequest className="mr-2 h-4 w-4" />
-                  <span>{t('requestSong')}</span>
+                <Link href="/request-song" className="flex w-full items-center justify-between">
+                  <div className="flex items-center">
+                    <GitPullRequest className="mr-2 h-4 w-4" />
+                    <span>{t('requestSong')}</span>
+                  </div>
+                  <Badge variant="info" className="text-xs">{t('new')}</Badge>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
