@@ -2,11 +2,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useI18n } from '@/context/i18n-context';
 import { circleOfFifthsKeys } from '@/lib/circle-of-fifths-data';
 import { cn } from '@/lib/utils';
-import { LockOpen } from 'lucide-react';
+import { Lock, LockOpen } from 'lucide-react';
 
 const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -35,19 +35,73 @@ const describeSegment = (x: number, y: number, outerRadius: number, innerRadius:
     return d;
 };
 
+
 export function CircleOfFifths() {
     const { t } = useI18n();
-    const [selectedIndex, setSelectedIndex] = useState<number>(0);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [isLocked, setIsLocked] = useState(false);
 
     const center = 160;
     const outerRadius = 150;
     const middleRadius = 100;
     const innerRadius = 50;
+
+    const handleSegmentClick = (index: number) => {
+        if (isLocked) return;
+        setSelectedIndex(prevIndex => prevIndex === index ? null : index);
+    };
+
+    const handleLockClick = () => {
+        if (selectedIndex !== null) {
+            setIsLocked(!isLocked);
+        }
+    };
     
+    const getHighlightClasses = (segmentIndex: number, isMajorRing: boolean) => {
+        const defaultClasses = {
+            path: 'fill-card group-hover:fill-accent/20',
+            text: 'fill-foreground',
+        };
+
+        if (selectedIndex === null) {
+            return defaultClasses;
+        }
+
+        const tonicIndex = selectedIndex;
+        const dominantIndex = (selectedIndex + 1) % 12;
+        const subdominantIndex = (selectedIndex + 11) % 12;
+
+        let highlightClass = null;
+
+        if (isMajorRing) {
+            if (segmentIndex === tonicIndex) highlightClass = 'fill-chart-1'; // I (Tonic)
+            if (segmentIndex === dominantIndex) highlightClass = 'fill-chart-5'; // V (Dominant)
+            if (segmentIndex === subdominantIndex) highlightClass = 'fill-chart-4'; // IV (Subdominant)
+        } else { // Minor ring
+            if (segmentIndex === tonicIndex) highlightClass = 'fill-chart-6'; // vi (Relative Minor)
+            if (segmentIndex === dominantIndex) highlightClass = 'fill-chart-3'; // iii (Mediant Minor)
+            if (segmentIndex === subdominantIndex) highlightClass = 'fill-chart-2'; // ii (Supertonic Minor)
+        }
+        
+        if (highlightClass) {
+            return { path: highlightClass, text: 'fill-destructive-foreground' };
+        }
+        
+        return {
+            path: 'fill-card opacity-50',
+            text: 'fill-muted-foreground',
+        };
+    };
+    
+    const selectedKeyName = selectedIndex !== null ? circleOfFifthsKeys[selectedIndex].major : null;
+
     return (
         <Card className="w-full max-w-lg">
-            <CardHeader>
+            <CardHeader className="text-center">
                 <CardTitle>{t('circleOfFifthsPageTitle')}</CardTitle>
+                {selectedKeyName && (
+                    <CardDescription>{t('keyOf', { key: selectedKeyName })}</CardDescription>
+                )}
             </CardHeader>
             <CardContent className="flex flex-col items-center">
                 <svg viewBox="0 0 320 320" className="w-full max-w-sm">
@@ -56,23 +110,21 @@ export function CircleOfFifths() {
                             const startAngle = i * 30;
                             const endAngle = (i + 1) * 30;
                             const midAngle = startAngle + 15;
-
-                            const isTonic = selectedIndex === i;
-                            const isSubdominant = i === (selectedIndex + 11) % 12;
-                            const isDominant = i === (selectedIndex + 1) % 12;
-                            const isHighlighted = isTonic || isSubdominant || isDominant;
+                            
+                            const majorClasses = getHighlightClasses(i, true);
+                            const minorClasses = getHighlightClasses(i, false);
                             
                             const majorTextPos = polarToCartesian(center, center, (outerRadius + middleRadius) / 2, midAngle);
                             const minorTextPos = polarToCartesian(center, center, (middleRadius + innerRadius) / 2, midAngle);
 
                             return (
-                                <g key={key.major} onClick={() => setSelectedIndex(i)} className="cursor-pointer group">
+                                <g key={key.major} onClick={() => handleSegmentClick(i)} className={cn("cursor-pointer group", isLocked && "cursor-not-allowed")}>
                                     <path 
                                         d={describeSegment(center, center, outerRadius, middleRadius, startAngle, endAngle)}
                                         stroke="hsl(var(--border))"
                                         className={cn(
                                             "transition-colors duration-200",
-                                            isHighlighted ? 'fill-destructive' : 'fill-card group-hover:fill-accent/20'
+                                            majorClasses.path
                                         )}
                                     />
                                     <text
@@ -82,7 +134,7 @@ export function CircleOfFifths() {
                                         dominantBaseline="middle"
                                         className={cn(
                                             "font-bold text-lg pointer-events-none transition-colors duration-200",
-                                            isHighlighted ? 'fill-destructive-foreground' : 'fill-foreground'
+                                            majorClasses.text
                                         )}
                                     >
                                         {key.major}
@@ -93,7 +145,7 @@ export function CircleOfFifths() {
                                         stroke="hsl(var(--border))"
                                         className={cn(
                                             "transition-colors duration-200",
-                                            isHighlighted ? 'fill-destructive/80' : 'fill-card group-hover:fill-accent/20'
+                                            minorClasses.path
                                         )}
                                     />
                                     <text
@@ -103,7 +155,7 @@ export function CircleOfFifths() {
                                         dominantBaseline="middle"
                                         className={cn(
                                             "text-sm pointer-events-none transition-colors duration-200",
-                                            isHighlighted ? 'fill-destructive-foreground' : 'fill-foreground'
+                                            minorClasses.text
                                         )}
                                     >
                                         {key.minor}
@@ -112,9 +164,15 @@ export function CircleOfFifths() {
                             );
                         })}
                         
-                        <circle cx={center} cy={center} r={innerRadius} stroke="hsl(var(--border))" className="fill-card" />
-                        <g transform={`translate(${center - 12}, ${center - 12})`}>
-                            <LockOpen className="h-6 w-6 text-muted-foreground" />
+                        <g onClick={handleLockClick} className={cn("cursor-pointer", selectedIndex === null && "cursor-not-allowed opacity-50")}>
+                           <circle cx={center} cy={center} r={innerRadius} stroke="hsl(var(--border))" className={cn("transition-colors", selectedIndex !== null ? 'fill-background hover:fill-muted' : 'fill-card')} />
+                           <g transform={`translate(${center - 12}, ${center - 12})`}>
+                                {isLocked ? (
+                                    <Lock className="h-6 w-6 text-muted-foreground" />
+                                ) : (
+                                    <LockOpen className="h-6 w-6 text-muted-foreground" />
+                                )}
+                           </g>
                         </g>
                     </g>
                 </svg>
