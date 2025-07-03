@@ -2,7 +2,7 @@
 
 import type { RequestSongInput } from '@/ai/flows/request-song-flow';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, doc, addDoc, deleteDoc, orderBy, serverTimestamp, type Timestamp } from 'firebase/firestore';
+import { collection, getDocs, doc, addDoc, deleteDoc, query, orderBy, serverTimestamp, type Timestamp } from 'firebase/firestore';
 
 export interface SongRequest extends RequestSongInput {
   id: string;
