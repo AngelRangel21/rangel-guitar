@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SongDisplay } from "@/components/song-display";
 import type { Song } from "@/lib/types";
+import { incrementVisitCountAction } from "./actions";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const song = songs.find(s => s.id === parseInt(params.id));
@@ -36,8 +37,13 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   }
 }
 
-export default function SongPage({ params }: { params: { id: string } }) {
-  const song = songs.find(s => s.id === parseInt(params.id));
+export default async function SongPage({ params }: { params: { id: string } }) {
+  const songId = parseInt(params.id);
+  
+  // Asynchronously increment the visit count without blocking rendering
+  incrementVisitCountAction(songId);
+
+  const song = songs.find(s => s.id === songId);
 
   if (!song) {
     notFound();

@@ -23,7 +23,7 @@ export async function uploadSongAction(data: z.infer<typeof uploadSongSchema>) {
         throw new Error('Invalid data provided.');
     }
 
-    const songToAdd: Omit<Song, 'id'> = {
+    const songToAdd: Omit<Song, 'id' | 'visitCount' | 'likeCount'> = {
         title: validatedData.data.title,
         artist: validatedData.data.artist,
         lyrics: validatedData.data.lyrics,
@@ -39,6 +39,7 @@ export async function uploadSongAction(data: z.infer<typeof uploadSongSchema>) {
     revalidatePath('/artists');
     revalidatePath(`/artists/${encodeURIComponent(newSong.artist)}`);
     revalidatePath('/sitemap.ts');
+    revalidatePath('/top-charts');
 
     // Redirect to the newly created song page
     redirect(`/songs/${newSong.id}`);

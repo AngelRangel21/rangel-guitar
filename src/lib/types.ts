@@ -6,4 +6,6 @@ export type Song = {
   lyrics?: string;
   chords?: string;
   video?: string;
+  visitCount: number;
+  likeCount: number;
 };

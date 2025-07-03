@@ -16,6 +16,7 @@ import {
 } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
+import { updateLikeCountAction } from '@/app/favorites/actions';
 
 // =================================================================
 // ¡IMPORTANTE! INSERTA AQUÍ TUS CREDENCIALES DE FIREBASE
@@ -68,7 +69,7 @@ interface AuthContextType {
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
   logout: () => void;
-  toggleFavorite: (songId: number) => void;
+  toggleFavorite: (songId: number) => Promise<void>;
   isFavorite: (songId: number) => boolean;
 }
 
@@ -202,13 +203,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const toggleFavorite = (songId: number) => {
+  const toggleFavorite = async (songId: number) => {
     if (!user) return;
-    const newFavorites = favorites.includes(songId)
+    
+    const isCurrentlyFavorite = favorites.includes(songId);
+    const delta = isCurrentlyFavorite ? -1 : 1;
+
+    const newFavorites = isCurrentlyFavorite
       ? favorites.filter((id) => id !== songId)
       : [...favorites, songId];
+      
     setFavorites(newFavorites);
     localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(newFavorites));
+
+    // Also update the global like count on the server
+    await updateLikeCountAction(songId, delta);
   };
 
   const isFavorite = (songId: number) => {

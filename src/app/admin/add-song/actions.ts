@@ -26,7 +26,7 @@ export async function addSongAndRemoveRequest(data: z.infer<typeof addSongSchema
 
     const { requestId, ...songData } = validatedData.data;
 
-    const songToAdd: Omit<Song, 'id'> = {
+    const songToAdd: Omit<Song, 'id' | 'visitCount' | 'likeCount'> = {
         title: songData.title,
         artist: songData.artist,
         lyrics: songData.lyrics,
@@ -46,6 +46,7 @@ export async function addSongAndRemoveRequest(data: z.infer<typeof addSongSchema
     revalidatePath('/');
     revalidatePath('/artists');
     revalidatePath('/sitemap.ts');
+    revalidatePath('/top-charts');
 
 
     // Redirect to requests page

@@ -175,5 +175,12 @@
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
-  "suggestedSongs": "Suggested Songs"
+  "suggestedSongs": "Suggested Songs",
+  "topChartsPageTitle": "Top Charts",
+  "mostVisited": "Most Visited",
+  "mostLiked": "Most Liked",
+  "mostVisitedSongs": "Most Visited Songs",
+  "mostLikedSongs": "Most Liked Songs",
+  "visits": "Visits",
+  "likes": "Likes"
 }

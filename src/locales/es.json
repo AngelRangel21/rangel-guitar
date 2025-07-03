@@ -175,5 +175,12 @@
   "beta": "Pruebas",
   "new": "Nuevo",
   "seeMore": "Ver más",
-  "suggestedSongs": "Canciones Sugeridas"
+  "suggestedSongs": "Canciones Sugeridas",
+  "topChartsPageTitle": "Top Canciones",
+  "mostVisited": "Más Visitadas",
+  "mostLiked": "Con Más Me Gusta",
+  "mostVisitedSongs": "Canciones Más Visitadas",
+  "mostLikedSongs": "Canciones con Más Me Gusta",
+  "visits": "Visitas",
+  "likes": "Me Gusta"
 }

@@ -7,6 +7,8 @@ const initialSongs: Song[] = [
     artist: 'Ariel Camacho',
     video: 'tJrdAPZXN6I',
     coverArt: 'https://placehold.co/400x400.png',
+    visitCount: Math.floor(Math.random() * 5000) + 1000,
+    likeCount: Math.floor(Math.random() * 500) + 50,
     lyrics:`
   Nací en el agua caliente,
   después vine a Culiacán,
@@ -142,6 +144,8 @@ const initialSongs: Song[] = [
     artist: 'Natanael Cano',
     coverArt: 'https://placehold.co/400x400.png',
     video: 'Y_IELatof9g',
+    visitCount: Math.floor(Math.random() * 5000) + 1000,
+    likeCount: Math.floor(Math.random() * 500) + 50,
     lyrics:  `
 Empezamos a temprana edad
 Solito se enseñó a trabajar
@@ -344,6 +348,8 @@ Y aquí somos puros de verdad`
     artist: 'Gera MX & Christian Nodal',
     coverArt: 'https://placehold.co/400x400.png',
     video: 'XegHMc35Bo8',
+    visitCount: Math.floor(Math.random() * 5000) + 1000,
+    likeCount: Math.floor(Math.random() * 500) + 50,
     lyrics: `
 Botella tras botella ando tomando
 Pa' olvidarme de ella 
@@ -576,6 +582,8 @@ una canción como esta, paz`
     artist: 'Ariel Camacho',
     coverArt: 'https://placehold.co/400x400.png',
     video: 'VcNjRmWjKH4',
+    visitCount: Math.floor(Math.random() * 5000) + 1000,
+    likeCount: Math.floor(Math.random() * 500) + 50,
     lyrics: `
 Es necesario amor, que platiquemos
 un segundo solamente
@@ -701,7 +709,12 @@ if (process.env.NODE_ENV === 'production') {
     const songMap = new Map(global.__songs.map(song => [song.id, song]));
     initialSongs.forEach(song => {
       // Update the song in the map with the fresh data from initialSongs
-      songMap.set(song.id, { ...songMap.get(song.id), ...song });
+      const existingSong = songMap.get(song.id);
+      songMap.set(song.id, { 
+          ...song,
+          visitCount: existingSong?.visitCount ?? song.visitCount,
+          likeCount: existingSong?.likeCount ?? song.likeCount,
+      });
     });
     global.__songs = Array.from(songMap.values());
   }
@@ -710,17 +723,19 @@ if (process.env.NODE_ENV === 'production') {
 
 export { songs };
 
-export function addSong(songData: Omit<Song, 'id'>): Song {
+export function addSong(songData: Omit<Song, 'id' | 'visitCount' | 'likeCount'>): Song {
     const newId = songs.length > 0 ? Math.max(...songs.map(s => s.id)) + 1 : 1;
     const newSong: Song = {
         id: newId,
         ...songData,
+        visitCount: 0,
+        likeCount: 0,
     };
     songs.unshift(newSong);
     return newSong;
 }
 
-export function updateSong(id: number, songData: Partial<Omit<Song, 'id'>>): Song | undefined {
+export function updateSong(id: number, songData: Partial<Omit<Song, 'id'| 'visitCount' | 'likeCount'>>): Song | undefined {
     const songIndex = songs.findIndex(s => s.id === id);
     if (songIndex === -1) {
         return undefined;
@@ -737,4 +752,18 @@ export function deleteSong(id: number): boolean {
     }
     songs.splice(songIndex, 1);
     return true;
+}
+
+export function incrementVisitCount(id: number): void {
+    const song = songs.find(s => s.id === id);
+    if (song) {
+        song.visitCount++;
+    }
+}
+
+export function updateLikeCount(id: number, delta: 1 | -1): void {
+    const song = songs.find(s => s.id === id);
+    if (song) {
+        song.likeCount = Math.max(0, song.likeCount + delta);
+    }
 }
