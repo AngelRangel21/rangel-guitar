@@ -175,17 +175,5 @@
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
-  "suggestedSongs": "Suggested Songs",
-  "premium": "Premium",
-  "lyricAssistant": "Lyric Assistant",
-  "lyricAssistantTitle": "Lyric Assistant",
-  "lyricAssistantDescription": "Generate song lyrics and refine them with AI.",
-  "generateLyricsButton": "Generate Lyrics",
-  "generatingLyrics": "Generating lyrics...",
-  "generatedLyrics": "Generated Lyrics",
-  "refineSelection": "Refine Selection",
-  "refiningLyrics": "Refining lyrics...",
-  "refinementInstructionLabel": "Refinement Instruction",
-  "refinementInstructionPlaceholder": "e.g., Make this part more melancholic",
-  "selectTextToRefine": "Select a part of the lyrics above to refine it."
+  "suggestedSongs": "Suggested Songs"
 }
