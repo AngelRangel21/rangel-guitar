@@ -187,5 +187,16 @@
   "generateSongButton": "Generar Canción",
   "generatingSong": "Generando canción...",
   "aiSongwriterError": "Lo sentimos, el compositor de IA está un poco cansado. Por favor, inténtalo de nuevo.",
-  "aiComposer": "Compositor IA"
+  "aiComposer": "Compositor IA",
+  "lyricAssistant": "Asistente de Letras",
+  "lyricAssistantTitle": "Asistente de Letras con IA",
+  "lyricAssistantDescription": "Genera letras de canciones y refínalas con IA.",
+  "generateLyricsButton": "Generar Letra",
+  "generatingLyrics": "Generando letra...",
+  "generatedLyrics": "Letra Generada",
+  "refineSelection": "Refinar Selección",
+  "refiningLyrics": "Refinando letra...",
+  "refinementInstructionLabel": "Instrucción de Refinamiento",
+  "refinementInstructionPlaceholder": "Ej., Haz esta parte más melancólica",
+  "selectTextToRefine": "Selecciona una parte de la letra de arriba para refinarla."
 }
