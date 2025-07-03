@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useI18n } from '@/context/i18n-context';
 import { useToast } from '@/hooks/use-toast';
 import { generateSongAction } from './actions';
-import { SongWriterInputSchema, type SongWriterOutput } from '@/ai/flows/song-writer-flow';
+import { SongWriterInputSchema, type SongWriterOutput } from '@/ai/schemas/song-writer-schemas';
 import { ChordSheet } from '@/components/chord-sheet';
 import { Wand2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';

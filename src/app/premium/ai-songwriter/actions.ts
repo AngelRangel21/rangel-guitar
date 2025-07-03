@@ -1,6 +1,7 @@
 'use server';
 
-import { songWriter, SongWriterInputSchema, type SongWriterOutput } from '@/ai/flows/song-writer-flow';
+import { songWriter, type SongWriterOutput } from '@/ai/flows/song-writer-flow';
+import { SongWriterInputSchema } from '@/ai/schemas/song-writer-schemas';
 import { z } from 'zod';
 
 export async function generateSongAction(
