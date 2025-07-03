@@ -61,64 +61,73 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
-      if (firebaseUser) {
-        const userDocRef = doc(db, 'users', firebaseUser.uid);
-        const userDoc = await getDoc(userDocRef);
+      try {
+        if (firebaseUser) {
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDoc = await getDoc(userDocRef);
 
-        let appUser: User;
-        let userIsAdmin = false;
-        let userIsPremium = false;
+          let appUser: User;
+          let userIsAdmin = false;
+          let userIsPremium = false;
 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          appUser = {
-            uid: firebaseUser.uid,
-            name: userData.name || firebaseUser.displayName || 'Anonymous',
-          };
-          userIsAdmin = userData.isAdmin || false;
-          userIsPremium = userData.isPremium || false;
-        } else {
-          // This is a new user (e.g. first Google sign-in), create their profile.
-          appUser = {
-            uid: firebaseUser.uid,
-            name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
-          };
-          await setDoc(userDocRef, {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            name: appUser.name,
-            isAdmin: false,
-            isPremium: false,
-            createdAt: new Date(),
-          });
-        }
-        
-        setUser(appUser);
-        setIsAdmin(userIsAdmin);
-        setIsPremium(userIsPremium);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            appUser = {
+              uid: firebaseUser.uid,
+              name: userData.name || firebaseUser.displayName || 'Anonymous',
+            };
+            userIsAdmin = userData.isAdmin || false;
+            userIsPremium = userData.isPremium || false;
+          } else {
+            const newName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Anonymous';
+            appUser = {
+              uid: firebaseUser.uid,
+              name: newName,
+            };
+            await setDoc(userDocRef, {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              name: appUser.name,
+              isAdmin: false,
+              isPremium: false,
+              createdAt: new Date(),
+            });
+          }
+          
+          setUser(appUser);
+          setIsAdmin(userIsAdmin);
+          setIsPremium(userIsPremium);
 
-        const storedFavorites = localStorage.getItem(`favorites_${appUser.uid}`);
-        if (storedFavorites) {
-          try {
-             setFavorites(JSON.parse(storedFavorites));
-          } catch(e) {
-             console.error("Failed to parse favorites from localStorage", e);
-             setFavorites([]);
+          const storedFavorites = localStorage.getItem(`favorites_${appUser.uid}`);
+          if (storedFavorites) {
+            setFavorites(JSON.parse(storedFavorites));
+          } else {
+            setFavorites([]);
           }
         } else {
+          setUser(null);
+          setIsAdmin(false);
+          setIsPremium(false);
           setFavorites([]);
         }
-      } else {
+      } catch (error) {
+        console.error("Error in onAuthStateChanged: ", error);
         setUser(null);
         setIsAdmin(false);
         setIsPremium(false);
         setFavorites([]);
+        toast({
+          variant: "destructive",
+          title: "Error de Sesión",
+          description: "No se pudo cargar tu perfil. Intenta de nuevo.",
+        });
+      } finally {
+        setIsLoaded(true);
       }
-      setIsLoaded(true);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -153,9 +162,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!name) return;
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, { displayName: name });
       
-      // The onAuthStateChanged listener will handle creating the Firestore doc
+      // Directly create the user document in Firestore to ensure data consistency
+      const userDocRef = doc(db, 'users', userCredential.user.uid);
+      await setDoc(userDocRef, {
+        uid: userCredential.user.uid,
+        email: email,
+        name: name,
+        isAdmin: false,
+        isPremium: false,
+        createdAt: new Date(),
+      });
+      
+      // Also update the Firebase Auth profile
+      await updateProfile(userCredential.user, { displayName: name });
       
       toast({
         title: t('accountCreatedTitle'),
@@ -183,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
        toast({
         variant: "destructive",
         title: t('loginErrorTitle'),
-        description: t(error.code) || error.message,
+        description: t('auth/invalid-credential') || t(error.code) || error.message,
       });
     }
   };

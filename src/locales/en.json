@@ -79,6 +79,7 @@
   "auth/wrong-password": "Incorrect password. Please try again.",
   "auth/email-already-in-use": "This email is already registered.",
   "auth/weak-password": "Password is too weak. Please use a stronger password.",
+  "auth/invalid-credential": "Invalid email or password.",
   "requestSong": "Request a Song",
   "requestSongTitle": "Request a Song",
   "requestSongDescription": "Don't see a song you like? Let us know!",
