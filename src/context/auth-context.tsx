@@ -12,10 +12,11 @@ import {
   updateProfile,
   type User as FirebaseUser,
 } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
 import { updateLikeCountAction } from '@/app/favorites/actions';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -47,10 +48,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define user roles based on email for this prototype
-const ADMIN_EMAIL = "admin@example.com";
-const PREMIUM_EMAIL = "premium@example.com";
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -63,17 +60,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
-        const userData: User = {
-          uid: firebaseUser.uid,
-          name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
-        };
-        setUser(userData);
-        setIsAdmin(firebaseUser.email === ADMIN_EMAIL);
-        setIsPremium(firebaseUser.email === PREMIUM_EMAIL);
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const userDoc = await getDoc(userDocRef);
 
-        const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
+        let appUser: User;
+        let userIsAdmin = false;
+        let userIsPremium = false;
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          appUser = {
+            uid: firebaseUser.uid,
+            name: userData.name || firebaseUser.displayName || 'Anonymous',
+          };
+          userIsAdmin = userData.isAdmin || false;
+          userIsPremium = userData.isPremium || false;
+        } else {
+          // This is a new user (e.g. first Google sign-in), create their profile.
+          appUser = {
+            uid: firebaseUser.uid,
+            name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
+          };
+          await setDoc(userDocRef, {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: appUser.name,
+            isAdmin: false,
+            isPremium: false,
+            createdAt: new Date(),
+          });
+        }
+        
+        setUser(appUser);
+        setIsAdmin(userIsAdmin);
+        setIsPremium(userIsPremium);
+
+        const storedFavorites = localStorage.getItem(`favorites_${appUser.uid}`);
         if (storedFavorites) {
           try {
              setFavorites(JSON.parse(storedFavorites));
@@ -98,34 +122,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoaded) return;
-
     const isAuthPage = pathname === '/login' || pathname === '/register';
-
     if (user && isAuthPage) {
       router.push('/');
     }
-
   }, [isLoaded, user, pathname, router]);
 
-
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .catch((error: any) => {
-        console.error("Error signing in with Google", error);
-        if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
-          toast({
-            variant: "destructive",
-            title: t('popupBlockedTitle'),
-            description: t('popupBlockedDescription'),
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: t('loginErrorTitle'),
-            description: t(error.code) || error.message,
-          });
-        }
-      });
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error: any) {
+      console.error("Error signing in with Google", error);
+      if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+        toast({
+          variant: "destructive",
+          title: t('popupBlockedTitle'),
+          description: t('popupBlockedDescription'),
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: t('loginErrorTitle'),
+          description: t(error.code) || error.message,
+        });
+      }
+    }
   };
 
   const registerWithEmail = async ({ email, password, name }: AuthCredentials) => {
@@ -133,6 +154,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: name });
+      
+      // The onAuthStateChanged listener will handle creating the Firestore doc
       
       toast({
         title: t('accountCreatedTitle'),
@@ -155,8 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: t('loggedInTitle'),
         description: t('loggedInDescription'),
       });
-    } catch (error: any)
-      {
+    } catch (error: any) {
       console.error("Error signing in with email:", error);
        toast({
         variant: "destructive",
@@ -187,8 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
     setFavorites(newFavorites);
     localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(newFavorites));
-
-    // Also update the global like count on the server
+    
     await updateLikeCountAction(songId, delta);
   };
 
