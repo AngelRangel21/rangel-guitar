@@ -1,11 +1,9 @@
-
 'use server';
 
 import { z } from 'zod';
-import { addSong } from '@/lib/data';
+import { addSong, type NewSongData } from '@/services/songs-service';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import type { Song } from '@/lib/types';
 
 const uploadSongSchema = z.object({
     title: z.string().min(1, "El título es obligatorio."),
@@ -23,7 +21,7 @@ export async function uploadSongAction(data: z.infer<typeof uploadSongSchema>) {
         throw new Error('Invalid data provided.');
     }
 
-    const songToAdd: Omit<Song, 'id' | 'visitCount' | 'likeCount'> = {
+    const songToAdd: NewSongData = {
         title: validatedData.data.title,
         artist: validatedData.data.artist,
         lyrics: validatedData.data.lyrics,
@@ -32,7 +30,7 @@ export async function uploadSongAction(data: z.infer<typeof uploadSongSchema>) {
         coverArt: validatedData.data.coverArt,
     };
 
-    const newSong = addSong(songToAdd);
+    const newSong = await addSong(songToAdd);
 
     // Revalidate paths to show updated lists
     revalidatePath('/');

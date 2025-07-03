@@ -1,12 +1,12 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { EditSongForm } from '@/components/edit-song-form';
-import { songs } from "@/lib/data";
+import { getSongById } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ProtectedPage } from "@/components/protected-page";
 
-export default function EditSongPage({ params }: { params: { id: string } }) {
-    const song = songs.find(s => s.id === parseInt(params.id));
+export default async function EditSongPage({ params }: { params: { id: string } }) {
+    const song = await getSongById(params.id);
     
     if (!song) {
         notFound();

@@ -1,11 +1,10 @@
 'use server';
 
 import { z } from 'zod';
-import { addSong } from '@/lib/data';
+import { addSong } from '@/services/songs-service';
 import { deleteSongRequest } from '@/services/requests-service';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import type { Song } from '@/lib/types';
 
 const addSongSchema = z.object({
     requestId: z.string(),
@@ -25,18 +24,9 @@ export async function addSongAndRemoveRequest(data: z.infer<typeof addSongSchema
     }
 
     const { requestId, ...songData } = validatedData.data;
-
-    const songToAdd: Omit<Song, 'id' | 'visitCount' | 'likeCount'> = {
-        title: songData.title,
-        artist: songData.artist,
-        lyrics: songData.lyrics,
-        chords: songData.chords,
-        video: songData.video,
-        coverArt: songData.coverArt,
-    };
     
     // Add the new song
-    addSong(songToAdd);
+    const newSong = await addSong(songData);
 
     // Delete the request
     await deleteSongRequest(requestId);
@@ -45,6 +35,7 @@ export async function addSongAndRemoveRequest(data: z.infer<typeof addSongSchema
     revalidatePath('/admin/requests');
     revalidatePath('/');
     revalidatePath('/artists');
+    revalidatePath(`/artists/${encodeURIComponent(newSong.artist)}`);
     revalidatePath('/sitemap.ts');
     revalidatePath('/top-charts');
 

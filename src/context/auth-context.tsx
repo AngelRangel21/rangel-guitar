@@ -2,9 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import {
-  getAuth,
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
@@ -17,34 +15,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
 import { updateLikeCountAction } from '@/app/favorites/actions';
+import { auth } from '@/lib/firebase';
 
-// =================================================================
-// ¡IMPORTANTE! INSERTA AQUÍ TUS CREDENCIALES DE FIREBASE
-// 1. Ve a la consola de Firebase: https://console.firebase.google.com/
-// 2. Entra a TU proyecto (el que tú creaste).
-// 3. Haz clic en el ícono de engranaje (Configuración del proyecto).
-// 4. En la pestaña "General", baja hasta "Tus apps".
-// 5. Si no tienes una app web, créala (ícono </>).
-// 6. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
-// 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
-// =================================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
-  measurementId: "G-8J82455QVE"
-};
-
-let app: FirebaseApp;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
-}
-const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 interface User {
@@ -63,14 +35,14 @@ interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
   isPremium: boolean;
-  favorites: number[];
+  favorites: string[];
   isLoaded: boolean;
   signInWithGoogle: () => void;
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
   logout: () => void;
-  toggleFavorite: (songId: number) => Promise<void>;
-  isFavorite: (songId: number) => boolean;
+  toggleFavorite: (songId: string) => Promise<void>;
+  isFavorite: (songId: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -83,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
-  const [favorites, setFavorites] = useState<number[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -203,7 +175,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const toggleFavorite = async (songId: number) => {
+  const toggleFavorite = async (songId: string) => {
     if (!user) return;
     
     const isCurrentlyFavorite = favorites.includes(songId);
@@ -220,7 +192,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await updateLikeCountAction(songId, delta);
   };
 
-  const isFavorite = (songId: number) => {
+  const isFavorite = (songId: string) => {
     return favorites.includes(songId);
   };
   

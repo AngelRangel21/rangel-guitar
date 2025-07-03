@@ -1,10 +1,10 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ArtistList } from "@/components/artist-list";
-import { songs } from "@/lib/data";
+import { getArtists } from "@/services/songs-service";
 
-export default function ArtistsPage() {
-  const artists = Array.from(new Set(songs.map(song => song.artist)));
+export default async function ArtistsPage() {
+  const artists = await getArtists();
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

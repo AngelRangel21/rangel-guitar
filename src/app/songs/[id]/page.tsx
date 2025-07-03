@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { songs } from "@/lib/data";
+import { getSongById, getSongs } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SongDisplay } from "@/components/song-display";
@@ -8,7 +8,7 @@ import type { Song } from "@/lib/types";
 import { incrementVisitCountAction } from "./actions";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const song = songs.find(s => s.id === parseInt(params.id));
+  const song = await getSongById(params.id);
 
   if (!song) {
     return {
@@ -38,28 +38,29 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 export default async function SongPage({ params }: { params: { id: string } }) {
-  const songId = parseInt(params.id);
+  const songId = params.id;
   
   // Asynchronously increment the visit count without blocking rendering
   incrementVisitCountAction(songId);
 
-  const song = songs.find(s => s.id === songId);
+  const song = await getSongById(songId);
 
   if (!song) {
     notFound();
   }
 
   // --- Suggestion Logic ---
+  const allSongs = await getSongs();
   const MAX_SUGGESTIONS = 4;
 
   // 1. Get other songs by the same artist
-  let suggestedSongs: Song[] = songs.filter(
+  let suggestedSongs: Song[] = allSongs.filter(
     s => s.artist === song.artist && s.id !== song.id
   );
 
   // 2. If not enough, get random songs from other artists
   if (suggestedSongs.length < MAX_SUGGESTIONS) {
-      const otherSongs = songs.filter(
+      const otherSongs = allSongs.filter(
           s => s.artist !== song.artist && s.id !== song.id
       );
       

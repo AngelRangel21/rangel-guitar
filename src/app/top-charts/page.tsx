@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { songs } from "@/lib/data";
+import { getTopSongsBy } from "@/services/songs-service";
 import { TopChartsContent } from "@/components/top-charts-content";
 import type { Metadata } from 'next';
 
@@ -12,13 +12,8 @@ export const metadata: Metadata = {
 export default async function TopChartsPage() {
     const TOP_COUNT = 10;
 
-    const topVisited = [...songs]
-        .sort((a, b) => b.visitCount - a.visitCount)
-        .slice(0, TOP_COUNT);
-    
-    const topLiked = [...songs]
-        .sort((a, b) => b.likeCount - a.likeCount)
-        .slice(0, TOP_COUNT);
+    const topVisited = await getTopSongsBy('visitCount', TOP_COUNT);
+    const topLiked = await getTopSongsBy('likeCount', TOP_COUNT);
 
     return (
         <div className="flex flex-col min-h-screen bg-background">

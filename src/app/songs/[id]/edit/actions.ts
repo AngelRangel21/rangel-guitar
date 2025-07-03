@@ -1,12 +1,12 @@
 'use server';
 
 import { z } from 'zod';
-import { updateSong } from '@/lib/data';
+import { updateSong } from '@/services/songs-service';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 const editSongSchema = z.object({
-    id: z.number(),
+    id: z.string(),
     title: z.string().min(1, "El título es obligatorio."),
     artist: z.string().min(1, "El artista es obligatorio."),
     lyrics: z.string().optional(),
@@ -24,7 +24,7 @@ export async function updateSongAction(data: z.infer<typeof editSongSchema>) {
 
     const { id, ...songData } = validatedData.data;
     
-    updateSong(id, songData);
+    await updateSong(id, songData);
     
     revalidatePath(`/songs/${id}`);
     revalidatePath(`/songs/${id}/edit`);
