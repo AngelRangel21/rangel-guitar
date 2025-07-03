@@ -22,9 +22,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 function AiSongwriterForm({
     setGeneratedSong,
     setIsLoading,
+    isLoading
 }: {
     setGeneratedSong: (song: SongWriterOutput | null) => void;
     setIsLoading: (loading: boolean) => void;
+    isLoading: boolean;
 }) {
     const { t } = useI18n();
     const { toast } = useToast();
@@ -116,7 +118,7 @@ export default function AiSongwriterPage() {
     const [generatedSong, setGeneratedSong] = useState<SongWriterOutput | null>(null);
 
     return (
-        <ProtectedPage>
+        <ProtectedPage premiumOnly>
             <div className="flex flex-col min-h-screen bg-background">
                 <Header />
                 <main className="flex-grow container mx-auto px-4 py-8 flex justify-center">
@@ -130,6 +132,7 @@ export default function AiSongwriterPage() {
                                 <AiSongwriterForm 
                                     setGeneratedSong={setGeneratedSong}
                                     setIsLoading={setIsLoading}
+                                    isLoading={isLoading}
                                 />
                             </CardContent>
                         </Card>

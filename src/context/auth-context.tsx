@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -62,6 +61,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   isAdmin: boolean;
+  isPremium: boolean;
   favorites: number[];
   isLoaded: boolean;
   signInWithGoogle: () => void;
@@ -74,9 +74,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Define user roles based on email for this prototype
+const ADMIN_EMAIL = "admin@example.com";
+const PREMIUM_EMAIL = "premium@example.com";
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
@@ -92,7 +97,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: firebaseUser.displayName || firebaseUser.email || 'Anonymous',
         };
         setUser(userData);
-        setIsAdmin(firebaseUser.email === "admin@example.com");
+        setIsAdmin(firebaseUser.email === ADMIN_EMAIL);
+        setIsPremium(firebaseUser.email === PREMIUM_EMAIL);
 
         const storedFavorites = localStorage.getItem(`favorites_${userData.uid}`);
         if (storedFavorites) {
@@ -108,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setUser(null);
         setIsAdmin(false);
+        setIsPremium(false);
         setFavorites([]);
       }
       setIsLoaded(true);
@@ -212,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: !!user, 
     user, 
     isAdmin,
+    isPremium,
     favorites, 
     isLoaded,
     signInWithGoogle, 
