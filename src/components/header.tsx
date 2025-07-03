@@ -208,15 +208,6 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                       <Badge variant="info" className="text-xs">{t('premium')}</Badge>
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/premium/ai-songwriter" className="flex w-full items-center justify-between">
-                      <div className="flex items-center">
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        <span>{t('aiSongwriter')}</span>
-                      </div>
-                      <Badge variant="info" className="text-xs">{t('premium')}</Badge>
-                    </Link>
-                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>{t('logout')}</span>
