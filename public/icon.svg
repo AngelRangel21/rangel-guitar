@@ -1,6 +1,21 @@
-<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M128 20C132.321 28.2403 151.042 58.4827 160.404 77.0034C176.315 108.381 184.271 139.759 184.271 171.137C184.271 202.514 160.404 232.757 128 241C95.5962 232.757 71.7294 202.514 71.7294 171.137C71.7294 139.759 79.6853 108.381 95.5962 77.0034C104.958 58.4827 123.679 28.2403 128 20Z" fill="#000000"/>
-<text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="#FFFFFF">
-RG
-</text>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .rangel-text { font: bold 64px 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: white; }
+    .guitar-text { font: 48px 'Helvetica Neue', Arial, sans-serif; text-anchor: middle; fill: white; }
+  </style>
+  <g>
+    <!-- Headstock with V cutout using fill-rule -->
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M216 178C216 150 222 128 256 128C290 128 296 150 296 178V240C296 250 288 258 278 258H234C224 258 216 250 216 240V178ZM236 240V180L256 140L276 180V240H236Z" fill="white"/>
+    <!-- Swirl on top -->
+    <path d="M256,128 C240,98 272,98 256,128" stroke="white" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Tuning Pegs -->
+    <rect x="180" y="160" width="30" height="15" rx="5" fill="white"/>
+    <rect x="180" y="190" width="30" height="15" rx="5" fill="white"/>
+    <rect x="180" y="220" width="30" height="15" rx="5" fill="white"/>
+    <rect x="302" y="160" width="30" height="15" rx="5" fill="white"/>
+    <rect x="302" y="190" width="30" height="15" rx="5" fill="white"/>
+    <rect x="302" y="220" width="30" height="15" rx="5" fill="white"/>
+  </g>
+  <text x="256" y="320" class="rangel-text">RANGEL</text>
+  <text x="256" y="380" class="guitar-text">Guitar</text>
 </svg>
