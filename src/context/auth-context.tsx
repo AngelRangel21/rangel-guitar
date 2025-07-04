@@ -203,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
        toast({
         variant: "destructive",
         title: t('loginErrorTitle'),
-        description: t('auth/invalid-credential') || t(error.code) || error.message,
+        description: t('auth/invalid-credential'),
       });
     }
   };
