@@ -15,8 +15,10 @@ import { getAuth } from 'firebase/auth';
 const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
   authDomain: "rangel-guitar.firebaseapp.com",
+  // El ID de tu proyecto. Esencial para conectar a los servicios correctos.
   projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
+  // El bucket de almacenamiento para archivos (imágenes, etc.). Debe terminar en .appspot.com
+  storageBucket: "rangel-guitar.appspot.com",
   messagingSenderId: "354082670866",
   appId: "1:354082670866:web:9bf0ec87fa469ab5034bcb",
   measurementId: "G-XEJD6X0YTN"
