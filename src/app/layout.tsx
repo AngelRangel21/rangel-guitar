@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type {Metadata, Viewport} from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -19,10 +19,6 @@ export const metadata: Metadata = {
   description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
   metadataBase: new URL('https://rangelguitar.com'),
   manifest: '/manifest.json',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#eef0f3' },
-    { media: '(prefers-color-scheme: dark)', color: '#1d232a' },
-  ],
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -46,6 +42,13 @@ export const metadata: Metadata = {
     apple: '/icon.svg',
   }
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#eef0f3' },
+    { media: '(prefers-color-scheme: dark)', color: '#1d232a' },
+  ],
+}
 
 export default function RootLayout({
   children,
