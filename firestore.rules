@@ -3,52 +3,51 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Helper function to check if the currently authenticated user is an admin.
-    function isAdmin() {
-      // It's safer to check for the document's existence before accessing its data.
-      return request.auth != null &&
-             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+
+    // Helper function to check if a user is an admin
+    function isAdmin(userId) {
+      // Robust check: ensure the user document exists and isAdmin is true
+      return exists(/databases/$(database)/documents/users/$(userId)) &&
+             get(/databases/$(database)/documents/users/$(userId)).data.isAdmin == true;
     }
 
-    // Rules for the 'songs' collection
+    // Users collection rules
+    match /users/{userId} {
+      // Any authenticated user can read user profiles (needed for isAdmin check to work)
+      // but a user can only write to their own document.
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Song requests can be read/deleted by admins and created by any authenticated user
+    match /song-requests/{requestId} {
+      allow read, delete: if request.auth != null && isAdmin(request.auth.uid);
+      allow create: if request.auth != null;
+    }
+
+    // Songs collection rules
     match /songs/{songId} {
-      // Anyone can read songs.
+      // Anyone can read songs
       allow read: if true;
       
-      // Admins can create, delete, and perform any update.
-      allow create, delete: if isAdmin();
-      allow update: if isAdmin();
-      
-      // --- Specific update rules for non-admins ---
+      // Only admins can create or delete songs
+      allow create, delete: if request.auth != null && isAdmin(request.auth.uid);
 
-      // Rule 1: Allow any user (even unauthenticated) to increment visitCount,
-      // but only the visitCount field.
-      allow update: if request.resource.data.visitCount == resource.data.visitCount + 1
-                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount']);
-      
-      // Rule 2: Allow any logged-in user to increment/decrement likeCount,
-      // but only the likeCount field.
-      allow update: if request.auth != null &&
-                     (request.resource.data.likeCount == resource.data.likeCount + 1 || request.resource.data.likeCount == resource.data.likeCount - 1) &&
-                     request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']);
-    }
-
-    // Rules for the 'song-requests' collection
-    match /song-requests/{requestId} {
-      // Logged-in users can create requests.
-      allow create: if request.auth != null;
-      // Only admins can read or delete requests.
-      allow read, delete: if isAdmin();
-    }
-    
-    // Rules for the 'users' collection
-    match /users/{userId} {
-      // Admins can read any user document.
-      allow read: if isAdmin();
-      // Users can only read or write their own document.
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Update logic
+      allow update: if 
+        // Admins can update anything
+        (request.auth != null && isAdmin(request.auth.uid)) ||
+        // Anyone can increment visitCount by exactly 1, and change nothing else
+        (
+          request.resource.data.visitCount == resource.data.visitCount + 1 &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount'])
+        ) ||
+        // Logged-in users can change likeCount by +/- 1, and change nothing else
+        (
+          request.auth != null &&
+          request.resource.data.likeCount - resource.data.likeCount in [1, -1] &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount'])
+        );
     }
   }
 }
