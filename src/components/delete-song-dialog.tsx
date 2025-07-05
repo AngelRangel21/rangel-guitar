@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import type { Song } from '@/lib/types';
 import { useI18n } from '@/context/i18n-context';
-import { revalidateAndRedirectAfterDelete } from '@/app/songs/[id]/actions';
+import { revalidateAndRedirectAfterDelete } from '@/app/songs/[slug]/actions';
 import { deleteSong } from '@/lib/client/songs';
 
 interface DeleteSongDialogProps {
