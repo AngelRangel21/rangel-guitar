@@ -4,51 +4,57 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if a user is authenticated
-    function isAuthed() {
+    // Devuelve 'true' si el usuario actual ha iniciado sesión Y es administrador.
+    // Comprueba primero que el documento del usuario exista para evitar errores.
+    function isAdmin() {
+      return request.auth != null 
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // Devuelve 'true' si el usuario ha iniciado sesión.
+    function isSignedIn() {
       return request.auth != null;
     }
-
-    // Helper function to check if the user is an admin.
-    // This is safe to call even for unauthenticated users.
-    function isAdmin() {
-      return isAuthed() &&
-             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
-    }
     
-    // User profiles:
-    // - Users can create their own profile on signup.
-    // - Users can only read or update their own profile.
-    match /users/{userId} {
-      allow create: if isAuthed() && request.auth.uid == userId;
-      allow read, update: if isAuthed() && request.auth.uid == userId;
-      allow delete: if false; // Deleting user accounts is disabled for safety.
+    // Devuelve 'true' si la actualización SOLO modifica los campos especificados.
+    function isOnlyUpdating(fields) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
     }
 
-    // Songs:
+    // Reglas para la colección 'songs'
     match /songs/{songId} {
-      // Anyone can read songs.
-      allow read: if true;
-      // Only admins can create or delete songs.
+      // Cualquiera puede leer la lista de canciones o una canción específica.
+      allow get, list: if true;
+
+      // Solo los administradores pueden crear o eliminar canciones.
       allow create, delete: if isAdmin();
       
-      // Updates are allowed under specific conditions:
+      // Lógica de actualización:
       allow update: if 
-        // 1. Admins can update any field.
+        // Los administradores pueden actualizar cualquier campo.
         isAdmin() ||
-        // 2. Authenticated users can update ONLY the 'likeCount' field.
-        (isAuthed() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount'])) ||
-        // 3. Anyone (even unauthenticated) can update ONLY the 'visitCount' field.
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount']));
+        // Cualquier usuario (incluso anónimo) puede actualizar SOLO el contador de visitas.
+        isOnlyUpdating(['visitCount']) ||
+        // Un usuario que ha iniciado sesión puede actualizar SOLO el contador de "me gusta".
+        (isSignedIn() && isOnlyUpdating(['likeCount']));
     }
 
-    // Song Requests:
-    // - Any authenticated user can create a request.
-    // - Only admins can read or delete requests.
+    // Reglas para la colección 'users'
+    match /users/{userId} {
+      // Un usuario puede crear su propio documento (al registrarse).
+      // Un usuario puede leer y actualizar su propio documento.
+      allow create, get, update: if request.auth.uid == userId;
+      // Un administrador puede leer los datos de cualquier usuario.
+      allow get: if isAdmin();
+    }
+    
+    // Reglas para la colección 'song-requests'
     match /song-requests/{requestId} {
-      allow create: if isAuthed();
-      allow read, delete: if isAdmin();
+      // Un usuario que ha iniciado sesión puede crear una solicitud.
+      allow create: if isSignedIn();
+      // Solo los administradores pueden leer la lista de solicitudes o eliminarlas.
+      allow list, get, delete: if isAdmin();
     }
   }
 }
