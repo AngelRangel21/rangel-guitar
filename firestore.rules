@@ -1,53 +1,54 @@
+
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Helper function to check if a user is authenticated.
-    function isAuth() {
-      return request.auth != null;
-    }
-
-    // Helper function to check if the authenticated user is an admin.
-    // It safely checks for the existence of the user document before accessing its data.
+    
+    // Helper function to check if the currently authenticated user is an admin.
     function isAdmin() {
-      return isAuth() 
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+      // It's safer to check for the document's existence before accessing its data.
+      return request.auth != null &&
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // Rules for the 'songs' collection.
+    // Rules for the 'songs' collection
     match /songs/{songId} {
-      // Anyone can read song data.
-      allow read;
-
-      // Allow full write access (create, update, delete) only for admins.
-      allow write: if isAdmin();
+      // Anyone can read songs.
+      allow read: if true;
       
-      // Allow specific, non-destructive updates for other users.
-      // This is OR'd with the 'allow write' rule above.
-      allow update: if
-        // Anyone (even unauthenticated users) can increment the visit count.
-        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount'])
-        ||
-        // Any authenticated user can increment the like count.
-        (isAuth() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']));
+      // Admins can create, delete, and perform any update.
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin();
+      
+      // --- Specific update rules for non-admins ---
+
+      // Rule 1: Allow any user (even unauthenticated) to increment visitCount,
+      // but only the visitCount field.
+      allow update: if request.resource.data.visitCount == resource.data.visitCount + 1
+                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount']);
+      
+      // Rule 2: Allow any logged-in user to increment/decrement likeCount,
+      // but only the likeCount field.
+      allow update: if request.auth != null &&
+                     (request.resource.data.likeCount == resource.data.likeCount + 1 || request.resource.data.likeCount == resource.data.likeCount - 1) &&
+                     request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']);
+    }
+
+    // Rules for the 'song-requests' collection
+    match /song-requests/{requestId} {
+      // Logged-in users can create requests.
+      allow create: if request.auth != null;
+      // Only admins can read or delete requests.
+      allow read, delete: if isAdmin();
     }
     
-    // Rules for the 'song-requests' collection.
-    match /song-requests/{requestId} {
-      // Only admins can read and delete requests.
-      allow read, delete: if isAdmin();
-      // Any authenticated user can create a request.
-      allow create: if isAuth();
-    }
-
-    // Rules for the 'users' collection.
+    // Rules for the 'users' collection
     match /users/{userId} {
-      // A user can create their own document, and only their own.
-      allow create: if isAuth() && request.auth.uid == userId;
-      // A user can read or update their own document, and only their own.
-      allow read, update: if isAuth() && request.auth.uid == userId;
+      // Admins can read any user document.
+      allow read: if isAdmin();
+      // Users can only read or write their own document.
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
