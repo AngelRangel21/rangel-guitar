@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             userIsAdmin = userData.isAdmin || false;
             userIsPremium = userData.isPremium || false;
           } else {
-            // Este bloque se ejecuta para nuevos inicios de sesión (ej. Google)
+            // Este bloque se ejecuta para nuevos inicios de sesión (ej. Google) y nuevos registros.
             const newName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Anonymous';
             appUser = {
               uid: firebaseUser.uid,
@@ -172,25 +172,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      const userDocRef = doc(db, 'users', userCredential.user.uid);
-      // Asigna el rol de administrador si el correo está en la lista
-      const userIsAdmin = ADMIN_EMAILS.includes(email);
-
-      await setDoc(userDocRef, {
-        uid: userCredential.user.uid,
-        email: email,
-        name: name,
-        isAdmin: userIsAdmin,
-        isPremium: false,
-        createdAt: new Date(),
-      });
-      
+      // Actualiza el perfil de Firebase Auth inmediatamente.
+      // onAuthStateChanged se encargará de crear el documento en Firestore.
       await updateProfile(userCredential.user, { displayName: name });
       
       toast({
         title: t('accountCreatedTitle'),
         description: t('accountCreatedDescription'),
       });
+      // El listener onAuthStateChanged gestionará la creación del documento de usuario en Firestore.
     } catch (error: any) {
       console.error("Error signing up", error);
       toast({
