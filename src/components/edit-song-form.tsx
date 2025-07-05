@@ -11,8 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { updateSongAction } from "@/app/songs/[id]/edit/actions";
+import { revalidateAndRedirectAfterEdit } from "@/app/songs/[id]/edit/actions";
 import type { Song } from "@/lib/types";
+import { updateSong, type NewSongData } from "@/lib/client/songs";
 
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
@@ -43,16 +44,23 @@ export function EditSongForm({ song }: { song: Song }) {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            await updateSongAction({ ...values, id: song.id });
-            // The action will handle redirection on success.
-        } catch (error: any) {
-            // The `redirect` in a server action throws an error, which we need to catch.
-            // However, we don't want to show an error toast for a successful redirect.
-            if (error.digest?.startsWith('NEXT_REDIRECT')) {
-                return; // Let Next.js handle the redirect
-            }
+            const songData: NewSongData = {
+                title: values.title,
+                artist: values.artist,
+                lyrics: values.lyrics,
+                chords: values.chords,
+                video: values.video,
+                coverArt: values.coverArt,
+            };
 
-            // Handle actual errors
+            await updateSong(song.id, songData);
+            await revalidateAndRedirectAfterEdit(song.id, values.artist);
+            
+        } catch (error: any) {
+            if (error.digest?.startsWith('NEXT_REDIRECT')) {
+                return;
+            }
+            console.error("Failed to update song:", error);
             toast({
                 variant: "destructive",
                 title: t('error'),

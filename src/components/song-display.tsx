@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeleteSongDialog } from "./delete-song-dialog";
 import Link from 'next/link';
 import { SongCard } from "./song-card";
+import { incrementVisitCount } from "@/lib/client/songs";
+import { revalidateAfterVisit } from "@/app/songs/[id]/actions";
 
 export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSongs: Song[] }) {
   const [transpose, setTranspose] = useState(0);
@@ -24,7 +26,17 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
-  }, []);
+
+    const logVisit = async () => {
+      try {
+        await incrementVisitCount(song.id);
+        await revalidateAfterVisit();
+      } catch (error) {
+        console.error("Failed to increment visit count:", error);
+      }
+    };
+    logVisit();
+  }, [song.id]);
 
   const getTransposedKeyText = () => {
     if (transpose === 0) return t('originalKey');

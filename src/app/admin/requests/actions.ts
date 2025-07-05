@@ -1,6 +1,6 @@
 'use server';
 
-import { getSongRequests, type SongRequest, deleteSongRequest } from '@/services/requests-service';
+import { getSongRequests, type SongRequest } from '@/services/requests-service';
 import { revalidatePath } from 'next/cache';
 
 export async function getAdminNotifications(): Promise<{
@@ -15,15 +15,12 @@ export async function getAdminNotifications(): Promise<{
 }
 
 
-export async function deleteRequestAction(id: string): Promise<{ success: boolean }> {
+export async function revalidateAfterRequestDelete(): Promise<{ success: boolean }> {
   try {
-    await deleteSongRequest(id);
     revalidatePath('/admin/requests');
-    // The header polls for new data, so it will update automatically.
-    // We can return a success status to the client.
     return { success: true };
   } catch (error) {
-    console.error('Failed to delete song request:', error);
+    console.error('Failed to revalidate path:', error);
     return { success: false };
   }
 }

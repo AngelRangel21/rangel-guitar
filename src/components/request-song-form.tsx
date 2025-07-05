@@ -10,17 +10,18 @@ import { Input } from "@/components/ui/input";
 import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { requestSong } from "@/ai/flows/request-song-flow";
+import { addSongRequest } from "@/lib/client/requests";
+import { revalidatePath } from 'next/cache';
+
+const formSchema = z.object({
+  title: z.string().min(2, { message: 'songTitleRequired' }),
+  artist: z.string().min(2, { message: 'artistNameRequired' }),
+});
 
 export function RequestSongForm() {
   const { t } = useI18n();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-
-  const formSchema = z.object({
-    title: z.string().min(2, { message: t('songTitleRequired') }),
-    artist: z.string().min(2, { message: t('artistNameRequired') }),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,10 +34,10 @@ export function RequestSongForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      const result = await requestSong(values);
+      await addSongRequest(values);
       toast({
         title: t('requestSentTitle'),
-        description: result.message,
+        description: `¡Tu solicitud para "${values.title}" ha sido enviada! La revisaremos pronto.`
       });
       form.reset();
     } catch (error) {

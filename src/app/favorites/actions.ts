@@ -1,10 +1,8 @@
 'use server';
 
-import { updateLikeCount } from '@/services/songs-service';
 import { revalidatePath } from 'next/cache';
 
-export async function updateLikeCountAction(songId: string, delta: 1 | -1) {
-    await updateLikeCount(songId, delta);
+export async function revalidateAfterLike(songId: string) {
     revalidatePath('/top-charts');
     revalidatePath(`/songs/${songId}`);
 }

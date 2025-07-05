@@ -11,7 +11,8 @@ import Link from "next/link";
 import { ProtectedPage } from "./protected-page";
 import { Button } from './ui/button';
 import { Trash2 } from 'lucide-react';
-import { deleteRequestAction } from '@/app/admin/requests/actions';
+import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions';
+import { deleteSongRequest } from '@/lib/client/requests';
 import { useToast } from '@/hooks/use-toast';
 
 interface AdminRequestsContentProps {
@@ -30,20 +31,20 @@ export function AdminRequestsContent({ requests: initialRequests }: AdminRequest
     const originalRequests = [...requests];
     setRequests(currentRequests => currentRequests.filter(req => req.id !== requestId));
 
-    const result = await deleteRequestAction(requestId);
-
-    if (!result.success) {
+    try {
+      await deleteSongRequest(requestId);
+      await revalidateAfterRequestDelete();
+      toast({
+          title: t('requestDeletedTitle'),
+          description: t('requestDeletedDescription')
+      });
+    } catch(error) {
       setRequests(originalRequests);
       toast({
         variant: "destructive",
         title: t('error'),
         description: t('songRequestDeleteError')
       });
-    } else {
-        toast({
-            title: t('requestDeletedTitle'),
-            description: t('requestDeletedDescription')
-        })
     }
   };
 

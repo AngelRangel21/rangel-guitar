@@ -1,0 +1,62 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // Helper function to check for admin role safely.
+    function isAdmin() {
+      let uid = request.auth.uid;
+      // First, ensure the user is authenticated.
+      if (uid == null) {
+        return false;
+      }
+      
+      let userDocPath = /databases/$(database)/documents/users/$(uid);
+      // Then, ensure the user document exists before trying to access its data.
+      return exists(userDocPath) && get(userDocPath).data.isAdmin == true;
+    }
+  
+    // Rules for the 'songs' collection
+    match /songs/{songId} {
+      // Anyone can read songs.
+      allow read;
+      
+      // Anyone can increment the visit count.
+      allow update: if 'visitCount' in request.resource.data.keys() 
+                      && request.resource.data.visitCount == resource.data.visitCount + 1;
+      
+      // Authenticated users can update the like count.
+      allow update: if request.auth != null
+                      && 'likeCount' in request.resource.data.keys()
+                      && (request.resource.data.likeCount == resource.data.likeCount + 1 || 
+                          request.resource.data.likeCount == resource.data.likeCount - 1);
+      
+      // Only admins can create songs, delete them, or perform other updates.
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() && 
+                    !('visitCount' in request.resource.data.keys()) &&
+                    !('likeCount' in request.resource.data.keys());
+    }
+    
+    // Rules for the 'song-requests' collection
+    match /song-requests/{requestId} {
+      // Any authenticated user can create a request.
+      allow create: if request.auth != null;
+      
+      // Only admins can read and delete requests.
+      allow read, delete: if isAdmin();
+    }
+    
+    // Rules for the 'users' collection
+    match /users/{userId} {
+      // A user can read their own data. An admin can read any user's data.
+      allow read: if request.auth.uid == userId || isAdmin();
+      
+      // A user can create their own user document (e.g., on signup).
+      allow create: if request.auth.uid == userId;
+      
+      // No one can update or delete user documents directly.
+      allow update, delete: if false;
+    }
+  }
+}

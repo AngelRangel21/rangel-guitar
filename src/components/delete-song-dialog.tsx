@@ -16,8 +16,8 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import type { Song } from '@/lib/types';
 import { useI18n } from '@/context/i18n-context';
-import { deleteSongAction } from '@/app/songs/[id]/actions';
-import { Trash2 } from 'lucide-react';
+import { revalidateAndRedirectAfterDelete } from '@/app/songs/[id]/actions';
+import { deleteSong } from '@/lib/client/songs';
 
 interface DeleteSongDialogProps {
   song: Song;
@@ -32,16 +32,14 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      await deleteSongAction(song.id);
-      // The action will handle redirection on success.
+      await deleteSong(song.id);
+      await revalidateAndRedirectAfterDelete();
     } catch (error: any) {
-      // The `redirect` in a server action throws an error, which we need to catch.
-      // However, we don't want to show an error toast for a successful redirect.
       if (error.digest?.startsWith('NEXT_REDIRECT')) {
-          return; // Let Next.js handle the redirect
+          return;
       }
       
-      // Handle actual errors
+      console.error("Failed to delete song:", error);
       toast({
         variant: 'destructive',
         title: t('error'),

@@ -16,8 +16,9 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useI18n } from './i18n-context';
-import { updateLikeCountAction } from '@/app/favorites/actions';
+import { revalidateAfterLike } from '@/app/favorites/actions';
 import { auth, db } from '@/lib/firebase';
+import { updateLikeCount } from '@/lib/client/songs';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -232,14 +233,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const isCurrentlyFavorite = favorites.includes(songId);
     const delta = isCurrentlyFavorite ? -1 : 1;
 
+    // Client-side state update for immediate feedback
     const newFavorites = isCurrentlyFavorite
       ? favorites.filter((id) => id !== songId)
       : [...favorites, songId];
-      
     setFavorites(newFavorites);
     localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(newFavorites));
     
-    await updateLikeCountAction(songId, delta);
+    // Client-side DB write, then server-side revalidation
+    try {
+      await updateLikeCount(songId, delta);
+      await revalidateAfterLike(songId);
+    } catch (error) {
+      console.error("Failed to update like count:", error);
+      // Revert optimistic UI update on error
+      localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(favorites));
+      setFavorites(favorites);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not update favorite status.",
+      });
+    }
   };
 
   const isFavorite = (songId: string) => {

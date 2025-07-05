@@ -12,7 +12,7 @@ import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
-import { addSong, type NewSongData } from '@/services/songs-service';
+import { addSong, type NewSongData } from '@/lib/client/songs';
 import { revalidateAfterSongUpload } from "@/app/admin/upload-song/actions";
 
 const formSchema = z.object({
@@ -54,19 +54,15 @@ export function UploadSongForm() {
                 coverArt: values.coverArt,
             };
 
-            // 1. Perform write on the client where the user is authenticated
-            const newSong = await addSong(songToAdd);
-
-            // 2. Trigger revalidation on the server
-            await revalidateAfterSongUpload(newSong.artist);
+            const docRef = await addSong(songToAdd);
+            await revalidateAfterSongUpload(values.artist);
 
             toast({
                 title: "Canción Subida",
-                description: `"${newSong.title}" ha sido añadida a la biblioteca.`,
+                description: `"${values.title}" ha sido añadida a la biblioteca.`,
             });
             
-            // 3. Redirect on the client
-            router.push(`/songs/${newSong.id}`);
+            router.push(`/songs/${docRef.id}`);
 
         } catch (error: any) {
              console.error("Upload song error:", error);

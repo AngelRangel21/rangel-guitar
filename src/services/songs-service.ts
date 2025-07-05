@@ -1,13 +1,13 @@
 'use server';
 
 import { db } from '@/lib/firebase';
-import { collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit, increment } from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, query, where, orderBy, limit } from 'firebase/firestore';
 import type { Song } from '@/lib/types';
 
-const songsCollection = collection(db, 'songs');
+// This file now ONLY contains functions for READING data on the server.
+// Write operations have been moved to a client-specific file.
 
-// Type for adding a new song, without the DB-generated fields
-export type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount'>;
+const songsCollection = collection(db, 'songs');
 
 export async function getSongs(): Promise<Song[]> {
   const snapshot = await getDocs(query(songsCollection, orderBy('title', 'asc')));
@@ -33,46 +33,6 @@ export async function getArtists(): Promise<string[]> {
     const songs = await getSongs();
     const artists = new Set(songs.map(song => song.artist));
     return Array.from(artists).sort();
-}
-
-export async function addSong(songData: NewSongData): Promise<Song> {
-    const docRef = await addDoc(songsCollection, {
-        ...songData,
-        visitCount: 0,
-        likeCount: 0,
-    });
-
-    const newSong = {
-        id: docRef.id,
-        ...songData,
-        visitCount: 0,
-        likeCount: 0,
-    };
-    return newSong;
-}
-
-export async function updateSong(id: string, songData: Partial<NewSongData>): Promise<void> {
-    const docRef = doc(db, 'songs', id);
-    await updateDoc(docRef, songData);
-}
-
-export async function deleteSong(id: string): Promise<void> {
-    const docRef = doc(db, 'songs', id);
-    await deleteDoc(docRef);
-}
-
-export async function incrementVisitCount(id: string): Promise<void> {
-    const docRef = doc(db, 'songs', id);
-    await updateDoc(docRef, {
-        visitCount: increment(1)
-    });
-}
-
-export async function updateLikeCount(id: string, delta: 1 | -1): Promise<void> {
-    const docRef = doc(db, 'songs', id);
-    await updateDoc(docRef, {
-        likeCount: increment(delta)
-    });
 }
 
 export async function getTopSongsBy(field: 'visitCount' | 'likeCount', count: number): Promise<Song[]> {

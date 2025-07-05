@@ -11,7 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { addSongAndRemoveRequest } from "@/app/admin/add-song/actions";
+import { revalidateAndRedirect } from "@/app/admin/add-song/actions";
+import { addSong, type NewSongData } from "@/lib/client/songs";
+import { deleteSongRequest } from "@/lib/client/requests";
 
 interface AddSongFormProps {
     requestId: string;
@@ -48,16 +50,30 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            await addSongAndRemoveRequest({ ...values, requestId });
-            // The action will handle redirection on success.
+            const songData: NewSongData = {
+                title: values.title,
+                artist: values.artist,
+                lyrics: values.lyrics,
+                chords: values.chords,
+                video: values.video,
+                coverArt: values.coverArt,
+            };
+
+            // Perform client-side writes
+            await addSong(songData);
+            await deleteSongRequest(requestId);
+            
+            // Trigger server-side revalidation and redirection
+            await revalidateAndRedirect(values.artist);
+
         } catch (error: any) {
             // The `redirect` in a server action throws an error, which we need to catch.
-            // However, we don't want to show an error toast for a successful redirect.
             if (error.digest?.startsWith('NEXT_REDIRECT')) {
                 return; // Let Next.js handle the redirect
             }
 
             // Handle actual errors
+            console.error("Failed to add song and remove request:", error);
             toast({
                 variant: "destructive",
                 title: "Error",
