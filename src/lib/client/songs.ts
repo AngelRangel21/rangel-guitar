@@ -1,19 +1,19 @@
 // IMPORTANT: This file is intended for client-side operations and does NOT have 'use server'.
 import { db } from '@/lib/firebase';
-import { collection, doc, addDoc, updateDoc, deleteDoc, increment, type DocumentReference } from 'firebase/firestore';
+import { collection, doc, setDoc, updateDoc, deleteDoc, increment } from 'firebase/firestore';
 import type { Song } from '@/lib/types';
 
 // Type for adding a new song, without the DB-generated fields
 export type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount'>;
-const songsCollection = collection(db, 'songs');
 
-export async function addSong(songData: NewSongData): Promise<DocumentReference> {
-    const docRef = await addDoc(songsCollection, {
+export async function addSong(songData: NewSongData): Promise<void> {
+    // The slug is now the document ID. This ensures new songs are saved with the slug as their ID.
+    const docRef = doc(db, 'songs', songData.slug);
+    await setDoc(docRef, {
         ...songData,
         visitCount: 0,
         likeCount: 0,
     });
-    return docRef;
 }
 
 export async function updateSong(id: string, songData: Partial<NewSongData>): Promise<void> {
