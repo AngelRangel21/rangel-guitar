@@ -9,3 +9,10 @@ export type Song = {
   visitCount: number;
   likeCount: number;
 };
+
+export interface SongRequest {
+  id: string;
+  title: string;
+  artist: string;
+  requestedAt: Date;
+}

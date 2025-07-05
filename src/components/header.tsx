@@ -20,14 +20,16 @@ import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
-import { useEffect, useState, useCallback } from "react";
-import { getAdminNotifications, revalidateAfterRequestDelete } from "@/app/admin/requests/actions";
+import { useEffect, useState } from "react";
+import { revalidateAfterRequestDelete } from "@/app/admin/requests/actions";
 import { deleteSongRequest } from '@/lib/client/requests';
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
-import type { SongRequest } from "@/services/requests-service";
+import type { SongRequest } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "./ui/badge";
+import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
@@ -35,19 +37,36 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
   const { toast } = useToast();
   const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
-  const fetchNotifications = useCallback(async () => {
-    if (isAdmin) {
-      const data = await getAdminNotifications();
-      setNotifications(data);
-    }
-  }, [isAdmin]);
-
   useEffect(() => {
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 15000); // Poll every 15 seconds
+    if (!isAdmin) {
+        setNotifications({ count: 0, recentRequests: [] });
+        return;
+    }
 
-    return () => clearInterval(interval);
-  }, [fetchNotifications]);
+    const requestsCollection = collection(db, 'song-requests');
+    const q = query(requestsCollection, orderBy('requestedAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+        const requests = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                artist: data.artist,
+                requestedAt: data.requestedAt.toDate(),
+            }
+        }) as SongRequest[];
+
+        setNotifications({
+            count: requests.length,
+            recentRequests: requests.slice(0, 5),
+        });
+    }, (error) => {
+        console.error("Error fetching notifications:", error);
+    });
+
+    return () => unsubscribe();
+  }, [isAdmin]);
 
   const locale = language === 'es' ? es : enUS;
 
@@ -57,7 +76,6 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
 
     const originalNotifications = { ...notifications };
 
-    // Optimistic UI update
     setNotifications(prev => ({
         count: Math.max(0, prev.count - 1),
         recentRequests: prev.recentRequests.filter(req => req.id !== requestId),

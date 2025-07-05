@@ -1,19 +1,9 @@
 'use server';
 
-import { getSongRequests, type SongRequest } from '@/services/requests-service';
 import { revalidatePath } from 'next/cache';
 
-export async function getAdminNotifications(): Promise<{
-  count: number;
-  recentRequests: SongRequest[];
-}> {
-  const requests = await getSongRequests();
-  return {
-    count: requests.length,
-    recentRequests: requests.slice(0, 5), // Get top 5 recent
-  };
-}
-
+// `getAdminNotifications` has been removed because it was causing permission errors.
+// Notification data is now fetched directly on the client using a real-time listener in Header.tsx.
 
 export async function revalidateAfterRequestDelete(): Promise<{ success: boolean }> {
   try {
