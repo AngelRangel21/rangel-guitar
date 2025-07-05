@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { revalidateAndRedirectAfterEdit } from "@/app/songs/[slug]/edit/actions";
 import type { Song } from "@/lib/types";
 import { updateSong } from "@/lib/client/songs";
+import { createSlug } from "@/lib/utils";
 
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
@@ -23,15 +24,6 @@ const formSchema = z.object({
     video: z.string().optional(),
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
-
-const createSlug = (title: string, artist: string) => {
-    const combined = `${title} ${artist}`;
-    return combined.toLowerCase()
-        .replace(/&/g, 'and')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-');
-};
 
 export function EditSongForm({ song }: { song: Song }) {
     const { t } = useI18n();

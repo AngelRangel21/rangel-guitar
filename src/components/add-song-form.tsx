@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { revalidateAndRedirect } from "@/app/admin/add-song/actions";
 import { addSong, type NewSongData } from "@/lib/client/songs";
 import { deleteSongRequest } from "@/lib/client/requests";
+import { createSlug } from "@/lib/utils";
 
 interface AddSongFormProps {
     requestId: string;
@@ -29,15 +30,6 @@ const formSchema = z.object({
     video: z.string().optional(),
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
-
-const createSlug = (title: string, artist: string) => {
-    const combined = `${title} ${artist}`;
-    return combined.toLowerCase()
-        .replace(/&/g, 'and')
-        .replace(/[^a-z0-9\s-]/g, '')
-        .trim()
-        .replace(/\s+/g, '-');
-};
 
 export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongFormProps) {
     const { t } = useI18n();
