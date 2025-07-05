@@ -1,3 +1,4 @@
+
 'use server';
 
 import { db } from '@/lib/firebase';
@@ -29,13 +30,18 @@ export async function getSongs(): Promise<Song[]> {
   return snapshot.docs.map(mapDocToSong);
 }
 
+/**
+ * Finds a song by its slug.
+ * This function fetches all songs and filters them in memory.
+ * This approach is used to correctly find songs that may not have the `slug` field
+ * persisted in the database yet (legacy data), as the slug is generated on-the-fly
+ * in `mapDocToSong`. For larger datasets, a database migration to add slugs to all
+ * documents and a direct query would be more performant.
+ */
 export async function getSongBySlug(slug: string): Promise<Song | null> {
-    const q = query(songsCollection, where('slug', '==', slug), limit(1));
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) {
-        return null;
-    }
-    return mapDocToSong(snapshot.docs[0]);
+    const allSongs = await getSongs();
+    const song = allSongs.find(s => s.slug === slug);
+    return song || null;
 }
 
 export async function getSongById(id: string): Promise<Song | null> {
