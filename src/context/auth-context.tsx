@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -19,6 +20,9 @@ import { updateLikeCountAction } from '@/app/favorites/actions';
 import { auth, db } from '@/lib/firebase';
 
 const googleProvider = new GoogleAuthProvider();
+
+// Lista de correos electrónicos que serán administradores al registrarse.
+const ADMIN_EMAILS = ['angel145256@gmail.com'];
 
 interface User {
   uid: string;
@@ -79,16 +83,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             userIsAdmin = userData.isAdmin || false;
             userIsPremium = userData.isPremium || false;
           } else {
+            // Este bloque se ejecuta para nuevos inicios de sesión (ej. Google)
             const newName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Anonymous';
             appUser = {
               uid: firebaseUser.uid,
               name: newName,
             };
+            // Asigna el rol de administrador si el correo está en la lista
+            userIsAdmin = ADMIN_EMAILS.includes(firebaseUser.email || '');
+            
             await setDoc(userDocRef, {
               uid: firebaseUser.uid,
               email: firebaseUser.email,
               name: appUser.name,
-              isAdmin: false,
+              isAdmin: userIsAdmin,
               isPremium: false,
               createdAt: new Date(),
             });
@@ -163,18 +171,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      // Directly create the user document in Firestore to ensure data consistency
       const userDocRef = doc(db, 'users', userCredential.user.uid);
+      // Asigna el rol de administrador si el correo está en la lista
+      const userIsAdmin = ADMIN_EMAILS.includes(email);
+
       await setDoc(userDocRef, {
         uid: userCredential.user.uid,
         email: email,
         name: name,
-        isAdmin: false,
+        isAdmin: userIsAdmin,
         isPremium: false,
         createdAt: new Date(),
       });
       
-      // Also update the Firebase Auth profile
       await updateProfile(userCredential.user, { displayName: name });
       
       toast({
