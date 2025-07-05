@@ -40,7 +40,6 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   isAdmin: boolean;
-  isPremium: boolean;
   favorites: string[];
   isLoaded: boolean;
   signInWithGoogle: () => void;
@@ -56,7 +55,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
@@ -73,7 +71,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           let appUser: User;
           let userIsAdmin = false;
-          let userIsPremium = false;
 
           if (userDoc.exists()) {
             const userData = userDoc.data();
@@ -82,7 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               name: userData.name || firebaseUser.displayName || 'Anonymous',
             };
             userIsAdmin = userData.isAdmin || false;
-            userIsPremium = userData.isPremium || false;
           } else {
             // Este bloque se ejecuta para nuevos inicios de sesión (ej. Google) y nuevos registros.
             const newName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Anonymous';
@@ -98,14 +94,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               email: firebaseUser.email,
               name: appUser.name,
               isAdmin: userIsAdmin,
-              isPremium: false,
               createdAt: new Date(),
             });
           }
           
           setUser(appUser);
           setIsAdmin(userIsAdmin);
-          setIsPremium(userIsPremium);
 
           const storedFavorites = localStorage.getItem(`favorites_${appUser.uid}`);
           if (storedFavorites) {
@@ -116,14 +110,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           setUser(null);
           setIsAdmin(false);
-          setIsPremium(false);
           setFavorites([]);
         }
       } catch (error) {
         console.error("Error in onAuthStateChanged: ", error);
         setUser(null);
         setIsAdmin(false);
-        setIsPremium(false);
         setFavorites([]);
         toast({
           variant: "destructive",
@@ -255,7 +247,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: !!user, 
     user, 
     isAdmin,
-    isPremium,
     favorites, 
     isLoaded,
     signInWithGoogle, 

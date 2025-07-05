@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuth } from '@/context/auth-context';
@@ -10,11 +11,10 @@ import { Footer } from '@/components/footer';
 interface ProtectedPageProps {
   children: React.ReactNode;
   adminOnly?: boolean;
-  premiumOnly?: boolean;
 }
 
-export function ProtectedPage({ children, adminOnly = false, premiumOnly = false }: ProtectedPageProps) {
-  const { isLoaded, isAuthenticated, isAdmin, isPremium } = useAuth();
+export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProps) {
+  const { isLoaded, isAuthenticated, isAdmin } = useAuth();
   const router = useRouter();
   const { t } = useI18n();
 
@@ -25,16 +25,16 @@ export function ProtectedPage({ children, adminOnly = false, premiumOnly = false
         return;
       }
       
-      const isAllowed = (!adminOnly || isAdmin) && (!premiumOnly || isPremium || isAdmin);
+      const isAllowed = !adminOnly || isAdmin;
       
       if (!isAllowed) {
-        // In a real app, you might redirect to a specific "access denied" or "upgrade" page.
+        // In a real app, you might redirect to a specific "access denied" page.
         router.push('/');
       }
     }
-  }, [isLoaded, isAuthenticated, isAdmin, isPremium, adminOnly, premiumOnly, router]);
+  }, [isLoaded, isAuthenticated, isAdmin, adminOnly, router]);
 
-  const isAllowed = (!adminOnly || isAdmin) && (!premiumOnly || isPremium || isAdmin);
+  const isAllowed = !adminOnly || isAdmin;
   const shouldShowContent = isLoaded && isAuthenticated && isAllowed;
   
   if (shouldShowContent) {
