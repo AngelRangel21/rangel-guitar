@@ -13,13 +13,13 @@ import { getAuth } from 'firebase/auth';
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID",
-  measurementId: "TU_MEASUREMENT_ID"
+  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
+  authDomain: "rangel-guitar.firebaseapp.com",
+  projectId: "rangel-guitar",
+  storageBucket: "rangel-guitar.firebasestorage.app",
+  messagingSenderId: "354082670866",
+  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
+  measurementId: "G-8J82455QVE"
 };
 
 
