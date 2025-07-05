@@ -21,7 +21,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState, useCallback } from "react";
-import { getAdminNotifications, deleteRequestAction } from "@/app/admin/requests/actions";
+import { getAdminNotifications, revalidateAfterRequestDelete } from "@/app/admin/requests/actions";
+import { deleteSongRequest } from '@/lib/client/requests';
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
 import type { SongRequest } from "@/services/requests-service";
@@ -54,21 +55,33 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
     e.preventDefault();
     e.stopPropagation();
 
+    const originalNotifications = { ...notifications };
+
     // Optimistic UI update
     setNotifications(prev => ({
         count: Math.max(0, prev.count - 1),
         recentRequests: prev.recentRequests.filter(req => req.id !== requestId),
     }));
     
-    const result = await deleteRequestAction(requestId);
-    if (!result.success) {
-        toast({
+    try {
+      await deleteSongRequest(requestId);
+      const result = await revalidateAfterRequestDelete();
+      if (!result.success) {
+          toast({
+              variant: 'destructive',
+              title: t('error'),
+              description: t('notificationDeleteError'),
+          });
+          setNotifications(originalNotifications);
+      }
+    } catch (error) {
+        console.error('Error deleting notification:', error);
+         toast({
             variant: 'destructive',
             title: t('error'),
             description: t('notificationDeleteError'),
         });
-        // Re-fetch to get the true state back
-        fetchNotifications();
+        setNotifications(originalNotifications);
     }
   };
 
