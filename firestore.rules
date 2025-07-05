@@ -1,53 +1,60 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Helper function to check if a user is an admin
-    function isAdmin(userId) {
-      // Robust check: ensure the user document exists and isAdmin is true
-      return exists(/databases/$(database)/documents/users/$(userId)) &&
-             get(/databases/$(database)/documents/users/$(userId)).data.isAdmin == true;
+    
+    // --- Helper Functions ---
+    function isAuthenticated() {
+      return request.auth != null;
     }
 
-    // Users collection rules
-    match /users/{userId} {
-      // Any authenticated user can read user profiles (needed for isAdmin check to work)
-      // but a user can only write to their own document.
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == userId;
+    function isRequestingUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
     }
     
-    // Song requests can be read/deleted by admins and created by any authenticated user
-    match /song-requests/{requestId} {
-      allow read, delete: if request.auth != null && isAdmin(request.auth.uid);
-      allow create: if request.auth != null;
+    // This is the most reliable way to check for admin status.
+    // It safely checks for the document's existence before trying to access its data.
+    function isAdmin() {
+      let userDocPath = /databases/$(database)/documents/users/$(request.auth.uid);
+      return isAuthenticated() && exists(userDocPath) && get(userDocPath).data.isAdmin == true;
     }
 
-    // Songs collection rules
-    match /songs/{songId} {
-      // Anyone can read songs
-      allow read: if true;
-      
-      // Only admins can create or delete songs
-      allow create, delete: if request.auth != null && isAdmin(request.auth.uid);
+    // --- Collection Rules ---
 
-      // Update logic
-      allow update: if 
-        // Admins can update anything
-        (request.auth != null && isAdmin(request.auth.uid)) ||
-        // Anyone can increment visitCount by exactly 1, and change nothing else
-        (
-          request.resource.data.visitCount == resource.data.visitCount + 1 &&
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['visitCount'])
-        ) ||
-        // Logged-in users can change likeCount by +/- 1, and change nothing else
-        (
-          request.auth != null &&
-          request.resource.data.likeCount - resource.data.likeCount in [1, -1] &&
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount'])
-        );
+    // USERS: Contains user profiles.
+    match /users/{userId} {
+      // Anyone authenticated can read basic profile info (needed for isAdmin function to work).
+      allow read: if isAuthenticated();
+      
+      // A user can only create their own profile.
+      allow create: if isRequestingUser(userId);
+      
+      // A user can only update their own profile.
+      allow update: if isRequestingUser(userId);
+      
+      // Nobody can delete user profiles for safety.
+      allow delete: if false;
+    }
+    
+    // SONGS: Contains all song data.
+    match /songs/{songId} {
+      // Anyone, even unauthenticated visitors, can read songs.
+      allow read: if true;
+
+      // Only admins can create, update, or delete songs.
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // SONG-REQUESTS: Contains user song requests.
+    match /song-requests/{requestId} {
+      // Only admins can view the list of requests.
+      allow read: if isAdmin();
+
+      // Any authenticated user can create a song request.
+      allow create: if isAuthenticated();
+      
+      // Only admins can delete a song request.
+      allow delete: if isAdmin();
     }
   }
 }
