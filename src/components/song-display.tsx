@@ -16,7 +16,7 @@ import { DeleteSongDialog } from "./delete-song-dialog";
 import Link from 'next/link';
 import { SongCard } from "./song-card";
 import { incrementVisitCount } from "@/lib/client/songs";
-import { revalidateAfterVisit } from "@/app/songs/[id]/actions";
+import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
 
 export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSongs: Song[] }) {
   const [transpose, setTranspose] = useState(0);
@@ -83,7 +83,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => toggleFavorite(song.id)}
+                    onClick={() => toggleFavorite(song.id, song.slug)}
                     aria-label={isFavorite(song.id) ? t('removeFromFavorites') : t('addToFavorites')}
                     className="rounded-full"
                   >
@@ -98,7 +98,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                   <h3 className="text-lg font-semibold mb-3 text-center">{t('adminActions')}</h3>
                   <div className="flex justify-center gap-4">
                     <Button asChild variant="outline">
-                      <Link href={`/songs/${song.id}/edit`}>
+                      <Link href={`/songs/${song.slug}/edit`}>
                         <Pencil className="mr-2" /> {t('edit')}
                       </Link>
                     </Button>

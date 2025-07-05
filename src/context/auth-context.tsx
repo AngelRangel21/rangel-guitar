@@ -46,7 +46,7 @@ interface AuthContextType {
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>;
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>;
   logout: () => void;
-  toggleFavorite: (songId: string) => Promise<void>;
+  toggleFavorite: (songId: string, songSlug: string) => Promise<void>;
   isFavorite: (songId: string) => boolean;
 }
 
@@ -209,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const toggleFavorite = async (songId: string) => {
+  const toggleFavorite = async (songId: string, songSlug: string) => {
     if (!user) return;
     
     const isCurrentlyFavorite = favorites.includes(songId);
@@ -225,7 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Client-side DB write, then server-side revalidation
     try {
       await updateLikeCount(songId, delta);
-      await revalidateAfterLike(songId);
+      await revalidateAfterLike(songSlug);
     } catch (error) {
       console.error("Failed to update like count:", error);
       // Revert optimistic UI update on error

@@ -16,7 +16,7 @@ export function TopSongListItem({ song, rank, type }: TopSongListItemProps) {
   const Icon = type === 'visits' ? Eye : Heart;
   
   return (
-    <Link href={`/songs/${song.id}`} className="flex items-center gap-4 p-3 transition-colors rounded-md hover:bg-secondary/50 group">
+    <Link href={`/songs/${song.slug}`} className="flex items-center gap-4 p-3 transition-colors rounded-md hover:bg-secondary/50 group">
         <div className="flex items-center justify-center w-6 font-bold text-xl text-muted-foreground group-hover:text-accent transition-colors">{rank}</div>
         <div className="flex-grow">
           <p className="font-semibold text-foreground group-hover:text-accent transition-colors">{song.title}</p>

@@ -15,7 +15,7 @@ export function SongCard({ song }: SongCardProps) {
     .join('\n');
 
   return (
-    <Link href={`/songs/${song.id}`} className="group h-full" aria-label={`Ver canción ${song.title} de ${song.artist}`}>
+    <Link href={`/songs/${song.slug}`} className="group h-full" aria-label={`Ver canción ${song.title} de ${song.artist}`}>
       <Card className="h-full flex flex-col p-4 transition-all duration-300 hover:shadow-xl hover:border-accent bg-card">
         <div className="flex justify-between items-start gap-4 mb-3">
           <div className="flex-grow">

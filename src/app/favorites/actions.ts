@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-export async function revalidateAfterLike(songId: string) {
+export async function revalidateAfterLike(songSlug: string) {
     revalidatePath('/top-charts');
-    revalidatePath(`/songs/${songId}`);
+    revalidatePath(`/songs/${songSlug}`);
 }

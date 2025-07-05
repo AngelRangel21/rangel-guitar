@@ -1,5 +1,6 @@
 export type Song = {
   id: string;
+  slug: string;
   title: string;
   artist: string;
   coverArt: string;

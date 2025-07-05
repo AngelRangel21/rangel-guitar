@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const songs = await getSongs();
   const songRoutes = songs.map((song) => ({
-    url: `${siteUrl}/songs/${song.id}`,
+    url: `${siteUrl}/songs/${song.slug}`,
     lastModified: new Date(),
   }));
 

@@ -12,8 +12,9 @@ import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
-import { addSong, type NewSongData } from '@/lib/client/songs';
+import { addSong } from '@/lib/client/songs';
 import { revalidateAfterSongUpload } from "@/app/admin/upload-song/actions";
+import type { Song } from "@/lib/types";
 
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
@@ -23,6 +24,17 @@ const formSchema = z.object({
     video: z.string().optional(),
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
+
+const createSlug = (title: string, artist: string) => {
+    const combined = `${title} ${artist}`;
+    return combined.toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-');
+};
+
+type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount'>;
 
 export function UploadSongForm() {
     const { t } = useI18n();
@@ -45,16 +57,18 @@ export function UploadSongForm() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
+            const slug = createSlug(values.title, values.artist);
             const songToAdd: NewSongData = {
                 title: values.title,
                 artist: values.artist,
+                slug: slug,
                 lyrics: values.lyrics,
                 chords: values.chords,
                 video: values.video,
                 coverArt: values.coverArt,
             };
 
-            const docRef = await addSong(songToAdd);
+            await addSong(songToAdd);
             await revalidateAfterSongUpload(values.artist);
 
             toast({
@@ -62,7 +76,7 @@ export function UploadSongForm() {
                 description: `"${values.title}" ha sido añadida a la biblioteca.`,
             });
             
-            router.push(`/songs/${docRef.id}`);
+            router.push(`/songs/${slug}`);
 
         } catch (error: any) {
              console.error("Upload song error:", error);

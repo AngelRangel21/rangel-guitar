@@ -30,6 +30,15 @@ const formSchema = z.object({
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
 
+const createSlug = (title: string, artist: string) => {
+    const combined = `${title} ${artist}`;
+    return combined.toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-');
+};
+
 export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongFormProps) {
     const { t } = useI18n();
     const { toast } = useToast();
@@ -50,9 +59,11 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
+            const slug = createSlug(values.title, values.artist);
             const songData: NewSongData = {
                 title: values.title,
                 artist: values.artist,
+                slug: slug,
                 lyrics: values.lyrics,
                 chords: values.chords,
                 video: values.video,
