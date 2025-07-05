@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useForm } from "react-hook-form";
@@ -12,7 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { uploadSongAction } from "@/app/admin/upload-song/actions";
+import { useRouter } from 'next/navigation';
+import { addSong, type NewSongData } from '@/services/songs-service';
+import { revalidateAfterSongUpload } from "@/app/admin/upload-song/actions";
 
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
@@ -27,6 +28,7 @@ export function UploadSongForm() {
     const { t } = useI18n();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -43,12 +45,31 @@ export function UploadSongForm() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            await uploadSongAction(values);
-        } catch (error: any) {
-            if (error.digest?.startsWith('NEXT_REDIRECT')) {
-                return;
-            }
+            const songToAdd: NewSongData = {
+                title: values.title,
+                artist: values.artist,
+                lyrics: values.lyrics,
+                chords: values.chords,
+                video: values.video,
+                coverArt: values.coverArt,
+            };
 
+            // 1. Perform write on the client where the user is authenticated
+            const newSong = await addSong(songToAdd);
+
+            // 2. Trigger revalidation on the server
+            await revalidateAfterSongUpload(newSong.artist);
+
+            toast({
+                title: "Canción Subida",
+                description: `"${newSong.title}" ha sido añadida a la biblioteca.`,
+            });
+            
+            // 3. Redirect on the client
+            router.push(`/songs/${newSong.id}`);
+
+        } catch (error: any) {
+             console.error("Upload song error:", error);
             toast({
                 variant: "destructive",
                 title: t('error'),
