@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Song } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,19 +23,23 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   const { t } = useI18n();
   const { isAuthenticated, isFavorite, toggleFavorite, isAdmin } = useAuth();
   const [currentUrl, setCurrentUrl] = useState('');
+  const visitLoggedRef = useRef(false);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
 
-    const logVisit = async () => {
-      try {
-        await incrementVisitCount(song.id);
-        await revalidateAfterVisit();
-      } catch (error) {
-        console.error("Failed to increment visit count:", error);
-      }
-    };
-    logVisit();
+    if (!visitLoggedRef.current) {
+      const logVisit = async () => {
+        try {
+          await incrementVisitCount(song.id);
+          await revalidateAfterVisit();
+        } catch (error) {
+          console.error("Failed to increment visit count:", error);
+        }
+      };
+      logVisit();
+      visitLoggedRef.current = true;
+    }
   }, [song.id]);
 
   const getTransposedKeyText = () => {
