@@ -30,6 +30,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_ES',
     siteName: 'Rangel Guitar',
+    images: [
+      {
+        url: 'https://placehold.co/1200x630.png',
+        width: 1200,
+        height: 630,
+        alt: 'Rangel Guitar, tu sitio de tablaturas y acordes.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',

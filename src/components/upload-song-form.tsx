@@ -39,7 +39,7 @@ export function UploadSongForm() {
             lyrics: "",
             chords: "",
             video: "",
-            coverArt: "https://placehold.co/400x400.png",
+            coverArt: "https://placehold.co/600x600.png",
         },
     });
 

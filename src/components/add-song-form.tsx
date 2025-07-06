@@ -44,7 +44,7 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
             lyrics: "",
             chords: "",
             video: "",
-            coverArt: "https://placehold.co/400x400.png",
+            coverArt: "https://placehold.co/600x600.png",
         },
     });
 

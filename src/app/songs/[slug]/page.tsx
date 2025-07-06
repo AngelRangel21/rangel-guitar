@@ -29,11 +29,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         title: `${song.title} - ${song.artist}`,
         description: description,
         type: 'music.song',
+        url: `/songs/${song.slug}`,
         images: [
             {
                 url: song.coverArt,
-                width: 400,
-                height: 400,
+                width: 600,
+                height: 600,
                 alt: `Portada de ${song.title}`,
             }
         ],
