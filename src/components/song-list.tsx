@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -138,12 +139,8 @@ export function SongList({ songs }: { songs: Song[] }) {
                 : 'flex flex-col space-y-3'
             }`}
         >
-            {currentSongs.map((song, index) => (
-            <div 
-              key={song.id} 
-              style={{ animationDelay: `${index * 50}ms` }} 
-              className="opacity-0 animate-fade-in-up"
-            >
+            {currentSongs.map((song) => (
+            <div key={song.id}>
                 {view === 'grid' ? <SongCard song={song} /> : <SongListItem song={song} />}
             </div>
             ))}
