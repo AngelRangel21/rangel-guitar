@@ -13,7 +13,7 @@ export function ArtistDetailContent({ artistName, songs }: ArtistDetailContentPr
   const { t } = useI18n();
 
   return (
-    <main className="flex-grow container mx-auto px-4 py-8 space-y-6">
+    <main className="flex-grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-fade-in-up">
       <h1 className="text-4xl font-bold">{t('songsBy', { artist: artistName })}</h1>
       <SongList songs={songs} />
     </main>

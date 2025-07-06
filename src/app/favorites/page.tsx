@@ -45,7 +45,7 @@ function FavoritesContent() {
   }
 
   return (
-    <>
+    <div className="space-y-6 opacity-0 animate-fade-in-up">
       <div className="flex items-center gap-4">
         <h1 className="text-3xl font-bold text-foreground">{t('myFavorites')}</h1>
       </div>
@@ -57,7 +57,7 @@ function FavoritesContent() {
           <p className="mt-4 text-muted-foreground">{t('noFavorites')}</p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

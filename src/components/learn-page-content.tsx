@@ -10,42 +10,52 @@ export function LearnPageContent() {
 
     return (
         <main className="flex-grow container mx-auto px-4 py-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 opacity-0 animate-fade-in-up">
                 <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">{t('learnPageTitle')}</h1>
                 <p className="mt-4 text-lg text-muted-foreground">{t('learnPageDescription')}</p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <LearnCard 
-                    href="/chords"
-                    icon={<Library className="h-8 w-8 text-accent" />}
-                    title={t('chordLibrary')}
-                    description={t('chordLibraryDescription')}
-                />
-                <LearnCard 
-                    href="/scales"
-                    icon={<Scale className="h-8 w-8 text-accent" />}
-                    title={t('scaleLibrary')}
-                    description={t('scaleLibraryDescription')}
-                />
-                <LearnCard 
-                    href="/learn/metronome"
-                    icon={<Gauge className="h-8 w-8 text-accent" />}
-                    title={t('metronome')}
-                    description={t('metronomeDescription')}
-                />
-                <LearnCard 
-                    href="/learn/ear-trainer"
-                    icon={<Ear className="h-8 w-8 text-accent" />}
-                    title={t('earTrainer')}
-                    description={t('earTrainerDescription')}
-                />
-                <LearnCard 
-                    href="/learn/circle-of-fifths"
-                    icon={<Album className="h-8 w-8 text-accent" />}
-                    title={t('circleOfFifths')}
-                    description={t('circleOfFifthsDescription')}
-                />
+                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+                    <LearnCard 
+                        href="/chords"
+                        icon={<Library className="h-8 w-8 text-accent" />}
+                        title={t('chordLibrary')}
+                        description={t('chordLibraryDescription')}
+                    />
+                </div>
+                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+                    <LearnCard 
+                        href="/scales"
+                        icon={<Scale className="h-8 w-8 text-accent" />}
+                        title={t('scaleLibrary')}
+                        description={t('scaleLibraryDescription')}
+                    />
+                </div>
+                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '350ms' }}>
+                    <LearnCard 
+                        href="/learn/metronome"
+                        icon={<Gauge className="h-8 w-8 text-accent" />}
+                        title={t('metronome')}
+                        description={t('metronomeDescription')}
+                    />
+                </div>
+                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '450ms' }}>
+                    <LearnCard 
+                        href="/learn/ear-trainer"
+                        icon={<Ear className="h-8 w-8 text-accent" />}
+                        title={t('earTrainer')}
+                        description={t('earTrainerDescription')}
+                    />
+                </div>
+                 <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '550ms' }}>
+                    <LearnCard 
+                        href="/learn/circle-of-fifths"
+                        icon={<Album className="h-8 w-8 text-accent" />}
+                        title={t('circleOfFifths')}
+                        description={t('circleOfFifthsDescription')}
+                    />
+                </div>
             </div>
         </main>
     );
