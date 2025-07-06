@@ -9,14 +9,14 @@ export function LearnPageContent() {
     const { t } = useI18n();
 
     return (
-        <main className="flex-grow container mx-auto px-4 py-8">
-            <div className="text-center mb-12 opacity-0 animate-fade-in-up">
+        <main className="flex-grow container mx-auto px-4 py-8 opacity-0 animate-content-in">
+            <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">{t('learnPageTitle')}</h1>
                 <p className="mt-4 text-lg text-muted-foreground">{t('learnPageDescription')}</p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+                <div style={{ animationDelay: '150ms' }}>
                     <LearnCard 
                         href="/chords"
                         icon={<Library className="h-8 w-8 text-accent" />}
@@ -24,7 +24,7 @@ export function LearnPageContent() {
                         description={t('chordLibraryDescription')}
                     />
                 </div>
-                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+                <div style={{ animationDelay: '250ms' }}>
                     <LearnCard 
                         href="/scales"
                         icon={<Scale className="h-8 w-8 text-accent" />}
@@ -32,7 +32,7 @@ export function LearnPageContent() {
                         description={t('scaleLibraryDescription')}
                     />
                 </div>
-                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '350ms' }}>
+                <div style={{ animationDelay: '350ms' }}>
                     <LearnCard 
                         href="/learn/metronome"
                         icon={<Gauge className="h-8 w-8 text-accent" />}
@@ -40,7 +40,7 @@ export function LearnPageContent() {
                         description={t('metronomeDescription')}
                     />
                 </div>
-                <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '450ms' }}>
+                <div style={{ animationDelay: '450ms' }}>
                     <LearnCard 
                         href="/learn/ear-trainer"
                         icon={<Ear className="h-8 w-8 text-accent" />}
@@ -48,7 +48,7 @@ export function LearnPageContent() {
                         description={t('earTrainerDescription')}
                     />
                 </div>
-                 <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '550ms' }}>
+                 <div style={{ animationDelay: '550ms' }}>
                     <LearnCard 
                         href="/learn/circle-of-fifths"
                         icon={<Album className="h-8 w-8 text-accent" />}

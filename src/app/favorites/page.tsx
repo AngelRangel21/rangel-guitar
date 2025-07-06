@@ -45,7 +45,7 @@ function FavoritesContent() {
   }
 
   return (
-    <div className="space-y-6 opacity-0 animate-fade-in-up">
+    <div className="space-y-6">
       <div className="flex items-center gap-4">
         <h1 className="text-3xl font-bold text-foreground">{t('myFavorites')}</h1>
       </div>
@@ -66,7 +66,7 @@ export default function FavoritesPage() {
     <ProtectedPage>
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
-        <main className="flex-grow container mx-auto px-4 py-8 space-y-6">
+        <main className="flex-grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in">
             <FavoritesContent />
         </main>
         <Footer />

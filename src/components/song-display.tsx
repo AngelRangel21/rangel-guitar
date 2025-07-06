@@ -47,7 +47,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   const shareText = t('shareText', { title: song.title, artist: song.artist });
 
   return (
-    <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '150ms' }}>
+    <div>
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
           <Card className="overflow-hidden lg:sticky lg:top-24">

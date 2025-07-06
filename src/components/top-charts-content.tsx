@@ -14,7 +14,7 @@ interface TopChartsContentProps {
 export function TopChartsContent({ topVisited, topLiked }: TopChartsContentProps) {
     const { t } = useI18n();
     return (
-        <div className="space-y-8 opacity-0 animate-fade-in-up">
+        <div className="space-y-8">
             <h1 className="text-4xl font-bold text-center">{t('topChartsPageTitle')}</h1>
 
             <Tabs defaultValue="visited" className="w-full">

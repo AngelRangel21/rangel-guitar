@@ -18,7 +18,7 @@ export function ScaleDisplay({ rootNote, scaleType, scaleNotes }: ScaleDisplayPr
     const title = `${rootNote} ${scaleTypeName}`;
 
     return (
-        <Card className="mt-8 animate-fade-in-up">
+        <Card className="mt-8 opacity-0 animate-content-in">
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 <CardDescription>{t('scaleNotes')}</CardDescription>

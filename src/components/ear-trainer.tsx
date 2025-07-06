@@ -120,8 +120,8 @@ export function EarTrainer() {
         </div>
         
         <div className="h-12 flex items-center justify-center">
-            {feedback === 'correct' && <CheckCircle className="h-10 w-10 text-green-500 animate-fade-in-up" />}
-            {feedback === 'incorrect' && <XCircle className="h-10 w-10 text-destructive animate-fade-in-up" />}
+            {feedback === 'correct' && <CheckCircle className="h-10 w-10 text-green-500 animate-content-in" />}
+            {feedback === 'incorrect' && <XCircle className="h-10 w-10 text-destructive animate-content-in" />}
         </div>
 
       </CardContent>
