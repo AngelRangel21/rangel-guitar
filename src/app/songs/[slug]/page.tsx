@@ -53,7 +53,7 @@ export default async function SongPage({ params }: { params: { slug: string } })
 
   // --- Suggestion Logic ---
   const allSongs = await getSongs();
-  const MAX_SUGGESTIONS = 4;
+  const MAX_SUGGESTIONS = 6;
 
   // 1. Get other songs by the same artist
   let suggestedSongs: Song[] = allSongs.filter(

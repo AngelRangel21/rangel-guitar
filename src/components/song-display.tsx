@@ -14,7 +14,7 @@ import { useAuth } from "@/context/auth-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DeleteSongDialog } from "./delete-song-dialog";
 import Link from 'next/link';
-import { SongCard } from "./song-card";
+import { SongListItem } from "./song-list-item";
 import { incrementVisitCount } from "@/lib/client/songs";
 import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
 
@@ -190,9 +190,9 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
       {suggestedSongs.length > 0 && (
         <div className="mt-16">
           <h2 className="text-3xl font-bold mb-6">{t('suggestedSongs')}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex flex-col space-y-3">
             {suggestedSongs.map(s => (
-              <SongCard key={s.id} song={s} />
+              <SongListItem key={s.id} song={s} />
             ))}
           </div>
         </div>
