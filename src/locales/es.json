@@ -183,5 +183,16 @@
   "mostVisitedSongs": "Canciones Más Visitadas",
   "mostLikedSongs": "Canciones con Más Me Gusta",
   "visits": "Visitas",
-  "likes": "Me Gusta"
+  "likes": "Me Gusta",
+  "level": "Nivel",
+  "beginner": "Principiante",
+  "intermediate": "Intermedio",
+  "advanced": "Avanzado",
+  "locked": "Bloqueado",
+  "progress": "Progreso",
+  "nextLevel": "Siguiente Nivel",
+  "backToLevels": "Volver a Niveles",
+  "levelComplete": "¡Nivel Completado!",
+  "levelCompleteDescription": "¡Buen trabajo! Has desbloqueado el siguiente nivel.",
+  "earTrainerSelectLevel": "Selecciona un nivel para comenzar a entrenar."
 }

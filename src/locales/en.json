@@ -183,5 +183,16 @@
   "mostVisitedSongs": "Most Visited Songs",
   "mostLikedSongs": "Most Liked Songs",
   "visits": "Visits",
-  "likes": "Likes"
+  "likes": "Likes",
+  "level": "Level",
+  "beginner": "Beginner",
+  "intermediate": "Intermediate",
+  "advanced": "Advanced",
+  "locked": "Locked",
+  "progress": "Progress",
+  "nextLevel": "Next Level",
+  "backToLevels": "Back to Levels",
+  "levelComplete": "Level Complete!",
+  "levelCompleteDescription": "Great job! You've unlocked the next level.",
+  "earTrainerSelectLevel": "Select a level to start training."
 }
