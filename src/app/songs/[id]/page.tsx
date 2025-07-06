@@ -1,1 +1,2 @@
-// This file is intentionally left empty to remove the conflicting route.
+// This file is intentionally made non-routable to resolve a build conflict.
+export const conflict_resolver = true;
