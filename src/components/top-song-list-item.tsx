@@ -3,15 +3,25 @@ import type { Song } from "@/lib/types";
 import { useI18n } from "@/context/i18n-context";
 import { Eye, Heart } from "lucide-react";
 
+/**
+ * Propiedades que el componente TopSongListItem espera recibir.
+ */
 interface TopSongListItemProps {
     song: Song;
     rank: number;
     type: 'visits' | 'likes';
 }
 
+/**
+ * Componente que muestra un elemento de canción en las listas de "Top Canciones".
+ * Muestra el rango, el título, el artista y el recuento de visitas o "me gusta".
+ * @param {TopSongListItemProps} props - Propiedades del componente.
+ * @returns {JSX.Element} El elemento de la lista de top canciones.
+ */
 export function TopSongListItem({ song, rank, type }: TopSongListItemProps) {
   const { t } = useI18n();
 
+  // Determina el recuento y el icono a mostrar según el tipo ('visits' o 'likes').
   const count = type === 'visits' ? song.visitCount : song.likeCount;
   const Icon = type === 'visits' ? Eye : Heart;
   

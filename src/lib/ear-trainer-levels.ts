@@ -1,14 +1,23 @@
+/**
+ * Define la estructura de un único nivel del juego de entrenamiento de oído.
+ */
 export interface Level {
-    name: string;
-    notes: string[];
-    notesToGuess: number;
+    name: string; // El nombre o número del nivel (ej. "1", "2").
+    notes: string[]; // El conjunto de notas posibles que pueden aparecer en este nivel.
+    notesToGuess: number; // La cantidad de aciertos necesarios para pasar el nivel.
 }
 
+/**
+ * Define la estructura de una categoría de dificultad, que contiene varios subniveles.
+ */
 export interface Difficulty {
-    name: 'beginner' | 'intermediate' | 'advanced';
-    subLevels: Level[];
+    name: 'beginner' | 'intermediate' | 'advanced'; // Nombre de la categoría de dificultad.
+    subLevels: Level[]; // Array de niveles dentro de esta dificultad.
 }
 
+/**
+ * Array que contiene toda la estructura de niveles y dificultades del juego.
+ */
 export const levels: Difficulty[] = [
     {
         name: 'beginner',

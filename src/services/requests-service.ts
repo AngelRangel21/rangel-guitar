@@ -1,13 +1,17 @@
 'use server';
 
-// This file now ONLY contains functions for READING data on the server.
-// Write operations have been moved to a client-specific file.
+// Este archivo AHORA SOLO contiene funciones para LEER datos en el servidor.
+// Las operaciones de escritura se han movido a un archivo específico del cliente.
 
+/**
+ * Interfaz para los datos de entrada al crear una nueva solicitud de canción.
+ */
 export interface SongRequestInput {
   title: string;
   artist: string;
 }
 
-// `SongRequest` type is now in `src/lib/types.ts`
-// `getSongRequests` has been removed because it cannot be called securely from a Server Component.
-// Data fetching for requests is now handled on the client.
+// El tipo `SongRequest` ahora está en `src/lib/types.ts`.
+// La función `getSongRequests` ha sido eliminada porque no se puede llamar de forma segura
+// desde un Server Component debido a las reglas de seguridad de Firestore que requieren
+// autenticación del usuario. La obtención de datos para las solicitudes ahora se maneja en el cliente.

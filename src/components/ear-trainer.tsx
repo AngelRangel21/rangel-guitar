@@ -11,15 +11,21 @@ import { levels as allLevels } from '@/lib/ear-trainer-levels';
 import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
-// Frequencies for C Major scale notes
+// Frecuencias en Hz para las notas de la escala de Do Mayor y sus alteraciones.
 const noteFrequencies: { [key: string]: number } = {
   'C': 261.63, 'D': 293.66, 'E': 329.63, 'F': 349.23,
   'G': 392.00, 'A': 440.00, 'B': 493.88,
   'C#': 277.18, 'D#': 311.13, 'F#': 369.99, 'G#': 415.30, 'A#': 466.16
 };
 
+// "Aplanamos" la estructura de niveles para un acceso más fácil por índice.
 const flattenedLevels = allLevels.flatMap(d => d.subLevels);
 
+/**
+ * Componente principal del juego de entrenamiento de oído.
+ * Maneja la lógica del juego, la selección de niveles y el progreso del usuario.
+ * @returns {JSX.Element} El componente del entrenador de oído.
+ */
 export function EarTrainer() {
   const { t } = useI18n();
   const [gameState, setGameState] = useState<'level-select' | 'playing' | 'level-complete'>('level-select');
@@ -32,6 +38,7 @@ export function EarTrainer() {
   
   const audioContextRef = useRef<AudioContext | null>(null);
 
+  // Carga el progreso del usuario desde localStorage al iniciar.
   useEffect(() => {
     const savedProgress = localStorage.getItem('earTrainerProgress');
     if (savedProgress) {
@@ -42,12 +49,14 @@ export function EarTrainer() {
     }
   }, []);
 
+  // Inicializa el AudioContext del navegador.
   const setupAudioContext = () => {
     if (typeof window !== 'undefined' && !audioContextRef.current) {
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
   };
 
+  // Función para reproducir un sonido de una nota específica.
   const playNote = useCallback((note: string) => {
     setupAudioContext();
     const audioContext = audioContextRef.current;
@@ -69,6 +78,7 @@ export function EarTrainer() {
     osc.connect(gain);
     gain.connect(audioContext.destination);
     
+    // Crea un fade-in y fade-out suave para el sonido.
     const now = audioContext.currentTime;
     gain.gain.setValueAtTime(0, now);
     gain.gain.linearRampToValueAtTime(0.5, now + 0.1);
@@ -78,6 +88,7 @@ export function EarTrainer() {
     osc.stop(now + 1);
   }, []);
 
+  // Inicia una nueva ronda del juego.
   const startNewRound = useCallback(() => {
     if (selectedLevelIndex === null) return;
     const level = flattenedLevels[selectedLevelIndex];
@@ -90,6 +101,7 @@ export function EarTrainer() {
     setTimeout(() => playNote(newNote), 300);
   }, [selectedLevelIndex, playNote]);
 
+  // Maneja la respuesta (guess) del usuario.
   const handleGuess = (guess: string) => {
     if (gameState !== 'playing' || feedback) return;
 
@@ -100,9 +112,11 @@ export function EarTrainer() {
 
       const level = flattenedLevels[selectedLevelIndex!];
       if (newScore >= level.notesToGuess) {
+        // Nivel completado
         setGameState('level-complete');
         const nextLevelIndex = selectedLevelIndex! + 1;
         if (nextLevelIndex > unlockedLevelIndex && nextLevelIndex < flattenedLevels.length) {
+          // Desbloquea el siguiente nivel y guarda el progreso.
           setUnlockedLevelIndex(nextLevelIndex);
           localStorage.setItem('earTrainerProgress', String(nextLevelIndex));
         }
@@ -128,6 +142,7 @@ export function EarTrainer() {
     setGameState('level-select');
   }
 
+  // Renderiza la pantalla de selección de nivel.
   if (gameState === 'level-select') {
     let globalLevelIndex = 0;
     return (
@@ -157,13 +172,7 @@ export function EarTrainer() {
                                                 disabled={isLocked}
                                                 onClick={() => handleLevelSelect(levelIndex)}
                                             >
-                                                {isLocked ? (
-                                                    <Lock className="h-6 w-6 text-muted-foreground" />
-                                                ) : isCompleted ? (
-                                                    <CheckCircle className="h-6 w-6 text-green-500" />
-                                                ) : (
-                                                    <Trophy className="h-6 w-6 text-accent" />
-                                                )}
+                                                {isLocked ? <Lock className="h-6 w-6 text-muted-foreground" /> : isCompleted ? <CheckCircle className="h-6 w-6 text-green-500" /> : <Trophy className="h-6 w-6 text-accent" />}
                                                 <span className="font-semibold">{t('level')} {level.name}</span>
                                                 <span className="text-xs text-muted-foreground">{level.notes.join(', ')}</span>
                                             </Button>
@@ -179,6 +188,7 @@ export function EarTrainer() {
     );
   }
 
+  // Renderiza la pantalla de juego.
   const level = flattenedLevels[selectedLevelIndex!];
   const progress = (score / level.notesToGuess) * 100;
 

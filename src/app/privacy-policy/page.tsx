@@ -2,6 +2,11 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * Página estática que muestra la política de privacidad del sitio web.
+ * Contiene información legal sobre cómo se manejan los datos de los usuarios.
+ * @returns {JSX.Element} La página de política de privacidad.
+ */
 export default function PrivacyPolicyPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -12,6 +17,7 @@ export default function PrivacyPolicyPage() {
             <CardTitle className="text-3xl">Política de Privacidad</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
+            {/* Contenido de la política de privacidad */}
             <p>
               En Rangel Guitar, accesible desde rangelguitar.com, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene tipos de información que son recopilados y registrados por Rangel Guitar y cómo la usamos.
             </p>

@@ -16,12 +16,19 @@ import { addSong, type NewSongData } from "@/lib/client/songs";
 import { deleteSongRequest } from "@/lib/client/requests";
 import { createSlug } from "@/lib/utils";
 
+/**
+ * Propiedades que el componente AddSongForm espera recibir.
+ */
 interface AddSongFormProps {
     requestId: string;
     initialTitle: string;
     initialArtist: string;
 }
 
+/**
+ * Esquema de validación del formulario utilizando Zod.
+ * Define la estructura y las reglas de los datos del formulario.
+ */
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
     artist: z.string().min(1, { message: "El artista es obligatorio." }),
@@ -31,11 +38,18 @@ const formSchema = z.object({
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
 
+/**
+ * Formulario para que los administradores agreguen una nueva canción,
+ * generalmente en respuesta a una solicitud de un usuario.
+ * @param {AddSongFormProps} props - Propiedades con datos de la solicitud.
+ * @returns {JSX.Element} El componente del formulario.
+ */
 export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongFormProps) {
     const { t } = useI18n();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
+    // Inicialización de react-hook-form con el esquema de Zod.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,6 +62,10 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
         },
     });
 
+    /**
+     * Función que se ejecuta al enviar el formulario.
+     * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
+     */
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
@@ -62,20 +80,20 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
                 coverArt: values.coverArt,
             };
 
-            // Perform client-side writes
-            await addSong(songData);
-            await deleteSongRequest(requestId);
+            // Ejecuta las escrituras en la base de datos del lado del cliente.
+            await addSong(songData); // Agrega la nueva canción.
+            await deleteSongRequest(requestId); // Elimina la solicitud completada.
             
-            // Trigger server-side revalidation and redirection
+            // Llama a la acción del servidor para revalidar rutas y redirigir.
             await revalidateAndRedirect(values.artist);
 
         } catch (error: any) {
-            // The `redirect` in a server action throws an error, which we need to catch.
+            // El `redirect` en una Server Action lanza un error, que necesitamos capturar.
             if (error.digest?.startsWith('NEXT_REDIRECT')) {
-                return; // Let Next.js handle the redirect
+                return; // Permite que Next.js maneje la redirección.
             }
 
-            // Handle actual errors
+            // Maneja errores reales que no son de redirección.
             console.error("Failed to add song and remove request:", error);
             toast({
                 variant: "destructive",

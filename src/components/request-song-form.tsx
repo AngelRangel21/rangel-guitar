@@ -13,16 +13,24 @@ import { useToast } from "@/hooks/use-toast";
 import { addSongRequest } from "@/lib/client/requests";
 import { revalidatePath } from 'next/cache';
 
+/**
+ * Esquema de validación del formulario de solicitud de canciones con Zod.
+ */
 const formSchema = z.object({
   title: z.string().min(2, { message: 'songTitleRequired' }),
   artist: z.string().min(2, { message: 'artistNameRequired' }),
 });
 
+/**
+ * Componente del formulario para que los usuarios soliciten nuevas canciones.
+ * @returns {JSX.Element} El formulario de solicitud de canciones.
+ */
 export function RequestSongForm() {
   const { t } = useI18n();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Inicializa el formulario con react-hook-form y el resolver de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,15 +39,20 @@ export function RequestSongForm() {
     },
   });
 
+  /**
+   * Maneja el envío del formulario.
+   * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
+   */
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
+      // Llama a la función del cliente para agregar la solicitud a Firestore.
       await addSongRequest(values);
       toast({
         title: t('requestSentTitle'),
         description: `¡Tu solicitud para "${values.title}" ha sido enviada! La revisaremos pronto.`
       });
-      form.reset();
+      form.reset(); // Limpia el formulario después de un envío exitoso.
     } catch (error) {
        toast({
         variant: "destructive",

@@ -20,22 +20,26 @@ import { revalidateAfterLike } from '@/app/favorites/actions';
 import { auth, db } from '@/lib/firebase';
 import { updateLikeCount } from '@/lib/client/songs';
 
+// Proveedor de autenticación de Google.
 const googleProvider = new GoogleAuthProvider();
 
-// Lista de correos electrónicos que serán administradores al registrarse.
+// Lista de correos electrónicos que recibirán el rol de administrador al registrarse.
 const ADMIN_EMAILS = ['angel145256@gmail.com'];
 
+// Interfaz para el objeto de usuario simplificado que se usa en la aplicación.
 interface User {
   uid: string;
   name: string;
 }
 
+// Interfaz para las credenciales de autenticación por correo electrónico.
 interface AuthCredentials {
   email: string;
   password: string;
   name?: string;
 }
 
+// Define la forma del contexto de autenticación.
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
@@ -52,6 +56,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Proveedor de contexto de autenticación.
+ * Maneja todo el estado y la lógica relacionados con la autenticación de usuarios.
+ * @param {{ children: ReactNode }} props - Los componentes hijos que consumirán el contexto.
+ * @returns {JSX.Element} El proveedor de contexto.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -62,6 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { t } = useI18n();
   const { toast } = useToast();
 
+  // Efecto que se suscribe a los cambios de estado de autenticación de Firebase.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       try {
@@ -73,21 +84,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           let userIsAdmin = false;
 
           if (userDoc.exists()) {
+            // Si el usuario ya existe en Firestore, carga sus datos.
             const userData = userDoc.data();
-            appUser = {
-              uid: firebaseUser.uid,
-              name: userData.name || firebaseUser.displayName || 'Anonymous',
-            };
+            appUser = { uid: firebaseUser.uid, name: userData.name || firebaseUser.displayName || 'Anonymous' };
             userIsAdmin = userData.isAdmin || false;
           } else {
-            // Este bloque se ejecuta para nuevos inicios de sesión (ej. Google) y nuevos registros.
+            // Si es un usuario nuevo, crea un documento para él en Firestore.
             const newName = firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Anonymous';
-            appUser = {
-              uid: firebaseUser.uid,
-              name: newName,
-            };
-            // Asigna el rol de administrador si el correo está en la lista
-            userIsAdmin = ADMIN_EMAILS.includes(firebaseUser.email || '');
+            appUser = { uid: firebaseUser.uid, name: newName };
+            userIsAdmin = ADMIN_EMAILS.includes(firebaseUser.email || ''); // Asigna rol de admin si el email coincide.
             
             await setDoc(userDocRef, {
               uid: firebaseUser.uid,
@@ -101,35 +106,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(appUser);
           setIsAdmin(userIsAdmin);
 
+          // Carga los favoritos del usuario desde el almacenamiento local.
           const storedFavorites = localStorage.getItem(`favorites_${appUser.uid}`);
-          if (storedFavorites) {
-            setFavorites(JSON.parse(storedFavorites));
-          } else {
-            setFavorites([]);
-          }
+          setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
         } else {
+          // Si no hay usuario, resetea todos los estados.
           setUser(null);
           setIsAdmin(false);
           setFavorites([]);
         }
       } catch (error) {
         console.error("Error in onAuthStateChanged: ", error);
-        setUser(null);
-        setIsAdmin(false);
-        setFavorites([]);
-        toast({
-          variant: "destructive",
-          title: "Error de Sesión",
-          description: "No se pudo cargar tu perfil. Intenta de nuevo.",
-        });
+        toast({ variant: "destructive", title: "Error de Sesión", description: "No se pudo cargar tu perfil." });
       } finally {
-        setIsLoaded(true);
+        setIsLoaded(true); // Marca que la carga inicial ha terminado.
       }
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Limpia la suscripción al desmontar.
   }, [toast]);
 
+  // Redirige al usuario si está en una página de autenticación (login/register) pero ya está logueado.
   useEffect(() => {
     if (!isLoaded) return;
     const isAuthPage = pathname === '/login' || pathname === '/register';
@@ -143,19 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await signInWithPopup(auth, googleProvider);
     } catch (error: any) {
       console.error("Error signing in with Google", error);
-      if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
-        toast({
-          variant: "destructive",
-          title: t('popupBlockedTitle'),
-          description: t('popupBlockedDescription'),
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: t('loginErrorTitle'),
-          description: t(error.code) || error.message,
-        });
-      }
+      toast({ variant: "destructive", title: t('loginErrorTitle'), description: t(error.code) || error.message });
     }
   };
 
@@ -163,40 +148,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!name) return;
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Actualiza el perfil de Firebase Auth inmediatamente.
-      // onAuthStateChanged se encargará de crear el documento en Firestore.
       await updateProfile(userCredential.user, { displayName: name });
-      
-      toast({
-        title: t('accountCreatedTitle'),
-        description: t('accountCreatedDescription'),
-      });
-      // El listener onAuthStateChanged gestionará la creación del documento de usuario en Firestore.
+      toast({ title: t('accountCreatedTitle'), description: t('accountCreatedDescription') });
     } catch (error: any) {
       console.error("Error signing up", error);
-      toast({
-        variant: "destructive",
-        title: t('registerErrorTitle'),
-        description: t(error.code) || error.message,
-      });
+      toast({ variant: "destructive", title: t('registerErrorTitle'), description: t(error.code) || error.message });
     }
   };
   
   const signInWithEmail = async ({ email, password }: AuthCredentials) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-       toast({
-        title: t('loggedInTitle'),
-        description: t('loggedInDescription'),
-      });
+      toast({ title: t('loggedInTitle'), description: t('loggedInDescription') });
     } catch (error: any) {
       console.error("Error signing in with email:", error);
-       toast({
-        variant: "destructive",
-        title: t('loginErrorTitle'),
-        description: t('auth/invalid-credential'),
-      });
+      toast({ variant: "destructive", title: t('loginErrorTitle'), description: t('auth/invalid-credential') });
     }
   };
 
@@ -215,27 +181,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const isCurrentlyFavorite = favorites.includes(songId);
     const delta = isCurrentlyFavorite ? -1 : 1;
 
-    // Client-side state update for immediate feedback
-    const newFavorites = isCurrentlyFavorite
-      ? favorites.filter((id) => id !== songId)
-      : [...favorites, songId];
+    // Actualización optimista de la UI para una respuesta inmediata.
+    const newFavorites = isCurrentlyFavorite ? favorites.filter((id) => id !== songId) : [...favorites, songId];
     setFavorites(newFavorites);
     localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(newFavorites));
     
-    // Client-side DB write, then server-side revalidation
+    // Escritura en la base de datos y revalidación del lado del servidor.
     try {
       await updateLikeCount(songId, delta);
       await revalidateAfterLike(songSlug);
     } catch (error) {
       console.error("Failed to update like count:", error);
-      // Revert optimistic UI update on error
+      // Revierte la UI si hay un error.
       localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(favorites));
       setFavorites(favorites);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Could not update favorite status.",
-      });
+      toast({ variant: "destructive", title: "Error", description: "No se pudo actualizar el estado de favorito." });
     }
   };
 
@@ -264,6 +224,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Hook personalizado para acceder al contexto de autenticación.
+ * @returns {AuthContextType} - El valor del contexto de autenticación.
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

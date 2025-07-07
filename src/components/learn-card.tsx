@@ -6,6 +6,9 @@ import { ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useI18n } from '@/context/i18n-context';
 
+/**
+ * Propiedades que el componente LearnCard espera recibir.
+ */
 interface LearnCardProps {
     href: string;
     icon: React.ReactNode;
@@ -13,11 +16,18 @@ interface LearnCardProps {
     description: string;
 }
 
+/**
+ * Componente de tarjeta reutilizable para la página "Aprender".
+ * Muestra un enlace a una herramienta de aprendizaje con un ícono, título y descripción.
+ * @param {LearnCardProps} props - Propiedades del componente.
+ * @returns {JSX.Element} La tarjeta de aprendizaje.
+ */
 export function LearnCard({ href, icon, title, description }: LearnCardProps) {
     const { t } = useI18n();
     return (
         <Link href={href} className="group block">
             <Card className="relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col">
+                {/* Etiqueta "Beta" para indicar que la herramienta está en fase de pruebas. */}
                 <Badge variant="info" className="absolute top-4 right-4">{t('beta')}</Badge>
                 <CardHeader>
                     {icon}

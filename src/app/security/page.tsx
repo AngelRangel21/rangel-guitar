@@ -2,6 +2,11 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * Página estática que muestra la política de seguridad del sitio web.
+ * Contiene información sobre las medidas de seguridad implementadas.
+ * @returns {JSX.Element} La página de política de seguridad.
+ */
 export default function SecurityPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -12,6 +17,7 @@ export default function SecurityPage() {
             <CardTitle className="text-3xl">Política de Seguridad</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
+            {/* Contenido de la política de seguridad */}
             <p>
               La seguridad de su información es de suma importancia para nosotros en Rangel Guitar. Hemos implementado una variedad de medidas de seguridad para mantener la seguridad de su información personal cuando realiza un pedido o ingresa, envía o accede a su información personal.
             </p>

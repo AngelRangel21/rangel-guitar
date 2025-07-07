@@ -16,6 +16,10 @@ import type { Song } from "@/lib/types";
 import { updateSong } from "@/lib/client/songs";
 import { createSlug } from "@/lib/utils";
 
+/**
+ * Esquema de validación del formulario de edición utilizando Zod.
+ * Define la estructura y las reglas de los datos del formulario.
+ */
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
     artist: z.string().min(1, { message: "El artista es obligatorio." }),
@@ -25,11 +29,17 @@ const formSchema = z.object({
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
 
+/**
+ * Formulario para que los administradores editen una canción existente.
+ * @param {{ song: Song }} props - Propiedades con los datos de la canción a editar.
+ * @returns {JSX.Element} El componente del formulario de edición.
+ */
 export function EditSongForm({ song }: { song: Song }) {
     const { t } = useI18n();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
+    // Inicialización de react-hook-form con el esquema de Zod y los valores por defecto de la canción.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,6 +52,10 @@ export function EditSongForm({ song }: { song: Song }) {
         },
     });
 
+    /**
+     * Función que se ejecuta al enviar el formulario.
+     * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
+     */
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
@@ -56,10 +70,13 @@ export function EditSongForm({ song }: { song: Song }) {
                 coverArt: values.coverArt,
             };
 
+            // Llama a la función del cliente para actualizar la canción en Firestore.
             await updateSong(song.id, songData);
+            // Llama a la acción del servidor para revalidar rutas y redirigir.
             await revalidateAndRedirectAfterEdit(slug, values.artist);
             
         } catch (error: any) {
+            // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
             if (error.digest?.startsWith('NEXT_REDIRECT')) {
                 return;
             }

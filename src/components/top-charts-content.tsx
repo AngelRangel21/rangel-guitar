@@ -6,11 +6,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TopSongListItem } from "./top-song-list-item";
 
+/**
+ * Propiedades que el componente TopChartsContent espera recibir.
+ */
 interface TopChartsContentProps {
     topVisited: Song[];
     topLiked: Song[];
 }
 
+/**
+ * Componente que muestra el contenido de la página de "Top Canciones".
+ * Utiliza pestañas para separar las canciones más visitadas de las que tienen más "me gusta".
+ * @param {TopChartsContentProps} props - Propiedades con las listas de canciones.
+ * @returns {JSX.Element} El contenido de la página de top canciones.
+ */
 export function TopChartsContent({ topVisited, topLiked }: TopChartsContentProps) {
     const { t } = useI18n();
     return (
@@ -22,6 +31,7 @@ export function TopChartsContent({ topVisited, topLiked }: TopChartsContentProps
                     <TabsTrigger value="visited">{t('mostVisited')}</TabsTrigger>
                     <TabsTrigger value="liked">{t('mostLiked')}</TabsTrigger>
                 </TabsList>
+                {/* Pestaña de las más visitadas */}
                 <TabsContent value="visited">
                     <Card>
                         <CardHeader>
@@ -34,6 +44,7 @@ export function TopChartsContent({ topVisited, topLiked }: TopChartsContentProps
                         </CardContent>
                     </Card>
                 </TabsContent>
+                {/* Pestaña de las con más "me gusta" */}
                 <TabsContent value="liked">
                      <Card>
                         <CardHeader>

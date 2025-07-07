@@ -16,6 +16,9 @@ import { addSong, type NewSongData } from '@/lib/client/songs';
 import { revalidateAfterSongUpload } from "@/app/admin/upload-song/actions";
 import { createSlug } from "@/lib/utils";
 
+/**
+ * Esquema de validación del formulario para subir una canción, utilizando Zod.
+ */
 const formSchema = z.object({
     title: z.string().min(1, { message: "El título es obligatorio." }),
     artist: z.string().min(1, { message: "El artista es obligatorio." }),
@@ -25,12 +28,17 @@ const formSchema = z.object({
     coverArt: z.string().url({ message: "Debe ser una URL válida." }),
 });
 
+/**
+ * Componente de formulario para que los administradores suban una nueva canción directamente.
+ * @returns {JSX.Element} El formulario para subir canciones.
+ */
 export function UploadSongForm() {
     const { t } = useI18n();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
+    // Inicializa el formulario con react-hook-form y el resolver de Zod.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -43,6 +51,10 @@ export function UploadSongForm() {
         },
     });
 
+    /**
+     * Maneja el envío del formulario.
+     * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
+     */
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
@@ -57,6 +69,7 @@ export function UploadSongForm() {
                 coverArt: values.coverArt,
             };
 
+            // Agrega la canción a la base de datos y revalida las rutas.
             await addSong(songToAdd);
             await revalidateAfterSongUpload(values.artist);
 
@@ -65,6 +78,7 @@ export function UploadSongForm() {
                 description: `"${values.title}" ha sido añadida a la biblioteca.`,
             });
             
+            // Redirige al administrador a la página de la nueva canción.
             router.push(`/songs/${slug}`);
 
         } catch (error: any) {

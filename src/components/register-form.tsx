@@ -13,17 +13,24 @@ import { useI18n } from "@/context/i18n-context";
 import { GoogleIcon } from "@/components/icons";
 import { useState } from "react";
 
+/**
+ * Componente del formulario de registro de nuevos usuarios.
+ * Permite a los usuarios crear una cuenta con nombre, correo/contraseña o con Google.
+ * @returns {JSX.Element} El formulario de registro.
+ */
 export function RegisterForm() {
   const { registerWithEmail, signInWithGoogle } = useAuth();
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
     name: z.string().min(2, { message: t('nameRequired') }),
     email: z.string().email({ message: t('invalidEmail') }),
     password: z.string().min(6, { message: t('passwordMinLength') }),
   });
 
+  // Inicializa el formulario con react-hook-form y el resolver de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,6 +40,10 @@ export function RegisterForm() {
     },
   });
 
+  /**
+   * Maneja el envío del formulario de registro con correo y contraseña.
+   * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
+   */
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     await registerWithEmail(values);
@@ -92,6 +103,7 @@ export function RegisterForm() {
             </Button>
           </form>
         </Form>
+        {/* Separador "O continuar con" */}
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -102,10 +114,12 @@ export function RegisterForm() {
             </span>
           </div>
         </div>
+        {/* Botón de registro con Google */}
         <Button onClick={signInWithGoogle} variant="outline" className="w-full" disabled={isLoading}>
           <GoogleIcon className="mr-2 h-5 w-5" />
           {t('registerWithGoogle')}
         </Button>
+        {/* Enlace a la página de inicio de sesión */}
         <div className="mt-4 text-center text-sm">
           {t('haveAccount')}{" "}
           <Link href="/login" className="underline text-accent">

@@ -22,7 +22,8 @@ const firebaseConfig = {
   measurementId: "G-8J82455QVE"
 };
 
-
+// Inicializa la aplicación de Firebase.
+// Comprueba si ya existe una instancia para evitar reinicializaciones (importante en entornos de desarrollo con HMR).
 let app: FirebaseApp;
 if (!getApps().length) {
   app = initializeApp(firebaseConfig);
@@ -30,7 +31,9 @@ if (!getApps().length) {
   app = getApp();
 }
 
+// Obtiene las instancias de los servicios de Firestore y Authentication.
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Exporta las instancias para usarlas en otras partes de la aplicación.
 export { db, auth };

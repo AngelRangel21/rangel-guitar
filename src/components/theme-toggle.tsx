@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useI18n } from "@/context/i18n-context"
 
+/**
+ * Componente que permite al usuario cambiar el tema de la aplicación
+ * entre claro, oscuro y el tema del sistema.
+ * @returns {JSX.Element} El botón de cambio de tema con su menú desplegable.
+ */
 export function ThemeToggle() {
   const { setTheme } = useTheme()
   const { t } = useI18n();

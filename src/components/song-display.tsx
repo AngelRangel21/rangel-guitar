@@ -18,6 +18,13 @@ import { SongListItem } from "./song-list-item";
 import { incrementVisitCount } from "@/lib/client/songs";
 import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
 
+/**
+ * Componente principal para mostrar una canción.
+ * Incluye la portada, controles de transposición, botones para compartir,
+ * la hoja de acordes/letra, y sugerencias de otras canciones.
+ * @param {{ song: Song, suggestedSongs: Song[] }} props - Datos de la canción y sugerencias.
+ * @returns {JSX.Element} El componente de visualización de la canción.
+ */
 export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSongs: Song[] }) {
   const [transpose, setTranspose] = useState(0);
   const { t } = useI18n();
@@ -25,23 +32,30 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   const [currentUrl, setCurrentUrl] = useState('');
   const visitLoggedRef = useRef(false);
 
+  // Efecto para obtener la URL actual y registrar la visita a la canción.
   useEffect(() => {
     setCurrentUrl(window.location.href);
 
+    // `useRef` se usa para asegurar que la visita se registre solo una vez,
+    // evitando el doble conteo causado por el StrictMode de React en desarrollo.
     if (!visitLoggedRef.current) {
       const logVisit = async () => {
         try {
           await incrementVisitCount(song.id);
-          await revalidateAfterVisit();
+          await revalidateAfterVisit(); // Revalida la página de top charts.
         } catch (error) {
           console.error("Failed to increment visit count:", error);
         }
       };
       logVisit();
-      visitLoggedRef.current = true;
+      visitLoggedRef.current = true; // Marca la visita como registrada.
     }
   }, [song.id]);
 
+  /**
+   * Genera el texto que describe el estado de la transposición.
+   * @returns {string} - El texto descriptivo (ej. "Tono Original", "+2 semitonos").
+   */
   const getTransposedKeyText = () => {
     if (transpose === 0) return t('originalKey');
     const direction = transpose > 0 ? `+${transpose}` : transpose;
@@ -53,6 +67,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   return (
     <div className="opacity-0 animate-content-in">
       <div className="grid lg:grid-cols-3 gap-8">
+        {/* Columna izquierda: Portada, controles y metadatos */}
         <div className="lg:col-span-1">
           <Card className="overflow-hidden lg:sticky lg:top-24">
             {song.video ? (
@@ -83,6 +98,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                   <CardTitle className="text-2xl">{song.title}</CardTitle>
                   <CardDescription>{song.artist}</CardDescription>
                 </div>
+                {/* Botón de Favoritos (solo para usuarios autenticados) */}
                 {isAuthenticated && (
                   <Button
                     variant="ghost"
@@ -97,6 +113,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
               </div>
             </CardHeader>
             <CardContent>
+              {/* Acciones de Administrador (solo para administradores) */}
               {isAdmin && (
                 <div className="mb-8 p-4 bg-secondary/50 rounded-lg">
                   <h3 className="text-lg font-semibold mb-3 text-center">{t('adminActions')}</h3>
@@ -115,6 +132,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                 </div>
               )}
 
+              {/* Controles de Transposición */}
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-semibold mb-2 text-center">{t('changeTone')}</h3>
@@ -135,34 +153,20 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                 </div>
               </div>
 
+              {/* Botones para Compartir */}
               <div className="mt-8">
                 <h3 className="text-lg font-semibold mb-2 text-center">{t('share')}</h3>
                 <div className="flex justify-center gap-4">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, "_blank")}
-                    aria-label={t('shareOnFacebook')}
-                  >
+                  <Button variant="outline" size="icon" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`, "_blank")} aria-label={t('shareOnFacebook')}>
                     <Facebook className="h-5 w-5 text-blue-600" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => window.open(`https://twitter.com/intent/tweet?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")}
-                    aria-label={t('shareOnTwitter')}
-                  >
+                  <Button variant="outline" size="icon" onClick={() => window.open(`https://twitter.com/intent/tweet?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")} aria-label={t('shareOnTwitter')}>
                     <Twitter className="h-5 w-5 text-blue-400" />
                   </Button>
                    <Button variant="outline" size="icon" onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${currentUrl}`)}`, "_blank")} aria-label={t('shareOnWhatsApp')}>
                     <WhatsAppIcon className="h-5 w-5 text-green-500" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => window.open(`https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")}
-                    aria-label={t('shareOnTelegram')}
-                  >
+                  <Button variant="outline" size="icon" onClick={() => window.open(`https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")} aria-label={t('shareOnTelegram')}>
                     <TelegramIcon className="h-5 w-5 text-blue-500" />
                   </Button>
                 </div>
@@ -170,6 +174,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
             </CardContent>
           </Card>
         </div>
+        {/* Columna derecha: Pestañas con acordes y letra */}
         <div className="lg:col-span-2">
           <Tabs defaultValue="chords" className="w-full">
             <TabsList>
@@ -195,6 +200,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
           </Tabs>
         </div>
       </div>
+      {/* Sección de Canciones Sugeridas */}
       {suggestedSongs.length > 0 && (
         <div className="mt-16">
           <h2 className="text-3xl font-bold mb-6">{t('suggestedSongs')}</h2>

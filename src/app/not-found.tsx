@@ -3,6 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
+/**
+ * Página de error 404 personalizada.
+ * Se muestra cuando un usuario intenta acceder a una ruta que no existe.
+ * @returns {JSX.Element} La página 404.
+ */
 export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen bg-background">

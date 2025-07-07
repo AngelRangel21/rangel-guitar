@@ -1,16 +1,23 @@
-export type ChordShape = (number | 'x')[]; // 'x' for muted, number for fret
+// Define el tipo para la forma de un acorde en la guitarra.
+// Puede ser un número (traste) o 'x' (cuerda muteada).
+export type ChordShape = (number | 'x')[]; 
 
+/**
+ * Interfaz para la estructura de datos de las formas de acordes de guitarra.
+ * Cada clave es el nombre de un acorde.
+ */
 export interface ChordShapes {
   [key: string]: {
-    positions: ChordShape;
-    fingering?: ChordShape; // Optional: which finger to use
-    baseFret?: number;
+    positions: ChordShape; // Posiciones de los dedos en los trastes.
+    fingering?: ChordShape; // Opcional: qué dedo usar.
+    baseFret?: number; // El traste desde el que se muestra el diagrama.
   };
 }
 
-// Data for common chords. 'x' = muted, 0 = open. Order is EADGBe
+// Datos para acordes comunes de guitarra. 'x' = muteado, 0 = al aire.
+// El orden de las cuerdas es EADGBe (de la 6ª a la 1ª).
 export const guitarChordShapes: ChordShapes = {
-  // Major Chords
+  // Acordes Mayores
   'A': { positions: ['x', 0, 2, 2, 2, 0] },
   'A#': { positions: ['x', 1, 3, 3, 3, 1], baseFret: 1 },
   'B': { positions: ['x', 2, 4, 4, 4, 2], baseFret: 2 },
@@ -24,7 +31,7 @@ export const guitarChordShapes: ChordShapes = {
   'G': { positions: [3, 2, 0, 0, 0, 3] },
   'G#': { positions: [4, 6, 6, 5, 4, 4], baseFret: 4 },
 
-  // Minor Chords
+  // Acordes Menores
   'Am': { positions: ['x', 0, 2, 2, 1, 0] },
   'A#m': { positions: ['x', 1, 3, 3, 2, 1], baseFret: 1 },
   'Bm': { positions: ['x', 2, 4, 4, 3, 2], baseFret: 2 },
@@ -38,7 +45,7 @@ export const guitarChordShapes: ChordShapes = {
   'Gm': { positions: [3, 5, 5, 3, 3, 3], baseFret: 3 },
   'G#m': { positions: [4, 6, 6, 4, 4, 4], baseFret: 4 },
 
-  // Seventh Chords
+  // Acordes de Séptima
   'A7': { positions: ['x', 0, 2, 0, 2, 0] },
   'A#7': { positions: ['x', 1, 3, 1, 3, 1], baseFret: 1 },
   'B7': { positions: ['x', 2, 1, 2, 0, 2] },
@@ -53,14 +60,17 @@ export const guitarChordShapes: ChordShapes = {
   'G#7': { positions: [4, 6, 4, 5, 4, 4], baseFret: 4 },
 };
 
-
+/**
+ * Interfaz para la estructura de datos de las notas de acordes de teclado.
+ */
 export interface KeyboardChordNotes {
   [key: string]: string[];
 }
 
-// Notes in each chord for keyboard. Includes enharmonic equivalents.
+// Datos con las notas que componen cada acorde para el diagrama de teclado.
+// Incluye equivalentes enarmónicos (ej. A# y Bb).
 export const keyboardChordNotes: KeyboardChordNotes = {
-  // Major
+  // Mayores
   'A': ['A', 'C#', 'E'],
   'A#': ['A#', 'D', 'F'], 'Bb': ['Bb', 'D', 'F'],
   'B': ['B', 'D#', 'F#'],
@@ -74,7 +84,7 @@ export const keyboardChordNotes: KeyboardChordNotes = {
   'G': ['G', 'B', 'D'],
   'G#': ['G#', 'C', 'D#'], 'Ab': ['Ab', 'C', 'Eb'],
 
-  // Minor
+  // Menores
   'Am': ['A', 'C', 'E'],
   'A#m': ['A#', 'C#', 'F'], 'Bbm': ['Bb', 'Db', 'F'],
   'Bm': ['B', 'D', 'F#'],
@@ -88,7 +98,7 @@ export const keyboardChordNotes: KeyboardChordNotes = {
   'Gm': ['G', 'Bb', 'D'],
   'G#m': ['G#', 'B', 'D#'], 'Abm': ['Ab', 'B', 'Eb'],
 
-  // 7th
+  // Séptima
   'A7': ['A', 'C#', 'E', 'G'],
   'A#7': ['A#', 'D', 'F', 'G#'], 'Bb7': ['Bb', 'D', 'F', 'Ab'],
   'B7': ['B', 'D#', 'F#', 'A'],
@@ -98,7 +108,7 @@ export const keyboardChordNotes: KeyboardChordNotes = {
   'D#7': ['D#', 'G', 'A#', 'C#'], 'Eb7': ['Eb', 'G', 'Bb', 'Db'],
   'E7': ['E', 'G#', 'B', 'D'],
   'F7': ['F', 'A', 'C', 'Eb'],
-  'F#7': ['F#', 'A#', 'C#', 'E'], 'Gb7': ['Gb', 'Bb', 'Db', 'E'], // E is enharmonic of Fb
+  'F#7': ['F#', 'A#', 'C#', 'E'], 'Gb7': ['Gb', 'Bb', 'Db', 'E'], // E es el enarmónico de Fb
   'G7': ['G', 'B', 'D', 'F'],
   'G#7': ['G#', 'C', 'D#', 'F#'], 'Ab7': ['Ab', 'C', 'Eb', 'Gb'],
 };

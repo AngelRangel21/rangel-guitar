@@ -3,16 +3,26 @@
 import { ChordCard } from "@/components/chord-card";
 import { useI18n } from "@/context/i18n-context";
 
+/**
+ * Propiedades que el componente ChordsList espera recibir.
+ */
 interface ChordsListProps {
     majorChords: string[];
     minorChords: string[];
     seventhChords: string[];
 }
 
+/**
+ * Componente que muestra listas de acordes agrupados por tipo (mayores, menores, séptima).
+ * Es un Client Component para poder usar el hook de internacionalización.
+ * @param {ChordsListProps} props - Las listas de acordes a mostrar.
+ * @returns {JSX.Element} Un contenedor con las listas de acordes.
+ */
 export function ChordsList({ majorChords, minorChords, seventhChords }: ChordsListProps) {
-  const { t } = useI18n();
+  const { t } = useI18n(); // Hook para obtener traducciones.
   return (
     <div className="space-y-12">
+      {/* Sección de Acordes Mayores */}
       <section>
         <h2 className="text-3xl font-bold text-foreground mb-6">{t('majorChords')}</h2>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">
@@ -21,6 +31,7 @@ export function ChordsList({ majorChords, minorChords, seventhChords }: ChordsLi
           ))}
         </div>
       </section>
+       {/* Sección de Acordes Menores */}
        <section>
         <h2 className="text-3xl font-bold text-foreground mb-6">{t('minorChords')}</h2>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">
@@ -29,6 +40,7 @@ export function ChordsList({ majorChords, minorChords, seventhChords }: ChordsLi
           ))}
         </div>
       </section>
+       {/* Sección de Acordes de Séptima */}
        <section>
         <h2 className="text-3xl font-bold text-foreground mb-6">{t('seventhChords')}</h2>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">

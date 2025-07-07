@@ -6,12 +6,21 @@ import { useI18n } from '@/context/i18n-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GuitarScaleDiagram } from './guitar-scale-diagram';
 
+/**
+ * Propiedades que el componente ScaleDisplay espera recibir.
+ */
 interface ScaleDisplayProps {
     rootNote: string;
     scaleType: 'major' | 'minor';
     scaleNotes: string[];
 }
 
+/**
+ * Componente que muestra la información de una escala musical seleccionada.
+ * Incluye el nombre de la escala, sus notas y diagramas para teclado y guitarra.
+ * @param {ScaleDisplayProps} props - Propiedades del componente.
+ * @returns {JSX.Element} La tarjeta de visualización de la escala.
+ */
 export function ScaleDisplay({ rootNote, scaleType, scaleNotes }: ScaleDisplayProps) {
     const { t } = useI18n();
     const scaleTypeName = t(scaleType as 'major' | 'minor');
@@ -24,6 +33,7 @@ export function ScaleDisplay({ rootNote, scaleType, scaleNotes }: ScaleDisplayPr
                 <CardDescription>{t('scaleNotes')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                {/* Muestra las notas de la escala como insignias (badges). */}
                 <div className="flex flex-wrap gap-2">
                     {scaleNotes.map(note => (
                         <Badge key={note} variant="secondary" className="text-lg px-3 py-1">
@@ -31,6 +41,7 @@ export function ScaleDisplay({ rootNote, scaleType, scaleNotes }: ScaleDisplayPr
                         </Badge>
                     ))}
                 </div>
+                 {/* Pestañas para cambiar entre el diagrama de teclado y el de guitarra. */}
                  <div>
                     <Tabs defaultValue="keyboard" className="w-full">
                         <TabsList className="grid w-full grid-cols-2">

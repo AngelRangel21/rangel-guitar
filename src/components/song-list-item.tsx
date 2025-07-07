@@ -3,6 +3,11 @@ import Link from "next/link";
 import type { Song } from "@/lib/types";
 import { ChevronRight } from "lucide-react";
 
+/**
+ * Componente que muestra un elemento de canción en formato de lista.
+ * @param {{ song: Song }} props - Propiedades del componente, contiene los datos de la canción.
+ * @returns {JSX.Element} El elemento de la lista de canciones.
+ */
 export function SongListItem({ song }: { song: Song }) {
   return (
     <Link href={`/songs/${song.slug}`} className="block transition-colors duration-200 rounded-lg hover:bg-secondary/80 group" aria-label={`Ver canción ${song.title} de ${song.artist}`}>

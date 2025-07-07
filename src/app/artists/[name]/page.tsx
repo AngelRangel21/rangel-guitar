@@ -5,15 +5,27 @@ import { getSongsByArtist, getArtists } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ArtistDetailContent } from '@/components/artist-detail-content';
 
+/**
+ * Genera los parámetros estáticos para todas las páginas de artistas en tiempo de compilación.
+ * Esto permite a Next.js pre-renderizar cada página de artista, mejorando el rendimiento.
+ * @returns {Promise<{ name: string }[]>} Un array de objetos con los nombres de los artistas codificados para la URL.
+ */
 export async function generateStaticParams() {
     const artists = await getArtists();
     return artists.map(name => ({ name: encodeURIComponent(name) }));
 }
 
+/**
+ * Genera los metadatos (título, descripción, etc.) para la página de un artista específico.
+ * Es crucial para el SEO y para cómo se muestra la página al compartirla en redes sociales.
+ * @param {{ params: { name: string } }} props - Las propiedades de la página, incluyendo el nombre del artista desde la URL.
+ * @returns {Promise<Metadata>} El objeto de metadatos para la página.
+ */
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
     const artistName = decodeURIComponent(params.name);
     const artistSongs = await getSongsByArtist(artistName);
 
+    // Si no se encuentran canciones para el artista, se establece un título genérico.
     if (artistSongs.length === 0) {
         return {
             title: 'Artista no encontrado'
@@ -42,11 +54,19 @@ export async function generateMetadata({ params }: { params: { name: string } })
     }
 }
 
-
+/**
+ * Página que muestra todas las canciones de un artista específico.
+ * Es una página renderizada en el servidor (Server Component) que obtiene los datos en tiempo de compilación.
+ * @param {{ params: { name: string } }} props - Las propiedades de la página, incluyendo el nombre del artista.
+ * @returns {Promise<JSX.Element>} La página de detalle del artista.
+ */
 export default async function ArtistDetailPage({ params }: { params: { name: string } }) {
+  // Decodifica el nombre del artista desde la URL (ej. "Guns%20N'%20Roses" -> "Guns N' Roses").
   const artistName = decodeURIComponent(params.name);
+  // Obtiene todas las canciones del artista desde el servicio.
   const artistSongs = await getSongsByArtist(artistName);
 
+  // Si no se encuentran canciones, muestra la página de error 404.
   if (artistSongs.length === 0) {
     notFound();
   }
@@ -54,6 +74,7 @@ export default async function ArtistDetailPage({ params }: { params: { name: str
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
+      {/* El contenido principal se delega a un Client Component para permitir interactividad y hooks. */}
       <ArtistDetailContent artistName={artistName} songs={artistSongs} />
       <Footer />
     </div>

@@ -18,31 +18,47 @@ import {
 } from "@/components/ui/pagination";
 import { useI18n } from "@/context/i18n-context";
 
+// Constante para el número de canciones a mostrar por página.
 const SONGS_PER_PAGE = 16;
 
+/**
+ * Componente que muestra una lista de canciones con opciones de vista (cuadrícula/lista) y paginación.
+ * @param {{ songs: Song[] }} props - Propiedades del componente, contiene la lista de canciones.
+ * @returns {JSX.Element} El componente de la lista de canciones.
+ */
 export function SongList({ songs }: { songs: Song[] }) {
   const [view, setView] = useState<"grid" | "list">("list");
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useI18n();
 
+  // Efecto para resetear la paginación a la página 1 cada vez que la lista de canciones cambia (ej. por una búsqueda).
   useEffect(() => {
     setCurrentPage(1);
   }, [songs]);
 
   const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE);
 
+  // `useMemo` para calcular las canciones de la página actual solo cuando sea necesario.
   const currentSongs = useMemo(() => {
     const start = (currentPage - 1) * SONGS_PER_PAGE;
     const end = start + SONGS_PER_PAGE;
     return songs.slice(start, end);
   }, [currentPage, songs]);
   
+  /**
+   * Maneja el cambio de página.
+   * @param {number} page - El número de página al que se quiere ir.
+   */
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
   
+  /**
+   * Renderiza los controles de paginación.
+   * @returns {JSX.Element} El componente de paginación.
+   */
   const renderPagination = () => {
     const pageNumbers = [];
     const maxPagesToShow = 3;
@@ -115,6 +131,7 @@ export function SongList({ songs }: { songs: Song[] }) {
 
   return (
     <div className="space-y-6">
+      {/* Controles para cambiar la vista */}
       <div className="flex justify-end items-center">
         <div className="flex items-center gap-2">
           <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
@@ -127,11 +144,13 @@ export function SongList({ songs }: { songs: Song[] }) {
       </div>
         
       {songs.length === 0 ? (
+        // Mensaje si no se encuentran canciones (ej. después de una búsqueda).
         <div className="text-center py-16">
           <p className="text-muted-foreground">{t('noSongsFound')}</p>
         </div>
       ) : (
         <>
+        {/* Contenedor que cambia entre cuadrícula y lista */}
         <div
             className={`transition-all duration-300 ${
             view === 'grid'
@@ -146,6 +165,7 @@ export function SongList({ songs }: { songs: Song[] }) {
             ))}
         </div>
 
+        {/* Muestra la paginación si hay más de una página. */}
         {totalPages > 1 && (
             <div className="pt-6">
             {renderPagination()}

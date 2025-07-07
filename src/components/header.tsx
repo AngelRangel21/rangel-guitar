@@ -31,21 +31,29 @@ import { Badge } from "./ui/badge";
 import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
+/**
+ * Componente del encabezado principal de la aplicación.
+ * Contiene el logo, la barra de búsqueda (en la página de inicio), y el menú de usuario/navegación.
+ * @param {{ searchTerm?: string; onSearchChange?: (value: string) => void }} props - Propiedades para el control de la búsqueda.
+ * @returns {JSX.Element} El componente del encabezado.
+ */
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { t, language, setLanguage } = useI18n();
   const { toast } = useToast();
   const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
+  // Efecto para escuchar notificaciones de solicitudes de canciones en tiempo real para administradores.
   useEffect(() => {
     if (!isAdmin) {
         setNotifications({ count: 0, recentRequests: [] });
-        return;
+        return; // No hacer nada si el usuario no es administrador.
     }
 
     const requestsCollection = collection(db, 'song-requests');
     const q = query(requestsCollection, orderBy('requestedAt', 'desc'));
 
+    // onSnapshot establece un listener en tiempo real a la colección de Firestore.
     const unsubscribe = onSnapshot(q, (snapshot) => {
         const requests = snapshot.docs.map(doc => {
             const data = doc.data();
@@ -59,23 +67,30 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
 
         setNotifications({
             count: requests.length,
-            recentRequests: requests.slice(0, 5),
+            recentRequests: requests.slice(0, 5), // Muestra solo las 5 más recientes.
         });
     }, (error) => {
         console.error("Error fetching notifications:", error);
     });
 
+    // Limpia el listener cuando el componente se desmonta para evitar fugas de memoria.
     return () => unsubscribe();
   }, [isAdmin]);
 
   const locale = language === 'es' ? es : enUS;
 
+  /**
+   * Maneja la eliminación de una notificación de solicitud.
+   * @param {React.MouseEvent} e - Evento del mouse.
+   * @param {string} requestId - ID de la solicitud a eliminar.
+   */
   const handleDeleteNotification = async (e: React.MouseEvent, requestId: string) => {
     e.preventDefault();
     e.stopPropagation();
 
     const originalNotifications = { ...notifications };
 
+    // Actualización optimista de la UI.
     setNotifications(prev => ({
         count: Math.max(0, prev.count - 1),
         recentRequests: prev.recentRequests.filter(req => req.id !== requestId),
@@ -85,6 +100,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
       await deleteSongRequest(requestId);
       const result = await revalidateAfterRequestDelete();
       if (!result.success) {
+          // Si falla la revalidación, revierte la UI.
           toast({
               variant: 'destructive',
               title: t('error'),
@@ -94,15 +110,14 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
       }
     } catch (error) {
         console.error('Error deleting notification:', error);
-         toast({
+        toast({
             variant: 'destructive',
             title: t('error'),
             description: t('notificationDeleteError'),
         });
-        setNotifications(originalNotifications);
+        setNotifications(originalNotifications); // Revertir en caso de error.
     }
   };
-
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
@@ -112,6 +127,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
           <span className="text-2xl font-bold whitespace-nowrap">{t('appName')}</span>
         </Link>
 
+        {/* Barra de búsqueda (solo visible en escritorio y si se pasan las props) */}
         <div className="hidden md:flex flex-1 max-w-md items-center ml-8">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -127,6 +143,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Menú de notificaciones para administradores */}
           {isAdmin && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -184,7 +201,11 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+          
+          {/* Botón para cambiar tema (claro/oscuro) */}
           <ThemeToggle />
+          
+          {/* Menú principal de usuario y navegación */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">
@@ -199,6 +220,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
               {isAuthenticated && user ? (
+                // Menú para usuarios autenticados
                 <>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
@@ -235,6 +257,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                   </DropdownMenuItem>
                 </>
               ) : (
+                // Menú para usuarios no autenticados
                 <>
                   <DropdownMenuItem asChild>
                     <Link href="/login">{t('login')}</Link>
@@ -245,6 +268,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </>
               )}
               <DropdownMenuSeparator />
+               {/* Barra de búsqueda para móviles */}
                <div className="md:hidden p-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -259,6 +283,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </div>
               </div>
               <DropdownMenuSeparator className="md:hidden" />
+              {/* Enlaces de navegación generales */}
               <DropdownMenuItem asChild>
                 <Link href="/">{t('home')}</Link>
               </DropdownMenuItem>
@@ -290,6 +315,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
+              {/* Submenú para cambiar de idioma */}
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                     <Globe className="mr-2 h-4 w-4" />

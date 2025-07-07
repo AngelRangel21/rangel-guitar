@@ -1,5 +1,10 @@
 import type { SVGProps } from "react";
 
+/**
+ * Componente de icono de WhatsApp en formato SVG.
+ * @param {SVGProps<SVGSVGElement>} props - Propiedades SVG estándar.
+ * @returns {JSX.Element} El icono de WhatsApp.
+ */
 export function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -19,6 +24,11 @@ export function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/**
+ * Componente de icono de Telegram en formato SVG.
+ * @param {SVGProps<SVGSVGElement>} props - Propiedades SVG estándar.
+ * @returns {JSX.Element} El icono de Telegram.
+ */
 export function TelegramIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -38,6 +48,12 @@ export function TelegramIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/**
+ * Componente de icono de Google en formato SVG.
+ * Utilizado en los botones de inicio de sesión/registro con Google.
+ * @param {SVGProps<SVGSVGElement>} props - Propiedades SVG estándar.
+ * @returns {JSX.Element} El icono de Google.
+ */
 export function GoogleIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg

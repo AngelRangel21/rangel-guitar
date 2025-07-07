@@ -2,6 +2,11 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * Página estática que muestra la política de cookies del sitio web.
+ * Contiene información legal sobre el uso de cookies.
+ * @returns {JSX.Element} La página de política de cookies.
+ */
 export default function CookiePolicyPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -12,6 +17,7 @@ export default function CookiePolicyPage() {
             <CardTitle className="text-3xl">Política de Cookies</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
+            {/* Contenido de la política de cookies */}
             <p>
               Este sitio web, Rangel Guitar, utiliza cookies para mejorar su experiencia mientras navega por el sitio web. De estas, las cookies que se clasifican como necesarias se almacenan en su navegador, ya que son esenciales para el funcionamiento de las funcionalidades básicas del sitio web.
             </p>
