@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { ChordSheet } from "./chord-sheet";
 import { Minus, Plus, Facebook, Twitter, Heart, Pencil, Trash2 } from "lucide-react";
-import { WhatsAppIcon } from "@/components/icons";
+import { WhatsAppIcon, TelegramIcon } from "@/components/icons";
 import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
 import { useAuth } from "@/context/auth-context";
@@ -51,7 +51,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   const shareText = t('shareText', { title: song.title, artist: song.artist });
 
   return (
-    <div>
+    <div className="opacity-0 animate-content-in">
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
           <Card className="overflow-hidden lg:sticky lg:top-24">
@@ -156,6 +156,14 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                   </Button>
                    <Button variant="outline" size="icon" onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText} ${currentUrl}`)}`, "_blank")} aria-label={t('shareOnWhatsApp')}>
                     <WhatsAppIcon className="h-5 w-5 text-green-500" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => window.open(`https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(shareText)}`, "_blank")}
+                    aria-label={t('shareOnTelegram')}
+                  >
+                    <TelegramIcon className="h-5 w-5 text-blue-500" />
                   </Button>
                 </div>
               </div>

@@ -7,6 +7,18 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Biblioteca de Acordes',
   description: 'Explora una biblioteca completa de acordes de guitarra. Encuentra diagramas para acordes mayores, menores y de séptima para mejorar tu forma de tocar.',
+  openGraph: {
+    title: 'Biblioteca de Acordes | Rangel Guitar',
+    description: 'Explora una biblioteca completa de acordes de guitarra en Rangel Guitar.',
+    images: [
+      {
+        url: 'https://placehold.co/1200x630.png',
+        width: 1200,
+        height: 630,
+        alt: 'Biblioteca de Acordes de Rangel Guitar',
+      },
+    ],
+  },
 }
 
 export default function ChordsPage() {

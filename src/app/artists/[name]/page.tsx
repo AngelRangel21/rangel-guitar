@@ -21,13 +21,23 @@ export async function generateMetadata({ params }: { params: { name: string } })
     }
 
     const description = `Explora todas las canciones y tablaturas de ${artistName} en Rangel Guitar. Aprende a tocar sus éxitos en guitarra.`;
+    const title = `Canciones de ${artistName}`;
 
     return {
-        title: `Canciones de ${artistName}`,
+        title: title,
         description: description,
         openGraph: {
-            title: `Canciones de ${artistName}`,
+            title: title,
             description: description,
+            type: 'website',
+            images: [
+              {
+                url: 'https://placehold.co/1200x630.png',
+                width: 1200,
+                height: 630,
+                alt: `Canciones de ${artistName} en Rangel Guitar`,
+              },
+            ],
         },
     }
 }

@@ -7,6 +7,18 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Top Canciones',
   description: 'Descubre las canciones más populares y con más me gusta en Rangel Guitar.',
+  openGraph: {
+    title: 'Top Canciones | Rangel Guitar',
+    description: 'Descubre las canciones más populares y con más me gusta en Rangel Guitar.',
+    images: [
+      {
+        url: 'https://placehold.co/1200x630.png',
+        width: 1200,
+        height: 630,
+        alt: 'Top Canciones en Rangel Guitar',
+      },
+    ],
+  },
 }
 
 export default async function TopChartsPage() {
