@@ -15,7 +15,7 @@ const CHORD_OR_SECTION_REGEX = /(\[.*?\]|\b[A-G](?:#|b)?(?:m|maj|dim|aug|sus|add
 /**
  * Lista de nombres de secciones de canciones conocidas (en minúsculas).
  */
-const KNOWN_SECTIONS = ['intro', 'verse', 'chorus', 'bridge', 'solo', 'outro', 'instrumental', 'capo', 'pre-chorus', 'post-chorus'];
+const KNOWN_SECTIONS = ['intro', 'verso', 'coro', 'bridge', 'solo', 'outro', 'instrumental', 'capo', 'pre-coro', 'post-coro'];
 
 /**
  * Verifica si un texto dado es un marcador de sección (ej. "[Verse]").
