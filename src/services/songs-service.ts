@@ -48,19 +48,21 @@ export async function getSongs(): Promise<Song[]> {
 }
 
 /**
- * Busca una canción por su slug.
- * Esta función obtiene todas las canciones y las filtra en memoria.
- * Este enfoque se utiliza para encontrar correctamente canciones que pueden no tener el campo `slug`
- * persistido en la base de datos todavía (datos heredados), ya que el slug se genera sobre la marcha
- * en `mapDocToSong`. Para conjuntos de datos más grandes, una migración de base de datos para agregar slugs a todos
- * los documentos y una consulta directa serían más eficientes.
+ * Busca una canción por su slug de forma eficiente.
  * @param {string} slug - El slug de la canción a buscar.
  * @returns {Promise<Song | null>} - La canción encontrada o null si no existe.
  */
 export async function getSongBySlug(slug: string): Promise<Song | null> {
-    const allSongs = await getSongs();
-    const song = allSongs.find(s => s.slug === slug);
-    return song || null;
+    // Consulta directamente por el campo 'slug' para mayor eficiencia.
+    const q = query(songsCollection, where('slug', '==', slug), limit(1));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+        return null;
+    }
+    
+    // Devuelve la primera canción encontrada que coincida con el slug.
+    return mapDocToSong(snapshot.docs[0]);
 }
 
 /**

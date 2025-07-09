@@ -1,6 +1,6 @@
 // IMPORTANTE: Este archivo está destinado a operaciones del lado del cliente y NO debe tener la directiva 'use server'.
 import { db } from '@/lib/firebase';
-import { collection, doc, setDoc, updateDoc, deleteDoc, increment } from 'firebase/firestore';
+import { collection, doc, updateDoc, deleteDoc, increment, addDoc } from 'firebase/firestore';
 import type { Song } from '@/lib/types';
 
 // Tipo para agregar una nueva canción, sin los campos generados por la base de datos (id, contadores).
@@ -11,9 +11,8 @@ export type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount'>;
  * @param {NewSongData} songData - Los datos de la nueva canción.
  */
 export async function addSong(songData: NewSongData): Promise<void> {
-    // El slug ahora es el ID del documento. Esto asegura que nuevas canciones se guarden con el slug como su ID.
-    const docRef = doc(db, 'songs', songData.slug);
-    await setDoc(docRef, {
+    // Permite que Firestore genere un ID único automáticamente, lo que es más robusto.
+    await addDoc(collection(db, 'songs'), {
         ...songData,
         visitCount: 0, // Inicializa los contadores.
         likeCount: 0,
