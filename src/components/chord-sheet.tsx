@@ -73,8 +73,9 @@ export function ChordSheet({ text, transpose = 0 }: { text: string; transpose?: 
                 const chordName = part.replace(/\[|\]/g, ''); // Limpia los corchetes.
                 return <Chord key={partIndex} name={chordName} transpose={transpose} />;
               } else {
-                // Las partes pares son el texto normal (letra).
-                return <span key={partIndex}>{part}</span>;
+                // Las partes pares son el texto normal (letra o espacios).
+                // Usamos un Fragment para evitar un <span> extra que podría interferir con el renderizado de los espacios.
+                return <React.Fragment key={partIndex}>{part}</React.Fragment>;
               }
             })}
           </div>
