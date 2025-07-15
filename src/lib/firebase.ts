@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 // =================================================================
 // ¡IMPORTANTE! INSERTA AQUÍ TUS NUEVAS CREDENCIALES DE FIREBASE
@@ -16,7 +17,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
   authDomain: "rangel-guitar.firebaseapp.com",
   projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.firebasestorage.app",
+  storageBucket: "rangel-guitar.appspot.com",
   messagingSenderId: "354082670866",
   appId: "1:354082670866:web:6bee882127bdeae5034bcb",
   measurementId: "G-8J82455QVE"
@@ -34,6 +35,7 @@ if (!getApps().length) {
 // Obtiene las instancias de los servicios de Firestore y Authentication.
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // Exporta las instancias para usarlas en otras partes de la aplicación.
-export { db, auth };
+export { db, auth, storage };

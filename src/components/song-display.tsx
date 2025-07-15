@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { SongListItem } from "./song-list-item";
 import { incrementVisitCount } from "@/lib/client/songs";
 import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
+import { SyncedLyricPlayer } from "./synced-lyric-player";
 
 /**
  * Componente principal para mostrar una canción.
@@ -63,6 +64,8 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   };
 
   const shareText = t('shareText', { title: song.title, artist: song.artist });
+
+  const hasSyncedLyrics = song.timedLines && song.timedLines.length > 0 && song.audioUrl;
 
   return (
     <div className="opacity-0 animate-content-in">
@@ -176,28 +179,32 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
         </div>
         {/* Columna derecha: Pestañas con acordes y letra */}
         <div className="lg:col-span-2">
-          <Tabs defaultValue="chords" className="w-full">
-            <TabsList>
-              <TabsTrigger value="chords">{t('chordsAndLyrics')}</TabsTrigger>
-              <TabsTrigger value="lyrics">{t('lyricsOnly')}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="chords">
-              <Card>
-                <CardContent className="p-6">
-                  <ChordSheet text={song.chords || ""} transpose={transpose} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="lyrics">
-              <Card>
-                <CardContent className="p-6">
-                  <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
-                    {song.lyrics || ""}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+          {hasSyncedLyrics ? (
+            <SyncedLyricPlayer song={song} transpose={transpose} />
+          ) : (
+            <Tabs defaultValue="chords" className="w-full">
+              <TabsList>
+                <TabsTrigger value="chords">{t('chordsAndLyrics')}</TabsTrigger>
+                <TabsTrigger value="lyrics">{t('lyricsOnly')}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="chords">
+                <Card>
+                  <CardContent className="p-6">
+                    <ChordSheet text={song.chords || ""} transpose={transpose} />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="lyrics">
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
+                      {song.lyrics || ""}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          )}
         </div>
       </div>
       {/* Sección de Canciones Sugeridas */}

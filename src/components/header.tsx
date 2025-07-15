@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, BrainCircuit } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, BrainCircuit, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -241,6 +241,12 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                         <Link href="/admin/upload-song">
                           <FilePlus2 className="mr-2 h-4 w-4" />
                           <span>{t('uploadSong')}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                       <DropdownMenuItem asChild>
+                        <Link href="/admin/synchronize-song">
+                          <Timer className="mr-2 h-4 w-4" />
+                          <span>{t('synchronizeSong')}</span>
                         </Link>
                       </DropdownMenuItem>
                     </>

@@ -165,6 +165,7 @@
   "bpm": "BPM",
   "beatsPerMeasure": "Beats per Measure",
   "play": "Play",
+  "pause": "Pause",
   "stop": "Stop",
   "earTrainer": "Ear Trainer",
   "earTrainerDescription": "Improve your musical ear by identifying notes by sound.",
@@ -203,5 +204,13 @@
   "analyzeSongButton": "Analyze Chords",
   "analyzing": "Analyzing...",
   "analysisFailed": "The song analysis failed. Please try again with a different file.",
-  "analysisResult": "Analysis Result"
+  "analysisResult": "Analysis Result",
+  "synchronizeSong": "Synchronize Song",
+  "synchronizeSongDescription": "Upload an audio file to synchronize it with the song's chords and lyrics.",
+  "selectSong": "Select Song",
+  "selectSongPlaceholder": "Choose a song to synchronize",
+  "synchronizing": "Synchronizing...",
+  "restart": "Restart",
+  "rewind10s": "Rewind 10 seconds",
+  "fastForward10s": "Fast-forward 10 seconds"
 }

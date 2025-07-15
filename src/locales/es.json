@@ -165,6 +165,7 @@
   "bpm": "BPM",
   "beatsPerMeasure": "Pulsos por Compás",
   "play": "Tocar",
+  "pause": "Pausa",
   "stop": "Parar",
   "earTrainer": "Entrenador de Oído",
   "earTrainerDescription": "Mejora tu oído musical identificando notas por su sonido.",
@@ -203,5 +204,13 @@
   "analyzeSongButton": "Analizar Acordes",
   "analyzing": "Analizando...",
   "analysisFailed": "El análisis de la canción falló. Por favor, intenta de nuevo con otro archivo.",
-  "analysisResult": "Resultado del Análisis"
+  "analysisResult": "Resultado del Análisis",
+  "synchronizeSong": "Sincronizar Canción",
+  "synchronizeSongDescription": "Sube un archivo de audio para sincronizarlo con los acordes y la letra de la canción.",
+  "selectSong": "Seleccionar Canción",
+  "selectSongPlaceholder": "Elige una canción para sincronizar",
+  "synchronizing": "Sincronizando...",
+  "restart": "Reiniciar",
+  "rewind10s": "Retroceder 10s",
+  "fastForward10s": "Avanzar 10s"
 }
