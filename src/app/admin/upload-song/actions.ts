@@ -1,13 +1,15 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 /**
  * Acción de servidor que revalida varias rutas después de que un administrador sube una nueva canción.
  * Esto asegura que la nueva canción aparezca inmediatamente en todas las listas relevantes.
  * @param {string} artist - El nombre del artista de la canción subida. Se usa para revalidar la página específica del artista.
+ * @param {string} slug - El slug de la nueva canción para redirigir al usuario.
  */
-export async function revalidateAfterSongUpload(artist: string) {
+export async function revalidateAndRedirectAfterUpload(artist: string, slug: string) {
     // Revalida las rutas para mostrar listas actualizadas.
     // Esto limpia el caché de datos de estas páginas, forzando una recarga de datos frescos.
     revalidatePath('/'); // La página de inicio.
@@ -15,4 +17,8 @@ export async function revalidateAfterSongUpload(artist: string) {
     revalidatePath(`/artists/${encodeURIComponent(artist)}`); // La página específica del artista.
     revalidatePath('/sitemap.ts'); // El mapa del sitio para SEO.
     revalidatePath('/top-charts'); // La página de top canciones.
+    revalidatePath(`/songs/${slug}`); // Revalida la nueva página de la canción.
+
+    // Redirige al usuario a la página de la nueva canción.
+    redirect(`/songs/${slug}`);
 }

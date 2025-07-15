@@ -85,7 +85,7 @@ export function AddSongForm({ requestId, initialTitle, initialArtist }: AddSongF
             await deleteSongRequest(requestId); // Elimina la solicitud completada.
             
             // Llama a la acción del servidor para revalidar rutas y redirigir.
-            await revalidateAndRedirect(values.artist);
+            await revalidateAndRedirect(values.artist, slug);
 
         } catch (error: any) {
             // El `redirect` en una Server Action lanza un error, que necesitamos capturar.

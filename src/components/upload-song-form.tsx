@@ -11,9 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from 'next/navigation';
 import { addSong, type NewSongData } from '@/lib/client/songs';
-import { revalidateAfterSongUpload } from "@/app/admin/upload-song/actions";
+import { revalidateAndRedirectAfterUpload } from "@/app/admin/upload-song/actions";
 import { createSlug } from "@/lib/utils";
 
 /**
@@ -36,7 +35,6 @@ export function UploadSongForm() {
     const { t } = useI18n();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
 
     // Inicializa el formulario con react-hook-form y el resolver de Zod.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,20 +67,23 @@ export function UploadSongForm() {
                 coverArt: values.coverArt,
             };
 
-            // Agrega la canción a la base de datos y revalida las rutas.
+            // Agrega la canción a la base de datos.
             await addSong(songToAdd);
-            await revalidateAfterSongUpload(values.artist);
-
+            
             toast({
                 title: "Canción Subida",
                 description: `"${values.title}" ha sido añadida a la biblioteca.`,
             });
             
-            // Redirige al administrador a la página de la nueva canción.
-            router.push(`/songs/${slug}`);
+            // Llama a la acción del servidor para revalidar y redirigir.
+            await revalidateAndRedirectAfterUpload(values.artist, slug);
 
         } catch (error: any) {
-             console.error("Upload song error:", error);
+            // El `redirect` en una Server Action lanza un error, que necesitamos capturar.
+            if (error.digest?.startsWith('NEXT_REDIRECT')) {
+                return; // Permite que Next.js maneje la redirección.
+            }
+            console.error("Upload song error:", error);
             toast({
                 variant: "destructive",
                 title: t('error'),

@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
  * listas y páginas relevantes se actualicen con la nueva información.
  * @param {string} artist - El nombre del artista de la canción agregada para revalidar su página específica.
  */
-export async function revalidateAndRedirect(artist: string) {
+export async function revalidateAndRedirect(artist: string, slug: string) {
     // Revalida las rutas para mostrar listas actualizadas.
     // Esto limpia el caché de datos para estas páginas, forzando una recarga de datos frescos.
     revalidatePath('/admin/requests'); // La lista de solicitudes.
@@ -18,7 +18,8 @@ export async function revalidateAndRedirect(artist: string) {
     revalidatePath(`/artists/${encodeURIComponent(artist)}`); // La página del artista específico.
     revalidatePath('/sitemap.ts'); // El mapa del sitio.
     revalidatePath('/top-charts'); // La página de top canciones.
+    revalidatePath(`/songs/${slug}`); // Revalida la nueva página de la canción.
 
-    // Redirige al usuario a la página de solicitudes.
-    redirect('/admin/requests');
+    // Redirige al usuario a la página de la nueva canción.
+    redirect(`/songs/${slug}`);
 }
