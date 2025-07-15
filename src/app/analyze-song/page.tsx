@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -13,7 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useI18n } from '@/context/i18n-context';
 import { useToast } from '@/hooks/use-toast';
-import { analyzeSong, AnalyzeSongOutput } from '@/ai/flows/song-analyzer-flow';
+import { analyzeSong } from '@/ai/flows/song-analyzer-flow';
+import type { AnalyzeSongOutput } from '@/ai/schemas/song-analyzer-schemas';
 import { Loader2 } from 'lucide-react';
 import { ChordSheet } from '@/components/chord-sheet';
 import { ProtectedPage } from '@/components/protected-page';
