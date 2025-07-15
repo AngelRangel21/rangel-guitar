@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -88,7 +89,7 @@ function AnalyzeSongPageContent() {
                       <FormControl>
                         <Input 
                           type="file" 
-                          accept="audio/*"
+                          accept="audio/mp3,audio/wav,audio/ogg"
                           onChange={(e) => field.onChange(e.target.files)}
                         />
                       </FormControl>
