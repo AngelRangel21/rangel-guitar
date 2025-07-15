@@ -82,6 +82,7 @@
   "auth/weak-password": "La contraseña es demasiado débil. Por favor, utiliza una más segura.",
   "auth/invalid-credential": "Correo electrónico o contraseña no válidos.",
   "requestSong": "Solicitar Canción",
+  "analyzeSong": "Analizar Canción con IA",
   "requestSongTitle": "Solicitar una Canción",
   "requestSongDescription": "No encuentras una canción? ¡Pídela aquí!",
   "songTitleLabel": "Título de la Canción",
@@ -195,5 +196,12 @@
   "backToLevels": "Volver a Niveles",
   "levelComplete": "¡Nivel Completado!",
   "levelCompleteDescription": "¡Buen trabajo! Has desbloqueado el siguiente nivel.",
-  "earTrainerSelectLevel": "Selecciona un nivel para comenzar a entrenar."
+  "earTrainerSelectLevel": "Selecciona un nivel para comenzar a entrenar.",
+  "analyzeSongTitle": "Analizar Canción con IA",
+  "analyzeSongDescription": "Sube un archivo de audio y deja que la IA detecte los acordes por ti.",
+  "audioFile": "Archivo de Audio",
+  "analyzeSongButton": "Analizar Acordes",
+  "analyzing": "Analizando...",
+  "analysisFailed": "El análisis de la canción falló. Por favor, intenta de nuevo con otro archivo.",
+  "analysisResult": "Resultado del Análisis"
 }

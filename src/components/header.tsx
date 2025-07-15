@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/context/i18n-context";
 import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState } from "react";
-import { revalidateAfterRequestDelete } from "@/app/admin/requests/actions";
+import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions';
 import { deleteSongRequest } from '@/lib/client/requests';
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
@@ -297,10 +297,16 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                  </Link>
               </DropdownMenuItem>
                <DropdownMenuItem asChild>
-                <Link href="/request-song" className="flex w-full items-center justify-between">
+                <Link href="/request-song">
+                  <GitPullRequest className="mr-2 h-4 w-4" />
+                  <span>{t('requestSong')}</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/analyze-song" className="flex w-full items-center justify-between">
                   <div className="flex items-center">
-                    <GitPullRequest className="mr-2 h-4 w-4" />
-                    <span>{t('requestSong')}</span>
+                    <BrainCircuit className="mr-2 h-4 w-4" />
+                    <span>{t('analyzeSong')}</span>
                   </div>
                   <Badge variant="info" className="text-xs">{t('new')}</Badge>
                 </Link>

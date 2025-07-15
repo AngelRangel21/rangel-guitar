@@ -5,3 +5,4 @@
 
 // Los flujos se importarán por sus efectos secundarios en este archivo.
 // import './flows/request-song-flow'; // Este flujo ha sido deprecado.
+import './flows/song-analyzer-flow';
