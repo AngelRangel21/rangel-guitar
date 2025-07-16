@@ -82,7 +82,6 @@
   "auth/weak-password": "Password is too weak. Please use a stronger password.",
   "auth/invalid-credential": "Invalid email or password.",
   "requestSong": "Request a Song",
-  "analyzeSong": "Analyze Song with AI",
   "requestSongTitle": "Request a Song",
   "requestSongDescription": "Don't see a song you like? Let us know!",
   "songTitleLabel": "Song Title",
@@ -198,13 +197,6 @@
   "levelComplete": "Level Complete!",
   "levelCompleteDescription": "Great job! You've unlocked the next level.",
   "earTrainerSelectLevel": "Select a level to start training.",
-  "analyzeSongTitle": "Analyze Song with AI",
-  "analyzeSongDescription": "Upload an audio file and let AI detect the chords for you.",
-  "audioFile": "Audio File",
-  "analyzeSongButton": "Analyze Chords",
-  "analyzing": "Analyzing...",
-  "analysisFailed": "The song analysis failed. Please try again with a different file.",
-  "analysisResult": "Analysis Result",
   "synchronizeSong": "Synchronize Song",
   "synchronizeSongDescription": "Upload an audio file to synchronize it with the song's chords and lyrics.",
   "selectSong": "Select Song",
@@ -212,5 +204,6 @@
   "synchronizing": "Synchronizing...",
   "restart": "Restart",
   "rewind10s": "Rewind 10 seconds",
-  "fastForward10s": "Fast-forward 10 seconds"
+  "fastForward10s": "Fast-forward 10 seconds",
+  "audioFile": "Audio File"
 }
