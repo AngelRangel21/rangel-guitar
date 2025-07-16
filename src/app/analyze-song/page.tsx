@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -36,6 +37,7 @@ function AnalyzeSongPageContent() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AnalyzeSongOutput | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,7 +46,12 @@ function AnalyzeSongPageContent() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setAnalysisResult(null);
+    setAudioUrl(null);
     const file = values.audioFile[0];
+
+    // Create a temporary URL for the audio player
+    const objectUrl = URL.createObjectURL(file);
+    setAudioUrl(objectUrl);
 
     try {
       const reader = new FileReader();
@@ -64,6 +71,10 @@ function AnalyzeSongPageContent() {
         title: t('error'),
         description: t('analysisFailed'),
       });
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl); // Clean up the object URL on error
+      }
+      setAudioUrl(null);
     } finally {
       setIsLoading(false);
     }
@@ -111,6 +122,13 @@ function AnalyzeSongPageContent() {
            <Card className="w-full max-w-2xl opacity-0 animate-content-in">
              <CardHeader>
                 <CardTitle>{t('analysisResult')}</CardTitle>
+                {audioUrl && (
+                  <div className="pt-4">
+                    <audio controls src={audioUrl} className="w-full">
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                )}
              </CardHeader>
              <CardContent>
                 <Tabs defaultValue="chords" className="w-full">
