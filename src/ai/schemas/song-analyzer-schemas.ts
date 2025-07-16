@@ -24,5 +24,6 @@ export const AnalyzeSongOutputSchema = z.object({
     .describe(
       'The chord progression of the song. For example: "[Intro]\\nC G Am F\\n\\n[Verse 1]\\nC G Am F\\n..."'
     ),
+  lyrics: z.string().describe("The full lyrics of the song."),
 });
 export type AnalyzeSongOutput = z.infer<typeof AnalyzeSongOutputSchema>;

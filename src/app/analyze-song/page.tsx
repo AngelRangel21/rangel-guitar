@@ -17,6 +17,7 @@ import type { AnalyzeSongOutput } from '@/ai/schemas/song-analyzer-schemas';
 import { Loader2 } from 'lucide-react';
 import { ChordSheet } from '@/components/chord-sheet';
 import { ProtectedPage } from '@/components/protected-page';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 const formSchema = z.object({
@@ -107,12 +108,33 @@ function AnalyzeSongPageContent() {
         </Card>
 
         {analysisResult && (
-          <Card className="w-full max-w-2xl opacity-0 animate-content-in">
+           <Card className="w-full max-w-2xl opacity-0 animate-content-in">
              <CardHeader>
                 <CardTitle>{t('analysisResult')}</CardTitle>
              </CardHeader>
              <CardContent>
-                <ChordSheet text={analysisResult.chords} />
+                <Tabs defaultValue="chords" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="chords">{t('chordsAndLyrics')}</TabsTrigger>
+                    <TabsTrigger value="lyrics">{t('lyricsOnly')}</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="chords">
+                    <Card>
+                      <CardContent className="p-6">
+                        <ChordSheet text={analysisResult.chords || ""} />
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                  <TabsContent value="lyrics">
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
+                          {analysisResult.lyrics || ""}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
              </CardContent>
           </Card>
         )}
