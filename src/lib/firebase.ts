@@ -12,15 +12,16 @@ import { getStorage } from 'firebase/storage';
 // 5. Si no tienes una app web, créala (ícono </>).
 // 6. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
+//    El error 'auth/api-key-not-valid' desaparecerá cuando uses tus propias credenciales.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: "YOUR_API_KEY", // <--- REEMPLAZA ESTO
+  authDomain: "YOUR_AUTH_DOMAIN", // <--- REEMPLAZA ESTO
+  projectId: "YOUR_PROJECT_ID", // <--- REEMPLAZA ESTO
+  storageBucket: "YOUR_STORAGE_BUCKET", // <--- REEMPLAZA ESTO
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // <--- REEMPLAZA ESTO
+  appId: "YOUR_APP_ID", // <--- REEMPLAZA ESTO
+  measurementId: "YOUR_MEASUREMENT_ID" // <--- (OPCIONAL)
 };
 
 
