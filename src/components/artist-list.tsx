@@ -13,12 +13,15 @@ import type { Artist } from "@/lib/types";
 export function ArtistList({ artists }: { artists: Artist[] }) {
   const { t } = useI18n(); // Hook para obtener las traducciones.
 
+  // Ordena los artistas alfabéticamente en el cliente
+  const sortedArtists = [...artists].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div className="space-y-6">
       <h2 className="text-3xl font-bold text-foreground">{t('allArtists')}</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
         {/* Itera sobre la lista de artistas y renderiza una tarjeta para cada uno. */}
-        {artists.map((artist, index) => (
+        {sortedArtists.map((artist, index) => (
           // La animación se retrasa ligeramente para cada tarjeta, creando un efecto de cascada.
           <div key={artist.id} style={{ animationDelay: `${index * 50}ms` }} className="opacity-0 animate-content-in">
             <ArtistCard artist={artist} />

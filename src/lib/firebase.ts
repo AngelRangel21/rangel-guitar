@@ -19,13 +19,12 @@ import { getStorage } from 'firebase/storage';
 // 6. PEGA ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY", // <--- REEMPLAZA ESTO
-  authDomain: "YOUR_AUTH_DOMAIN", // <--- REEMPLAZA ESTO
-  projectId: "YOUR_PROJECT_ID", // <--- REEMPLAZA ESTO
-  storageBucket: "YOUR_STORAGE_BUCKET", // <--- REEMPLAZA ESTO
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // <--- REEMPLAZA ESTO
-  appId: "YOUR_APP_ID", // <--- REEMPLAZA ESTO
-  measurementId: "YOUR_MEASUREMENT_ID" // <--- (OPCIONAL)
+  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
+  authDomain: "rangel-guitar.firebaseapp.com",
+  projectId: "rangel-guitar",
+  storageBucket: "rangel-guitar.firebasestorage.app",
+  messagingSenderId: "354082670866",
+  appId: "1:354082670866:web:6bee882127bdeae5034bcb"
 };
 
 

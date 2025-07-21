@@ -106,10 +106,10 @@ export async function getSongsByArtist(artistName: string): Promise<Song[]> {
 
 /**
  * Obtiene una lista de todos los artistas de la colección 'artists'.
- * @returns {Promise<Artist[]>} - Un array con los objetos de todos los artistas, ordenado alfabéticamente.
+ * @returns {Promise<Artist[]>} - Un array con los objetos de todos los artistas.
  */
 export async function getArtists(): Promise<Artist[]> {
-    const snapshot = await getDocs(query(artistsCollection, orderBy('name', 'asc')));
+    const snapshot = await getDocs(query(artistsCollection));
     return snapshot.docs.map(mapDocToArtist);
 }
 
