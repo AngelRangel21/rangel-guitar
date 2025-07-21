@@ -51,7 +51,9 @@ export function AdminArtistsContent() {
         const fetchArtists = async () => {
             try {
                 const fetchedArtists = await getArtistsForClient();
-                setArtists(fetchedArtists);
+                // Ordenar los artistas en el cliente después de obtenerlos.
+                const sortedArtists = fetchedArtists.sort((a, b) => a.name.localeCompare(b.name));
+                setArtists(sortedArtists);
             } catch (error) {
                 console.error("Failed to fetch artists:", error);
                 toast({ variant: "destructive", title: t('error'), description: "Failed to load artists." });

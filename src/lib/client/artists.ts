@@ -1,6 +1,6 @@
 // IMPORTANTE: Este archivo está destinado a operaciones del lado del cliente y NO debe tener la directiva 'use server'.
 import { db } from '@/lib/firebase';
-import { collection, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDocs, query } from 'firebase/firestore';
 import type { Artist } from '@/lib/types';
 
 /**
@@ -19,7 +19,9 @@ const artistsCollection = collection(db, 'artists');
  * @returns {Promise<Artist[]>} La lista de artistas.
  */
 export async function getArtistsForClient(): Promise<Artist[]> {
-    const q = query(artistsCollection, orderBy('name', 'asc'));
+    // Se elimina el orderBy para evitar la necesidad de un índice compuesto en Firestore.
+    // El ordenamiento se hará en el cliente.
+    const q = query(artistsCollection);
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
