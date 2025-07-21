@@ -8,6 +8,15 @@ export type TimedLine = {
 }
 
 /**
+ * Define la estructura de un objeto Artista (Artist) en la aplicación.
+ */
+export type Artist = {
+  id: string; // ID del documento en Firestore.
+  name: string;
+  imageUrl: string;
+};
+
+/**
  * Define la estructura de un objeto Canción (Song) en la aplicación.
  */
 export type Song = {

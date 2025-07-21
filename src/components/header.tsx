@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, BrainCircuit, Timer } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -235,6 +235,12 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                         <Link href="/admin/requests">
                           <Shield className="mr-2 h-4 w-4" />
                           <span>{t('songRequestsTitle')}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                       <DropdownMenuItem asChild>
+                        <Link href="/admin/artists">
+                          <Users className="mr-2 h-4 w-4" />
+                          <span>{t('manageArtists')}</span>
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>

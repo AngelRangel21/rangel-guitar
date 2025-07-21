@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Obtiene todos los artistas y crea rutas para ellos.
   const artists = await getArtists();
   const artistRoutes = artists.map((artist) => ({
-    url: `${siteUrl}/artists/${encodeURIComponent(artist)}`,
+    url: `${siteUrl}/artists/${encodeURIComponent(artist.name)}`,
     lastModified: new Date(),
   }));
 

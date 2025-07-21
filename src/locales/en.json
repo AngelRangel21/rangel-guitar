@@ -205,5 +205,17 @@
   "restart": "Restart",
   "rewind10s": "Rewind 10 seconds",
   "fastForward10s": "Fast-forward 10 seconds",
-  "audioFile": "Audio File"
+  "audioFile": "Audio File",
+  "manageArtists": "Manage Artists",
+  "artistName": "Artist Name",
+  "artistImageUrl": "Artist Image URL",
+  "addArtist": "Add Artist",
+  "editArtist": "Edit Artist",
+  "noArtistsFound": "No artists found. Add one to get started.",
+  "artistAddedSuccess": "Artist added successfully.",
+  "artistAddedError": "Failed to add artist.",
+  "artistUpdatedSuccess": "Artist updated successfully.",
+  "artistUpdatedError": "Failed to update artist.",
+  "artistDeletedSuccess": "Artist deleted successfully.",
+  "artistDeletedError": "Failed to delete artist."
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { getSongsByArtist, getArtists } from "@/services/songs-service";
+import { getSongsByArtist, getArtists, getArtistByName } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ArtistDetailContent } from '@/components/artist-detail-content';
 
@@ -12,7 +12,7 @@ import { ArtistDetailContent } from '@/components/artist-detail-content';
  */
 export async function generateStaticParams() {
     const artists = await getArtists();
-    return artists.map(name => ({ name: encodeURIComponent(name) }));
+    return artists.map(artist => ({ name: encodeURIComponent(artist.name) }));
 }
 
 /**
@@ -23,10 +23,10 @@ export async function generateStaticParams() {
  */
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
     const artistName = decodeURIComponent(params.name);
-    const artistSongs = await getSongsByArtist(artistName);
+    const artist = await getArtistByName(artistName);
 
-    // Si no se encuentran canciones para el artista, se establece un título genérico.
-    if (artistSongs.length === 0) {
+    // Si no se encuentra el artista, se establece un título genérico.
+    if (!artist) {
         return {
             title: 'Artista no encontrado'
         }
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: { name: string } })
             type: 'website',
             images: [
               {
-                url: 'https://placehold.co/1200x630.png',
+                url: artist.imageUrl || 'https://placehold.co/1200x630.png',
                 width: 1200,
                 height: 630,
                 alt: `Canciones de ${artistName} en Rangel Guitar`,
@@ -67,7 +67,9 @@ export default async function ArtistDetailPage({ params }: { params: { name: str
   const artistSongs = await getSongsByArtist(artistName);
 
   // Si no se encuentran canciones, muestra la página de error 404.
-  if (artistSongs.length === 0) {
+  // Esto puede ocurrir si un artista existe pero no tiene canciones asociadas todavía.
+  const artistExists = await getArtistByName(artistName);
+  if (!artistExists) {
     notFound();
   }
 
