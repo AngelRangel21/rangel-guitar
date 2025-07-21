@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from "@/components/ui/table";
 import { useI18n } from "@/context/i18n-context";
@@ -13,25 +14,50 @@ import { Trash2 } from 'lucide-react';
 import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions';
 import { deleteSongRequest } from '@/lib/client/requests';
 import { useToast } from '@/hooks/use-toast';
-
-interface AdminRequestsContentProps {
-    initialRequests: SongRequest[];
-}
+import { onSnapshot, collection, query, orderBy, Timestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { Skeleton } from './ui/skeleton';
 
 /**
  * Componente de cliente que muestra el contenido de la página de solicitudes de administrador.
  * Renderiza una tabla con las solicitudes de canciones pendientes.
  * @returns {JSX.Element} El componente de contenido de solicitudes.
  */
-export function AdminRequestsContent({ initialRequests }: AdminRequestsContentProps) {
+export function AdminRequestsContent() {
   // Estados para manejar las solicitudes, el estado de carga y la internacionalización.
-  const [requests, setRequests] = useState<SongRequest[]>(initialRequests);
+  const [requests, setRequests] = useState<SongRequest[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { language, t } = useI18n();
   const { toast } = useToast();
   
   // Configura el local para el formato de fecha según el idioma seleccionado.
   const locale = language === 'es' ? es : enUS;
   const dateFormat = language === 'es' ? "d 'de' MMMM 'de' yyyy 'a las' HH:mm" : "MMM d, yyyy 'at' h:mm a";
+
+  useEffect(() => {
+    const requestsCollection = collection(db, 'song-requests');
+    const q = query(requestsCollection, orderBy('requestedAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+        const fetchedRequests = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                artist: data.artist,
+                requestedAt: (data.requestedAt as Timestamp).toDate(),
+            };
+        });
+        setRequests(fetchedRequests);
+        setIsLoading(false);
+    }, (error) => {
+        console.error("Failed to fetch song requests:", error);
+        toast({ variant: "destructive", title: t('error'), description: "Failed to load requests." });
+        setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [t, toast]);
 
   /**
    * Maneja la eliminación de una solicitud de canción.
@@ -62,6 +88,25 @@ export function AdminRequestsContent({ initialRequests }: AdminRequestsContentPr
       });
     }
   };
+
+  if (isLoading) {
+    return (
+        <Card>
+            <CardHeader>
+                <Skeleton className="h-8 w-1/2" />
+                <Skeleton className="h-4 w-3/4 mt-2" />
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-3">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+            </CardContent>
+        </Card>
+    );
+  }
 
   // Renderiza la tabla de solicitudes.
   return (

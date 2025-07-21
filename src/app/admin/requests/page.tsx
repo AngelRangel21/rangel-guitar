@@ -2,7 +2,6 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AdminRequestsContent } from "@/components/admin-requests-content";
 import { ProtectedPage } from "@/components/protected-page";
-import { getSongRequestsForServer } from "@/services/requests-service";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
@@ -30,18 +29,9 @@ function RequestsLoader() {
 }
 
 /**
- * Componente del lado del servidor que obtiene los datos de las solicitudes.
- */
-async function RequestsData() {
-    const requests = await getSongRequestsForServer();
-    return <AdminRequestsContent initialRequests={requests} />;
-}
-
-
-/**
  * Página que muestra la lista de solicitudes de canciones enviadas por los usuarios.
  * Esta página está protegida y solo es accesible para administradores.
- * Ahora es un Server Component que obtiene los datos de forma segura en el servidor.
+ * Los datos ahora se cargan en el lado del cliente para garantizar que los permisos se verifiquen primero.
  * @returns {JSX.Element} La página de solicitudes de administrador.
  */
 export default function AdminRequestsPage() {
@@ -52,7 +42,7 @@ export default function AdminRequestsPage() {
                 <Header />
                 <main className="flex-grow container mx-auto px-4 py-8">
                     <Suspense fallback={<RequestsLoader />}>
-                        <RequestsData />
+                        <AdminRequestsContent />
                     </Suspense>
                 </main>
                 <Footer />

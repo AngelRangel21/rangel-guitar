@@ -1,6 +1,6 @@
 // IMPORTANTE: Este archivo está destinado a operaciones del lado del cliente y NO debe tener la directiva 'use server'.
 import { db } from '@/lib/firebase';
-import { collection, doc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, addDoc, updateDoc, deleteDoc, serverTimestamp, getDocs, query, orderBy } from 'firebase/firestore';
 import type { Artist } from '@/lib/types';
 
 /**
@@ -13,6 +13,19 @@ export interface ArtistData {
 
 // Referencia a la colección 'artists' en Firestore.
 const artistsCollection = collection(db, 'artists');
+
+/**
+ * Obtiene la lista de artistas para usar en el cliente.
+ * @returns {Promise<Artist[]>} La lista de artistas.
+ */
+export async function getArtistsForClient(): Promise<Artist[]> {
+    const q = query(artistsCollection, orderBy('name', 'asc'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    } as Artist));
+}
 
 /**
  * Agrega un nuevo artista a la base de datos.

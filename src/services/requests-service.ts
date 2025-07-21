@@ -1,7 +1,7 @@
 'use server';
 
-// Este archivo AHORA SOLO contiene funciones para LEER datos en el servidor.
-// Las operaciones de escritura se han movido a un archivo específico del cliente.
+// Las operaciones de escritura y lectura del cliente se han movido a archivos específicos del cliente.
+// Este archivo ahora solo contiene la lógica de lectura segura del servidor.
 
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, orderBy, type Timestamp } from 'firebase/firestore';

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Artist } from '@/lib/types';
 import { useI18n } from '@/context/i18n-context';
 import { useToast } from '@/hooks/use-toast';
@@ -29,25 +29,37 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { addArtist, updateArtist, deleteArtist, type ArtistData } from '@/lib/client/artists';
+import { getArtistsForClient } from '@/lib/client/artists';
 import { revalidateArtists } from '@/app/admin/artists/actions';
 import Image from 'next/image';
 
-interface AdminArtistsContentProps {
-    initialArtists: Artist[];
-}
-
-export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps) {
+export function AdminArtistsContent() {
     const { t } = useI18n();
     const { toast } = useToast();
-    const [artists, setArtists] = useState<Artist[]>(initialArtists);
+    const [artists, setArtists] = useState<Artist[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentArtist, setCurrentArtist] = useState<Artist | null>(null);
     const [artistName, setArtistName] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+
+    useEffect(() => {
+        const fetchArtists = async () => {
+            try {
+                const fetchedArtists = await getArtistsForClient();
+                setArtists(fetchedArtists);
+            } catch (error) {
+                console.error("Failed to fetch artists:", error);
+                toast({ variant: "destructive", title: t('error'), description: "Failed to load artists." });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchArtists();
+    }, [toast, t]);
     
     const handleOpenDialog = (artist: Artist | null) => {
         setCurrentArtist(artist);
@@ -58,15 +70,15 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!artistName || !imageUrl) return;
+        if (!artistName) return;
 
         setIsSubmitting(true);
-        const artistData: ArtistData = { name: artistName, imageUrl };
+        const artistData: ArtistData = { name: artistName, imageUrl: imageUrl || 'https://placehold.co/400x400.png' };
 
         try {
             if (currentArtist) {
                 await updateArtist(currentArtist.id, artistData);
-                setArtists(artists.map(a => a.id === currentArtist.id ? { ...a, ...artistData } : a));
+                setArtists(artists.map(a => a.id === currentArtist.id ? { ...a, ...artistData } : a).sort((a, b) => a.name.localeCompare(b.name)));
                 toast({ title: t('artistUpdatedSuccess') });
             } else {
                 const newArtist = await addArtist(artistData);
@@ -95,6 +107,29 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
             setIsSubmitting(false);
         }
     };
+
+    if (isLoading) {
+       return (
+            <Card>
+                <CardHeader>
+                    <div className="flex justify-between items-center">
+                        <div className="space-y-2">
+                            <Skeleton className="h-8 w-48" />
+                            <Skeleton className="h-4 w-64" />
+                        </div>
+                        <Skeleton className="h-10 w-32" />
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-3">
+                        <Skeleton className="h-12 w-full" />
+                        <Skeleton className="h-12 w-full" />
+                        <Skeleton className="h-12 w-full" />
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card>
@@ -177,7 +212,7 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="image-url">{t('artistImageUrl')}</Label>
-                            <Input id="image-url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required placeholder="https://placehold.co/400x400.png" />
+                            <Input id="image-url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://placehold.co/400x400.png" />
                         </div>
                          <DialogFooter>
                             <DialogClose asChild>
