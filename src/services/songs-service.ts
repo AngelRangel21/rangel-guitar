@@ -4,7 +4,7 @@
 
 import { db } from '@/lib/firebase';
 import { collection, getDocs, getDoc, doc, query, where, orderBy, limit } from 'firebase/firestore';
-import type { Song, Artist } from '@/lib/types';
+import type { Song } from '@/lib/types';
 
 /**
  * Crea un "slug" a partir del título y el artista de una canción.
@@ -24,7 +24,6 @@ const createSlug = (title: string, artist: string): string => {
 
 // Referencias a las colecciones en Firestore.
 const songsCollection = collection(db, 'songs');
-const artistsCollection = collection(db, 'artists');
 
 /**
  * Mapea un documento de Firestore a un objeto Song, generando el slug si no existe.
@@ -41,25 +40,11 @@ const mapDocToSong = (doc: any): Song => {
 };
 
 /**
- * Mapea un documento de Firestore a un objeto Artist.
- * @param {any} doc - El documento de Firestore.
- * @returns {Artist} - El objeto artista.
- */
-const mapDocToArtist = (doc: any): Artist => {
-    const data = doc.data();
-    return {
-        id: doc.id,
-        ...data,
-    } as Artist;
-};
-
-/**
  * Obtiene todas las canciones de la base de datos.
- * Se elimina el `orderBy` para evitar errores de índice compuesto de Firestore.
  * @returns {Promise<Song[]>} - Un array con todas las canciones.
  */
 export async function getSongs(): Promise<Song[]> {
-  const snapshot = await getDocs(query(songsCollection));
+  const snapshot = await getDocs(query(songsCollection, orderBy('title', 'asc')));
   return snapshot.docs.map(mapDocToSong);
 }
 
@@ -105,30 +90,14 @@ export async function getSongsByArtist(artistName: string): Promise<Song[]> {
 }
 
 /**
- * Obtiene una lista de todos los artistas de la colección 'artists'.
- * @returns {Promise<Artist[]>} - Un array con los objetos de todos los artistas.
+ * Obtiene una lista de todos los nombres de artistas únicos a partir de la colección de canciones.
+ * @returns {Promise<string[]>} - Un array con los nombres de todos los artistas.
  */
-export async function getArtists(): Promise<Artist[]> {
-    const snapshot = await getDocs(query(artistsCollection));
-    return snapshot.docs.map(mapDocToArtist);
+export async function getArtists(): Promise<string[]> {
+    const songs = await getSongs();
+    const artistNames = new Set(songs.map(song => song.artist));
+    return Array.from(artistNames);
 }
-
-/**
- * Obtiene un artista por su nombre. Es sensible a mayúsculas y minúsculas.
- * @param {string} name - El nombre del artista a buscar.
- * @returns {Promise<Artist | null>} El objeto del artista si se encuentra, o null.
- */
-export async function getArtistByName(name: string): Promise<Artist | null> {
-    const q = query(artistsCollection, where('name', '==', name), limit(1));
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-        return null;
-    }
-
-    return mapDocToArtist(snapshot.docs[0]);
-}
-
 
 /**
  * Obtiene las canciones más populares según un campo específico (visitas o "me gusta").

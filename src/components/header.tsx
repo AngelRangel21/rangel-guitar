@@ -238,12 +238,6 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                           <span>{t('songRequestsTitle')}</span>
                         </Link>
                       </DropdownMenuItem>
-                       <DropdownMenuItem asChild>
-                        <Link href="/admin/artists">
-                          <Users className="mr-2 h-4 w-4" />
-                          <span>{t('manageArtists')}</span>
-                        </Link>
-                      </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href="/admin/upload-song">
                           <FilePlus2 className="mr-2 h-4 w-4" />
