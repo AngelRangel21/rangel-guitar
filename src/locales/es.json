@@ -207,8 +207,9 @@
   "fastForward10s": "Avanzar 10s",
   "audioFile": "Archivo de Audio",
   "manageArtists": "Gestionar Artistas",
+  "editArtistsDescription": "Agrega, edita o elimina artistas de la biblioteca.",
   "artistName": "Nombre del Artista",
-  "artistImageUrl": "URL de la Imagen del Artista",
+  "artistImageUrl": "URL de la Imagen",
   "addArtist": "Agregar Artista",
   "editArtist": "Editar Artista",
   "noArtistsFound": "No se encontraron artistas. Agrega uno para empezar.",
@@ -217,5 +218,6 @@
   "artistUpdatedSuccess": "Artista actualizado exitosamente.",
   "artistUpdatedError": "No se pudo actualizar al artista.",
   "artistDeletedSuccess": "Artista eliminado exitosamente.",
-  "artistDeletedError": "No se pudo eliminar al artista."
+  "artistDeletedError": "No se pudo eliminar al artista.",
+  "artistDeleteConfirmation": "Esto eliminará al artista {name}. Esta acción no se puede deshacer."
 }

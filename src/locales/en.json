@@ -207,8 +207,9 @@
   "fastForward10s": "Fast-forward 10 seconds",
   "audioFile": "Audio File",
   "manageArtists": "Manage Artists",
+  "editArtistsDescription": "Add, edit, or delete artists from the library.",
   "artistName": "Artist Name",
-  "artistImageUrl": "Artist Image URL",
+  "artistImageUrl": "Image URL",
   "addArtist": "Add Artist",
   "editArtist": "Edit Artist",
   "noArtistsFound": "No artists found. Add one to get started.",
@@ -217,5 +218,6 @@
   "artistUpdatedSuccess": "Artist updated successfully.",
   "artistUpdatedError": "Failed to update artist.",
   "artistDeletedSuccess": "Artist deleted successfully.",
-  "artistDeletedError": "Failed to delete artist."
+  "artistDeletedError": "Failed to delete artist.",
+  "artistDeleteConfirmation": "This will delete the artist {name}. This action cannot be undone."
 }

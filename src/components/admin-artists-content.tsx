@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -31,7 +32,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { addArtist, updateArtist, deleteArtist, type ArtistData } from '@/lib/client/artists';
-import { revalidatePath } from 'next/cache';
+import { revalidateArtists } from '@/app/admin/artists/actions';
 import Image from 'next/image';
 
 interface AdminArtistsContentProps {
@@ -63,16 +64,16 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
         const artistData: ArtistData = { name: artistName, imageUrl };
 
         try {
-            if (currentArtist) { // Editing existing artist
+            if (currentArtist) {
                 await updateArtist(currentArtist.id, artistData);
                 setArtists(artists.map(a => a.id === currentArtist.id ? { ...a, ...artistData } : a));
                 toast({ title: t('artistUpdatedSuccess') });
-            } else { // Adding new artist
+            } else {
                 const newArtist = await addArtist(artistData);
-                setArtists([...artists, newArtist]);
+                setArtists([...artists, newArtist].sort((a, b) => a.name.localeCompare(b.name)));
                 toast({ title: t('artistAddedSuccess') });
             }
-            // TODO: Revalidate paths after mutation
+            await revalidateArtists();
             setDialogOpen(false);
         } catch (error) {
             toast({ variant: 'destructive', title: t('error'), description: currentArtist ? t('artistUpdatedError') : t('artistAddedError') });
@@ -82,13 +83,16 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
     };
     
     const handleDelete = async (artistId: string) => {
+        setIsSubmitting(true);
         try {
             await deleteArtist(artistId);
             setArtists(artists.filter(a => a.id !== artistId));
+            await revalidateArtists();
             toast({ title: t('artistDeletedSuccess') });
-            // TODO: Revalidate paths after mutation
         } catch (error) {
             toast({ variant: 'destructive', title: t('error'), description: t('artistDeletedError') });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -110,7 +114,7 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Image</TableHead>
+                            <TableHead>{t('artistImageUrl')}</TableHead>
                             <TableHead>{t('artistName')}</TableHead>
                             <TableHead className="text-right">{t('actions')}</TableHead>
                         </TableRow>
@@ -124,7 +128,7 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                             artists.map(artist => (
                                 <TableRow key={artist.id}>
                                     <TableCell>
-                                        <Image src={artist.imageUrl} alt={artist.name} width={40} height={40} className="rounded-full aspect-square object-cover" />
+                                        <Image src={artist.imageUrl || 'https://placehold.co/40x40.png'} alt={artist.name} width={40} height={40} className="rounded-full aspect-square object-cover" />
                                     </TableCell>
                                     <TableCell className="font-medium">{artist.name}</TableCell>
                                     <TableCell className="text-right">
@@ -133,7 +137,7 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                                         </Button>
                                          <AlertDialog>
                                             <AlertDialogTrigger asChild>
-                                                <Button variant="ghost" size="icon">
+                                                <Button variant="ghost" size="icon" disabled={isSubmitting}>
                                                     <Trash2 className="h-4 w-4 text-destructive" />
                                                 </Button>
                                             </AlertDialogTrigger>
@@ -141,12 +145,13 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        This will delete the artist {artist.name}. This action cannot be undone.
+                                                        {t('artistDeleteConfirmation', { name: artist.name })}
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => handleDelete(artist.id)} className="bg-destructive hover:bg-destructive/90">
+                                                    <AlertDialogAction onClick={() => handleDelete(artist.id)} className="bg-destructive hover:bg-destructive/90" disabled={isSubmitting}>
+                                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                                                         {t('delete')}
                                                     </AlertDialogAction>
                                                 </AlertDialogFooter>
@@ -172,13 +177,14 @@ export function AdminArtistsContent({ initialArtists }: AdminArtistsContentProps
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="image-url">{t('artistImageUrl')}</Label>
-                            <Input id="image-url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+                            <Input id="image-url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required placeholder="https://placehold.co/400x400.png" />
                         </div>
                          <DialogFooter>
                             <DialogClose asChild>
                                 <Button type="button" variant="secondary">{t('cancel')}</Button>
                             </DialogClose>
                             <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                 {isSubmitting ? t('saving') + '...' : t('saveChanges')}
                             </Button>
                         </DialogFooter>

@@ -112,18 +112,24 @@ export async function getArtists(): Promise<Artist[]> {
 }
 
 /**
- * Obtiene un artista por su nombre.
- * @param {string} name - El nombre del artista.
- * @returns {Promise<Artist | null>} - El artista encontrado o null.
+ * Obtiene un artista por su nombre. Es sensible a mayúsculas y minúsculas.
+ * @param {string} name - El nombre del artista a buscar.
+ * @returns {Promise<Artist | null>} El objeto del artista si se encuentra, o null.
  */
 export async function getArtistByName(name: string): Promise<Artist | null> {
     const q = query(artistsCollection, where('name', '==', name), limit(1));
     const snapshot = await getDocs(q);
+
     if (snapshot.empty) {
-        return null;
+        // Intenta buscar sin distinguir mayúsculas/minúsculas como fallback, aunque es menos eficiente.
+        const allArtists = await getArtists();
+        const foundArtist = allArtists.find(artist => artist.name.toLowerCase() === name.toLowerCase());
+        return foundArtist || null;
     }
+
     return mapDocToArtist(snapshot.docs[0]);
 }
+
 
 /**
  * Obtiene las canciones más populares según un campo específico (visitas o "me gusta").
