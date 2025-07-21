@@ -1,65 +1,27 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // --- HELPER FUNCTIONS ---
-    // Checks if a user is signed in.
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    // Checks if the current user is the owner of a document.
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
-    // Checks if the current user has an 'isAdmin' flag set to true in their user profile.
-    function isAdmin() {
-      // Use get() to safely access the user document. This avoids errors if the document doesn't exist yet.
-      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
-    }
-
-
-    // --- COLLECTION: songs ---
+    // Permite la lectura pública para canciones y artistas, pero la escritura solo para administradores.
     match /songs/{songId} {
-      // Anyone can read songs.
       allow read: if true;
-      
-      // Only admins can create or delete songs.
-      allow create, delete: if isAdmin();
-      
-      // Admins can update any field.
-      // Signed-in users can only update the likeCount and visitCount fields.
-      allow update: if isAdmin() || (isSignedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount', 'visitCount']));
+      allow create, update, delete: if request.auth != null && request.auth.token.isAdmin == true;
+    }
+    match /artists/{artistId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null && request.auth.token.isAdmin == true;
     }
 
-
-    // --- COLLECTION: song-requests ---
-    match /song-requests/{requestId} {
-      // For the current app architecture where requests are fetched on the server, reads must be public.
-      // The admin page UI is protected, but for better security, this should be refactored to a client-side fetch.
-      allow read: if true;
-      
-      // Only signed-in users can create new song requests.
-      allow create: if isSignedIn();
-      
-      // Only admins can delete song requests.
-      allow delete: if isAdmin();
+    // Los usuarios pueden leer y escribir en su propio documento. Los administradores pueden leer cualquier documento de usuario.
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId || (request.auth != null && request.auth.token.isAdmin == true);
+      allow write: if request.auth.uid == userId;
     }
     
-
-    // --- COLLECTION: users ---
-    match /users/{userId} {
-      // A user can read their own profile. An admin can read any user's profile.
-      allow read: if isOwner(userId) || isAdmin();
-      
-      // A user can create their own profile document upon sign-up.
-      allow create: if isOwner(userId);
-      
-      // A user can update their own profile, but they CANNOT make themselves an admin.
-      // The isAdmin flag must be set manually in the Firebase Console for security.
-      allow update: if isOwner(userId) && request.resource.data.isAdmin == resource.data.isAdmin;
+    // Cualquier usuario autenticado puede crear una solicitud de canción.
+    // Solo los administradores pueden leer o eliminar las solicitudes.
+    match /song-requests/{requestId} {
+      allow create: if request.auth != null;
+      allow read, delete: if request.auth != null && request.auth.token.isAdmin == true;
     }
   }
 }
