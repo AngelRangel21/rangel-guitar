@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/context/auth-context';
 import { I18nProvider } from '@/context/i18n-context';
 import { ThemeProvider } from '@/context/theme-provider';
+import Script from 'next/script';
 
 // Configuración de la fuente 'Inter' de Google Fonts.
 const inter = Inter({ 
@@ -83,6 +84,14 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1028178529084620"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
+      </head>
       <body className="font-body antialiased">
         {/* Proveedor de tema para manejar el modo claro/oscuro. */}
         <ThemeProvider
