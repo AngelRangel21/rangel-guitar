@@ -1,4 +1,5 @@
 
+
 'use server';
 
 import { db } from '@/lib/firebase';
@@ -121,10 +122,7 @@ export async function getArtistByName(name: string): Promise<Artist | null> {
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-        // Intenta buscar sin distinguir mayúsculas/minúsculas como fallback, aunque es menos eficiente.
-        const allArtists = await getArtists();
-        const foundArtist = allArtists.find(artist => artist.name.toLowerCase() === name.toLowerCase());
-        return foundArtist || null;
+        return null;
     }
 
     return mapDocToArtist(snapshot.docs[0]);
