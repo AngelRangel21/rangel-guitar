@@ -17,7 +17,6 @@ import Link from 'next/link';
 import { SongListItem } from "./song-list-item";
 import { incrementVisitCount } from "@/lib/client/songs";
 import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
-import { SyncedLyricPlayer } from "./synced-lyric-player";
 
 /**
  * Componente principal para mostrar una canción.
@@ -64,8 +63,6 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
   };
 
   const shareText = t('shareText', { title: song.title, artist: song.artist });
-
-  const hasSyncedLyrics = song.timedLines && song.timedLines.length > 0 && song.audioUrl;
 
   return (
     <div className="opacity-0 animate-content-in">
@@ -179,9 +176,6 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
         </div>
         {/* Columna derecha: Pestañas con acordes y letra */}
         <div className="lg:col-span-2">
-          {hasSyncedLyrics ? (
-            <SyncedLyricPlayer song={song} transpose={transpose} />
-          ) : (
             <Tabs defaultValue="chords" className="w-full">
               <TabsList>
                 <TabsTrigger value="chords">{t('chordsAndLyrics')}</TabsTrigger>
@@ -204,7 +198,6 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
                 </Card>
               </TabsContent>
             </Tabs>
-          )}
         </div>
       </div>
       {/* Sección de Canciones Sugeridas */}

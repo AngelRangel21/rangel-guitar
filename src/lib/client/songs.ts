@@ -1,10 +1,10 @@
 // IMPORTANTE: Este archivo está destinado a operaciones del lado del cliente y NO debe tener la directiva 'use server'.
 import { db } from '@/lib/firebase';
 import { collection, doc, updateDoc, deleteDoc, increment, addDoc } from 'firebase/firestore';
-import type { Song, TimedLine } from '@/lib/types';
+import type { Song } from '@/lib/types';
 
 // Tipo para agregar una nueva canción, sin los campos generados por la base de datos (id, contadores).
-export type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount' | 'timedLines' | 'audioUrl'>;
+export type NewSongData = Omit<Song, 'id' | 'visitCount' | 'likeCount'>;
 
 /**
  * Agrega una nueva canción a la base de datos.
@@ -27,22 +27,6 @@ export async function addSong(songData: NewSongData): Promise<void> {
 export async function updateSong(id: string, songData: Partial<NewSongData>): Promise<void> {
     const docRef = doc(db, 'songs', id);
     await updateDoc(docRef, songData);
-}
-
-/**
- * Actualiza una canción con letras sincronizadas y la URL del audio.
- * @param {string} id - El ID de la canción a actualizar.
- * @param {TimedLine[]} timedLines - El array de líneas con tiempos.
- * @param {string} audioUrl - La URL del archivo de audio en Storage.
- */
-export async function updateSongWithSyncedLyrics(id: string, timedLines: TimedLine[], audioUrl: string): Promise<void> {
-    const docRef = doc(db, 'songs', id);
-    // Convierte los objetos a objetos planos para Firestore
-    const timedLinesData = timedLines.map(line => ({ ...line }));
-    await updateDoc(docRef, {
-        timedLines: timedLinesData,
-        audioUrl: audioUrl,
-    });
 }
 
 /**
