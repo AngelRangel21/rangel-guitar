@@ -41,7 +41,8 @@ export async function addArtist(artistData: ArtistData): Promise<Artist> {
     });
     return {
         id: docRef.id,
-        ...artistData,
+        name: artistData.name,
+        imageUrl: artistData.imageUrl,
     };
 }
 
