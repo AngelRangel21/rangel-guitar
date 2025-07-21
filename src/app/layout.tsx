@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   other: {
     'google-adsense-account': 'ca-pub-1028178529084620',
   },
+  verification: {
+    google: 'gb-yeQgZDEJvI9flvuu8KQc4mz8Gj-M64vqoGuGEy1s',
+  },
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
