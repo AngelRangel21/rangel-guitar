@@ -34,6 +34,7 @@ import { addArtist, updateArtist, deleteArtist, type ArtistData } from '@/lib/cl
 import { getArtistsForClient } from '@/lib/client/artists';
 import { revalidateArtists } from '@/app/admin/artists/actions';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function AdminArtistsContent() {
     const { t } = useI18n();
