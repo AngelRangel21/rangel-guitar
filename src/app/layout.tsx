@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'Rangel Guitar',
   },
+  other: {
+    'google-adsense-account': 'ca-pub-1028178529084620',
+  },
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
@@ -79,7 +82,7 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.React.ReactNode;
+  children: React.React.Node;
 }>) {
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
