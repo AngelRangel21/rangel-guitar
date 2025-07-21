@@ -4,15 +4,19 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 // =================================================================
-// ¡IMPORTANTE! INSERTA AQUÍ TUS NUEVAS CREDENCIALES DE FIREBASE
+// ¡ACCIÓN REQUERIDA! DEBES INSERTAR TUS CREDENCIALES DE FIREBASE AQUÍ
+//
+// El error "auth/api-key-not-valid" ocurre porque la aplicación
+// no tiene las credenciales correctas para conectarse a TU proyecto
+// de Firebase.
+//
+// Sigue estos pasos para solucionarlo:
 // 1. Ve a la consola de Firebase: https://console.firebase.google.com/
-// 2. Entra a tu NUEVO proyecto.
-// 3. Haz clic en el ícono de engranaje (Configuración del proyecto).
+// 2. Entra a tu proyecto.
+// 3. Haz clic en el ícono de engranaje (⚙️ Configuración del proyecto).
 // 4. En la pestaña "General", baja hasta "Tus apps".
-// 5. Si no tienes una app web, créala (ícono </>).
-// 6. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
-// 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
-//    El error 'auth/api-key-not-valid' desaparecerá cuando uses tus propias credenciales.
+// 5. En la configuración de tu app web, busca y copia el objeto `firebaseConfig`.
+// 6. PEGA ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY", // <--- REEMPLAZA ESTO
