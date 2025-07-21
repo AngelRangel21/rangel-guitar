@@ -54,11 +54,12 @@ const mapDocToArtist = (doc: any): Artist => {
 };
 
 /**
- * Obtiene todas las canciones de la base de datos, ordenadas por título.
+ * Obtiene todas las canciones de la base de datos.
+ * Se elimina el `orderBy` para evitar errores de índice compuesto de Firestore.
  * @returns {Promise<Song[]>} - Un array con todas las canciones.
  */
 export async function getSongs(): Promise<Song[]> {
-  const snapshot = await getDocs(query(songsCollection, orderBy('title', 'asc')));
+  const snapshot = await getDocs(query(songsCollection));
   return snapshot.docs.map(mapDocToSong);
 }
 
