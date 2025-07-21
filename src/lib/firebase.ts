@@ -14,14 +14,15 @@ import { getStorage } from 'firebase/storage';
 // 7. Pega ese objeto completo aquí, reemplazando el objeto de ejemplo de abajo.
 // =================================================================
 const firebaseConfig = {
-  apiKey: "AIzaSyAh_jWzBmBaxOZjzfR4ewup6VIY_RqSEF8",
-  authDomain: "rangel-guitar.firebaseapp.com",
-  projectId: "rangel-guitar",
-  storageBucket: "rangel-guitar.appspot.com",
-  messagingSenderId: "354082670866",
-  appId: "1:354082670866:web:6bee882127bdeae5034bcb",
-  measurementId: "G-8J82455QVE"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
 };
+
 
 // Inicializa la aplicación de Firebase.
 // Comprueba si ya existe una instancia para evitar reinicializaciones (importante en entornos de desarrollo con HMR).

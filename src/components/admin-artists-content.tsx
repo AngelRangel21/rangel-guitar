@@ -36,6 +36,29 @@ import { revalidateArtists } from '@/app/admin/artists/actions';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 
+function ArtistsLoader() {
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-center">
+                    <div className="space-y-2">
+                        <Skeleton className="h-8 w-48" />
+                        <Skeleton className="h-4 w-64" />
+                    </div>
+                    <Skeleton className="h-10 w-32" />
+                </div>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-3">
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
 export function AdminArtistsContent() {
     const { t } = useI18n();
     const { toast } = useToast();
@@ -51,12 +74,11 @@ export function AdminArtistsContent() {
         const fetchArtists = async () => {
             try {
                 const fetchedArtists = await getArtistsForClient();
-                // Ordenar los artistas en el cliente después de obtenerlos.
                 const sortedArtists = fetchedArtists.sort((a, b) => a.name.localeCompare(b.name));
                 setArtists(sortedArtists);
             } catch (error) {
                 console.error("Failed to fetch artists:", error);
-                toast({ variant: "destructive", title: t('error'), description: "Failed to load artists." });
+                toast({ variant: "destructive", title: t('error'), description: t('artistAddedError') });
             } finally {
                 setIsLoading(false);
             }
@@ -112,26 +134,7 @@ export function AdminArtistsContent() {
     };
 
     if (isLoading) {
-       return (
-            <Card>
-                <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <div className="space-y-2">
-                            <Skeleton className="h-8 w-48" />
-                            <Skeleton className="h-4 w-64" />
-                        </div>
-                        <Skeleton className="h-10 w-32" />
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-3">
-                        <Skeleton className="h-12 w-full" />
-                        <Skeleton className="h-12 w-full" />
-                        <Skeleton className="h-12 w-full" />
-                    </div>
-                </CardContent>
-            </Card>
-        );
+       return <ArtistsLoader />;
     }
 
     return (
