@@ -3,6 +3,11 @@
 // Este archivo AHORA SOLO contiene funciones para LEER datos en el servidor.
 // Las operaciones de escritura se han movido a un archivo específico del cliente.
 
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, orderBy, type Timestamp } from 'firebase/firestore';
+import type { SongRequest } from '@/lib/types';
+
+
 /**
  * Interfaz para los datos de entrada al crear una nueva solicitud de canción.
  */
@@ -11,7 +16,22 @@ export interface SongRequestInput {
   artist: string;
 }
 
-// El tipo `SongRequest` ahora está en `src/lib/types.ts`.
-// La función `getSongRequests` ha sido eliminada porque no se puede llamar de forma segura
-// desde un Server Component debido a las reglas de seguridad de Firestore que requieren
-// autenticación del usuario. La obtención de datos para las solicitudes ahora se maneja en el cliente.
+/**
+ * Obtiene todas las solicitudes de canciones, ordenadas por fecha descendente.
+ * ESTA FUNCIÓN ES PARA USO EXCLUSIVO DEL LADO DEL SERVIDOR (Server Components / Route Handlers)
+ * porque asume que los permisos ya han sido validados.
+ * @returns {Promise<SongRequest[]>} Una promesa que se resuelve con un array de solicitudes de canciones.
+ */
+export async function getSongRequestsForServer(): Promise<SongRequest[]> {
+    const requestsCollection = collection(db, 'song-requests');
+    const snapshot = await getDocs(query(requestsCollection, orderBy('requestedAt', 'desc')));
+    return snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+            id: doc.id,
+            title: data.title,
+            artist: data.artist,
+            requestedAt: (data.requestedAt as Timestamp).toDate(), // Convierte el Timestamp de Firebase a un objeto Date de JS.
+        };
+    });
+}

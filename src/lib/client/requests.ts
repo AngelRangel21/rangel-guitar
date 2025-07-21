@@ -1,7 +1,6 @@
 // IMPORTANTE: Este archivo está destinado a operaciones del lado del cliente y NO debe tener la directiva 'use server'.
 import { db } from '@/lib/firebase';
 import { collection, doc, addDoc, deleteDoc, serverTimestamp, getDocs, query, orderBy, type Timestamp } from 'firebase/firestore';
-import type { SongRequest } from '@/lib/types';
 
 /**
  * Interfaz para los datos de entrada de una nueva solicitud de canción.
@@ -32,21 +31,4 @@ export async function addSongRequest(request: SongRequestInput): Promise<void> {
 export async function deleteSongRequest(id: string): Promise<void> {
     const docRef = doc(db, 'song-requests', id);
     await deleteDoc(docRef);
-}
-
-/**
- * Obtiene todas las solicitudes de canciones, ordenadas por fecha descendente.
- * @returns {Promise<SongRequest[]>} Una promesa que se resuelve con un array de solicitudes de canciones.
- */
-export async function getSongRequests(): Promise<SongRequest[]> {
-    const snapshot = await getDocs(query(requestsCollection, orderBy('requestedAt', 'desc')));
-    return snapshot.docs.map(doc => {
-        const data = doc.data() as { title: string; artist: string; requestedAt: Timestamp };
-        return {
-            id: doc.id,
-            title: data.title,
-            artist: data.artist,
-            requestedAt: data.requestedAt.toDate(), // Convierte el Timestamp de Firebase a un objeto Date de JS.
-        };
-    });
 }

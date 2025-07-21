@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from "@/components/ui/table";
 import { useI18n } from "@/context/i18n-context";
@@ -11,37 +11,24 @@ import Link from "next/link";
 import { Button } from './ui/button';
 import { Trash2 } from 'lucide-react';
 import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions';
-import { deleteSongRequest, getSongRequests } from '@/lib/client/requests';
+import { deleteSongRequest } from '@/lib/client/requests';
 import { useToast } from '@/hooks/use-toast';
-import { Skeleton } from '@/components/ui/skeleton';
+
+interface AdminRequestsContentProps {
+    initialRequests: SongRequest[];
+}
 
 /**
- * Componente que muestra el contenido de la página de solicitudes de administrador.
+ * Componente de cliente que muestra el contenido de la página de solicitudes de administrador.
  * Renderiza una tabla con las solicitudes de canciones pendientes.
  * @returns {JSX.Element} El componente de contenido de solicitudes.
  */
-export function AdminRequestsContent() {
+export function AdminRequestsContent({ initialRequests }: AdminRequestsContentProps) {
   // Estados para manejar las solicitudes, el estado de carga y la internacionalización.
-  const [requests, setRequests] = useState<SongRequest[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [requests, setRequests] = useState<SongRequest[]>(initialRequests);
   const { language, t } = useI18n();
   const { toast } = useToast();
   
-  // useEffect para obtener las solicitudes de canciones al montar el componente.
-  useEffect(() => {
-    getSongRequests()
-        .then(setRequests)
-        .catch(error => {
-            console.error("Failed to fetch song requests:", error);
-            toast({
-                variant: "destructive",
-                title: t('error'),
-                description: "No se pudieron cargar las solicitudes de canciones.",
-            });
-        })
-        .finally(() => setIsLoading(false)); // Finaliza la carga independientemente del resultado.
-  }, [toast, t]); // Dependencias del efecto.
-
   // Configura el local para el formato de fecha según el idioma seleccionado.
   const locale = language === 'es' ? es : enUS;
   const dateFormat = language === 'es' ? "d 'de' MMMM 'de' yyyy 'a las' HH:mm" : "MMM d, yyyy 'at' h:mm a";
@@ -76,27 +63,7 @@ export function AdminRequestsContent() {
     }
   };
 
-  // Muestra un esqueleto de carga mientras los datos se están obteniendo.
-  if (isLoading) {
-    return (
-        <Card>
-            <CardHeader>
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-4 w-3/4 mt-2" />
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                </div>
-            </CardContent>
-        </Card>
-    );
-  }
-
-  // Renderiza la tabla de solicitudes una vez que los datos están disponibles.
+  // Renderiza la tabla de solicitudes.
   return (
     <Card>
     <CardHeader>
