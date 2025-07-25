@@ -80,7 +80,7 @@ export function EditSongForm({ song }: { song: Song }) {
             if (error.digest?.startsWith('NEXT_REDIRECT')) {
                 return;
             }
-            console.error("Failed to update song:", error);
+            console.error("Error al editar la cancion: ", error);
             toast({
                 variant: "destructive",
                 title: t('error'),
@@ -134,7 +134,17 @@ export function EditSongForm({ song }: { song: Song }) {
                                 <FormItem>
                                     <FormLabel>{t('chordsAndLyrics')}</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="[Intro]\nC G Am F\n\n[Verse]\nC\nLa primera línea de la canción..." rows={10} {...field} />
+                                        <Textarea placeholder="
+                                        [Intro]
+
+                                        C G Am F
+
+
+                                        [Verse]
+
+                                        C            La 
+                                        primera línea de la canción...
+                                        " rows={10} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -147,7 +157,7 @@ export function EditSongForm({ song }: { song: Song }) {
                                 <FormItem>
                                     <FormLabel>{t('lyricsOnly')}</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="La primera línea de la canción..." rows={10} {...field} />
+                                        <Textarea placeholder="Solo la letra de la cancion..." rows={10} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

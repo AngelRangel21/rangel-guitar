@@ -42,6 +42,7 @@ export async function deleteSong(id: string): Promise<void> {
  * Incrementa el contador de visitas de una canción en 1.
  * @param {string} id - El ID de la canción visitada.
  */
+
 export async function incrementVisitCount(id: string): Promise<void> {
     const docRef = doc(db, 'songs', id);
     await updateDoc(docRef, {

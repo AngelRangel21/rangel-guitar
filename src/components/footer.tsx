@@ -23,7 +23,7 @@ export function Footer() {
           <Link href="https://www.facebook.com/share/1Akd7FErLL/?mibextid=wwXlfr" aria-label="Facebook" className="text-accent hover:text-accent/60 transition-colors">
               <Facebook className="h-6 w-6" />
             </Link>
-            <Link href="https://chat.whatsapp.com/HbtrOlzFG4u4AGvAStj6WJ?mode=r_c" aria-label="WhatsApp" className="text-accent hover:text-accent/60 transition-colors">
+            <Link href="https://chat.whatsapp.com/Hbtr0lzFG4u4AGvAStj6WJ?mode=r_c" aria-label="WhatsApp" className="text-accent hover:text-accent/60 transition-colors">
               <WhatsAppIcon className="h-6 w-6" />
             </Link>
             <Link href="https://t.me/Rangelguitar" aria-label="Telegram" className="text-accent hover:text-accent/60 transition-colors">

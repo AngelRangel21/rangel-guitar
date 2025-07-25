@@ -83,7 +83,7 @@ export function UploadSongForm() {
             if (error.digest?.startsWith('NEXT_REDIRECT')) {
                 return; // Permite que Next.js maneje la redirección.
             }
-            console.error("Upload song error:", error);
+            console.error("Error al subir la cancion:", error);
             toast({
                 variant: "destructive",
                 title: t('error'),
@@ -92,6 +92,9 @@ export function UploadSongForm() {
             setIsLoading(false);
         }
     }
+
+
+const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
 
     return (
         <Card className="w-full max-w-2xl">
@@ -137,7 +140,15 @@ export function UploadSongForm() {
                                 <FormItem>
                                     <FormLabel>{t('chordsAndLyrics')}</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="[Intro]\nC G Am F\n\n[Verse]\nC\nLa primera línea de la canción..." rows={10} {...field} />
+                                        <Textarea placeholder="
+                                        [Intro]
+                                        C G Am F
+                                        
+                                        [Verse]
+                                        C             B
+                                        La primera línea de la canción...
+                                        " 
+                                        rows={14} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -177,7 +188,7 @@ export function UploadSongForm() {
                                     <FormItem>
                                         <FormLabel>URL de la Portada</FormLabel>
                                         <FormControl>
-                                            <Input {...field} />
+                                            <Input placeholder={ID_YOUTUBE} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

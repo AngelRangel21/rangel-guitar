@@ -14,6 +14,7 @@ export default async function Home() {
     // Siendo un Server Component, obtiene la versión más actualizada
     // del array `songs` desde el servidor.
     allSongs = await getSongs();
+    
   } catch (error: any) {
     // Muestra un error detallado en la consola del servidor si falla la carga de canciones.
     // Esto es útil para diagnosticar problemas con la base de datos de Firestore.
@@ -26,6 +27,7 @@ export default async function Home() {
     console.error("Error Original:", error.message);
     console.error("==============================================================");
     // Se continúa con una lista vacía para evitar que la página se rompa.
+    allSongs = []; // Si falla, se devuelve una lista vacía.
   }
 
   // Pasa los datos como una prop al componente de cliente.
