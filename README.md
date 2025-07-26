@@ -1,108 +1,122 @@
 # Rangel Guitar
 
-Rangel Guitar is a modern, interactive web application designed for guitar enthusiasts. It provides a comprehensive platform to find, view, and learn songs with accurate tablatures and chords. Built with a powerful tech stack, it offers a seamless and feature-rich user experience.
+Rangel Guitar es una aplicación web moderna e interactiva diseñada para entusiastas de la guitarra. Proporciona una plataforma completa para encontrar, ver y aprender canciones con tablaturas y acordes precisos. Construida con una potente pila tecnológica, ofrece una experiencia de usuario fluida y con muchas funciones.
 
-## Key Features
+## Características Principales
 
-- **Extensive Song Library:** Browse and search for songs by title or artist.
-- **Interactive Song View:** Display lyrics with integrated, clickable chords that show diagrams.
-- **Chord Transposition:** Easily change the key of any song to suit your vocal range or skill level.
-- **Dual View Mode:** Switch between a full view with chords and lyrics, or a clean, lyrics-only mode.
-- **Artist Pages:** Explore all available songs by a specific artist.
-- **User Authentication:** Secure sign-up and login functionality using Firebase Authentication (Email/Password & Google).
-- **Personalized Experience:** Logged-in users can mark songs as favorites for quick access.
-- **Song Requests:** Users can request new songs to be added to the library.
-- **Admin Panel:** A protected area for administrators to view user-submitted song requests.
-- **Customizable Theme:** Toggle between light and dark modes for comfortable viewing.
-- **Multi-language Support:** Interface available in both English and Spanish.
+- **Amplia Biblioteca de Canciones:** Explora y busca canciones por título o artista.
+- **Vista Interactiva de Canciones:** Muestra letras con acordes integrados y clicables que muestran diagramas.
+- **Transporte de Acordes:** Cambia fácilmente la clave de cualquier canción para adaptarla a tu rango vocal o nivel de habilidad.
+- **Modo de Vista Dual:** Cambia entre una vista completa con acordes y letras, o un modo limpio solo con letras.
+- **Páginas de Artistas:** Explora todas las canciones disponibles de un artista específico.
+- **Autenticación de Usuario:** Funcionalidad segura de registro e inicio de sesión utilizando Autenticación de Firebase (Correo electrónico/Contraseña y Google).
+- **Experiencia Personalizada:** Los usuarios registrados pueden marcar canciones como favoritas para un acceso rápido.
+- **Solicitudes de Canciones:** Los usuarios pueden solicitar que se añadan nuevas canciones a la biblioteca.
+- **Panel de Administración:** Un área protegida para que los administradores vean las solicitudes de canciones enviadas por los usuarios.
+- **Tema Personalizable:** Alterna entre el modo claro y oscuro para una visualización cómoda.
+- **Soporte Multilenguaje:** Interfaz disponible en inglés y español.
 
-## Tech Stack
+## Pila Tecnológica
 
-- **Framework:** [Next.js](https://nextjs.org/) (with React)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components:** [ShadCN UI](https://ui.shadcn.com/)
-- **Backend & Authentication:** [Firebase](https://firebase.google.com/) (App Hosting & Auth)
-- **AI Functionality:** [Google's Genkit](https://firebase.google.com/docs/genkit)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Framework:** [Next.js](https://nextjs.org/) (con React)
+- **Estilo:** [Tailwind CSS](https://tailwindcss.com/)
+- **Componentes de UI:** [ShadCN UI](https://ui.shadcn.com/)
+- **Backend y Autenticación:** [Firebase](https://firebase.google.com/) (App Hosting y Auth)
+- **Funcionalidad de IA:** [Genkit de Google](https://firebase.google.com/docs/genkit)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
 
-## Getting Started (Local Setup)
+## Cómo Empezar (Configuración Local)
 
-To run this project on your local machine, follow these steps.
+Para ejecutar este proyecto en tu máquina local, sigue estos pasos.
 
-### Prerequisites
+### Requisitos Previos
 
-Make sure you have the following installed:
-- [Node.js](https://nodejs.org/) (v18 or later)
+Asegúrate de tener instalado lo siguiente:
+- [Node.js](https://nodejs.org/) (v18 o posterior)
+- [npm](https://www.npmjs.com/)
 - [Google Cloud SDK (gcloud CLI)](https://cloud.google.com/sdk/docs/install)
 - [Firebase CLI](https://firebase.google.com/docs/cli)
 
-### 1. Clone or Download the Project
+### Instalación
 
-First, get the project code onto your local machine.
+1. Clona el repositorio:
+   ```bash
+   git clone <url_del_repositorio>
+   ```
+   Reemplaza `<url_del_repositorio>` con la URL real de tu repositorio.
 
-### 2. Install Dependencies
+2. Navega al directorio del proyecto:
+   ```bash
+   cd rangel-guitar
+   ```
 
-Navigate to the project's root directory in your terminal and run:
-```bash
-npm install
-```
+3. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-### 3. Configure Firebase
+### Configuración
 
-This project requires a Firebase project to handle authentication and other backend services.
+1. **Configuración del Proyecto de Firebase:**
+   - Crea un nuevo proyecto en la [Consola de Firebase](https://console.firebase.google.com/).
+   - En la configuración de tu proyecto, añade una nueva **Aplicación Web** (haz clic en el icono `</>`).
+   - Firebase te proporcionará un objeto `firebaseConfig`. Copia este objeto.
+   - Abre el archivo `src/lib/firebase.ts` en tu editor de código.
+   - Reemplaza el objeto `firebaseConfig` de marcador de posición con tu configuración copiada.
+   - **Importante:** En la Consola de Firebase, ve a **Authentication** -> **Sign-in method** y habilita los proveedores de **Correo electrónico/Contraseña** y **Google**.
+   - Luego, en la pestaña **Settings** de Authentication, ve a **Authorized domains** y añade `localhost` a la lista.
 
-1.  Create a new project in the [Firebase Console](https://console.firebase.google.com/).
-2.  In your project's settings, add a new **Web App** (click the `</>` icon).
-3.  Firebase will provide you with a `firebaseConfig` object. **Copy this object.**
-4.  Open the file `src/context/auth-context.tsx` in your code editor.
-5.  Paste your `firebaseConfig` object, replacing the placeholder.
-6.  **Important:** In the Firebase Console, go to **Authentication** -> **Sign-in method** and enable the **Email/Password** and **Google** providers.
-7.  Then, under the **Settings** tab for Authentication, go to **Authorized domains** and add `localhost` to the list.
+2. **Autenticación de Google Cloud para Servicios de IA:**
+   Para utilizar las funciones de IA de Genkit, debes autenticar tu entorno local. Ejecuta el siguiente comando en tu terminal:
+   ```bash
+   gcloud auth application-default login
+   ```
+   Esto abrirá una ventana del navegador para completar el proceso de inicio de sesión.
 
-### 4. Authenticate for AI Services
+### Ejecución Local
 
-To use the Genkit AI features, you need to authenticate your local environment. Run the following command in your terminal:
-```bash
-gcloud auth application-default login
-```
-This will open a browser window to complete the login process.
+Esta aplicación requiere que dos procesos separados se ejecuten simultáneamente.
 
-### 5. Run the Development Servers
+- **Terminal 1 (Aplicación Web):**
+  ```bash
+  npm run dev
+  ```
+- **Terminal 2 (Servidor de IA de Genkit):**
+  ```bash
+  npm run genkit:watch
+  ```
 
-This application requires two separate processes to run concurrently.
+Tu aplicación ahora debería estar ejecutándose en `http://localhost:3000` (el puerto predeterminado de Next.js).
 
--   **Terminal 1 (Web App):**
-    ```bash
-    npm run dev
-    ```
--   **Terminal 2 (Genkit AI Server):**
-    ```bash
-    npm run genkit:watch
-    ```
+### Despliegue en Firebase
 
-Your application should now be running at `http://localhost:9002`.
+Después de configurar tu entorno local, puedes desplegar tu aplicación en Firebase App Hosting para que sea accesible para todo el mundo.
 
-### 6. Deploying to Firebase
-
-After setting up your local environment, you can deploy your application to Firebase App Hosting to make it accessible to the world.
-
-1.  **Login to Firebase CLI:**
-    If you haven't already, log in to Firebase from your terminal:
+1.  **Iniciar sesión en Firebase CLI:**
+    Si aún no lo has hecho, inicia sesión en Firebase desde tu terminal:
     ```bash
     firebase login
     ```
 
-2.  **Initialize App Hosting:**
-    Run the initialization command in your project's root directory:
+2.  **Inicializar App Hosting:**
+    Ejecuta el comando de inicialización en el directorio raíz de tu proyecto:
     ```bash
     firebase init apphosting
     ```
-    -   Follow the prompts to connect to your existing Firebase project (`rangel-guitar`).
-    -   This will create a `.firebaserc` file, linking your local code to your Firebase project.
+    -   Sigue las indicaciones para conectarte a tu proyecto de Firebase existente (`rangel-guitar`).
+    -   Esto creará un archivo `.firebaserc`, vinculando tu código local a tu proyecto de Firebase.
 
-3.  **Deploy:**
-    Finally, build and deploy your application with a single command:
+3.  **Desplegar:**
+    Finalmente, construye y despliega tu aplicación con un solo comando:
     ```bash
     firebase deploy
     ```
-    This command will build your Next.js app and deploy it to the App Hosting backend configured in `apphosting.yaml`. After it's done, you can connect your custom domain in the Firebase console.
+    Este comando construirá tu aplicación Next.js y la desplegará en el backend de App Hosting configurado en `apphosting.yaml`. Una vez completado, puedes conectar tu dominio personalizado en la consola de Firebase.
+
+## Contribución
+
+¡Aceptamos contribuciones! Consulta el archivo `CONTRIBUTING.md` (cuando esté disponible) para obtener detalles sobre cómo contribuir.
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT.
