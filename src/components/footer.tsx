@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Facebook } from "lucide-react";
 import { WhatsAppIcon, TelegramIcon } from "@/components/icons";
 import { useI18n } from "@/context/i18n-context";
+import { Paypal } from "./footer/Paypal";
 
 /**
  * Componente del pie de página de la aplicación.
@@ -17,6 +18,7 @@ export function Footer() {
   return (
     <footer className="bg-primary/95 text-primary-foreground backdrop-blur-sm">
       <div className="container mx-auto px-4 py-6">
+      <Paypal />
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Enlaces a redes sociales */}
           <div className="flex gap-6">
