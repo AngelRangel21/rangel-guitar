@@ -5,6 +5,7 @@ import { getSongBySlug } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ProtectedPage } from "@/components/protected-page";
 
+
 /**
  * Página para editar los detalles de una canción existente.
  * Esta página está protegida y solo es accesible para administradores.
