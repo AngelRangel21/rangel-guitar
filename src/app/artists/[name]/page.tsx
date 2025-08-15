@@ -5,15 +5,7 @@ import { getSongsByArtist, getArtists } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ArtistDetailContent } from '@/components/artist-detail-content';
 
-/**
- * Genera los parámetros estáticos para todas las páginas de artistas en tiempo de compilación.
- * Esto permite a Next.js pre-renderizar cada página de artista, mejorando el rendimiento.
- * @returns {Promise<{ name: string }[]>} Un array de objetos con los nombres de los artistas codificados para la URL.
- */
-export async function generateStaticParams() {
-    const artists = await getArtists();
-    return artists.map(artistName => ({ name: encodeURIComponent(artistName) }));
-}
+// No necesitamos generateStaticParams ya que usaremos generación dinámica
 
 /**
  * Genera los metadatos (título, descripción, etc.) para la página de un artista específico.

@@ -91,6 +91,8 @@ export async function getSongById(id: string): Promise<Song | null> {
  * @returns {Promise<Song[]>} - Un array con las canciones del artista.
  */
 export async function getSongsByArtist(artistName: string): Promise<Song[]> {
+  if (!artistName) return [];
+  
   try {
     const { data, error } = await supabase
       .from("songs")
@@ -104,7 +106,11 @@ export async function getSongsByArtist(artistName: string): Promise<Song[]> {
     
     return data ? data.map(mapDataToSong) : [];
   } catch (error) {
-    console.error('Error in getSongsByArtist:', error);
+    if (error instanceof Error) {
+      console.error('Error in getSongsByArtist:', error.message);
+    } else {
+      console.error('Unknown error in getSongsByArtist:', error);
+    }
     return [];
   }
 }
