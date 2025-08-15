@@ -53,15 +53,16 @@ export async function generateMetadata({ params }: { params: { name: string } })
  * @returns {Promise<JSX.Element>} La página de detalle del artista.
  */
 export default async function ArtistDetailPage({ params }: { params: { name: string } }) {
-  // Decodifica el nombre del artista desde la URL (ej. "Guns%20N'%20Roses" -> "Guns N' Roses").
-  const artistName = decodeURIComponent(params.name);
-  // Obtiene todas las canciones del artista desde el servicio.
-  const artistSongs = await getSongsByArtist(artistName);
+  try {
+    // Decodifica el nombre del artista desde la URL (ej. "Guns%20N'%20Roses" -> "Guns N' Roses").
+    const artistName = decodeURIComponent(params.name);
+    // Obtiene todas las canciones del artista desde el servicio.
+    const artistSongs = await getSongsByArtist(artistName);
 
-  // Si no se encuentran canciones, muestra la página de error 404.
-  if (!artistSongs || artistSongs.length === 0) {
-    notFound();
-  }
+    // Si no se encuentran canciones, muestra la página de error 404.
+    if (!artistSongs || artistSongs.length === 0) {
+      notFound();
+    }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -70,5 +71,16 @@ export default async function ArtistDetailPage({ params }: { params: { name: str
       <ArtistDetailContent artistName={artistName} songs={artistSongs} />
       <Footer />
     </div>
-  );
+  )} catch (error) {
+    console.error('Error loading artist page:', error);
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <div className="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+          <p className="text-lg text-red-500">Error al cargar las canciones del artista. Por favor, intenta de nuevo más tarde.</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 }

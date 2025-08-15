@@ -91,12 +91,22 @@ export async function getSongById(id: string): Promise<Song | null> {
  * @returns {Promise<Song[]>} - Un array con las canciones del artista.
  */
 export async function getSongsByArtist(artistName: string): Promise<Song[]> {
-  const { data, error } = await supabase
-    .from("songs")
-    .select("*")
-    .eq("artist", artistName);
-  if (error) throw error;
-  return data.map(mapDataToSong);
+  try {
+    const { data, error } = await supabase
+      .from("songs")
+      .select("*")
+      .eq("artist", artistName);
+    
+    if (error) {
+      console.error('Error fetching songs:', error);
+      return [];
+    }
+    
+    return data ? data.map(mapDataToSong) : [];
+  } catch (error) {
+    console.error('Error in getSongsByArtist:', error);
+    return [];
+  }
 }
 
 /**
