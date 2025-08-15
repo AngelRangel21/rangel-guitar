@@ -1,0 +1,10 @@
+{
+  "name": "Rangel Guitar",
+  "short_name": "Rangel Guitar",
+  "description": "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1d232a",
+  "theme_color": "#1d232a",
+  "orientation": "portrait-primary"
+}

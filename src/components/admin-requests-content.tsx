@@ -14,8 +14,7 @@ import { Trash2 } from 'lucide-react';
 import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions';
 import { deleteSongRequest } from '@/lib/client/requests';
 import { useToast } from '@/hooks/use-toast';
-import { onSnapshot, collection, query, orderBy, Timestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { Skeleton } from './ui/skeleton';
 
 /**
@@ -35,28 +34,33 @@ export function AdminRequestsContent() {
   const dateFormat = language === 'es' ? "d 'de' MMMM 'de' yyyy 'a las' HH:mm" : "MMM d, yyyy 'at' h:mm a";
 
   useEffect(() => {
-    const requestsCollection = collection(db, 'song-requests');
-    const q = query(requestsCollection, orderBy('requestedAt', 'desc'));
+    const fetchRequests = async () => {
+      const { data, error } = await supabase
+        .from('songs_requests')
+        .select('*')
+        .order('requestedAt', { ascending: false });
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-        const fetchedRequests = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                artist: data.artist,
-                requestedAt: (data.requestedAt as Timestamp).toDate(),
-            };
-        });
-        setRequests(fetchedRequests);
-        setIsLoading(false);
-    }, (error) => {
+      if (error) {
         console.error("Failed to fetch song requests:", error);
         toast({ variant: "destructive", title: t('error'), description: "Failed to load requests." });
         setIsLoading(false);
-    });
+      } else {
+        setRequests(data.map(r => ({...r, requestedAt: new Date(r.requestedAt)})));
+        setIsLoading(false);
+      }
+    };
 
-    return () => unsubscribe();
+    fetchRequests();
+
+    const channel = supabase.channel('song-requests-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'songs_requests' }, (payload) => {
+        fetchRequests();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [t, toast]);
 
   /**

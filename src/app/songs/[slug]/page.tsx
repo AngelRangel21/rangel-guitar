@@ -22,8 +22,9 @@ export async function generateStaticParams() {
  * @param {{ params: { slug: string } }} props - Las propiedades de la página, incluyendo el slug de la canción.
  * @returns {Promise<Metadata>} El objeto de metadatos para la página.
  */
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const song = await getSongBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const song = await getSongBySlug(slug);
 
   if (!song) {
     return {
@@ -58,11 +59,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
  * @param {{ params: { slug: string } }} props - Las propiedades de la página, incluyendo el slug.
  * @returns {Promise<JSX.Element>} La página de la canción.
  */
-export default async function SongPage({ params }: { params: { slug: string } }) {
-  const songSlug = params.slug;
+export default async function SongPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   
   // Obtiene los datos de la canción a partir de su slug.
-  const song = await getSongBySlug(songSlug);
+  const song = await getSongBySlug(slug);
 
   // Si la canción no existe, muestra la página 404.
   if (!song) {

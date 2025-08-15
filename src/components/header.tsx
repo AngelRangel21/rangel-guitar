@@ -29,8 +29,7 @@ import { es, enUS } from 'date-fns/locale';
 import type { SongRequest } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "./ui/badge";
-import { onSnapshot, collection, query, orderBy } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { supabase } from "@/lib/supabase";
 
 /**
  * Componente del encabezado principal de la aplicación.
@@ -51,31 +50,35 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
         return; // No hacer nada si el usuario no es administrador.
     }
 
-    const requestsCollection = collection(db, 'song-requests');
-    const q = query(requestsCollection, orderBy('requestedAt', 'desc'));
+    const fetchInitialRequests = async () => {
+      const { data: requests, error } = await supabase
+        .from('songs_requests')
+        .select('*')
+        .order('requestedAt', { ascending: false });
 
-    // onSnapshot establece un listener en tiempo real a la colección de Firestore.
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-        const requests = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                artist: data.artist,
-                requestedAt: data.requestedAt.toDate(),
-            }
-        }) as SongRequest[];
+      if (error) {
+        console.error("Error fetching initial song requests:", error);
+        return;
+      }
 
-        setNotifications({
-            count: requests.length,
-            recentRequests: requests.slice(0, 5), // Muestra solo las 5 más recientes.
-        });
-    }, (error) => {
-        console.error("Error fetching notifications:", error);
-    });
+      setNotifications({
+        count: requests.length,
+        recentRequests: requests.slice(0, 5).map(r => ({...r, requestedAt: new Date(r.requestedAt)})),
+      });
+    };
+
+    fetchInitialRequests();
+
+    const channel = supabase.channel('song-requests-chanel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'songs_requests' }, (payload) => {
+        fetchInitialRequests(); // Re-fetch all requests on any change
+      })
+      .subscribe();
 
     // Limpia el listener cuando el componente se desmonta para evitar fugas de memoria.
-    return () => unsubscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [isAdmin]);
 
   const locale = language === 'es' ? es : enUS;
@@ -125,7 +128,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home">
           <Music className="h-8 w-8 text-accent" />
-          <span className="text-2xl font-bold whitespace-nowrap">{t('appName')}</span>
+          <h1 className="text-2xl font-bold whitespace-nowrap">{t('appName')}</h1>
         </Link>
 
         {/* Barra de búsqueda (solo visible en escritorio y si se pasan las props) */}

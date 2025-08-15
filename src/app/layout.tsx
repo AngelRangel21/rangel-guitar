@@ -25,7 +25,6 @@ export const metadata: Metadata = {
   },
   description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
   metadataBase: new URL('https://rangelguitar.com'),
-  manifest: '/manifest.json', // Manifiesto para la Progressive Web App (PWA).
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -45,23 +44,18 @@ export const metadata: Metadata = {
     siteName: 'Rangel Guitar',
     images: [
       {
-        url: 'https://placehold.co/1200x630.png',
+        url: "./public/og-image-compartir.jpg",
         width: 1200,
         height: 630,
-        alt: 'Rangel Guitar, tu sitio de tablaturas y acordes.',
+        alt: 'Rangel Guitar, tu sitio de tablaturas, acordes y canciones.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rangel Guitar',
-    description: 'Tu destino para tablaturas y canciones de guitarra.',
+    description: 'Tu destino para tablaturas, acordes y canciones de guitarra.',
   },
-  icons: {
-    icon: '/icon.svg',
-    shortcut: '/icon.svg',
-    apple: '/icon.svg',
-  }
 };
 
 /**
@@ -85,7 +79,7 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.React.Node;
+  children: React.ReactNode;
 }>) {
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.

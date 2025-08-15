@@ -9,7 +9,7 @@ Rangel Guitar es una aplicación web moderna e interactiva diseñada para entusi
 - **Transporte de Acordes:** Cambia fácilmente la clave de cualquier canción para adaptarla a tu rango vocal o nivel de habilidad.
 - **Modo de Vista Dual:** Cambia entre una vista completa con acordes y letras, o un modo limpio solo con letras.
 - **Páginas de Artistas:** Explora todas las canciones disponibles de un artista específico.
-- **Autenticación de Usuario:** Funcionalidad segura de registro e inicio de sesión utilizando Autenticación de Firebase (Correo electrónico/Contraseña y Google).
+- **Autenticación de Usuario:** Funcionalidad segura de registro e inicio de sesión utilizando Supabase Auth (Correo electrónico/Contraseña y OAuth).
 - **Experiencia Personalizada:** Los usuarios registrados pueden marcar canciones como favoritas para un acceso rápido.
 - **Solicitudes de Canciones:** Los usuarios pueden solicitar que se añadan nuevas canciones a la biblioteca.
 - **Panel de Administración:** Un área protegida para que los administradores vean las solicitudes de canciones enviadas por los usuarios.
@@ -21,8 +21,7 @@ Rangel Guitar es una aplicación web moderna e interactiva diseñada para entusi
 - **Framework:** [Next.js](https://nextjs.org/) (con React)
 - **Estilo:** [Tailwind CSS](https://tailwindcss.com/)
 - **Componentes de UI:** [ShadCN UI](https://ui.shadcn.com/)
-- **Backend y Autenticación:** [Firebase](https://firebase.google.com/) (App Hosting y Auth)
-- **Funcionalidad de IA:** [Genkit de Google](https://firebase.google.com/docs/genkit)
+- **Backend y Base de Datos:** [Supabase](https://supabase.com/) (Base de datos PostgreSQL, Autenticación y Almacenamiento)
 - **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
 
 ## Cómo Empezar (Configuración Local)
@@ -34,8 +33,7 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos.
 Asegúrate de tener instalado lo siguiente:
 - [Node.js](https://nodejs.org/) (v18 o posterior)
 - [npm](https://www.npmjs.com/)
-- [Google Cloud SDK (gcloud CLI)](https://cloud.google.com/sdk/docs/install)
-- [Firebase CLI](https://firebase.google.com/docs/cli)
+- [Supabase CLI](https://supabase.com/docs/guides/cli)
 
 ### Instalación
 
@@ -57,61 +55,50 @@ Asegúrate de tener instalado lo siguiente:
 
 ### Configuración
 
-1. **Configuración del Proyecto de Firebase:**
-   - Crea un nuevo proyecto en la [Consola de Firebase](https://console.firebase.google.com/).
-   - En la configuración de tu proyecto, añade una nueva **Aplicación Web** (haz clic en el icono `</>`).
-   - Firebase te proporcionará un objeto `firebaseConfig`. Copia este objeto.
-   - Abre el archivo `src/lib/firebase.ts` en tu editor de código.
-   - Reemplaza el objeto `firebaseConfig` de marcador de posición con tu configuración copiada.
-   - **Importante:** En la Consola de Firebase, ve a **Authentication** -> **Sign-in method** y habilita los proveedores de **Correo electrónico/Contraseña** y **Google**.
-   - Luego, en la pestaña **Settings** de Authentication, ve a **Authorized domains** y añade `localhost` a la lista.
+1. **Configuración del Proyecto de Supabase:**
+   - Crea una nueva cuenta en [Supabase](https://supabase.com) si aún no tienes una.
+   - Crea un nuevo proyecto desde el Dashboard de Supabase.
+   - Una vez creado el proyecto, ve a la sección de configuración del proyecto.
+   - Copia las credenciales de tu proyecto (`NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+   - Crea un archivo `.env` en la raíz de tu proyecto y añade las variables de entorno:
+     ```bash
+     NEXT_PUBLIC_SUPABASE_URL=tu-url-de-proyecto
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima
+     ```
+   - **Importante:** En la sección de Authentication de Supabase, habilita los proveedores que desees (Email, Google, etc.).
 
-2. **Autenticación de Google Cloud para Servicios de IA:**
-   Para utilizar las funciones de IA de Genkit, debes autenticar tu entorno local. Ejecuta el siguiente comando en tu terminal:
+2. **Inicialización de la Base de Datos:**
+   Inicializa tu base de datos local para desarrollo:
    ```bash
-   gcloud auth application-default login
+   supabase init
+   supabase start
    ```
-   Esto abrirá una ventana del navegador para completar el proceso de inicio de sesión.
 
 ### Ejecución Local
 
-Esta aplicación requiere que dos procesos separados se ejecuten simultáneamente.
+Para ejecutar la aplicación en modo desarrollo:
 
-- **Terminal 1 (Aplicación Web):**
-  ```bash
-  npm run dev
-  ```
-- **Terminal 2 (Servidor de IA de Genkit):**
-  ```bash
-  npm run genkit:watch
-  ```
+```bash
+npm run dev
+```
 
-Tu aplicación ahora debería estar ejecutándose en `http://localhost:3000` (el puerto predeterminado de Next.js).
+Tu aplicación ahora debería estar ejecutándose en `http://localhost:3000` o la que tengas configurada.
 
-### Despliegue en Firebase
+### Despliegue en Producción
 
-Después de configurar tu entorno local, puedes desplegar tu aplicación en Firebase App Hosting para que sea accesible para todo el mundo.
+Puedes desplegar tu aplicación en varias plataformas. Aquí te mostramos cómo hacerlo en Vercel:
 
-1.  **Iniciar sesión en Firebase CLI:**
-    Si aún no lo has hecho, inicia sesión en Firebase desde tu terminal:
-    ```bash
-    firebase login
-    ```
+1. **Configura el Proyecto en Vercel:**
+   - Conecta tu repositorio de GitHub con Vercel.
+   - Vercel detectará automáticamente que es un proyecto Next.js.
+   - Añade las variables de entorno de Supabase en la configuración del proyecto en Vercel.
 
-2.  **Inicializar App Hosting:**
-    Ejecuta el comando de inicialización en el directorio raíz de tu proyecto:
-    ```bash
-    firebase init apphosting
-    ```
-    -   Sigue las indicaciones para conectarte a tu proyecto de Firebase existente (`rangel-guitar`).
-    -   Esto creará un archivo `.firebaserc`, vinculando tu código local a tu proyecto de Firebase.
-
-3.  **Desplegar:**
-    Finalmente, construye y despliega tu aplicación con un solo comando:
-    ```bash
-    firebase deploy
-    ```
-    Este comando construirá tu aplicación Next.js y la desplegará en el backend de App Hosting configurado en `apphosting.yaml`. Una vez completado, puedes conectar tu dominio personalizado en la consola de Firebase.
+2. **Despliegue:**
+   - Cada vez que hagas push a la rama principal, Vercel desplegará automáticamente los cambios.
+   - También puedes desplegar manualmente usando:
+     ```bash
+     vercel deploy
+     ```
 
 ## Contribución
 

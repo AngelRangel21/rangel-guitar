@@ -3,8 +3,7 @@
 // Las operaciones de escritura y lectura del cliente se han movido a archivos específicos del cliente.
 // Este archivo ahora solo contiene la lógica de lectura segura del servidor.
 
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy, type Timestamp } from 'firebase/firestore';
+import { supabase } from '@/lib/supabase';
 import type { SongRequest } from '@/lib/types';
 
 
@@ -23,15 +22,18 @@ export interface SongRequestInput {
  * @returns {Promise<SongRequest[]>} Una promesa que se resuelve con un array de solicitudes de canciones.
  */
 export async function getSongRequestsForServer(): Promise<SongRequest[]> {
-    const requestsCollection = collection(db, 'song-requests');
-    const snapshot = await getDocs(query(requestsCollection, orderBy('requestedAt', 'desc')));
-    return snapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-            id: doc.id,
-            title: data.title,
-            artist: data.artist,
-            requestedAt: (data.requestedAt as Timestamp).toDate(), // Convierte el Timestamp de Firebase a un objeto Date de JS.
-        };
-    });
+    const { data, error } = await supabase
+        .from('songs_requests')
+        .select('*')
+        .order('requestedAt', { ascending: false });
+
+    if (error) {
+        console.error("Error fetching song requests:", error);
+        throw new Error('Could not fetch song requests.');
+    }
+
+    return data.map(req => ({
+        ...req,
+        requestedAt: new Date(req.requestedAt),
+    }));
 }

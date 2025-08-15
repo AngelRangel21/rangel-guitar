@@ -134,11 +134,11 @@ export function SongList({ songs }: { songs: Song[] }) {
       {/* Controles para cambiar la vista */}
       <div className="flex justify-end items-center">
         <div className="flex items-center gap-2">
-          <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
-            <Grid className="h-5 w-5" />
-          </Button>
           <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('list')} aria-label={t('listView')}>
             <List className="h-5 w-5" />
+          </Button>
+          <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
+            <Grid className="h-5 w-5" />
           </Button>
         </div>
       </div>

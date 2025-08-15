@@ -1,4 +1,4 @@
-# **App Name**: Rangel Guitar Hub
+# **App Name**: Rangel Guitar
 
 ## Core Features:
 

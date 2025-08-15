@@ -11,14 +11,13 @@ import { useI18n } from "@/context/i18n-context";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { addSongRequest } from "@/lib/client/requests";
-import { revalidatePath } from 'next/cache';
 
 /**
  * Esquema de validación del formulario de solicitud de canciones con Zod.
  */
 const formSchema = z.object({
-  title: z.string().min(2, { message: 'songTitleRequired' }),
-  artist: z.string().min(2, { message: 'artistNameRequired' }),
+  title: z.string().min(1, { message: 'songTitleRequired' }),
+  artist: z.string().min(1, { message: 'artistNameRequired' }),
 });
 
 /**
@@ -46,7 +45,7 @@ export function RequestSongForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      // Llama a la función del cliente para agregar la solicitud a Firestore.
+      // Llama a la función del cliente para agregar la solicitud a Supabase.
       await addSongRequest(values);
       toast({
         title: t('requestSentTitle'),

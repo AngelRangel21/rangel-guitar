@@ -205,5 +205,7 @@
   "restart": "Reiniciar",
   "rewind10s": "Retroceder 10s",
   "fastForward10s": "Avanzar 10s",
-  "audioFile": "Archivo de Audio"
+  "audioFile": "Archivo de Audio",
+  "coffee": "Invitar un café con PayPal",
+  "donate": "Donar con PayPal"
 }
