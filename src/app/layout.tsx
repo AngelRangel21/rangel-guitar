@@ -30,12 +30,6 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'Rangel Guitar',
   },
-  other: {
-    'google-adsense-account': 'ca-pub-1028178529084620',
-  },
-  verification: {
-    google: 'gb-yeQgZDEJvI9flvuu8KQc4mz8Gj-M64vqoGuGEy1s',
-  },
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
@@ -44,7 +38,7 @@ export const metadata: Metadata = {
     siteName: 'Rangel Guitar',
     images: [
       {
-        url: "./public/og-image-compartir.jpg",
+        url: "./og-image-compartir.jpg",
         width: 1200,
         height: 630,
         alt: 'Rangel Guitar, tu sitio de tablaturas, acordes y canciones.',
@@ -85,12 +79,27 @@ export default function RootLayout({
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
       <head>
+        {/* Google AdSense */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1028178529084620"
           crossOrigin="anonymous"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-8J82455QVE"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8J82455QVE');
+          `}
+        </Script>
       </head>
       <body className="font-body antialiased">
         {/* Proveedor de tema para manejar el modo claro/oscuro. */}
