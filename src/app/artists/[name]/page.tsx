@@ -5,6 +5,11 @@ import { getSongsByArtist, getArtists } from "@/services/songs-service";
 import { notFound } from "next/navigation";
 import { ArtistDetailContent } from '@/components/artist-detail-content';
 
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
+
 // No necesitamos generateStaticParams ya que usaremos generación dinámica
 
 /**
