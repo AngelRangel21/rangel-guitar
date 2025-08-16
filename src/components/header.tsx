@@ -126,7 +126,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home">
+        <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home"  title="Principal Page">
           <Music className="h-8 w-8 text-accent" />
           <h1 className="text-2xl font-bold whitespace-nowrap">{t('appName')}</h1>
         </Link>

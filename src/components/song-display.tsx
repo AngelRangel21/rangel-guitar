@@ -116,7 +116,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
               {/* Acciones de Administrador (solo para administradores) */}
               {isAdmin && (
                 <div className="mb-8 p-4 bg-secondary/50 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-3 text-center">{t('adminActions')}</h3>
+                  <h2 className="text-lg font-semibold mb-3 text-center">{t('adminActions')}</h2>
                   <div className="flex justify-center gap-4">
                     <Button asChild variant="outline">
                       <Link href={`/songs/${song.slug}/edit`}>
@@ -203,7 +203,7 @@ export function SongDisplay({ song, suggestedSongs }: { song: Song, suggestedSon
       {/* Sección de Canciones Sugeridas */}
       {suggestedSongs.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-3xl font-bold mb-6">{t('suggestedSongs')}</h2>
+          <h4 className="text-3xl font-bold mb-6">{t('suggestedSongs')}</h4>
           <div className="flex flex-col space-y-3">
             {suggestedSongs.map(s => (
               <SongListItem key={s.id} song={s} />

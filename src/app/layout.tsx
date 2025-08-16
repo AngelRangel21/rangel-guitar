@@ -30,6 +30,8 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'Rangel Guitar',
   },
+  manifest: "/manifest.json",
+  themeColor: "#1d232a",
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
     siteName: 'Rangel Guitar',
     images: [
       {
-        url: "./og-image-compartir.jpg",
+        url: "./og-image.jpg",
         width: 1200,
         height: 630,
         alt: 'Rangel Guitar, tu sitio de tablaturas, acordes y canciones.',
@@ -49,6 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Rangel Guitar',
     description: 'Tu destino para tablaturas, acordes y canciones de guitarra.',
+    images: ["/og-image.jpg"],
   },
 };
 

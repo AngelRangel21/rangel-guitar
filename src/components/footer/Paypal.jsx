@@ -3,7 +3,7 @@ import { useI18n } from "@/context/i18n-context";
 export function Paypal() {
     const { t } = useI18n(); // Hook para obtener traducciones.
     return (
-        <div className="flex flex-1 flex-col justify-between items-center mb-4">
+        <div className="flex flex-1 flex-col justify-between items-center mb-4" title="Pagina para donaciones con PayPal">
             <p className="text-center text-sm pb-2">{t('coffee')}:</p>
             <a
             href="https://www.paypal.com/paypalme/angelrangelm"
