@@ -63,12 +63,12 @@ export async function incrementVisitCount(id: string): Promise<void> {
  */
 export async function updateLikeCount(
   id: string,
-  delta: 1 | -1
+  delta: -1 | 1
 ): Promise<void> {
   const { error } = await supabase.rpc("increment_song_counter", {
     song_id: id,
     field_name: "likeCount",
     increment_value: delta,
   });
-  if (!error) throw error;
+  if (error) throw error;
 }

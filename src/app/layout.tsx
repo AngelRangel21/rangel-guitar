@@ -31,7 +31,6 @@ export const metadata: Metadata = {
     title: 'Rangel Guitar',
   },
   manifest: "/manifest.json",
-  themeColor: "#1d232a",
   openGraph: {
     title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
