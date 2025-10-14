@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { getSongsByArtist, getArtists } from "@/services/songs-service";
 import { notFound } from "next/navigation";
