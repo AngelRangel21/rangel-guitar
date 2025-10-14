@@ -1,16 +1,16 @@
-import type {Metadata, Viewport} from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { AuthProvider } from '@/context/auth-context';
-import { I18nProvider } from '@/context/i18n-context';
-import { ThemeProvider } from '@/context/theme-provider';
-import Script from 'next/script';
+import { AuthProvider } from "@/context/auth-context";
+import { I18nProvider } from "@/context/i18n-context";
+import { ThemeProvider } from "@/context/theme-provider";
+import Script from "next/script";
 
 // Configuración de la fuente 'Inter' de Google Fonts.
-const inter = Inter({ 
-  subsets: ['latin'],
-  variable: '--font-inter', // Asigna la fuente a una variable CSS para usarla en Tailwind.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter", // Asigna la fuente a una variable CSS para usarla en Tailwind.
 });
 
 /**
@@ -20,36 +20,38 @@ const inter = Inter({
  */
 export const metadata: Metadata = {
   title: {
-    default: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
-    template: '%s | Rangel Guitar', // Plantilla para los títulos de páginas individuales.
+    default: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
+    template: "%s | Rangel Guitar", // Plantilla para los títulos de páginas individuales.
   },
-  description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
-  metadataBase: new URL('https://rangelguitar.com'),
+  description:
+    "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
+  metadataBase: new URL("https://rangelguitar.com"),
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'Rangel Guitar',
+    statusBarStyle: "default",
+    title: "Rangel Guitar",
   },
   manifest: "/manifest.json",
   openGraph: {
-    title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
-    description: 'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
-    type: 'website',
-    locale: 'es_ES',
-    siteName: 'Rangel Guitar',
+    title: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
+    description:
+      "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.",
+    type: "website",
+    locale: "es_ES",
+    siteName: "Rangel Guitar",
     images: [
       {
         url: "./og-image.jpg",
         width: 1200,
         height: 630,
-        alt: 'Rangel Guitar, tu sitio de tablaturas, acordes y canciones.',
+        alt: "Rangel Guitar, tu sitio de tablaturas, acordes y canciones.",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Rangel Guitar',
-    description: 'Tu destino para tablaturas, acordes y canciones de guitarra.',
+    card: "summary_large_image",
+    title: "Rangel Guitar",
+    description: "Tu destino para tablaturas, acordes y canciones de guitarra.",
     images: ["/og-image.jpg"],
   },
 };
@@ -60,10 +62,10 @@ export const metadata: Metadata = {
  */
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#eef0f3' },
-    { media: '(prefers-color-scheme: dark)', color: '#1d232a' },
+    { media: "(prefers-color-scheme: light)", color: "hsl(210, 22%, 31%)" },
+    { media: "(prefers-color-scheme: dark)", color: "hsl(210, 22%, 11%)" },
   ],
-}
+};
 
 /**
  * Layout raíz de la aplicación.
@@ -79,31 +81,33 @@ export default function RootLayout({
 }>) {
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
-    <html lang="es" className={`${inter.variable} !scroll-smooth`} suppressHydrationWarning>
-      <head>
-        {/* Google AdSense */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1028178529084620"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-4XM34YVJLK"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4XM34YVJLK');
-          `}
-        </Script>
-      </head>
+    <html
+      lang="es"
+      className={`${inter.variable} !scroll-smooth`}
+      suppressHydrationWarning
+    >
+      {/* <!-- Google Tag Manager --> */}
+      <Script id="google-tag-manager" strategy="afterInteractive">
+        {`
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MS224ZBH');
+      `}
+      </Script>
+      {/* <!-- End Google Tag Manager --> */}
       <body className="font-body antialiased">
+        {/* <!-- Google Tag Manager (noscript) --> */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-MS224ZBH"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+        {/* <!-- End Google Tag Manager (noscript) --> */}
         {/* Proveedor de tema para manejar el modo claro/oscuro. */}
         <ThemeProvider
           attribute="class"
@@ -114,9 +118,7 @@ export default function RootLayout({
           {/* Proveedor de internacionalización para manejar los idiomas. */}
           <I18nProvider>
             {/* Proveedor de autenticación para gestionar el estado del usuario. */}
-            <AuthProvider>
-              {children}
-            </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </I18nProvider>
         </ThemeProvider>
         {/* Componente para mostrar notificaciones (toasts). */}
