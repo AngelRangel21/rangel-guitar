@@ -1,28 +1,29 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { Metronome } from "@/components/metronome";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 /**
  * Metadatos para la página del Metrónomo.
  * Crucial para SEO y cómo se muestra la página al compartirla.
  */
 export const metadata: Metadata = {
-  title: 'Herramienta de Metrónomo',
-  description: 'Usa nuestro metrónomo interactivo para practicar tu tempo y ritmo. Ajusta los BPM y el compás para adaptarlo a tus necesidades de práctica.',
+  title: "Herramienta de Metrónomo",
+  description:
+    "Usa nuestro metrónomo interactivo para practicar tu tempo y ritmo. Ajusta los BPM y el compás para adaptarlo a tus necesidades de práctica.",
   openGraph: {
-    title: 'Metrónomo Interactivo | Rangel Guitar',
-    description: 'Practica tu tempo y ritmo con el metrónomo de Rangel Guitar.',
+    title: "Metrónomo Interactivo | Rangel Guitar",
+    description: "Practica tu tempo y ritmo con el metrónomo de Rangel Guitar.",
     images: [
       {
-        url: 'https://placehold.co/1200x630.png',
+        url: "https://placehold.co/1200x630.png",
         width: 1200,
         height: 630,
-        alt: 'Metrónomo de Rangel Guitar',
+        alt: "Metrónomo de Rangel Guitar",
       },
     ],
   },
-}
+};
 
 /**
  * Página que aloja la herramienta de Metrónomo.

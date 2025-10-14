@@ -1,29 +1,31 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { ScalesPageContent } from "@/components/scales-page-content";
 import { rootNotes, scaleTypes } from "@/lib/scales-data";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 /**
  * Metadatos para la página de la Biblioteca de Escalas.
  * Esencial para el SEO y para cómo se muestra la página al compartirla en redes sociales.
  */
 export const metadata: Metadata = {
-  title: 'Biblioteca de Escalas',
-  description: 'Explora y aprende escalas musicales para guitarra y teclado. Encuentra todas las escalas mayores y menores.',
+  title: "Biblioteca de Escalas",
+  description:
+    "Explora y aprende escalas musicales para guitarra y teclado. Encuentra todas las escalas mayores y menores.",
   openGraph: {
-    title: 'Biblioteca de Escalas | Rangel Guitar',
-    description: 'Explora y aprende escalas musicales para guitarra y teclado. Encuentra todas las escalas mayores y menores.',
+    title: "Biblioteca de Escalas | Rangel Guitar",
+    description:
+      "Explora y aprende escalas musicales para guitarra y teclado. Encuentra todas las escalas mayores y menores.",
     images: [
       {
-        url: 'https://placehold.co/1200x630.png',
+        url: "https://placehold.co/1200x630.png",
         width: 1200,
         height: 630,
-        alt: 'Biblioteca de Escalas en Rangel Guitar',
+        alt: "Biblioteca de Escalas en Rangel Guitar",
       },
     ],
   },
-}
+};
 
 /**
  * Página que muestra la herramienta de biblioteca de escalas musicales.

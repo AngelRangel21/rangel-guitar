@@ -1,8 +1,14 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { AdminRequestsContent } from "@/components/admin-requests-content";
 import { ProtectedPage } from "@/components/protected-page";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 
@@ -10,22 +16,22 @@ import { Suspense } from "react";
  * Componente de carga que se muestra mientras se obtienen los datos de las solicitudes.
  */
 function RequestsLoader() {
-    return (
-        <Card>
-            <CardHeader>
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-4 w-3/4 mt-2" />
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                  <Skeleton className="h-12 w-full" />
-                </div>
-            </CardContent>
-        </Card>
-    );
+  return (
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-4 w-3/4 mt-2" />
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 /**
@@ -35,18 +41,18 @@ function RequestsLoader() {
  * @returns {JSX.Element} La página de solicitudes de administrador.
  */
 export default function AdminRequestsPage() {
-    return (
-        // Componente que protege la página, requiriendo autenticación de administrador.
-        <ProtectedPage adminOnly>
-            <div className="flex flex-col min-h-screen bg-background">
-                <Header />
-                <main className="flex-grow container mx-auto px-4 py-8">
-                    <Suspense fallback={<RequestsLoader />}>
-                        <AdminRequestsContent />
-                    </Suspense>
-                </main>
-                <Footer />
-            </div>
-        </ProtectedPage>
-    );
+  return (
+    // Componente que protege la página, requiriendo autenticación de administrador.
+    <ProtectedPage adminOnly>
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <main className="flex-grow container mx-auto px-4 py-8">
+          <Suspense fallback={<RequestsLoader />}>
+            <AdminRequestsContent />
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
+    </ProtectedPage>
+  );
 }

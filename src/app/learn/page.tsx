@@ -1,28 +1,30 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { LearnPageContent } from "@/components/learn-page-content";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 /**
  * Metadatos para la página principal de "Aprender".
  * Crucial para SEO y cómo se muestra la página al compartirla.
  */
 export const metadata: Metadata = {
-  title: 'Aprender',
-  description: 'Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales en Rangel Guitar.',
+  title: "Aprender",
+  description:
+    "Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales en Rangel Guitar.",
   openGraph: {
-    title: 'Aprende Música con Rangel Guitar',
-    description: 'Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales en Rangel Guitar.',
+    title: "Aprende Música con Rangel Guitar",
+    description:
+      "Explora nuestras herramientas y lecciones para mejorar tus habilidades musicales en Rangel Guitar.",
     images: [
       {
-        url: 'https://placehold.co/1200x630.png',
+        url: "https://placehold.co/1200x630.png",
         width: 1200,
         height: 630,
-        alt: 'Aprende música en Rangel Guitar',
+        alt: "Aprende música en Rangel Guitar",
       },
     ],
   },
-}
+};
 
 /**
  * Página principal de la sección "Aprender".

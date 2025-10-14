@@ -1,4 +1,4 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { getSongBySlug, getSongs } from "@/services/songs-service";
 import { notFound } from "next/navigation";
@@ -12,8 +12,8 @@ import type { Song } from "@/lib/types";
  * @returns {Promise<{ slug: string }[]>} Un array de objetos con los slugs de todas las canciones.
  */
 export async function generateStaticParams() {
-    const songs = await getSongs();
-    return songs.map(song => ({ slug: song.slug }));
+  const songs = await getSongs();
+  return songs.map((song) => ({ slug: song.slug }));
 }
 
 /**
@@ -22,14 +22,18 @@ export async function generateStaticParams() {
  * @param {{ params: { slug: string } }} props - Las propiedades de la página, incluyendo el slug de la canción.
  * @returns {Promise<Metadata>} El objeto de metadatos para la página.
  */
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const song = await getSongBySlug(slug);
 
   if (!song) {
     return {
       title: "Canción no encontrada",
-    }
+    };
   }
 
   const description = `Aprende a tocar ${song.title} de ${song.artist} en guitarra. Letra, acordes y video disponibles en Rangel Guitar.`;
@@ -38,20 +42,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${song.title} - ${song.artist}`,
     description: description,
     openGraph: {
-        title: `${song.title} - ${song.artist}`,
-        description: description,
-        type: 'music.song',
-        url: `/songs/${song.slug}`,
-        images: [
-            {
-                url: song.coverArt,
-                width: 600,
-                height: 600,
-                alt: `Portada de ${song.title}`,
-            }
-        ],
+      title: `${song.title} - ${song.artist}`,
+      description: description,
+      type: "music.song",
+      url: `/songs/${song.slug}`,
+      images: [
+        {
+          url: song.coverArt,
+          width: 600,
+          height: 600,
+          alt: `Portada de ${song.title}`,
+        },
+      ],
     },
-  }
+  };
 }
 
 /**
@@ -59,9 +63,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
  * @param {{ params: { slug: string } }} props - Las propiedades de la página, incluyendo el slug.
  * @returns {Promise<JSX.Element>} La página de la canción.
  */
-export default async function SongPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function SongPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-  
+
   // Obtiene los datos de la canción a partir de su slug.
   const song = await getSongBySlug(slug);
 
@@ -76,23 +84,23 @@ export default async function SongPage({ params }: { params: Promise<{ slug: str
 
   // 1. Obtiene otras canciones del mismo artista.
   let suggestedSongs: Song[] = allSongs.filter(
-    s => s.artist === song.artist && s.id !== song.id
+    (s) => s.artist === song.artist && s.id !== song.id
   );
 
   // 2. Si no hay suficientes, obtiene canciones aleatorias de otros artistas.
   if (suggestedSongs.length < MAX_SUGGESTIONS) {
-      const otherSongs = allSongs.filter(
-          s => s.artist !== song.artist && s.id !== song.id
-      );
-      
-      const remainingNeeded = MAX_SUGGESTIONS - suggestedSongs.length;
-      
-      // Mezcla las otras canciones para obtener una selección aleatoria.
-      const shuffledOtherSongs = otherSongs.sort(() => 0.5 - Math.random());
+    const otherSongs = allSongs.filter(
+      (s) => s.artist !== song.artist && s.id !== song.id
+    );
 
-      suggestedSongs.push(...shuffledOtherSongs.slice(0, remainingNeeded));
+    const remainingNeeded = MAX_SUGGESTIONS - suggestedSongs.length;
+
+    // Mezcla las otras canciones para obtener una selección aleatoria.
+    const shuffledOtherSongs = otherSongs.sort(() => 0.5 - Math.random());
+
+    suggestedSongs.push(...shuffledOtherSongs.slice(0, remainingNeeded));
   }
-  
+
   // 3. Se asegura de no exceder el número máximo de sugerencias.
   suggestedSongs = suggestedSongs.slice(0, MAX_SUGGESTIONS);
   // --- Fin de la Lógica de Sugerencias ---

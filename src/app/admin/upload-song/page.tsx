@@ -1,8 +1,7 @@
-
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
-import { UploadSongForm } from '@/components/upload-song-form';
-import { ProtectedPage } from '@/components/protected-page';
+import { UploadSongForm } from "@/components/upload-song-form";
+import { ProtectedPage } from "@/components/protected-page";
 
 /**
  * Página que permite a los administradores subir una nueva canción directamente a la biblioteca.
@@ -10,17 +9,17 @@ import { ProtectedPage } from '@/components/protected-page';
  * @returns {JSX.Element} La página con el formulario para subir canciones.
  */
 export default function UploadSongPage() {
-    return (
-        // Componente que protege la página, requiriendo autenticación de administrador.
-        <ProtectedPage adminOnly>
-            <div className="flex flex-col min-h-screen bg-background">
-                <Header />
-                <main className="flex-grow container mx-auto px-4 py-8 flex justify-center">
-                    {/* El formulario para subir la nueva canción. */}
-                    <UploadSongForm />
-                </main>
-                <Footer />
-            </div>
-        </ProtectedPage>
-    );
+  return (
+    // Componente que protege la página, requiriendo autenticación de administrador.
+    <ProtectedPage adminOnly>
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <main className="flex-grow container mx-auto px-4 py-8 flex justify-center">
+          {/* El formulario para subir la nueva canción. */}
+          <UploadSongForm />
+        </main>
+        <Footer />
+      </div>
+    </ProtectedPage>
+  );
 }

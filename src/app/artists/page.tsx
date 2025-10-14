@@ -1,4 +1,4 @@
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { ArtistList } from "@/components/artist-list";
 import { getArtists } from "@/services/songs-service";

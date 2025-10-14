@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
 import { useState, useMemo } from "react";
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { SongList } from "@/components/song-list";
 import type { Song } from "@/lib/types";
 import { useI18n } from "@/context/i18n-context";
 import { FeatureTour } from "./feature-tour";
+import { SearchBar } from "./search";
 
 /**
  * Componente de cliente para la página de inicio.
@@ -16,7 +17,7 @@ import { FeatureTour } from "./feature-tour";
  */
 export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
   // Estado para almacenar el término de búsqueda introducido por el usuario.
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const { t } = useI18n();
 
   // `useMemo` se utiliza para memorizar la lista de canciones filtradas.
@@ -27,19 +28,23 @@ export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
       return initialSongs; // Si no hay búsqueda, devuelve todas las canciones.
     }
     // Filtra las canciones basándose en el título o el artista.
-    return initialSongs.filter(song =>
-      song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+    return initialSongs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, initialSongs]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
-      <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Header />
       <main className="flex-grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in">
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-bold text-foreground">{t('allSongs')}</h2>
+          <h2 className="text-3xl font-bold text-foreground">
+            {t("allSongs")}
+          </h2>
         </div>
         {/* La lista de canciones recibe las canciones filtradas para renderizar. */}
         <SongList songs={filteredSongs} />

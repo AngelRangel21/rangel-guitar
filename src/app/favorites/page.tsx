@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Header } from "@/components/header";
+import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { SongList } from "@/components/song-list";
 import { useAuth } from "@/context/auth-context";
@@ -30,9 +30,9 @@ function FavoritesContent() {
     if (isLoaded) {
       setIsLoading(true);
       // Obtiene todas las canciones.
-      getSongs().then(allSongs => {
+      getSongs().then((allSongs) => {
         // Filtra las canciones para quedarse solo con las que están en la lista de favoritos del usuario.
-        const favs = allSongs.filter(song => favorites.includes(song.id));
+        const favs = allSongs.filter((song) => favorites.includes(song.id));
         setFavoriteSongs(favs);
         setIsLoading(false); // Termina la carga.
       });
@@ -42,16 +42,16 @@ function FavoritesContent() {
   // Muestra un esqueleto de carga mientras se obtienen los datos.
   if (isLoading) {
     return (
-        <div className="space-y-6">
-            <div className="flex items-center gap-4">
-                <Skeleton className="h-9 w-48" />
-            </div>
-            <div className="flex flex-col space-y-3">
-                <Skeleton className="h-14 w-full" />
-                <Skeleton className="h-14 w-full" />
-                <Skeleton className="h-14 w-full" />
-            </div>
+      <div className="space-y-6">
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-9 w-48" />
         </div>
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+        </div>
+      </div>
     );
   }
 
@@ -59,7 +59,9 @@ function FavoritesContent() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <h1 className="text-3xl font-bold text-foreground">{t('myFavorites')}</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          {t("myFavorites")}
+        </h1>
       </div>
       {/* Muestra la lista de canciones si hay favoritas, o un mensaje si no las hay. */}
       {favoriteSongs.length > 0 ? (
@@ -67,11 +69,11 @@ function FavoritesContent() {
       ) : (
         <div className="text-center py-16 border-2 border-dashed rounded-lg">
           <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-muted-foreground">{t('noFavorites')}</p>
+          <p className="mt-4 text-muted-foreground">{t("noFavorites")}</p>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 /**
@@ -86,8 +88,8 @@ export default function FavoritesPage() {
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
         <main className="flex-grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in">
-            {/* El contenido se maneja en un componente separado. */}
-            <FavoritesContent />
+          {/* El contenido se maneja en un componente separado. */}
+          <FavoritesContent />
         </main>
         <Footer />
       </div>
