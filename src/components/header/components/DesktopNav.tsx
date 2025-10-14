@@ -8,7 +8,7 @@ export default function DesktopNav() {
   const baseLinks = [
     { href: "/", label: "Inicio" },
     { href: "/artists", label: "Artistas" },
-    { href: "/top-songs", label: "Top canciones" },
+    { href: "/top-charts", label: "Top canciones" },
     { href: "/request-song", label: "Solicitar" },
     { href: "/learn", label: "Aprender" },
   ];
