@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,13 +11,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import type { Song } from '@/lib/types';
-import { useI18n } from '@/context/i18n-context';
-import { revalidateAndRedirectAfterDelete } from '@/app/songs/[slug]/actions';
-import { deleteSong } from '@/lib/client/songs';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import type { Song } from "@/lib/types";
+import { useI18n } from "@/context/i18n-context";
+import { revalidateAndRedirectAfterDelete } from "@/app/songs/[slug]/actions";
+import { deleteSong } from "@/lib/client/songs";
+import { Spinner } from "./ui/spinner";
 
 /**
  * Propiedades que el componente DeleteSongDialog espera recibir.
@@ -50,16 +51,16 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
       await revalidateAndRedirectAfterDelete();
     } catch (error: any) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error.digest?.startsWith('NEXT_REDIRECT')) {
-          return;
+      if (error.digest?.startsWith("NEXT_REDIRECT")) {
+        return;
       }
-      
+
       // Maneja errores reales que no son de redirección.
       console.error("Failed to delete song:", error);
       toast({
-        variant: 'destructive',
-        title: t('error'),
-        description: t('songDeleteError'),
+        variant: "destructive",
+        title: t("error"),
+        description: t("songDeleteError"),
       });
       setIsLoading(false);
     }
@@ -70,15 +71,26 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>
+          <AlertDialogTitle>{t("deleteSongConfirmTitle")}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t('deleteSongConfirmDescription', { title: song.title })}
+            {t("deleteSongConfirmDescription", { title: song.title })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete} disabled={isLoading} className="bg-destructive hover:bg-destructive/90">
-            {isLoading ? t('deleting') : t('delete')}
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleDelete}
+            disabled={isLoading}
+            className="bg-destructive hover:bg-destructive/90"
+          >
+            {isLoading ? (
+              <>
+                <Spinner />
+                <p>{t("deleting")}</p>
+              </>
+            ) : (
+              t("delete")
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

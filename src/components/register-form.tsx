@@ -1,17 +1,31 @@
-'use client';
+"use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
 import { useI18n } from "@/context/i18n-context";
 import { GoogleIcon } from "@/components/icons";
 import { useState } from "react";
+import { Spinner } from "./ui/spinner";
 
 /**
  * Componente del formulario de registro de nuevos usuarios.
@@ -25,9 +39,9 @@ export function RegisterForm() {
 
   // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
-    name: z.string().min(2, { message: t('nameRequired') }),
-    email: z.string().email({ message: t('invalidEmail') }),
-    password: z.string().min(6, { message: t('passwordMinLength') }),
+    name: z.string().min(2, { message: t("nameRequired") }),
+    email: z.string().email({ message: t("invalidEmail") }),
+    password: z.string().min(6, { message: t("passwordMinLength") }),
   });
 
   // Inicializa el formulario con react-hook-form y el resolver de Zod.
@@ -53,8 +67,8 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>{t('registerTitle')}</CardTitle>
-        <CardDescription>{t('registerDescription')}</CardDescription>
+        <CardTitle>{t("registerTitle")}</CardTitle>
+        <CardDescription>{t("registerDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -64,9 +78,13 @@ export function RegisterForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('nameLabel')}</FormLabel>
+                  <FormLabel>{t("nameLabel")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('namePlaceholder')} {...field} />
+                    <Input
+                      type="text"
+                      placeholder={t("namePlaceholder")}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,9 +95,13 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>{t("emailLabel")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="name@example.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,7 +112,7 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>{t("passwordLabel")}</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="********" {...field} />
                   </FormControl>
@@ -99,7 +121,13 @@ export function RegisterForm() {
               )}
             />
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? t('loading') + '...' : t('createAccount')}
+              {isLoading ? (
+                <>
+                  <Spinner /> <p>{t("loading") + "..."} </p>
+                </>
+              ) : (
+                t("createAccount")
+              )}
             </Button>
           </form>
         </Form>
@@ -110,20 +138,25 @@ export function RegisterForm() {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-background px-2 text-muted-foreground">
-              {t('orContinueWith')}
+              {t("orContinueWith")}
             </span>
           </div>
         </div>
         {/* Botón de registro con Google */}
-        <Button onClick={signInWithGoogle} variant="outline" className="w-full" disabled={isLoading}>
+        <Button
+          onClick={signInWithGoogle}
+          variant="outline"
+          className="w-full"
+          disabled={isLoading}
+        >
           <GoogleIcon className="mr-2 h-5 w-5" />
-          {t('registerWithGoogle')}
+          {t("registerWithGoogle")}
         </Button>
         {/* Enlace a la página de inicio de sesión */}
         <div className="mt-4 text-center text-sm">
-          {t('haveAccount')}{" "}
+          {t("haveAccount")}{" "}
           <Link href="/login" className="underline text-accent">
-            {t('loginLink')}
+            {t("loginLink")}
           </Link>
         </div>
       </CardContent>

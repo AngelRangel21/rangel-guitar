@@ -1,17 +1,31 @@
-'use client';
+"use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
 import { useI18n } from "@/context/i18n-context";
 import { GoogleIcon } from "@/components/icons";
 import { useState } from "react";
+import { Spinner } from "./ui/spinner";
 
 /**
  * Componente del formulario de inicio de sesión.
@@ -25,8 +39,8 @@ export function LoginForm() {
 
   // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
-    email: z.string().email({ message: t('invalidEmail') }),
-    password: z.string().min(1, { message: t('passwordRequired') }),
+    email: z.string().email({ message: t("invalidEmail") }),
+    password: z.string().min(1, { message: t("passwordRequired") }),
   });
 
   // Inicializa el formulario con react-hook-form y el resolver de Zod.
@@ -51,8 +65,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>{t('loginTitle')}</CardTitle>
-        <CardDescription>{t('loginDescription')}</CardDescription>
+        <CardTitle>{t("loginTitle")}</CardTitle>
+        <CardDescription>{t("loginDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -62,9 +76,13 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>{t("emailLabel")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="name@example.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,7 +93,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>{t("passwordLabel")}</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="********" {...field} />
                   </FormControl>
@@ -84,7 +102,13 @@ export function LoginForm() {
               )}
             />
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? t('loading') + '...' : t('loginButton')}
+              {isLoading ? (
+                <>
+                  <Spinner /> <p>{t("loading") + "..."} </p>
+                </>
+              ) : (
+                t("loginButton")
+              )}
             </Button>
           </form>
         </Form>
@@ -95,20 +119,25 @@ export function LoginForm() {
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-background px-2 text-muted-foreground">
-              {t('orContinueWith')}
+              {t("orContinueWith")}
             </span>
           </div>
         </div>
         {/* Botón de inicio de sesión con Google */}
-        <Button onClick={signInWithGoogle} variant="outline" className="w-full" disabled={isLoading}>
+        <Button
+          onClick={signInWithGoogle}
+          variant="outline"
+          className="w-full"
+          disabled={isLoading}
+        >
           <GoogleIcon className="mr-2 h-5 w-5" />
-          {t('loginWithGoogle')}
+          {t("loginWithGoogle")}
         </Button>
         {/* Enlace a la página de registro */}
         <div className="mt-4 text-center text-sm">
-          {t('noAccount')}{" "}
+          {t("noAccount")}{" "}
           <Link href="/register" className="underline text-accent">
-            {t('registerLink')}
+            {t("registerLink")}
           </Link>
         </div>
       </CardContent>

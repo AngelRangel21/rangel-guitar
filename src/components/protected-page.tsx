@@ -1,16 +1,20 @@
-'use client';
+"use client";
 
-import { useAuth } from '@/context/auth-context';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useI18n } from '@/context/i18n-context';
+import { useAuth } from "@/context/auth-context";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useI18n } from "@/context/i18n-context";
+import { Spinner } from "./ui/spinner";
 
 interface ProtectedPageProps {
   children: React.ReactNode;
   adminOnly?: boolean;
 }
 
-export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProps) {
+export function ProtectedPage({
+  children,
+  adminOnly = false,
+}: ProtectedPageProps) {
   const { isLoaded, isAuthenticated, isAdmin } = useAuth();
   const router = useRouter();
   const { t } = useI18n();
@@ -28,15 +32,15 @@ export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProp
     if (isLoaded && !isRedirecting) {
       if (!isAuthenticated) {
         setIsRedirecting(true);
-        router.push('/login');
+        router.push("/login");
         return;
       }
-      
+
       const isAllowed = !adminOnly || isAdmin;
-      
+
       if (!isAllowed) {
         setIsRedirecting(true);
-        router.push('/');
+        router.push("/");
       }
     }
   }, [isLoaded, isAuthenticated, isAdmin, adminOnly, router, isRedirecting]);
@@ -44,7 +48,7 @@ export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProp
   // Determinar si mostrar el contenido
   const isAllowed = !adminOnly || isAdmin;
   const shouldShowContent = isLoaded && isAuthenticated && isAllowed;
-  
+
   // Si ya está todo cargado y tiene permisos, mostrar contenido inmediatamente
   if (shouldShowContent) {
     return <>{children}</>;
@@ -57,7 +61,7 @@ export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProp
         <div className="text-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
           <p className="mt-2 text-sm text-muted-foreground">
-            {t('redirecting')}...
+            {t("redirecting")}...
           </p>
         </div>
       </div>
@@ -74,9 +78,8 @@ export function ProtectedPage({ children, adminOnly = false }: ProtectedPageProp
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t('loading')}...
-        </p>
+        <Spinner />
+        <p className="mt-2 text-sm text-muted-foreground">{t("loading")}...</p>
       </div>
     </div>
   );
