@@ -11,26 +11,26 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
   const { t } = useI18n();
 
   return (
-    <div className="flex justify-center">
-      <form role="search" className="relative w-[500px]">
-        <div className="relative">
-          <input
-            name="search"
-            type="search"
-            placeholder={t("searchPlaceholder")}
-            className="w-full rounded-full bg-background p-4 placeholder:text-muted-foreground border-2 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-none border-black dark:border-white"
-            value={searchTerm ?? ""}
-            onChange={(e) => onSearchChange?.(e.target.value)}
-            disabled={onSearchChange === undefined}
-          />
-          {/* <button
-            name="Boton Buscar"
-            className="absolute right-1 top-1/2 -translate-y-1/2 p-3 dark:bg-[#ddd] bg-[#222] rounded-full"
-          > */}
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          {/* </button> */}
-        </div>
-      </form>
-    </div>
+    <>
+      <div className="px-4 py-3 sticky top-0 z-10 bg-background backdrop-blur-sm">
+        <label className="flex flex-col min-w-40 h-12 w-full">
+          <form
+            role="search"
+            className="flex w-full flex-1 items-stretch rounded-lg h-full "
+          >
+            <Search className="absolute top-1/2 -translate-y-1/2 text-muted-foreground ml-2" />
+            <input
+              name="search"
+              type="search"
+              className="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg focus:outline-0 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-none bg-gray-200 dark:bg-gray-800 h-full placeholder:text-muted-foreground border-l-0 pl-10 text-base font-normal"
+              placeholder={t("searchPlaceholder")}
+              value={searchTerm ?? ""}
+              onChange={(e) => onSearchChange?.(e.target.value)}
+              disabled={onSearchChange === undefined}
+            />
+          </form>
+        </label>
+      </div>
+    </>
   );
 }
