@@ -27,7 +27,6 @@ export function Header() {
     ? [...baseLinks, { href: "/favorites", label: "Favoritos" }]
     : baseLinks;
   const adminLinks = [
-    ...userLinks,
     { href: "/admin/requests", label: "Solicitudes" },
     { href: "/admin/upload-song", label: "Subir" },
   ];
@@ -88,17 +87,27 @@ export function Header() {
         </div>
 
         {/* --- Mobile Menu Button --- */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="xl:hidden flex items-center justify-center h-10 w-10 rounded-md hover:bg-primary-foreground/10"
-          name="menu button"
-        >
-          {mobileOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+        <section className="flex">
+          <Link
+            href="/admin/requests"
+            className="xl:hidden flex items-center justify-center gap-2 hover:text-[#111] dark:hover:text-[#eee] whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full mr-4"
+            title="Solicitudes"
+          >
+            <Bell className="h-5 w-5" />
+          </Link>
+
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="xl:hidden flex items-center justify-center h-10 w-10 rounded-md hover:bg-primary-foreground/10"
+            name="menu button"
+          >
+            {mobileOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </section>
       </div>
 
       {/* --- Mobile Navigation --- */}
