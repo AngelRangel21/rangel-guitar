@@ -88,14 +88,15 @@ export function Header() {
 
         {/* --- Mobile Menu Button --- */}
         <section className="flex">
-          <Link
-            href="/admin/requests"
-            className="xl:hidden flex items-center justify-center gap-2 hover:text-[#111] dark:hover:text-[#eee] whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full mr-4"
-            title="Solicitudes"
-          >
-            <Bell className="h-5 w-5" />
-          </Link>
-
+          {isAdmin && (
+            <Link
+              href="/admin/requests"
+              className="xl:hidden flex items-center justify-center gap-2 hover:text-[#111] dark:hover:text-[#eee] whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full mr-4"
+              title="Solicitudes"
+            >
+              <Bell className="h-5 w-5" />
+            </Link>
+          )}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="xl:hidden flex items-center justify-center h-10 w-10 rounded-md hover:bg-primary-foreground/10"
