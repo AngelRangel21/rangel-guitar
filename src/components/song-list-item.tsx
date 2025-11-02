@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Song } from "@/lib/types";
 import { ChevronRight } from "lucide-react";
@@ -17,6 +16,11 @@ export function SongListItem({ song }: { song: Song }) {
       title={`Canción ${song.title} de ${song.artist}`}
     >
       <div className="flex items-center gap-4 p-2 ">
+        <img
+          src={`${song.coverArt}`}
+          alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
+          className="h-12 w-20"
+        />
         <div className="flex-grow">
           <p className="font-semibold text-black dark:text-white">
             {song.title} - <span className="text-sm text">{song.artist}</span>
