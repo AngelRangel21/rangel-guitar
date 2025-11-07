@@ -22,7 +22,7 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
             <input
               name="search"
               type="search"
-              className="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg focus:outline-0 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-none bg-gray-200 dark:bg-gray-800 h-full placeholder:text-muted-foreground border-l-0 pl-10 text-base font-normal"
+              className="flex w-full min-w-0 resize-none overflow-hidden rounded-lg focus:outline-0 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-none bg-[#e2ecfc] dark:bg-gray-800 h-full placeholder:text-muted-foreground border-l-0 pl-10 text-base font-normal shadow-xl"
               placeholder={t("searchPlaceholder")}
               value={searchTerm ?? ""}
               onChange={(e) => onSearchChange?.(e.target.value)}
