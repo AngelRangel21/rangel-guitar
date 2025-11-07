@@ -20,6 +20,7 @@ export function SongListItem({ song }: { song: Song }) {
           src={`${song.coverArt}`}
           alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
           className="h-12 w-20"
+          title={`Portada de la cancion ${song.title} del artista ${song.artist}`}
         />
         <div className="flex-grow">
           <p className="font-semibold text-black dark:text-white">
