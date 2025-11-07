@@ -67,7 +67,7 @@ export function Header() {
         <DesktopNav />
 
         {/* --- Desktop Actions --- */}
-        <div className="hidden xl:flex items-center gap-3">
+        <section className="hidden xl:flex items-center gap-3">
           {isAdmin && (
             <Link
               href="/admin/requests"
@@ -107,7 +107,7 @@ export function Header() {
               </Link>
             </div>
           )}
-        </div>
+        </section>
 
         {/* --- Mobile Menu Button --- */}
         <section className="flex">
@@ -123,7 +123,8 @@ export function Header() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="xl:hidden flex items-center justify-center h-10 w-10 rounded-md hover:bg-primary-foreground/10"
-            name="menu button"
+            title="Mostrar Menú"
+            aria-label="Mostrar Menú"
           >
             {mobileOpen ? (
               <X className="h-6 w-6" />
