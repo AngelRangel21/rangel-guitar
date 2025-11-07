@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Fragment } from "react";
 import { Grid, List } from "lucide-react";
 import type { Song } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -44,7 +43,7 @@ export function SongList({ songs }: { songs: Song[] }) {
     const end = start + SONGS_PER_PAGE;
     return songs.slice(start, end);
   }, [currentPage, songs]);
-  
+
   /**
    * Maneja el cambio de página.
    * @param {number} page - El número de página al que se quiere ir.
@@ -54,7 +53,7 @@ export function SongList({ songs }: { songs: Song[] }) {
       setCurrentPage(page);
     }
   };
-  
+
   /**
    * Renderiza los controles de paginación.
    * @returns {JSX.Element} El componente de paginación.
@@ -68,112 +67,136 @@ export function SongList({ songs }: { songs: Song[] }) {
     let endPage = Math.min(totalPages - 1, currentPage + halfMaxPages);
 
     if (currentPage <= maxPagesToShow) {
-        startPage = 2;
-        endPage = Math.min(totalPages - 1, maxPagesToShow);
+      startPage = 2;
+      endPage = Math.min(totalPages - 1, maxPagesToShow);
     }
 
     if (currentPage > totalPages - maxPagesToShow) {
-        startPage = Math.max(2, totalPages - maxPagesToShow);
-        endPage = totalPages - 1;
+      startPage = Math.max(2, totalPages - maxPagesToShow);
+      endPage = totalPages - 1;
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
+      pageNumbers.push(i);
     }
 
     return (
-        <Pagination>
-            <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}/>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink isActive={currentPage === 1} onClick={() => handlePageChange(1)}>
-                        1
-                    </PaginationLink>
-                </PaginationItem>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              isActive={currentPage === 1}
+              onClick={() => handlePageChange(1)}
+            >
+              1
+            </PaginationLink>
+          </PaginationItem>
 
-                {startPage > 2 && (
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                )}
+          {startPage > 2 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
 
-                {pageNumbers.map(number => (
-                    <PaginationItem key={number}>
-                        <PaginationLink isActive={currentPage === number} onClick={() => handlePageChange(number)}>
-                            {number}
-                        </PaginationLink>
-                    </PaginationItem>
-                ))}
+          {pageNumbers.map((number) => (
+            <PaginationItem key={number}>
+              <PaginationLink
+                isActive={currentPage === number}
+                onClick={() => handlePageChange(number)}
+              >
+                {number}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
 
-                {endPage < totalPages - 1 && (
-                     <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                )}
+          {endPage < totalPages - 1 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
 
-                {totalPages > 1 && (
-                    <PaginationItem>
-                        <PaginationLink isActive={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>
-                            {totalPages}
-                        </PaginationLink>
-                    </PaginationItem>
-                )}
+          {totalPages > 1 && (
+            <PaginationItem>
+              <PaginationLink
+                isActive={currentPage === totalPages}
+                onClick={() => handlePageChange(totalPages)}
+              >
+                {totalPages}
+              </PaginationLink>
+            </PaginationItem>
+          )}
 
-                <PaginationItem>
-                    <PaginationNext onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}/>
-                </PaginationItem>
-            </PaginationContent>
-        </Pagination>
-    )
-  }
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    );
+  };
 
   return (
     <div className="space-y-6">
       {/* Controles para cambiar la vista */}
-      <div className="flex justify-end items-center">
-        <div className="flex items-center gap-2">
-          <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('list')} aria-label={t('listView')}>
+      <section className="flex justify-end items-center">
+        <nav className="flex items-center gap-2">
+          <Button
+            variant={view === "list" ? "secondary" : "ghost"}
+            size="icon"
+            onClick={() => setView("list")}
+            aria-label={t("listView")}
+          >
             <List className="h-5 w-5" />
           </Button>
-          <Button variant={view === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setView('grid')} aria-label={t('gridView')}>
+          <Button
+            variant={view === "grid" ? "secondary" : "ghost"}
+            size="icon"
+            onClick={() => setView("grid")}
+            aria-label={t("gridView")}
+          >
             <Grid className="h-5 w-5" />
           </Button>
-        </div>
-      </div>
-        
+        </nav>
+      </section>
+
       {songs.length === 0 ? (
         // Mensaje si no se encuentran canciones (ej. después de una búsqueda).
         <div className="text-center py-16">
-          <p className="text-muted-foreground">{t('noSongsFound')}</p>
+          <p className="text-muted-foreground">{t("noSongsFound")}</p>
         </div>
       ) : (
         <>
-        {/* Contenedor que cambia entre cuadrícula y lista */}
-        <div
+          {/* Contenedor que cambia entre cuadrícula y lista */}
+          <div
             className={`transition-all duration-300 ${
-            view === 'grid'
-                ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
-                : 'flex flex-col space-y-3'
+              view === "grid"
+                ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6"
+                : "flex flex-col space-y-3"
             }`}
-        >
+          >
             {currentSongs.map((song) => (
-            <div key={song.id}>
-                {view === 'grid' ? <SongCard song={song} /> : <SongListItem song={song} />}
-            </div>
+              <Fragment key={song.id}>
+                {view === "grid" ? (
+                  <SongCard song={song} />
+                ) : (
+                  <SongListItem song={song} />
+                )}
+              </Fragment>
             ))}
-        </div>
+          </div>
 
-        {/* Muestra la paginación si hay más de una página. */}
-        {totalPages > 1 && (
-            <div className="pt-6">
-            {renderPagination()}
-            </div>
-        )}
+          {/* Muestra la paginación si hay más de una página. */}
+          {totalPages > 1 && <div className="pt-6">{renderPagination()}</div>}
         </>
       )}
-
     </div>
   );
 }

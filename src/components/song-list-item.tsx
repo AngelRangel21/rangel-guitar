@@ -15,20 +15,23 @@ export function SongListItem({ song }: { song: Song }) {
       aria-label={`Ver canción ${song.title} de ${song.artist}`}
       title={`Canción ${song.title} de ${song.artist}`}
     >
-      <div className="flex items-center gap-4 p-2 ">
-        <img
-          src={`${song.coverArt}`}
-          alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
-          className="h-12 w-20"
-          title={`Portada de la cancion ${song.title} del artista ${song.artist}`}
-        />
+      <section className="flex items-center gap-4 p-2 ">
+        <picture className="bg-card p-2 rounded-lg">
+          <img
+            src={`${song.coverArt}`}
+            alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
+            className="h-12 w-20"
+            title={`Portada de la cancion ${song.title} del artista ${song.artist}`}
+          />
+        </picture>
+
         <div className="flex-grow">
           <p className="font-semibold text-black dark:text-white">
             {song.title} - <span className="text-sm text">{song.artist}</span>
           </p>
         </div>
         <ChevronRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
-      </div>
+      </section>
     </Link>
   );
 }

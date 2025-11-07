@@ -36,7 +36,7 @@ export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
   }, [searchTerm, initialSongs]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <>
       {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 space-y-6">
@@ -52,6 +52,6 @@ export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
       <Footer />
       {/* Componente para el tour de características (actualmente deshabilitado). */}
       <FeatureTour />
-    </div>
+    </>
   );
 }

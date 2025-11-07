@@ -12,7 +12,7 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
 
   return (
     <>
-      <div className="px-4 py-3 sticky top-0 z-10 bg-background backdrop-blur-sm">
+      <search className="px-4 py-3 sticky top-0 z-10 bg-background backdrop-blur-sm">
         <label className="flex flex-col min-w-40 h-12 w-full">
           <form
             role="search"
@@ -30,7 +30,7 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
             />
           </form>
         </label>
-      </div>
+      </search>
     </>
   );
 }
