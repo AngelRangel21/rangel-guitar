@@ -2,23 +2,7 @@
 
 import { supabase } from "@/lib/supabase";
 import type { Song } from "@/lib/types";
-
-/**
- * Crea un "slug" a partir del título y el artista de una canción.
- * Un slug es una versión amigable para URL del nombre.
- * @param {string} title - El título de la canción.
- * @param {string} artist - El artista de la canción.
- * @returns {string} - El slug generado.
- */
-const createSlug = (title: string, artist: string): string => {
-  const combined = `${artist}/${title}`;
-  return combined
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-};
+import { createSlug } from "@/lib/utils";
 
 /**
  * Mapea un objeto de Supabase a un objeto Song, generando el slug si no existe.
