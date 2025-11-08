@@ -16,14 +16,12 @@ export function SongListItem({ song }: { song: Song }) {
       title={`Canción ${song.title} de ${song.artist}`}
     >
       <section className="flex items-center gap-4 p-2 ">
-        <picture className="bg-card p-2 rounded-lg">
           <img
             src={`${song.coverArt}`}
             alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
             className="h-12 w-20"
             title={`Portada de la cancion ${song.title} del artista ${song.artist}`}
           />
-        </picture>
 
         <div className="flex-grow">
           <p className="font-semibold text-black dark:text-white">
