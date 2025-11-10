@@ -71,7 +71,7 @@ export function Header() {
           {isAdmin && (
             <Link
               href="/admin/requests"
-              className="inline-flex items-center justify-center gap-2 hover:text-[#111] dark:hover:text-[#eee] whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full"
               title="Solicitudes"
             >
               <Bell className="h-5 w-5" />
@@ -114,7 +114,7 @@ export function Header() {
           {isAdmin && (
             <Link
               href="/admin/requests"
-              className="xl:hidden flex items-center justify-center gap-2 hover:text-[#111] dark:hover:text-[#eee] whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full mr-4"
+              className="xl:hidden flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:bg-[#ddd] dark:hover:bg-[#222] rounded-full mr-4"
               title="Solicitudes"
             >
               <Bell className="h-5 w-5" />
