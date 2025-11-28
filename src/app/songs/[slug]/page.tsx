@@ -55,6 +55,27 @@ export async function generateMetadata({
         },
       ],
     },
+    twitter: {
+      title: `${song.title} - ${song.artist}`,
+      description: description,
+      card: "summary_large_image",
+      images: [song.coverArt],
+      creator: "@rangelguitar",
+    },
+    verification: {
+      google: "google-site-verification-code", // Placeholder
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
   };
 }
 
