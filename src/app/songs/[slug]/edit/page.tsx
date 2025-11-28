@@ -14,10 +14,11 @@ import { ProtectedPage } from "@/components/protected-page";
 export default async function EditSongPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   // Obtiene los datos de la canción a partir de su slug.
-  const song = await getSongBySlug(params.slug);
+  const song = await getSongBySlug(slug);
 
   // Si la canción no se encuentra, muestra la página de error 404.
   if (!song) {
