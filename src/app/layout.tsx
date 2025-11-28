@@ -21,24 +21,65 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
-    template: "%s | Rangel Guitar", // Plantilla para los títulos de páginas individuales.
+    template: "%s | Rangel Guitar",
   },
   description:
     "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
   metadataBase: new URL("https://rangelguitar.com"),
+  applicationName: "Rangel Guitar",
+  authors: [{ name: "Rangel Guitar Team", url: "https://rangelguitar.com" }],
+  generator: "Next.js",
+  keywords: [
+    "guitarra",
+    "tablaturas",
+    "acordes",
+    "letras",
+    "canciones",
+    "aprender guitarra",
+    "música",
+    "tabs",
+    "chords",
+    "lyrics",
+  ],
+  referrer: "origin-when-cross-origin",
+  creator: "Rangel Guitar",
+  publisher: "Rangel Guitar",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+    languages: {
+      "es-ES": "/es-ES",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Rangel Guitar",
   },
-  manifest: "/manifest.json",
+  // manifest: "/manifest.json", // Se usará manifest.ts
   openGraph: {
     title: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
     description:
       "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.",
-    type: "website",
-    locale: "es_ES",
+    url: "https://rangelguitar.com",
     siteName: "Rangel Guitar",
+    locale: "es_ES",
+    type: "website",
     images: [
       {
         url: "./og-image.jpg",
@@ -52,7 +93,31 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rangel Guitar",
     description: "Tu destino para tablaturas, acordes y canciones de guitarra.",
+    creator: "@rangelguitar", // Placeholder
     images: ["/og-image.jpg"],
+  },
+  verification: {
+    google: "google-site-verification-code", // Placeholder
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Rangel Guitar",
+  url: "https://rangelguitar.com",
+  logo: "https://rangelguitar.com/icon.png",
+  sameAs: [
+    "https://facebook.com/rangelguitar", // Placeholder
+    "https://twitter.com/rangelguitar", // Placeholder
+    "https://instagram.com/rangelguitar", // Placeholder
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+1-555-555-5555", // Placeholder
+    contactType: "customer service",
+    areaServed: "ES",
+    availableLanguage: "Spanish",
   },
 };
 
@@ -84,8 +149,7 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${inter.variable} !scroll-smooth`}
-      suppressHydrationWarning
-    >
+      suppressHydrationWarning>
       {/* <!-- Google Tag Manager --> */}
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`
@@ -104,8 +168,7 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-MS224ZBH"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
+            style={{ display: "none", visibility: "hidden" }}></iframe>
         </noscript>
         {/* <!-- End Google Tag Manager (noscript) --> */}
         {/* Proveedor de tema para manejar el modo claro/oscuro. */}
@@ -113,8 +176,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
-        >
+          disableTransitionOnChange>
           {/* Proveedor de internacionalización para manejar los idiomas. */}
           <I18nProvider>
             {/* Proveedor de autenticación para gestionar el estado del usuario. */}
@@ -123,6 +185,10 @@ export default function RootLayout({
         </ThemeProvider>
         {/* Componente para mostrar notificaciones (toasts). */}
         <Toaster />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );
