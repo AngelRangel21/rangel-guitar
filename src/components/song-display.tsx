@@ -100,7 +100,7 @@ export function SongDisplay({
             ) : (
               <Image
                 src={song.coverArt}
-                alt={`Cover art for ${song.title}`}
+                alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
                 width={600}
                 height={600}
                 className="w-full h-auto object-cover"
@@ -185,11 +185,19 @@ export function SongDisplay({
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
-                  {transpose !== 0 && (
+                  {transpose ? (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => setTranspose(0)}
+                      className="w-full mt-4">
+                      {t("resetTone")}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      disabled
+                      size="sm"
                       className="w-full mt-4">
                       {t("resetTone")}
                     </Button>
