@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook } from "lucide-react";
-import { WhatsAppIcon, TelegramIcon } from "@/components/icons";
+import { WhatsAppIcon, TelegramIcon, FacebookIcon } from "@/components/icons";
 import { useI18n } from "@/context/i18n-context";
 import { Paypal } from "./footer/Paypal";
 
@@ -26,24 +25,21 @@ export function Footer() {
               href="https://www.facebook.com/share/1Akd7FErLL/?mibextid=wwXlfr"
               aria-label="Facebook"
               className="text-accent hover:text-accent/60 transition-colors"
-              title="Ir a la pagina de Facebook de Rangel Guitar"
-            >
-              <Facebook className="h-6 w-6" />
+              title="Ir a la pagina de Facebook de Rangel Guitar">
+              <FacebookIcon className="h-6 w-6" />
             </Link>
             <Link
               href="https://chat.whatsapp.com/Hbtr0lzFG4u4AGvAStj6WJ?mode=r_c"
               aria-label="WhatsApp"
               className="text-accent hover:text-accent/60 transition-colors"
-              title="Ir al grupo de Whatsapp de Rangel Guitar"
-            >
+              title="Ir al grupo de Whatsapp de Rangel Guitar">
               <WhatsAppIcon className="h-6 w-6" />
             </Link>
             <Link
               href="https://t.me/Rangelguitar"
               aria-label="Telegram"
               className="text-accent hover:text-accent/60 transition-colors"
-              title="Ir al grupo de Telegram de Rangel Guitar"
-            >
+              title="Ir al grupo de Telegram de Rangel Guitar">
               <TelegramIcon className="h-6 w-6" />
             </Link>
           </div>
@@ -52,22 +48,19 @@ export function Footer() {
             <Link
               href="/privacy-policy"
               title="Ir a la pagina de Politica de Privacidad de Rangel Guitar"
-              className="hover:text-accent transition-colors"
-            >
+              className="hover:text-accent transition-colors">
               {t("privacyPolicy")}
             </Link>
             <Link
               href="/security"
               title="Ir a la pagina de Politica de Seguridad de Rangel Guitar"
-              className="hover:text-accent transition-colors"
-            >
+              className="hover:text-accent transition-colors">
               {t("security")}
             </Link>
             <Link
               href="/cookie-policy"
               title="Ir a la pagina de Politicas de Cookies de Rangel Guitar"
-              className="hover:text-accent transition-colors"
-            >
+              className="hover:text-accent transition-colors">
               {t("cookiePolicy")}
             </Link>
           </div>
