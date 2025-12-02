@@ -27,6 +27,8 @@ import Link from "next/link";
 import { SongListItem } from "./song-list-item";
 import { incrementVisitCount } from "@/lib/client/songs";
 import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
+import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 /**
  * Componente principal para mostrar una canción.
@@ -86,26 +88,25 @@ export function SongDisplay({
         {/* Columna izquierda: Portada, controles y metadatos */}
         <div className="lg:col-span-1">
           <Card className="overflow-hidden lg:sticky lg:top-24">
-            {song.video ? (
+            {song.video && (
               <div className="w-full aspect-video">
-                <iframe
+                {/* <iframe
                   className="w-full h-full"
                   src={`https://www.youtube.com/embed/${song.video}`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen></iframe>
+                  allowFullScreen></iframe> */}
+                {/* primera prueba de el youtube lite */}
+                <LiteYouTubeEmbed
+                  id={`${song.video}`}
+                  title={`Video de la cancion ${song.title} del artista ${song.artist}`}
+                  lazyLoad={true}
+                  poster="maxresdefault"
+                  webp={true}
+                />
               </div>
-            ) : (
-              <Image
-                src={song.coverArt}
-                alt={`Portada de la cancion ${song.title} del artista ${song.artist}`}
-                width={600}
-                height={600}
-                className="w-full h-auto object-cover"
-                data-ai-hint="guitar music"
-              />
             )}
             <CardHeader>
               <div className="flex justify-between items-start">
