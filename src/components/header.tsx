@@ -169,7 +169,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                       <div className="flex items-center justify-between w-full hover:bg-accent rounded-sm">
                           <Link 
                             href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`} 
-                            className="flex-grow grid gap-1 px-2 py-1.5"
+                            className="grow grid gap-1 px-2 py-1.5"
                           >
                               <p className="font-semibold">{req.title}</p>
                               <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>

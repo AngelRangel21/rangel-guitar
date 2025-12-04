@@ -97,7 +97,7 @@ export default function AddSongPage() {
     <ProtectedPage adminOnly>
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
-        <main className="flex-grow container mx-auto px-4 py-8 flex justify-center">
+        <main className="grow container mx-auto px-4 py-8 flex justify-center">
           {/* Suspense muestra el `fallback` (AddSongLoader) mientras AddSongContent espera los datos. */}
           <Suspense fallback={<AddSongLoader />}>
             <AddSongContent />

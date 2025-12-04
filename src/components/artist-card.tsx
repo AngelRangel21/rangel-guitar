@@ -26,11 +26,11 @@ export function ArtistCard({ artistName }: { artistName: string }) {
             data-ai-hint="musician portrait"
           />
            {/* Superposición con icono que aparece al pasar el ratón. */}
-           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <User className="h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0" />
           </div>
         </div>
-        <div className="p-3 flex-grow flex items-center justify-center">
+        <div className="p-3 grow flex items-center justify-center">
           {/* Nombre del artista. */}
           <h3 className="font-semibold text-foreground truncate w-full">{artistName}</h3>
         </div>

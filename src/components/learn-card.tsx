@@ -32,11 +32,11 @@ export function LearnCard({ href, icon, title, description }: LearnCardProps) {
                 <CardHeader>
                     {icon}
                 </CardHeader>
-                <CardContent className="flex flex-col flex-grow">
+                <CardContent className="flex flex-col grow">
                     <CardTitle className="text-xl font-semibold group-hover:text-accent transition-colors">
                         {title}
                     </CardTitle>
-                    <CardDescription className="mt-2 flex-grow">
+                    <CardDescription className="mt-2 grow">
                         {description}
                     </CardDescription>
                     <div className="mt-4 flex items-center font-semibold text-accent">

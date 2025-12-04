@@ -23,7 +23,7 @@ export function SongListItem({ song }: { song: Song }) {
             title={`Portada de la cancion ${song.title} del artista ${song.artist}`}
           />
 
-        <div className="flex-grow">
+        <div className="grow">
           <p className="font-semibold text-black dark:text-white">
             {song.title} - <span className="text-sm text">{song.artist}</span>
           </p>

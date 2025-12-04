@@ -148,7 +148,7 @@ export default function RootLayout({
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html
       lang="es"
-      className={`${inter.variable} !scroll-smooth`}
+      className={`${inter.variable} scroll-smooth!`}
       suppressHydrationWarning>
       {/* <!-- Google Tag Manager --> */}
       <Script id="google-tag-manager" strategy="afterInteractive">

@@ -87,7 +87,7 @@ export default function FavoritesPage() {
     <ProtectedPage>
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
-        <main className="flex-grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in">
+        <main className="grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in">
           {/* El contenido se maneja en un componente separado. */}
           <FavoritesContent />
         </main>

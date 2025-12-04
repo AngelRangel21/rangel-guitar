@@ -22,7 +22,7 @@ export function ChordsPageContent({ majorChords, minorChords, seventhChords }: C
     const { t } = useI18n(); // Hook para obtener traducciones.
 
     return (
-        <main className="flex-grow container mx-auto px-4 py-8 space-y-8">
+        <main className="grow container mx-auto px-4 py-8 space-y-8">
             <h1 className="text-4xl font-bold text-center">{t('chordsPageTitle')}</h1>
             {/* Componente que renderiza las listas de acordes. */}
             <ChordsList

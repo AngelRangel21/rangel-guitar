@@ -15,7 +15,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear(); // Obtiene el año actual para el copyright.
 
   return (
-    <footer className="bg-primary/95 text-primary-foreground backdrop-blur-sm">
+    <footer className="bg-primary/95 text-primary-foreground backdrop-blur-xs">
       <div className="container mx-auto px-4 py-6">
         <Paypal />
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">

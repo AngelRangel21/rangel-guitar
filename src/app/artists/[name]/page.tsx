@@ -82,7 +82,7 @@ export default async function ArtistDetailPage({
     return (
       <div className="flex flex-col min-h-screen bg-background">
         <Header />
-        <div className="flex-grow container mx-auto px-4 py-8 flex items-center justify-center">
+        <div className="grow container mx-auto px-4 py-8 flex items-center justify-center">
           <p className="text-lg text-red-500">
             Error al cargar las canciones del artista. Por favor, intenta de
             nuevo más tarde.

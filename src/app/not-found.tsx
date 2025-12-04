@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-grow flex flex-col items-center justify-center text-center px-4">
+      <main className="grow flex flex-col items-center justify-center text-center px-4">
         <h1 className="text-9xl font-bold text-primary">404</h1>
         <h2 className="mt-4 text-3xl font-semibold text-foreground">Página No Encontrada</h2>
         <p className="mt-2 text-muted-foreground">

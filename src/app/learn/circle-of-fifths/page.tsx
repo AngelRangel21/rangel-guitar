@@ -35,7 +35,7 @@ export default function CircleOfFifthsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-8 flex justify-center items-center">
+      <main className="grow container mx-auto px-4 py-8 flex justify-center items-center">
         {/* Wrapper que se encarga de la carga dinámica del componente interactivo. */}
         <CircleOfFifthsWrapper />
       </main>

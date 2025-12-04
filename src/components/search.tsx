@@ -11,7 +11,7 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
   const { t } = useI18n();
 
   return (
-    <search className="px-4 py-3 top-0 z-10 bg-background backdrop-blur-sm">
+    <search className="px-4 py-3 top-0 z-10 bg-background backdrop-blur-xs">
       <label className="flex flex-col min-w-40 h-12 w-full">
         <form
           role="search"
@@ -21,7 +21,7 @@ export function SearchBar({ searchTerm, onSearchChange }: SearchBarProps) {
           <input
             name="search"
             type="search"
-            className="flex w-full min-w-0 resize-none overflow-hidden rounded-lg focus:outline-0 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-none bg-[#e2ecfc] dark:bg-gray-800 h-full placeholder:text-muted-foreground border-l-0 pl-10 text-base font-normal shadow-xl"
+            className="flex w-full min-w-0 resize-none overflow-hidden rounded-lg focus:outline-0 disabled:cursor-not-allowed disabled:bg-muted/50 focus-visible:outline-hidden bg-[#e2ecfc] dark:bg-gray-800 h-full placeholder:text-muted-foreground border-l-0 pl-10 text-base font-normal shadow-xl"
             placeholder={t("searchPlaceholder")}
             value={searchTerm ?? ""}
             onChange={(e) => onSearchChange?.(e.target.value)}
