@@ -1,5 +1,7 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { HomeClient } from "@/components/home-client";
 import { getSongs } from "@/services/songs-service";
+import type { Song } from "@/lib/types";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -33,20 +35,24 @@ const jsonLd = {
  */
 export default async function Home() {
   // Inicializa un array para almacenar todas las canciones.
-  let allSongs: any[] = [];
+  let allSongs: Song[] = [];
 
   try {
     // Siendo un Server Component, obtiene la versión más actualizada
     // del array `songs` desde el servidor.
     allSongs = await getSongs();
-  } catch (error: any) {
+  } catch (error) {
     // Muestra un error detallado en la consola del servidor si falla la carga de canciones.
     // Esto es útil para diagnosticar problemas con la base de datos de Firestore.
     console.error(
       "=============================================================="
     );
     console.error("🔴 ERROR AL OBTENER CANCIONES DE SUPABASE 🔴");
-    console.error("Error Original:", error.message);
+    if (error instanceof Error) {
+      console.error("Error Original:", error.message);
+    } else {
+      console.error("Error desconocido:", error);
+    }
     console.error(
       "=============================================================="
     );
@@ -58,6 +64,7 @@ export default async function Home() {
   // El cliente recibirá esta instantánea exacta de los datos, evitando
   // cualquier desajuste de hidratación.
   return (
+    /// eslint-disable-next-line react/react-in-jsx-scope
     <>
       <script
         type="application/ld+json"

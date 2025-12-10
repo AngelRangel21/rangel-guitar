@@ -6,13 +6,22 @@ import { createSlug } from "@/lib/utils";
 
 /**
  * Mapea un objeto de Supabase a un objeto Song, generando el slug si no existe.
- * @param {any} data - El objeto de datos de Supabase.
+ * @param {Partial<Song>} data - El objeto de datos de Supabase.
  * @returns {Song} - El objeto canción.
  */
-const mapDataToSong = (data: any): Song => {
+const mapDataToSong = (data: Partial<Song>): Song => {
+  if (!data.title || !data.artist) {
+    throw new Error("Datos de canción incompletos");
+  }
+
   return {
     ...data,
     slug: data.slug || createSlug(data.title, data.artist),
+    // Aseguramos que las propiedades obligatorias existan
+    id: data.id!,
+    title: data.title,
+    artist: data.artist,
+    // ... mapear otras propps si es necesario
   } as Song;
 };
 
@@ -76,24 +85,24 @@ export async function getSongById(id: string): Promise<Song | null> {
  */
 export async function getSongsByArtist(artistName: string): Promise<Song[]> {
   if (!artistName) return [];
-  
+
   try {
     const { data, error } = await supabase
       .from("songs")
       .select("*")
       .eq("artist", artistName);
-    
+
     if (error) {
-      console.error('Error fetching songs:', error);
+      console.error("Error fetching songs:", error);
       return [];
     }
-    
+
     return data ? data.map(mapDataToSong) : [];
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error in getSongsByArtist:', error.message);
+      console.error("Error in getSongsByArtist:", error.message);
     } else {
-      console.error('Unknown error in getSongsByArtist:', error);
+      console.error("Unknown error in getSongsByArtist:", error);
     }
     return [];
   }
@@ -104,13 +113,10 @@ export async function getSongsByArtist(artistName: string): Promise<Song[]> {
  * @returns {Promise<string[]>} - Un array con los nombres de todos los artistas.
  */
 export async function getArtists(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("songs")
-    .select("artist");
+  const { data, error } = await supabase.from("songs").select("artist");
   if (error) throw error;
   const artistNames = new Set(data.map((song) => song.artist));
-  return Array
-    .from(artistNames);
+  return Array.from(artistNames);
 }
 
 /**
