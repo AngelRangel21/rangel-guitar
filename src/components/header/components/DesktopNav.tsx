@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/auth-context";
 import Link from "next/link";
+import React from "react";
 
 export default function DesktopNav() {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -56,8 +57,7 @@ export default function DesktopNav() {
           key={link.href}
           href={link.href}
           className="hover:text-[#d2d2d2] transition-colors font-medium"
-          title={link.title}
-        >
+          title={link.title}>
           {link.label}
         </Link>
       ))}

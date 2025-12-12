@@ -1,17 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X, Music, Bell, Heart, Shield, FilePlus2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Menu, X, Bell, Heart, Shield, FilePlus2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
 import { ThemeToggle } from "../theme-toggle";
 import { Logo } from "./components/Logo";
 import DesktopNav from "./components/DesktopNav";
+import type { SongRequest } from "@/lib/types";
+import { supabase } from "@/lib/supabase";
 
 export function Header() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [notifications, setNotifications] = useState<{
+    count: number;
+    recentRequests: SongRequest[];
+  }>({ count: 0, recentRequests: [] });
+
+  useEffect(() => {
+    if (!isAdmin) {
+      setNotifications({ count: 0, recentRequests: [] });
+      return; // No hacer nada si el usuario no es administrador.
+    }
+
+    const fetchInitialRequests = async () => {
+      const { data: requests, error } = await supabase
+        .from("songs_requests")
+        .select("*")
+        .order("requestedAt", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching initial song requests:", error);
+        return;
+      }
+
+      setNotifications({
+        count: requests.length,
+        recentRequests: requests
+          .slice(0, 99)
+          .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) })),
+      });
+    };
+
+    fetchInitialRequests();
+
+    const channel = supabase
+      .channel("song-requests-chanel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "songs_requests" },
+        () => {
+          fetchInitialRequests(); // Re-fetch all requests on any change
+        }
+      )
+      .subscribe();
+
+    // Limpia el listener cuando el componente se desmonta para evitar fugas de memoria.
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin]);
 
   // Enlaces base para todos los usuarios
   const baseLinks = [
@@ -71,9 +121,14 @@ export function Header() {
           {isAdmin && (
             <Link
               href="/admin/requests"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 rounded-full"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full"
               title="Solicitudes">
-              <Bell className="h-5 w-5" />
+              <Bell />
+              {notifications.count > 0 && (
+                <span className="absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground">
+                  {notifications.count}
+                </span>
+              )}
             </Link>
           )}
           {/* Tema modo claro/obscuro */}
@@ -110,9 +165,14 @@ export function Header() {
           {isAdmin && (
             <Link
               href="/admin/requests"
-              className="xl:hidden flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 rounded-full mr-4"
+              className="xl:hidden flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 rounded-full mr-4 size-10 relative hover:bg-primary-foreground/10"
               title="Solicitudes">
-              <Bell className="h-5 w-5" />
+              <Bell />
+              {notifications.count > 0 && (
+                <span className="absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground">
+                  {notifications.count}
+                </span>
+              )}
             </Link>
           )}
           <button
