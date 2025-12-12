@@ -2,15 +2,9 @@ import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { AdminRequestsContent } from "@/components/admin-requests-content";
 import { ProtectedPage } from "@/components/protected-page";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 
 /**
  * Componente de carga que se muestra mientras se obtienen los datos de las solicitudes.

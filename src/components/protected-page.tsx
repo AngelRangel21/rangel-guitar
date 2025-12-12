@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/auth-context";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useI18n } from "@/context/i18n-context";
 import { Spinner } from "./ui/spinner";
 
