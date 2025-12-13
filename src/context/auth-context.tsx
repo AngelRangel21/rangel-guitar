@@ -80,13 +80,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .eq("uid", supabaseUser.id)
           .single();
 
-        let appUser: User = {
+        const appUser: User = {
           uid: supabaseUser.id,
           name:
             userDoc?.name || supabaseUser.email?.split("@")[0] || "Anonymous",
         };
 
-        let userIsAdmin =
+        const userIsAdmin =
           userDoc?.isAdmin || ADMIN_EMAILS.includes(supabaseUser.email || "");
 
         setUser(appUser);
@@ -180,7 +180,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
       setIsAdmin(false);
       setFavorites([]);
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Error signing out", error);
     }
@@ -232,8 +232,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         toggleFavorite,
         isFavorite,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );
