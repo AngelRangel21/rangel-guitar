@@ -36,7 +36,9 @@ export async function generateMetadata({
     };
   }
 
-  const description = `${song.artist} - ${song.title} letra, acordes y video disponibles para practicar disponible en Rangel Guitar.`;
+  const songSlice = `${song.lyrics}`.slice(0, 55);
+
+  const description = `${song.artist} - ${song.title} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`;
 
   return {
     title: `${song.title} - ${song.artist}`,
