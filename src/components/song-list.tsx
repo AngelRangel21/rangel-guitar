@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, Fragment } from "react";
+import React, { useState, useMemo, useEffect, Fragment } from "react";
 import { Grid, List } from "lucide-react";
 import type { Song } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -26,14 +26,14 @@ const SONGS_PER_PAGE = 16;
  * @returns {JSX.Element} El componente de la lista de canciones.
  */
 export function SongList({ songs }: { songs: Song[] }) {
-  const [view, setView] = useState<"grid" | "list">("list");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [ view, setView ] = useState<"grid" | "list">("list");
+  const [ currentPage, setCurrentPage ] = useState(1);
   const { t } = useI18n();
 
   // Efecto para resetear la paginación a la página 1 cada vez que la lista de canciones cambia (ej. por una búsqueda).
   useEffect(() => {
     setCurrentPage(1);
-  }, [songs]);
+  }, [ songs ]);
 
   const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE);
 
@@ -42,7 +42,7 @@ export function SongList({ songs }: { songs: Song[] }) {
     const start = (currentPage - 1) * SONGS_PER_PAGE;
     const end = start + SONGS_PER_PAGE;
     return songs.slice(start, end);
-  }, [currentPage, songs]);
+  }, [ currentPage, songs ]);
 
   /**
    * Maneja el cambio de página.
@@ -176,11 +176,10 @@ export function SongList({ songs }: { songs: Song[] }) {
         <>
           {/* Contenedor que cambia entre cuadrícula y lista */}
           <div
-            className={`transition-all duration-300 ${
-              view === "grid"
+            className={`transition-all duration-300 ${view === "grid"
                 ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6"
                 : "flex flex-col space-y-3"
-            }`}
+              }`}
           >
             {currentSongs.map((song) => (
               <Fragment key={song.id}>
