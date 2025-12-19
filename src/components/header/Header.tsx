@@ -3,7 +3,6 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { Menu, X, Bell, Heart, Shield, FilePlus2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth-context";
 import { ThemeToggle } from "../theme-toggle";
 import { Logo } from "./components/Logo";
@@ -13,8 +12,8 @@ import { supabase } from "@/lib/supabase";
 
 export function Header() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [notifications, setNotifications] = useState<{
+  const [ mobileOpen, setMobileOpen ] = useState(false);
+  const [ notifications, setNotifications ] = useState<{
     count: number;
     recentRequests: SongRequest[];
   }>({ count: 0, recentRequests: [] });
@@ -61,7 +60,7 @@ export function Header() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [isAdmin]);
+  }, [ isAdmin ]);
 
   // Enlaces base para todos los usuarios
   const baseLinks = [
@@ -83,13 +82,13 @@ export function Header() {
   // Enlaces adicionales según el tipo de usuario
   const userLinks = isAuthenticated
     ? [
-        ...baseLinks,
-        {
-          href: "/favorites",
-          label: "Favoritos",
-          title: "Pagina de favoritos",
-        },
-      ]
+      ...baseLinks,
+      {
+        href: "/favorites",
+        label: "Favoritos",
+        title: "Pagina de favoritos",
+      },
+    ]
     : baseLinks;
   const adminLinks = [
     {
@@ -115,50 +114,6 @@ export function Header() {
 
         {/* --- Desktop Navigation --- */}
         <DesktopNav />
-
-        {/* --- Desktop Actions --- */}
-        <section className="hidden xl:flex items-center gap-3">
-          {isAdmin && (
-            <Link
-              href="/admin/requests"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full"
-              title="Solicitudes">
-              <Bell />
-              {notifications.count > 0 && (
-                <span className="absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground">
-                  {notifications.count}
-                </span>
-              )}
-            </Link>
-          )}
-          {/* Tema modo claro/obscuro */}
-          <ThemeToggle />
-
-          {isAuthenticated ? (
-            <div className="hidden xl:flex">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={logout}
-                className="font-semibold">
-                Cerrar sesión
-              </Button>
-            </div>
-          ) : (
-            <div className="hidden xl:flex gap-2">
-              <Link
-                href="/login"
-                className="font-semibold rounded-[8px] py-3 px-[10px] hover:text-[#d2d2d2]">
-                Iniciar sesión
-              </Link>
-              <Link
-                href="/register"
-                className="font-semibold rounded-[8px] py-3 px-[10px] border-white hover:text-[#d2d2d2]">
-                Registrarse
-              </Link>
-            </div>
-          )}
-        </section>
 
         {/* --- Mobile Menu Button --- */}
         <section className="flex">
