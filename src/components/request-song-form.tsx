@@ -21,10 +21,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useI18n } from "@/context/i18n-context";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
 import { addSongRequest } from "@/lib/client/requests";
 import { Spinner } from "./ui/spinner";
+import { toast } from "sonner"
 
 /**
  * Esquema de validación del formulario de solicitud de canciones con Zod.
@@ -40,8 +40,7 @@ const formSchema = z.object({
  */
 export function RequestSongForm() {
   const { t } = useI18n();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
 
   // Inicializa el formulario con react-hook-form y el resolver de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,17 +60,11 @@ export function RequestSongForm() {
     try {
       // Llama a la función del cliente para agregar la solicitud a Supabase.
       await addSongRequest(values);
-      toast({
-        title: t("requestSentTitle"),
-        description: `¡Tu solicitud para "${values.title}" ha sido enviada! La revisaremos pronto.`,
-      });
+      toast.success(`¡Tu solicitud para "${values.title}" ha sido enviada! La revisaremos pronto.`);
       form.reset(); // Limpia el formulario después de un envío exitoso.
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: t("requestErrorTitle"),
-        description: t("requestErrorDescription"),
-      });
+      toast.error(t("requestErrorDescription"));
+      console.error(t("requestErrorDescription"), error);
     } finally {
       setIsLoading(false);
     }

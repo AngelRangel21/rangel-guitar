@@ -1,8 +1,9 @@
 
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp, Users } from "lucide-react";
+import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,9 +28,9 @@ import { deleteSongRequest } from '@/lib/client/requests';
 import { formatDistanceToNow } from "date-fns";
 import { es, enUS } from 'date-fns/locale';
 import type { SongRequest } from "@/lib/types";
-import { useToast } from "@/hooks/use-toast";
 import { Badge } from "./ui/badge";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 /**
  * Componente del encabezado principal de la aplicación.
@@ -40,14 +41,13 @@ import { supabase } from "@/lib/supabase";
 export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; onSearchChange?: (value: string) => void }) {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { t, language, setLanguage } = useI18n();
-  const { toast } = useToast();
-  const [notifications, setNotifications] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
+  const [ notifications, setNotifications ] = useState<{ count: number; recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] });
 
   // Efecto para escuchar notificaciones de solicitudes de canciones en tiempo real para administradores.
   useEffect(() => {
     if (!isAdmin) {
-        setNotifications({ count: 0, recentRequests: [] });
-        return; // No hacer nada si el usuario no es administrador.
+      setNotifications({ count: 0, recentRequests: [] });
+      return; // No hacer nada si el usuario no es administrador.
     }
 
     const fetchInitialRequests = async () => {
@@ -57,20 +57,21 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
         .order('requestedAt', { ascending: false });
 
       if (error) {
-        console.error("Error fetching initial song requests:", error);
+        toast.error("Error fetching initial song requests");
+        console.error("Error fetching initial song requests: ", error);
         return;
       }
 
       setNotifications({
         count: requests.length,
-        recentRequests: requests.slice(0, 5).map(r => ({...r, requestedAt: new Date(r.requestedAt)})),
+        recentRequests: requests.slice(0, 5).map(r => ({ ...r, requestedAt: new Date(r.requestedAt) })),
       });
     };
 
     fetchInitialRequests();
 
     const channel = supabase.channel('song-requests-chanel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'songs_requests' }, (payload) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'songs_requests' }, () => {
         fetchInitialRequests(); // Re-fetch all requests on any change
       })
       .subscribe();
@@ -79,7 +80,7 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [isAdmin]);
+  }, [ isAdmin ]);
 
   const locale = language === 'es' ? es : enUS;
 
@@ -96,37 +97,29 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
 
     // Actualización optimista de la UI.
     setNotifications(prev => ({
-        count: Math.max(0, prev.count - 1),
-        recentRequests: prev.recentRequests.filter(req => req.id !== requestId),
+      count: Math.max(0, prev.count - 1),
+      recentRequests: prev.recentRequests.filter(req => req.id !== requestId),
     }));
-    
+
     try {
       await deleteSongRequest(requestId);
       const result = await revalidateAfterRequestDelete();
       if (!result.success) {
-          // Si falla la revalidación, revierte la UI.
-          toast({
-              variant: 'destructive',
-              title: t('error'),
-              description: t('notificationDeleteError'),
-          });
-          setNotifications(originalNotifications);
+        // Si falla la revalidación, revierte la UI.
+        toast.error(t('notificationDeleteError'));
+        setNotifications(originalNotifications);
       }
     } catch (error) {
-        console.error('Error deleting notification:', error);
-        toast({
-            variant: 'destructive',
-            title: t('error'),
-            description: t('notificationDeleteError'),
-        });
-        setNotifications(originalNotifications); // Revertir en caso de error.
+      console.error('Error deleting notification:', error);
+      toast.error(t('notificationDeleteError'));
+      setNotifications(originalNotifications); // Revertir en caso de error.
     }
   };
 
   return (
     <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home"  title="Principal Page">
+        <Link href="/" className="flex items-center gap-2" aria-label="Rangel Guitar Home" title="Principal Page">
           <Music className="h-8 w-8 text-accent" />
           <h1 className="text-2xl font-bold whitespace-nowrap">{t('appName')}</h1>
         </Link>
@@ -167,25 +160,25 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                   notifications.recentRequests.map((req, index) => (
                     <DropdownMenuItem key={`${req.id}-${index}`} onSelect={(e) => e.preventDefault()} className="p-0 focus:bg-transparent">
                       <div className="flex items-center justify-between w-full hover:bg-accent rounded-sm">
-                          <Link 
-                            href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`} 
-                            className="grow grid gap-1 px-2 py-1.5"
-                          >
-                              <p className="font-semibold">{req.title}</p>
-                              <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
-                              <p className="text-xs text-muted-foreground">
-                                  {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
-                              </p>
-                          </Link>
-                          <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 mr-1 shrink-0 rounded-full"
-                              onClick={(e) => handleDeleteNotification(e, req.id)}
-                              aria-label={t('deleteNotification')}
-                          >
-                              <X className="h-4 w-4" />
-                          </Button>
+                        <Link
+                          href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`}
+                          className="grow grid gap-1 px-2 py-1.5"
+                        >
+                          <p className="font-semibold">{req.title}</p>
+                          <p className="text-sm text-muted-foreground">{t('byArtist', { artist: req.artist })}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
+                          </p>
+                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 mr-1 shrink-0 rounded-full"
+                          onClick={(e) => handleDeleteNotification(e, req.id)}
+                          aria-label={t('deleteNotification')}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
                     </DropdownMenuItem>
                   ))
@@ -205,22 +198,22 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               </DropdownMenuContent>
             </DropdownMenu>
           )}
-          
+
           {/* Botón para cambiar tema (claro/oscuro) */}
           <ThemeToggle />
-          
+
           {/* Menú principal de usuario y navegación */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">
-                  {isAuthenticated && user ? (
-                      <Avatar className="h-10 w-10">
-                         <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                  ) : (
-                      <Menu className="h-6 w-6" />
-                  )}
-                </Button>
+              <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-primary-foreground/10 rounded-full" aria-label="Open user menu">
+                {isAuthenticated && user ? (
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-64">
               {isAuthenticated && user ? (
@@ -272,14 +265,14 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
                 </>
               )}
               <DropdownMenuSeparator />
-               {/* Barra de búsqueda para móviles */}
-               <div className="md:hidden p-2">
+              {/* Barra de búsqueda para móviles */}
+              <div className="md:hidden p-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input 
-                    type="search" 
-                    placeholder={t('searchPlaceholder')} 
-                    className="w-full rounded-md pl-10 disabled:cursor-not-allowed disabled:bg-muted/50" 
+                  <Input
+                    type="search"
+                    placeholder={t('searchPlaceholder')}
+                    className="w-full rounded-md pl-10 disabled:cursor-not-allowed disabled:bg-muted/50"
                     value={searchTerm ?? ''}
                     onChange={(e) => onSearchChange?.(e.target.value)}
                     disabled={onSearchChange === undefined}
@@ -291,16 +284,16 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               <DropdownMenuItem asChild>
                 <Link href="/">{t('home')}</Link>
               </DropdownMenuItem>
-               <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild>
                 <Link href="/artists">{t('artists')}</Link>
               </DropdownMenuItem>
-               <DropdownMenuItem asChild>
-                 <Link href="/top-charts">
-                   <TrendingUp className="mr-2 h-4 w-4" />
-                   <span>{t('topChartsPageTitle')}</span>
-                 </Link>
+              <DropdownMenuItem asChild>
+                <Link href="/top-charts">
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  <span>{t('topChartsPageTitle')}</span>
+                </Link>
               </DropdownMenuItem>
-               <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild>
                 <Link href="/request-song">
                   <GitPullRequest className="mr-2 h-4 w-4" />
                   <span>{t('requestSong')}</span>
@@ -319,8 +312,8 @@ export function Header({ searchTerm, onSearchChange }: { searchTerm?: string; on
               {/* Submenú para cambiar de idioma */}
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                    <Globe className="mr-2 h-4 w-4" />
-                    <span>{t('language')}</span>
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>{t('language')}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>

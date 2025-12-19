@@ -1,7 +1,8 @@
+import React from "react";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/auth-context";
 import { I18nProvider } from "@/context/i18n-context";
 import { ThemeProvider } from "@/context/theme-provider";
@@ -9,7 +10,7 @@ import Script from "next/script";
 
 // Configuración de la fuente 'Inter' de Google Fonts.
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: [ "latin" ],
   variable: "--font-inter", // Asigna la fuente a una variable CSS para usarla en Tailwind.
 });
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
   metadataBase: new URL("https://rangelguitar.com"),
   applicationName: "Rangel Guitar",
-  authors: [{ name: "Rangel Guitar Team", url: "https://rangelguitar.com" }],
+  authors: [ { name: "Rangel Guitar Team", url: "https://rangelguitar.com" } ],
   generator: "Next.js",
   keywords: [
     "guitarra",
@@ -94,7 +95,7 @@ export const metadata: Metadata = {
     title: "Rangel Guitar",
     description: "Tu destino para tablaturas, acordes y canciones de guitarra.",
     creator: "@rangelguitar", // Placeholder
-    images: ["/og-image.jpg"],
+    images: [ "/og-image.jpg" ],
   },
   verification: {
     google: "google-site-verification-code", // Placeholder
@@ -161,7 +162,7 @@ export default function RootLayout({
       `}
       </Script>
       {/* <!-- End Google Tag Manager --> */}
-      <body className="font-body antialiased">
+      <body className="font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]">
         {/* <!-- Google Tag Manager (noscript) --> */}
         <noscript>
           <iframe

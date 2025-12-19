@@ -9,11 +9,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
 import { addSong, type NewSongData } from '@/lib/client/songs';
 import { revalidateAndRedirectAfterUpload } from "@/app/admin/upload-song/actions";
 import { createSlug } from "@/lib/utils";
+import { toast } from "sonner"
 
 /**
  * Esquema de validación del formulario para subir una canción, utilizando Zod.
@@ -33,8 +33,7 @@ const formSchema = z.object({
  */
 export function UploadSongForm() {
     const { t } = useI18n();
-    const { toast } = useToast();
-    const [isLoading, setIsLoading] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     // Inicializa el formulario con react-hook-form y el resolver de Zod.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,32 +68,23 @@ export function UploadSongForm() {
 
             // Agrega la canción a la base de datos.
             await addSong(songToAdd);
-            
-            toast({
-                title: "Canción Subida",
-                description: `"${values.title}" ha sido añadida a la biblioteca.`,
-            });
-            
+
+            toast.success(`"${values.title}" ha sido añadida a la biblioteca.`);
+
             // Llama a la acción del servidor para revalidar y redirigir.
             await revalidateAndRedirectAfterUpload(values.artist, slug);
 
-        } catch (error: any) {
+        } catch (error) {
             // El `redirect` en una Server Action lanza un error, que necesitamos capturar.
-            if (error.digest?.startsWith('NEXT_REDIRECT')) {
-                return; // Permite que Next.js maneje la redirección.
-            }
+            if (error) return;
             console.error("Error al subir la cancion:", error);
-            toast({
-                variant: "destructive",
-                title: t('error'),
-                description: t('uploadSongError'),
-            });
+            toast.error(t('uploadSongError'));
             setIsLoading(false);
         }
     }
 
 
-const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
+    const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
 
     return (
         <Card className="w-full max-w-2xl">
@@ -147,8 +137,8 @@ const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
                                         [Verse]
                                         C             B
                                         La primera línea de la canción...
-                                        " 
-                                        rows={14} {...field} />
+                                        "
+                                            rows={14} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -167,7 +157,7 @@ const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
                                 </FormItem>
                             )}
                         />
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="video"
@@ -181,7 +171,7 @@ const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
                                     </FormItem>
                                 )}
                             />
-                             <FormField
+                            <FormField
                                 control={form.control}
                                 name="coverArt"
                                 render={({ field }) => (

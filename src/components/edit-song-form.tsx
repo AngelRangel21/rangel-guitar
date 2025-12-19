@@ -22,13 +22,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useI18n } from "@/context/i18n-context";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
 import { revalidateAndRedirectAfterEdit } from "@/app/songs/[slug]/edit/actions";
 import type { Song } from "@/lib/types";
 import { updateSong } from "@/lib/client/songs";
 import { createSlug } from "@/lib/utils";
 import { Spinner } from "./ui/spinner";
+import { toast } from "sonner"
 
 /**
  * Esquema de validación del formulario de edición utilizando Zod.
@@ -50,8 +50,7 @@ const formSchema = z.object({
  */
 export function EditSongForm({ song }: { song: Song }) {
   const { t } = useI18n();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
 
   // Inicialización de react-hook-form con el esquema de Zod y los valores por defecto de la canción.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -88,17 +87,11 @@ export function EditSongForm({ song }: { song: Song }) {
       await updateSong(song.id, songData);
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       await revalidateAndRedirectAfterEdit(slug, values.artist);
-    } catch (error: any) {
+    } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error.digest?.startsWith("NEXT_REDIRECT")) {
-        return;
-      }
+      if (error) return;
       console.error("Error al editar la cancion: ", error);
-      toast({
-        variant: "destructive",
-        title: t("error"),
-        description: t("songUpdateError"),
-      });
+      toast.error(t("songUpdateError"));
       setIsLoading(false);
     }
   }

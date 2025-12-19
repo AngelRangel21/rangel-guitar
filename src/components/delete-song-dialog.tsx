@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,13 +12,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import type { Song } from "@/lib/types";
 import { useI18n } from "@/context/i18n-context";
 import { revalidateAndRedirectAfterDelete } from "@/app/songs/[slug]/actions";
 import { deleteSong } from "@/lib/client/songs";
 import { Spinner } from "./ui/spinner";
+import { toast } from "sonner";
 
 /**
  * Propiedades que el componente DeleteSongDialog espera recibir.
@@ -35,8 +34,7 @@ interface DeleteSongDialogProps {
  * @returns {JSX.Element} El diálogo de alerta.
  */
 export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const [ isLoading, setIsLoading ] = useState(false);
   const { t } = useI18n();
 
   /**
@@ -49,19 +47,13 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
       await deleteSong(song.id);
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       await revalidateAndRedirectAfterDelete();
-    } catch (error: any) {
+    } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error.digest?.startsWith("NEXT_REDIRECT")) {
-        return;
-      }
+      if (error) return;
 
       // Maneja errores reales que no son de redirección.
       console.error("Failed to delete song:", error);
-      toast({
-        variant: "destructive",
-        title: t("error"),
-        description: t("songDeleteError"),
-      });
+      toast.error(t("songDeleteError"));
       setIsLoading(false);
     }
   };

@@ -7,15 +7,15 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { usePathname, useRouter } from "next/navigation";
 import { useI18n } from "./i18n-context";
 import { revalidateAfterLike } from "@/app/favorites/actions";
 import { updateLikeCount } from "@/lib/client/songs";
 import { supabase } from "@/lib/supabase";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth"; // 👈 el hook nuevo
+import { toast } from "sonner";
 
-const ADMIN_EMAILS = ["angel145256@gmail.com"];
+const ADMIN_EMAILS = [ "angel145256@gmail.com" ];
 
 interface User {
   uid: string;
@@ -46,13 +46,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { user: supabaseUser, loading } = useSupabaseAuth(); // 👈 centralizado
-  const [user, setUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [ user, setUser ] = useState<User | null>(null);
+  const [ isAdmin, setIsAdmin ] = useState(false);
+  const [ favorites, setFavorites ] = useState<string[]>([]);
   const router = useRouter();
   const pathname = usePathname();
   const { t } = useI18n();
-  const { toast } = useToast();
 
   // 🟢 Procesar el user cada vez que cambie el de supabase
   useEffect(() => {
@@ -83,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const appUser: User = {
           uid: supabaseUser.id,
           name:
-            userDoc?.name || supabaseUser.email?.split("@")[0] || "Anonymous",
+            userDoc?.name || supabaseUser.email?.split("@")[ 0 ] || "Anonymous",
         };
 
         const userIsAdmin =
@@ -93,16 +92,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAdmin(userIsAdmin);
       } catch (error) {
         console.error("Error procesando usuario:", error);
-        toast({
-          variant: "destructive",
-          title: "Error de Sesión",
-          description: "No se pudo cargar tu perfil.",
-        });
+        toast.error("No se pudo cargar tu perfil.");
       }
     };
 
     processUser();
-  }, [supabaseUser, toast]);
+  }, [ supabaseUser, toast ]);
 
   // 🔀 Redirección si ya está logueado
   useEffect(() => {
@@ -111,20 +106,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (user && isAuthPage) {
       router.push("/");
     }
-  }, [loading, user, pathname, router]);
+  }, [ loading, user, pathname, router ]);
 
   const signInWithGoogle = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data } = await supabase.auth.signInWithOAuth({
         provider: "google",
       });
-      if (error) throw error;
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: t("loginErrorTitle"),
-        description: error.message,
-      });
+      if (!data) throw new Error;
+    } catch (error) {
+      toast.error(t("loginErrorTitle"));
+      console.error(t("loginErrorTitle"), error)
     }
   };
 
@@ -141,16 +133,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: { data: { full_name: name } },
       });
       if (error) throw error;
-      toast({
-        title: t("accountCreatedTitle"),
-        description: t("accountCreatedDescription"),
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: t("registerErrorTitle"),
-        description: error.message,
-      });
+      toast.success(t("accountCreatedDescription"));
+    } catch (err) {
+      toast.error(t("registerErrorTitle"));
+      console.error(t("registerErrorTitle"), err)
     }
   };
 
@@ -161,16 +147,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password,
       });
       if (error) throw error;
-      toast({
-        title: t("loggedInTitle"),
-        description: t("loggedInDescription"),
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: t("loginErrorTitle"),
-        description: error.message,
-      });
+      toast.success(t("loggedInDescription"));
+    } catch (error) {
+      toast.error(t("loginErrorTitle"));
+      console.error(t("loginErrorTitle"), error);
     }
   };
 
@@ -194,7 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const newFavorites = isCurrentlyFavorite
       ? favorites.filter((id) => id !== songId)
-      : [...favorites, songId];
+      : [ ...favorites, songId ];
 
     setFavorites(newFavorites);
     localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(newFavorites));
@@ -205,14 +185,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         revalidateAfterLike(songSlug),
       ]);
     } catch (error) {
-      console.error("Failed to update like count:", error);
       setFavorites(favorites); // revertir
       localStorage.setItem(`favorites_${user.uid}`, JSON.stringify(favorites));
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "No se pudo actualizar el favorito.",
-      });
+      toast.error("No se pudo agregar a tus favoritos.");
+      console.error("No se pudo agregar a tus favoritos.", error);
     }
   };
 

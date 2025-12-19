@@ -21,14 +21,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useI18n } from "@/context/i18n-context";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from "react";
 import { revalidateAndRedirect } from "@/app/admin/add-song/actions";
 import { addSong, type NewSongData } from "@/lib/client/songs";
 import { deleteSongRequest } from "@/lib/client/requests";
 import { createSlug } from "@/lib/utils";
 import { Spinner } from "./ui/spinner";
+import { toast } from "sonner";
 
 /**
  * Propiedades que el componente AddSongForm espera recibir.
@@ -63,9 +62,7 @@ export function AddSongForm({
   initialTitle,
   initialArtist,
 }: AddSongFormProps) {
-  const { t } = useI18n();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
 
   // Inicialización de react-hook-form con el esquema de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -104,20 +101,13 @@ export function AddSongForm({
 
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       await revalidateAndRedirect(values.artist, slug);
-    } catch (error: any) {
-      // El `redirect` en una Server Action lanza un error, que necesitamos capturar.
-      if (error.digest?.startsWith("NEXT_REDIRECT")) {
-        return; // Permite que Next.js maneje la redirección.
+    } catch (error) {
+      if (error) {
+        console.error("Failed to add song and remove request:", error);
+        toast.error("No se pudo agregar la canción. Intenta de nuevo.");
+      } else {
+        setIsLoading(false);
       }
-
-      // Maneja errores reales que no son de redirección.
-      console.error("Failed to add song and remove request:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "No se pudo agregar la canción. Intenta de nuevo.",
-      });
-      setIsLoading(false);
     }
   }
 

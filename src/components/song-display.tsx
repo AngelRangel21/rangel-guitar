@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import type { Song } from "@/lib/types";
 import {
   Card,
@@ -18,7 +18,6 @@ import {
   XTwitter,
   FacebookIcon,
 } from "@/components/icons";
-import Image from "next/image";
 import { useI18n } from "@/context/i18n-context";
 import { useAuth } from "@/context/auth-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -44,10 +43,10 @@ export function SongDisplay({
   song: Song;
   suggestedSongs: Song[];
 }) {
-  const [transpose, setTranspose] = useState(0);
+  const [ transpose, setTranspose ] = useState(0);
   const { t } = useI18n();
   const { isAuthenticated, isFavorite, toggleFavorite, isAdmin } = useAuth();
-  const [currentUrl, setCurrentUrl] = useState("");
+  const [ currentUrl, setCurrentUrl ] = useState("");
   const visitLoggedRef = useRef(false);
 
   // Efecto para obtener la URL actual y registrar la visita a la canción.
@@ -68,7 +67,7 @@ export function SongDisplay({
       logVisit();
       visitLoggedRef.current = true; // Marca la visita como registrada.
     }
-  }, [song.id]);
+  }, [ song.id ]);
 
   /**
    * Genera el texto que describe el estado de la transposición.
@@ -127,11 +126,10 @@ export function SongDisplay({
                     }
                     className="rounded-full">
                     <Heart
-                      className={`h-6 w-6 transition-colors ${
-                        isFavorite(song.id)
+                      className={`h-6 w-6 transition-colors ${isFavorite(song.id)
                           ? "fill-red-500 text-red-500"
                           : "text-foreground/70"
-                      }`}
+                        }`}
                     />
                   </Button>
                 )}

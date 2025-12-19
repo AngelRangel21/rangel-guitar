@@ -26,9 +26,9 @@ import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
 import { revalidateAfterRequestDelete } from "@/app/admin/requests/actions";
 import { deleteSongRequest } from "@/lib/client/requests";
-import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { Skeleton } from "./ui/skeleton";
+import { toast } from "sonner";
 
 /**
  * Componente de cliente que muestra el contenido de la página de solicitudes de administrador.
@@ -37,10 +37,9 @@ import { Skeleton } from "./ui/skeleton";
  */
 export function AdminRequestsContent() {
   // Estados para manejar las solicitudes, el estado de carga y la internacionalización.
-  const [requests, setRequests] = useState<SongRequest[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [ requests, setRequests ] = useState<SongRequest[]>([]);
+  const [ isLoading, setIsLoading ] = useState(true);
   const { language, t } = useI18n();
-  const { toast } = useToast();
 
   // Configura el local para el formato de fecha según el idioma seleccionado.
   const locale = language === "es" ? es : enUS;
@@ -58,11 +57,7 @@ export function AdminRequestsContent() {
 
       if (error) {
         console.error("Failed to fetch song requests:", error);
-        toast({
-          variant: "destructive",
-          title: t("error"),
-          description: "Failed to load requests.",
-        });
+        toast.error("Failed to load requests.")
         setIsLoading(false);
       } else {
         setRequests(
@@ -88,14 +83,14 @@ export function AdminRequestsContent() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [t, toast]);
+  }, [ t, toast ]);
 
   /**
    * Maneja la eliminación de una solicitud de canción.
    * @param {string} requestId - El ID de la solicitud a eliminar.
    */
   const handleDelete = async (requestId: string) => {
-    const originalRequests = [...requests]; // Guarda el estado original para posible reversión.
+    const originalRequests = [ ...requests ]; // Guarda el estado original para posible reversión.
 
     // Actualización optimista: elimina la solicitud de la UI inmediatamente.
     setRequests((currentRequests) =>
@@ -107,19 +102,12 @@ export function AdminRequestsContent() {
       await deleteSongRequest(requestId);
       // Revalida la ruta del lado del servidor.
       await revalidateAfterRequestDelete();
-      toast({
-        title: t("requestDeletedTitle"),
-        description: t("requestDeletedDescription"),
-      });
+      toast.success(t("requestDeletedDescription"));
     } catch (error) {
       // Si hay un error, revierte la UI al estado original.
       if (error) {
         setRequests(originalRequests);
-        toast({
-          variant: "destructive",
-          title: t("error"),
-          description: t("songRequestDeleteError"),
-        });
+        toast.error(t("songRequestDeleteError"));
       }
     }
   };
@@ -169,11 +157,10 @@ export function AdminRequestsContent() {
                 <TableCell className="font-medium">
                   {/* Enlace para ir a la página de agregar canción con los datos pre-rellenados. */}
                   <Link
-                    href={`/admin/add-song?id=${
-                      req.id
-                    }&title=${encodeURIComponent(
-                      req.title
-                    )}&artist=${encodeURIComponent(req.artist)}`}
+                    href={`/admin/add-song?id=${req.id
+                      }&title=${encodeURIComponent(
+                        req.title
+                      )}&artist=${encodeURIComponent(req.artist)}`}
                     className="hover:underline">
                     {req.title}
                   </Link>
