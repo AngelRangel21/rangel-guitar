@@ -1,33 +1,33 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect, useRef } from "react";
-import type { Song } from "@/lib/types";
+import React, { useState, useEffect, useRef, JSX } from 'react'
+import type { Song } from '@/lib/types'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChordSheet } from "./chord-sheet";
-import { Minus, Plus, Heart, Pencil, Trash2 } from "lucide-react";
+  CardDescription
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { ChordSheet } from './chord-sheet'
+import { Minus, Plus, Heart, Pencil, Trash2 } from 'lucide-react'
 import {
   WhatsAppIcon,
   TelegramIcon,
   XTwitter,
-  FacebookIcon,
-} from "@/components/icons";
-import { useI18n } from "@/context/i18n-context";
-import { useAuth } from "@/context/auth-context";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DeleteSongDialog } from "./delete-song-dialog";
-import Link from "next/link";
-import { SongListItem } from "./song-list-item";
-import { incrementVisitCount } from "@/lib/client/songs";
-import { revalidateAfterVisit } from "@/app/songs/[slug]/actions";
-import LiteYouTubeEmbed from "react-lite-youtube-embed";
-import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+  FacebookIcon
+} from '@/components/icons'
+import { useI18n } from '@/context/i18n-context'
+import { useAuth, useFavorites } from '@/hooks/useAuth'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { DeleteSongDialog } from './delete-song-dialog'
+import Link from 'next/link'
+import { SongListItem } from './song-list-item'
+import { incrementVisitCount } from '@/lib/client/songs'
+import { revalidateAfterVisit } from '@/app/songs/[slug]/actions'
+import LiteYouTubeEmbed from 'react-lite-youtube-embed'
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 
 /**
  * Componente principal para mostrar una canción.
@@ -36,99 +36,102 @@ import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
  * @param {{ song: Song, suggestedSongs: Song[] }} props - Datos de la canción y sugerencias.
  * @returns {JSX.Element} El componente de visualización de la canción.
  */
-export function SongDisplay({
+export function SongDisplay ({
   song,
-  suggestedSongs,
+  suggestedSongs
 }: {
-  song: Song;
-  suggestedSongs: Song[];
-}) {
-  const [ transpose, setTranspose ] = useState(0);
-  const { t } = useI18n();
-  const { isAuthenticated, isFavorite, toggleFavorite, isAdmin } = useAuth();
-  const [ currentUrl, setCurrentUrl ] = useState("");
-  const visitLoggedRef = useRef(false);
+  song: Song
+  suggestedSongs: Song[]
+}): JSX.Element {
+  const [transpose, setTranspose] = useState(0)
+  const { t } = useI18n()
+  const { isAuthenticated, isAdmin } = useAuth()
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const [currentUrl, setCurrentUrl] = useState('')
+  const visitLoggedRef = useRef(false)
 
   // Efecto para obtener la URL actual y registrar la visita a la canción.
   useEffect(() => {
-    setCurrentUrl(window.location.href);
+    setCurrentUrl(window.location.href)
 
     // `useRef` se usa para asegurar que la visita se registre solo una vez,
     // evitando el doble conteo causado por el StrictMode de React en desarrollo.
     if (!visitLoggedRef.current) {
       const logVisit = async () => {
         try {
-          await incrementVisitCount(song.id);
-          await revalidateAfterVisit(); // Revalida la página de top charts.
+          await incrementVisitCount(song.id)
+          await revalidateAfterVisit() // Revalida la página de top charts.
         } catch (error) {
-          console.error("Failed to increment visit count:", error);
+          console.error('Failed to increment visit count:', error)
         }
-      };
-      logVisit();
-      visitLoggedRef.current = true; // Marca la visita como registrada.
+      }
+      logVisit()
+      visitLoggedRef.current = true // Marca la visita como registrada.
     }
-  }, [ song.id ]);
+  }, [song.id])
 
   /**
    * Genera el texto que describe el estado de la transposición.
    * @returns {string} - El texto descriptivo (ej. "Tono Original", "+2 semitonos").
    */
   const getTransposedKeyText = () => {
-    if (transpose === 0) return t("originalKey");
-    const direction = transpose > 0 ? `+${transpose}` : transpose;
-    return `${direction} ${t("semitones")}`;
-  };
+    if (transpose === 0) return t('originalKey')
+    const direction = transpose > 0 ? `+${transpose}` : transpose
+    return `${direction} ${t('semitones')}`
+  }
 
-  const shareText = t("shareText", { title: song.title, artist: song.artist });
+  const shareText = t('shareText', { title: song.title, artist: song.artist })
 
   return (
-    <div className="opacity-0 animate-content-in">
-      <div className="grid lg:grid-cols-3 gap-8">
+    <div className='opacity-0 animate-content-in'>
+      <div className='grid lg:grid-cols-3 gap-8'>
         {/* Columna izquierda: Portada, controles y metadatos */}
-        <div className="lg:col-span-1">
-          <Card className="overflow-hidden lg:sticky lg:top-24">
-            {song.video && (
-              <div className="w-full aspect-video">
-                {/* <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${song.video}`}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen></iframe> */}
-                {/* primera prueba de el youtube lite */}
-                <LiteYouTubeEmbed
-                  id={`${song.video}`}
-                  title={`Video de la cancion ${song.title} del artista ${song.artist}`}
-                  lazyLoad={true}
-                  poster="maxresdefault"
-                  webp={true}
-                />
-              </div>
-            )}
+        <div className='lg:col-span-1'>
+          <Card className='overflow-hidden lg:sticky lg:top-24'>
+            {song.video !== null
+              ? (
+                <div className='w-full aspect-video'>
+                  <LiteYouTubeEmbed
+                    id={`${song.video}`}
+                    title={`Video de la cancion ${song.title} del artista ${song.artist}`}
+                    lazyLoad
+                    poster='maxresdefault'
+                    webp
+                  />
+                </div>
+               ) : (
+                // TODO: Agregar un placeholder para canciones sin video y hacerla que funcione.
+                <div className='w-full aspect-video'>
+                  <img
+                    src={song.coverArt}
+                    alt={song.title}
+                    className='w-full h-full object-cover'
+                  />
+                </div>
+                )}
             <CardHeader>
-              <div className="flex justify-between items-start">
+              <div className='flex justify-between items-start'>
                 <div>
-                  <CardTitle className="text-2xl">{song.title}</CardTitle>
+                  <CardTitle className='text-2xl'>{song.title}</CardTitle>
                   <CardDescription>{song.artist}</CardDescription>
                 </div>
                 {/* Botón de Favoritos (solo para usuarios autenticados) */}
                 {isAuthenticated && (
                   <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => toggleFavorite(song.id, song.slug)}
+                    variant='ghost'
+                    size='icon'
+                    onClick={async () => await toggleFavorite(song.id, song.slug)}
                     aria-label={
                       isFavorite(song.id)
-                        ? t("removeFromFavorites")
-                        : t("addToFavorites")
+                        ? t('removeFromFavorites')
+                        : t('addToFavorites')
                     }
-                    className="rounded-full">
+                    className='rounded-full'
+                  >
                     <Heart
                       className={`h-6 w-6 transition-colors ${isFavorite(song.id)
-                          ? "fill-red-500 text-red-500"
-                          : "text-foreground/70"
+                          ? 'fill-red-500 text-red-500'
+                          : 'text-foreground/70'
                         }`}
                     />
                   </Button>
@@ -138,19 +141,19 @@ export function SongDisplay({
             <CardContent>
               {/* Acciones de Administrador (solo para administradores) */}
               {isAdmin && (
-                <div className="mb-8 p-4 bg-secondary/50 rounded-lg">
-                  <h2 className="text-lg font-semibold mb-3 text-center">
-                    {t("adminActions")}
+                <div className='mb-8 p-4 bg-secondary/50 rounded-lg'>
+                  <h2 className='text-lg font-semibold mb-3 text-center'>
+                    {t('adminActions')}
                   </h2>
-                  <div className="flex justify-center gap-4">
-                    <Button asChild variant="outline">
+                  <div className='flex justify-center gap-4'>
+                    <Button asChild variant='outline'>
                       <Link href={`/songs/${song.slug}/edit`}>
-                        <Pencil className="mr-2" /> {t("edit")}
+                        <Pencil className='mr-2' /> {t('edit')}
                       </Link>
                     </Button>
                     <DeleteSongDialog song={song}>
-                      <Button variant="destructive">
-                        <Trash2 className="mr-2" /> {t("delete")}
+                      <Button variant='destructive'>
+                        <Trash2 className='mr-2' /> {t('delete')}
                       </Button>
                     </DeleteSongDialog>
                   </div>
@@ -158,111 +161,118 @@ export function SongDisplay({
               )}
 
               {/* Controles de Transposición */}
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 text-center">
-                    {t("changeTone")}
+                  <h3 className='text-lg font-semibold mb-2 text-center'>
+                    {t('changeTone')}
                   </h3>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className='flex items-center justify-between gap-4'>
                     <Button
-                      variant="outline"
-                      size="icon"
+                      variant='outline'
+                      size='icon'
                       onClick={() => setTranspose((t) => t - 1)}
-                      aria-label={t("decreaseSemitone")}>
-                      <Minus className="h-4 w-4" />
+                      aria-label={t('decreaseSemitone')}
+                    >
+                      <Minus className='h-4 w-4' />
                     </Button>
                     <span
-                      className="font-bold text-lg w-32 text-center"
-                      aria-live="polite">
+                      className='font-bold text-lg w-32 text-center'
+                      aria-live='polite'
+                    >
                       {getTransposedKeyText()}
                     </span>
                     <Button
-                      variant="outline"
-                      size="icon"
+                      variant='outline'
+                      size='icon'
                       onClick={() => setTranspose((t) => t + 1)}
-                      aria-label={t("increaseSemitone")}>
-                      <Plus className="h-4 w-4" />
+                      aria-label={t('increaseSemitone')}
+                    >
+                      <Plus className='h-4 w-4' />
                     </Button>
                   </div>
-                  {transpose ? (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setTranspose(0)}
-                      className="w-full mt-4">
-                      {t("resetTone")}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      disabled
-                      size="sm"
-                      className="w-full mt-4">
-                      {t("resetTone")}
-                    </Button>
-                  )}
+                  {transpose !== 0
+                    ? (
+                      <Button
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => setTranspose(0)}
+                        className='w-full mt-4'
+                      >
+                        {t('resetTone')}
+                      </Button>
+                      )
+                    : (
+                      <Button
+                        variant='ghost'
+                        disabled
+                        size='sm'
+                        className='w-full mt-4'
+                      >
+                        {t('resetTone')}
+                      </Button>
+                      )}
                 </div>
               </div>
 
               {/* Botones para Compartir */}
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-2 text-center">
-                  {t("share")}
+              <div className='mt-8'>
+                <h3 className='text-lg font-semibold mb-2 text-center'>
+                  {t('share')}
                 </h3>
-                <div className="flex justify-center gap-4">
+                <div className='flex justify-center gap-4'>
                   <Button
-                    variant="outline"
-                    size="icon"
+                    variant='outline'
+                    size='icon'
                     onClick={() =>
                       window.open(
                         `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
-                        "_blank"
-                      )
-                    }
-                    aria-label={t("shareOnFacebook")}>
-                    <FacebookIcon className="h-5 w-5 text-blue-600" />
+                        '_blank'
+                      )}
+                    aria-label={t('shareOnFacebook')}
+                  >
+                    <FacebookIcon className='h-5 w-5 text-blue-600' />
                   </Button>
                   <Button
-                    variant="outline"
-                    size="icon"
+                    variant='outline'
+                    size='icon'
                     onClick={() =>
                       window.open(
                         `https://twitter.com/intent/tweet?url=${currentUrl}&text=${encodeURIComponent(
                           shareText
                         )}`,
-                        "_blank"
-                      )
-                    }
-                    aria-label={t("shareOnTwitter")}>
-                    <XTwitter className="h-5 w-5 text-blue-400" />
+                        '_blank'
+                      )}
+                    aria-label={t('shareOnTwitter')}
+                  >
+                    <XTwitter className='h-5 w-5 text-blue-400' />
                   </Button>
                   <Button
-                    variant="outline"
-                    size="icon"
+                    variant='outline'
+                    size='icon'
                     onClick={() =>
                       window.open(
                         `https://api.whatsapp.com/send?text=${encodeURIComponent(
                           `${shareText} ${currentUrl}`
                         )}`,
-                        "_blank"
-                      )
-                    }
-                    aria-label={t("shareOnWhatsApp")}>
-                    <WhatsAppIcon className="h-5 w-5 text-green-500" />
+                        '_blank'
+                      )}
+                    aria-label={t('shareOnWhatsApp')}
+                  >
+                    <WhatsAppIcon className='h-5 w-5 text-green-500' />
                   </Button>
                   <Button
-                    variant="outline"
-                    size="icon"
+                    variant='outline'
+                    size='icon'
                     onClick={() =>
                       window.open(
                         `https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(
                           shareText
                         )}`,
-                        "_blank"
-                      )
-                    }
-                    aria-label={t("shareOnTelegram")}>
-                    <TelegramIcon className="h-5 w-5 text-blue-500" />
+                        '_blank'
+                      )}
+                    aria-label={t('shareOnTelegram')}
+                  >
+                    <TelegramIcon className='h-5 w-5 text-blue-500' />
                   </Button>
                 </div>
               </div>
@@ -270,24 +280,24 @@ export function SongDisplay({
           </Card>
         </div>
         {/* Columna derecha: Pestañas con acordes y letra */}
-        <div className="lg:col-span-2">
-          <Tabs defaultValue="chords" className="w-full">
+        <div className='lg:col-span-2'>
+          <Tabs defaultValue='chords' className='w-full'>
             <TabsList>
-              <TabsTrigger value="chords">{t("chordsAndLyrics")}</TabsTrigger>
-              <TabsTrigger value="lyrics">{t("lyricsOnly")}</TabsTrigger>
+              <TabsTrigger value='chords'>{t('chordsAndLyrics')}</TabsTrigger>
+              <TabsTrigger value='lyrics'>{t('lyricsOnly')}</TabsTrigger>
             </TabsList>
-            <TabsContent value="chords">
+            <TabsContent value='chords'>
               <Card>
-                <CardContent className="p-6">
-                  <ChordSheet text={song.chords || ""} transpose={transpose} />
+                <CardContent className='p-6'>
+                  <ChordSheet text={song.chords || ''} transpose={transpose} />
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="lyrics">
+            <TabsContent value='lyrics'>
               <Card>
-                <CardContent className="p-6">
-                  <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
-                    {song.lyrics || ""}
+                <CardContent className='p-6'>
+                  <div className='whitespace-pre-wrap font-sans text-base leading-relaxed'>
+                    {song.lyrics || ''}
                   </div>
                 </CardContent>
               </Card>
@@ -297,9 +307,9 @@ export function SongDisplay({
       </div>
       {/* Sección de Canciones Sugeridas */}
       {suggestedSongs.length > 0 && (
-        <div className="mt-16">
-          <h4 className="text-3xl font-bold mb-6">{t("suggestedSongs")}</h4>
-          <div className="flex flex-col space-y-3">
+        <div className='mt-16'>
+          <h4 className='text-3xl font-bold mb-6'>{t('suggestedSongs')}</h4>
+          <div className='flex flex-col space-y-3'>
             {suggestedSongs.map((s) => (
               <SongListItem key={s.id} song={s} />
             ))}
@@ -307,5 +317,5 @@ export function SongDisplay({
         </div>
       )}
     </div>
-  );
+  )
 }

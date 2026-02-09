@@ -1,86 +1,79 @@
-"use client";
+'use client'
 
-import { useAuth } from "@/context/auth-context";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useI18n } from "@/context/i18n-context";
-import { Spinner } from "./ui/spinner";
+import { useAuth } from '@/hooks/useAuth'
+import { useRouter } from 'next/navigation'
+import React, { JSX, useEffect, useState } from 'react'
+// import { useI18n } from '@/context/i18n-context'
+import { Spinner } from './ui/spinner'
 
 interface ProtectedPageProps {
-  children: React.ReactNode;
-  adminOnly?: boolean;
+  children: React.ReactNode
+  adminOnly?: boolean
+  redirectTo?: string
 }
 
-export function ProtectedPage({
-  children,
-  adminOnly = false,
-}: ProtectedPageProps) {
-  const { isLoaded, isAuthenticated, isAdmin } = useAuth();
-  const router = useRouter();
-  const { t } = useI18n();
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
+export function ProtectedPage ({ children, adminOnly = false, redirectTo = '/login' }: ProtectedPageProps): JSX.Element | null {
+  const { isLoaded, isAuthenticated = false, isAdmin = false } = useAuth()
+  const router = useRouter()
+  // const { t } = useI18n()
+  const [showLoading, setShowLoading] = useState<boolean>(false)
+
+  const hasAccess = isAuthenticated && (!adminOnly || isAdmin)
+  // const shouldRedirect = !hasAccess && isLoaded
 
   // Mostrar loading solo después de un pequeño delay para evitar flashes
   useEffect(() => {
-    const timer = setTimeout(() => setShowLoading(true), 150);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!isLoaded) {
+      const timer = setTimeout(() => setShowLoading(true), 150)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoaded])
 
   // Manejar redirecciones
   useEffect(() => {
-    if (isLoaded && !isRedirecting) {
-      if (!isAuthenticated) {
-        setIsRedirecting(true);
-        router.push("/login");
-        return;
-      }
-
-      const isAllowed = !adminOnly || isAdmin;
-
-      if (!isAllowed) {
-        setIsRedirecting(true);
-        router.push("/");
-      }
+    if (isLoaded && !hasAccess) {
+      const destination = !isAuthenticated ? redirectTo : '/'
+      router.replace(destination)
     }
-  }, [isLoaded, isAuthenticated, isAdmin, adminOnly, router, isRedirecting]);
+  }, [isLoaded, hasAccess, isAuthenticated, redirectTo, router])
 
-  // Determinar si mostrar el contenido
-  const isAllowed = !adminOnly || isAdmin;
-  const shouldShowContent = isLoaded && isAuthenticated && isAllowed;
-
-  // Si ya está todo cargado y tiene permisos, mostrar contenido inmediatamente
-  if (shouldShowContent) {
-    return <>{children}</>;
+  // Estado 1: No ha cargado aún, no mostrar nada (evitar flashes)
+  if (!isLoaded && !showLoading) {
+    return null
   }
 
   // Si está redirigiendo, no mostrar nada o mostrar mensaje de redirección
-  if (isRedirecting) {
+  // Estado 2: Cargando (con delay pasado)
+  if (!isLoaded) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {t("redirecting")}...
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className='flex flex-col items-center gap-2'>
+          <Spinner />
+          <p className='text-sm text-muted-foreground'>
+            Redirigiendo
           </p>
         </div>
       </div>
-    );
-  }
-
-  // Si no está cargado pero aún no debe mostrar loading, no mostrar nada
-  if (!isLoaded && !showLoading) {
-    return null;
+    )
   }
 
   // Pantalla de carga minimalista
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
-        <Spinner />
-        <p className="mt-2 text-sm text-muted-foreground">{t("loading")}...</p>
+  // Estado 3: Cargó pero no tiene acceso (redirigiendo)
+  if (!hasAccess) {
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className='flex flex-col items-center gap-2'>
+          <Spinner />
+          <p className='text-sm text-muted-foreground'>Cargando</p>
+        </div>
       </div>
-    </div>
-  );
+    )
+  }
+
+  // Estado 4: Cargó y tiene acceso, mostrar contenido
+  return (
+    <>
+      {children}
+    </>
+  )
 }
