@@ -1,18 +1,18 @@
-import React from "react";
-import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/context/auth-context";
-import { I18nProvider } from "@/context/i18n-context";
-import { ThemeProvider } from "@/context/theme-provider";
-import Script from "next/script";
+import React from 'react'
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { Toaster } from '@/components/ui/sonner'
+import { I18nProvider } from '@/context/i18n-context'
+import { ThemeProvider } from '@/context/theme-provider'
+import Script from 'next/script'
+import { AuthProvider } from '@/providers/auth.provider'
 
 // Configuración de la fuente 'Inter' de Google Fonts.
 const inter = Inter({
-  subsets: [ "latin" ],
-  variable: "--font-inter", // Asigna la fuente a una variable CSS para usarla en Tailwind.
-});
+  subsets: ['latin'],
+  variable: '--font-inter' // Asigna la fuente a una variable CSS para usarla en Tailwind.
+})
 
 /**
  * Metadatos globales para toda la aplicación.
@@ -21,40 +21,40 @@ const inter = Inter({
  */
 export const metadata: Metadata = {
   title: {
-    default: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
-    template: "%s | Rangel Guitar",
+    default: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
+    template: '%s | Rangel Guitar'
   },
   description:
-    "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
-  metadataBase: new URL("https://rangelguitar.com"),
-  applicationName: "Rangel Guitar",
-  authors: [ { name: "Rangel Guitar Team", url: "https://rangelguitar.com" } ],
-  generator: "Next.js",
+    'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
+  metadataBase: new URL('https://rangelguitar.com'),
+  applicationName: 'Rangel Guitar',
+  authors: [{ name: 'Rangel Guitar Team', url: 'https://rangelguitar.com' }],
+  generator: 'Next.js',
   keywords: [
-    "guitarra",
-    "tablaturas",
-    "acordes",
-    "letras",
-    "canciones",
-    "aprender guitarra",
-    "música",
-    "tabs",
-    "chords",
-    "lyrics",
+    'guitarra',
+    'tablaturas',
+    'acordes',
+    'letras',
+    'canciones',
+    'aprender guitarra',
+    'música',
+    'tabs',
+    'chords',
+    'lyrics'
   ],
-  referrer: "origin-when-cross-origin",
-  creator: "Rangel Guitar",
-  publisher: "Rangel Guitar",
+  referrer: 'origin-when-cross-origin',
+  creator: 'Rangel Guitar',
+  publisher: 'Rangel Guitar',
   formatDetection: {
     email: false,
     address: false,
-    telephone: false,
+    telephone: false
   },
   alternates: {
-    canonical: "/",
+    canonical: '/',
     languages: {
-      "es-ES": "/es-ES",
-    },
+      'es-ES': '/es-ES'
+    }
   },
   robots: {
     index: true,
@@ -62,65 +62,65 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1
+    }
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Rangel Guitar",
+    statusBarStyle: 'default',
+    title: 'Rangel Guitar'
   },
   // manifest: "/manifest.json", // Se usará manifest.ts
   openGraph: {
-    title: "Rangel Guitar - Tablaturas y Acordes para Guitarra",
+    title: 'Rangel Guitar - Tablaturas y Acordes para Guitarra',
     description:
-      "Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.",
-    url: "https://rangelguitar.com",
-    siteName: "Rangel Guitar",
-    locale: "es_ES",
-    type: "website",
+      'Tu destino para encontrar tablaturas, letras y acordes de guitarra para tus canciones favoritas.',
+    url: 'https://rangelguitar.com',
+    siteName: 'Rangel Guitar',
+    locale: 'es_ES',
+    type: 'website',
     images: [
       {
-        url: "./og-image.jpg",
+        url: './og-image.jpg',
         width: 1200,
         height: 630,
-        alt: "Rangel Guitar, tu sitio de tablaturas, acordes y canciones.",
-      },
-    ],
+        alt: 'Rangel Guitar, tu sitio de tablaturas, acordes y canciones.'
+      }
+    ]
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Rangel Guitar",
-    description: "Tu destino para tablaturas, acordes y canciones de guitarra.",
-    creator: "@rangelguitar", // Placeholder
-    images: [ "/og-image.jpg" ],
+    card: 'summary_large_image',
+    title: 'Rangel Guitar',
+    description: 'Tu destino para tablaturas, acordes y canciones de guitarra.',
+    creator: '@rangelguitar', // Placeholder
+    images: ['/og-image.jpg']
   },
   verification: {
-    google: "google-site-verification-code", // Placeholder
-  },
-};
+    google: 'google-site-verification-code' // Placeholder
+  }
+}
 
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Rangel Guitar",
-  url: "https://rangelguitar.com",
-  logo: "https://rangelguitar.com/icon.png",
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Rangel Guitar',
+  url: 'https://rangelguitar.com',
+  logo: 'https://rangelguitar.com/icon.png',
   sameAs: [
-    "https://facebook.com/rangelguitar", // Placeholder
-    "https://twitter.com/rangelguitar", // Placeholder
-    "https://instagram.com/rangelguitar", // Placeholder
+    'https://facebook.com/rangelguitar', // Placeholder
+    'https://twitter.com/rangelguitar', // Placeholder
+    'https://instagram.com/rangelguitar' // Placeholder
   ],
   contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+1-555-555-5555", // Placeholder
-    contactType: "customer service",
-    areaServed: "ES",
-    availableLanguage: "Spanish",
-  },
-};
+    '@type': 'ContactPoint',
+    telephone: '+1-555-555-5555', // Placeholder
+    contactType: 'customer service',
+    areaServed: 'ES',
+    availableLanguage: 'Spanish'
+  }
+}
 
 /**
  * Configuración del viewport para la aplicación.
@@ -128,10 +128,10 @@ const jsonLd = {
  */
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "hsl(210, 22%, 31%)" },
-    { media: "(prefers-color-scheme: dark)", color: "hsl(210, 22%, 11%)" },
-  ],
-};
+    { media: '(prefers-color-scheme: light)', color: 'hsl(210, 22%, 31%)' },
+    { media: '(prefers-color-scheme: dark)', color: 'hsl(210, 22%, 11%)' }
+  ]
+}
 
 /**
  * Layout raíz de la aplicación.
@@ -140,19 +140,20 @@ export const viewport: Viewport = {
  * @param {{ children: React.ReactNode }} props - Los componentes hijos que serán renderizados dentro del layout.
  * @returns {JSX.Element} El layout raíz.
  */
-export default function RootLayout({
-  children,
+export default function RootLayout ({
+  children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html
-      lang="es"
-      className={`${inter.variable} scroll-smooth!`}
-      suppressHydrationWarning>
+      lang='es'
+      className={`${inter.variable}`}
+      suppressHydrationWarning
+    >
       {/* <!-- Google Tag Manager --> */}
-      <Script id="google-tag-manager" strategy="afterInteractive">
+      <Script id='google-tag-manager' strategy='afterInteractive'>
         {`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -162,35 +163,39 @@ export default function RootLayout({
       `}
       </Script>
       {/* <!-- End Google Tag Manager --> */}
-      <body className="font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]">
+      <body className='font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]'>
         {/* <!-- Google Tag Manager (noscript) --> */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-MS224ZBH"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}></iframe>
+            src='https://www.googletagmanager.com/ns.html?id=GTM-MS224ZBH'
+            height='0'
+            width='0'
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
         </noscript>
         {/* <!-- End Google Tag Manager (noscript) --> */}
         {/* Proveedor de tema para manejar el modo claro/oscuro. */}
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute='class'
+          defaultTheme='system'
           enableSystem
-          disableTransitionOnChange>
+          disableTransitionOnChange
+        >
           {/* Proveedor de internacionalización para manejar los idiomas. */}
           <I18nProvider>
             {/* Proveedor de autenticación para gestionar el estado del usuario. */}
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
           </I18nProvider>
         </ThemeProvider>
         {/* Componente para mostrar notificaciones (toasts). */}
         <Toaster />
         <script
-          type="application/ld+json"
+          type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </body>
     </html>
-  );
+  )
 }
