@@ -1,31 +1,31 @@
-import { Header } from "@/components/header/Header";
-import { Footer } from "@/components/footer";
-import { AdminRequestsContent } from "@/components/admin-requests-content";
-import { ProtectedPage } from "@/components/protected-page";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import React, { Suspense } from "react";
+import { Header } from '@/components/header/Header'
+import { Footer } from '@/components/footer'
+import { AdminRequestsContent } from '@/components/admin-requests-content'
+import { ProtectedPage } from '@/components/protected-page'
+import { Card, CardHeader, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Suspense, JSX } from 'react'
 
 /**
  * Componente de carga que se muestra mientras se obtienen los datos de las solicitudes.
  */
-function RequestsLoader() {
+function RequestsLoader (): JSX.Element {
   return (
     <Card>
       <CardHeader>
-        <Skeleton className="h-8 w-1/2" />
-        <Skeleton className="h-4 w-3/4 mt-2" />
+        <Skeleton className='h-8 w-1/2' />
+        <Skeleton className='h-4 w-3/4 mt-2' />
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
+        <div className='space-y-3'>
+          <Skeleton className='h-12 w-full' />
+          <Skeleton className='h-12 w-full' />
+          <Skeleton className='h-12 w-full' />
+          <Skeleton className='h-12 w-full' />
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 /**
@@ -34,13 +34,13 @@ function RequestsLoader() {
  * Los datos ahora se cargan en el lado del cliente para garantizar que los permisos se verifiquen primero.
  * @returns {JSX.Element} La página de solicitudes de administrador.
  */
-export default function AdminRequestsPage() {
+export default function AdminRequestsPage (): JSX.Element {
   return (
     // Componente que protege la página, requiriendo autenticación de administrador.
     <ProtectedPage adminOnly>
-      <div className="flex flex-col min-h-screen bg-background">
+      <div className='flex flex-col min-h-screen bg-background'>
         <Header />
-        <main className="grow container mx-auto px-4 py-8">
+        <main className='grow container mx-auto px-4 py-8'>
           <Suspense fallback={<RequestsLoader />}>
             <AdminRequestsContent />
           </Suspense>
@@ -48,5 +48,5 @@ export default function AdminRequestsPage() {
         <Footer />
       </div>
     </ProtectedPage>
-  );
+  )
 }
