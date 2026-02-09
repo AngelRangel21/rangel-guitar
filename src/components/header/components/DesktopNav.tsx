@@ -26,7 +26,7 @@ export default function DesktopNav (): JSX.Element {
         .select('*')
         .order('requestedAt', { ascending: false })
 
-      if (error) {
+      if (error != null) {
         console.error('Error fetching initial song requests:', error)
         return
       }
@@ -35,7 +35,7 @@ export default function DesktopNav (): JSX.Element {
         count: requests.length,
         recentRequests: requests
           .slice(0, 99)
-          .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) })),
+          .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) }))
       })
     }
 
@@ -137,33 +137,35 @@ export default function DesktopNav (): JSX.Element {
         {/* Tema modo claro/obscuro */}
         <ThemeToggle />
 
-        {isAuthenticated ? (
-          <div className='hidden xl:flex'>
-            <Button
-              variant='secondary'
-              size='sm'
-              onClick={logout}
-              className='font-semibold'
-            >
-              Cerrar sesión
-            </Button>
-          </div>
-        ) : (
-          <div className='hidden xl:flex gap-2'>
-            <Link
-              href='/login'
-              className='font-semibold rounded-[8px] py-3 px-[10px] hover:text-[#d2d2d2]'
-            >
-              Iniciar sesión
-            </Link>
-            <Link
-              href='/register'
-              className='font-semibold rounded-[8px] py-3 px-[10px] border-white hover:text-[#d2d2d2]'
-            >
-              Registrarse
-            </Link>
-          </div>
-        )}
+        {isAuthenticated
+          ? (
+            <div className='hidden xl:flex'>
+              <Button
+                variant='secondary'
+                size='sm'
+                onClick={logout}
+                className='font-semibold'
+              >
+                Cerrar sesión
+              </Button>
+            </div>
+            )
+          : (
+            <div className='hidden xl:flex gap-2'>
+              <Link
+                href='/login'
+                className='font-semibold rounded-[8px] py-3 px-2.5 hover:text-[#d2d2d2]'
+              >
+                Iniciar sesión
+              </Link>
+              <Link
+                href='/register'
+                className='font-semibold rounded-[8px] py-3 px-2.5 border-white hover:text-[#d2d2d2]'
+              >
+                Registrarse
+              </Link>
+            </div>
+            )}
       </section>
     </>
   )
