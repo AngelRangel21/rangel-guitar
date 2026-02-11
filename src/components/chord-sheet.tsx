@@ -1,129 +1,127 @@
-"use client";
+import React, { JSX } from 'react'
+import { Chord } from './chord'
 
-import { Chord } from "@/components/chord";
-import React from "react";
+// SOLO detecta cosas entre [] o ()
+const CHORD_WRAPPER_REGEX = /(\[(.*?)\]|\((.*?)\))/g
 
-/**
- * Expresión regular para identificar acordes o secciones en una línea de texto.
- * Captura:
- * - Texto entre corchetes, como `[Intro]` o `[C]`.
- * - Nombres comunes de acordes, como `C`, `Gm`, `F#7`, etc.
- */
-const CHORD_OR_SECTION_REGEX =
-  /(\[.*?\]|\b[A-G](?:#|b)?(?:m|maj|dim|aug|sus|add|M|m|sus4|sus2)?[2-9]?\(?(?:#|b)?[5913]?\)?(?:(?:maj|min|add|sus|dim|aug)[0-9]*)?(?:\/[A-G](?:#|b)?)?\b)/g;
+const VALID_CHORD_REGEX =
+  /^([A-G])(#{1}|b{1})?(m|min|maj|dim|aug|sus2|sus4)?(7|9|11|13)?(\/[A-G](#|b)?)?$/
 
-/**
- * Lista de nombres de secciones de canciones conocidas (en minúsculas).
- */
-const KNOWN_SECTIONS = [
-  "intro",
-  "verso",
-  "coro",
-  "bridge",
-  "solo",
-  "outro",
-  "instrumental",
-  "capo",
-  "pre-coro",
-  "post-coro",
-];
+export function isValidChord (input: string): boolean {
+  return VALID_CHORD_REGEX.test(input)
+}
 
-/**
- * Verifica si un texto dado es un marcador de sección (ej. "[Verse]").
- * Comprueba que el texto esté entre corchetes y que el contenido sea una sección conocida.
- * @param {string} text - El texto a verificar.
- * @returns {boolean} - `true` si es un marcador de sección, `false` en caso contrario.
- */
+export type SongToken =
+  | { type: 'text', value: string }
+  | { type: 'chord', value: string }
+  | { type: 'section', value: string }
+
+export function parseChordLine (line: string): SongToken[] {
+  const tokens: SongToken[] = []
+  let lastIndex = 0
+
+  line.replace(CHORD_WRAPPER_REGEX, (match, _, a, b, index) => {
+    if (index > lastIndex) {
+      tokens.push({
+        type: 'text',
+        value: line.slice(lastIndex, index)
+      })
+    }
+
+    const content = a || b
+
+    if (isSectionMarker(match)) {
+      tokens.push({ type: 'section', value: match })
+    } else if (isValidChord(content)) {
+      tokens.push({ type: 'chord', value: content })
+    } else {
+      tokens.push({ type: 'text', value: match })
+    }
+
+    lastIndex = index + match.length
+    return match
+  })
+
+  if (lastIndex < line.length) {
+    tokens.push({
+      type: 'text',
+      value: line.slice(lastIndex)
+    })
+  }
+
+  return tokens
+}
+
+const KNOWN_SECTIONS = ([
+  'intro',
+  'verso',
+  'coro',
+  'bridge',
+  'solo',
+  'outro',
+  'instrumental',
+  'capo',
+  'pre-coro',
+  'post-coro',
+  // generar con numeros
+  ...Array.from({ length: 5 }, (_, i) => `verso ${i + 1}`)
+])
+
 const isSectionMarker = (text: string): boolean => {
-  if (!text.startsWith("[") || !text.endsWith("]")) {
-    return false;
+  if (!text.startsWith('[') || !text.endsWith(']')) {
+    return false
   }
   // Extrae el contenido dentro de los corchetes y lo convierte a minúsculas.
   const content = text
     .substring(1, text.length - 1)
     .toLowerCase()
-    .split(" ")[0];
-  return KNOWN_SECTIONS.includes(content);
-};
+  return KNOWN_SECTIONS.includes(content)
+}
 
-/**
- * Componente que renderiza una hoja de acordes y letra.
- * Parsea el texto para identificar y dar formato a los acordes y secciones.
- * @param {{ text: string; transpose?: number }} props - Texto de la canción y valor de transposición.
- * @returns {JSX.Element | null} La hoja de acordes formateada.
- */
-export function ChordSheet({
+export function ChordSheet ({
   text,
-  transpose = 0,
+  transpose = 0
 }: {
-  text: string;
-  transpose?: number;
-}) {
-  if (!text) return null;
-
+  text: string
+  transpose?: number
+}): JSX.Element | null {
+  if (!text) return null
+  // Renderiza la hoja de acordes, dividiendo el texto en líneas y luego en tokens para cada línea.
   return (
-    <div className="text-sm font-sans text-foreground">
-      {/* Divide el texto en líneas y procesa cada una. */}
-      {text.split("\n").map((line, lineIndex) => {
-        // Si la línea está vacía, renderiza un espacio.
-        if (line.trim() === "") {
-          return <div key={lineIndex} className="h-4" />;
+    <div className='text-sm font-sans'>
+      {text.split('\n').map((line, lineIndex) => {
+        if (!line.trim()) {
+          return <div key={lineIndex} className='h-4' />
         }
 
-        // Divide la línea en partes: texto, acordes y secciones.
-        const parts = line.split(CHORD_OR_SECTION_REGEX);
-
-        // Maneja el caso de una línea que es *solamente* un marcador de sección, ej. `[Verse]`.
-        if (
-          parts.length === 3 &&
-          parts[0] === "" &&
-          parts[2] === "" &&
-          isSectionMarker(parts[1])
-        ) {
-          return (
-            <strong
-              key={lineIndex}
-              className="block mt-4 mb-2 font-bold text-foreground">
-              {parts[1]}
-            </strong>
-          );
-        }
-
+        const tokens = parseChordLine(line)
+        // Renderiza cada token de la línea, mostrando los acordes como componentes interactivos y las secciones en negrita.
         return (
-          <div key={lineIndex} className="whitespace-pre">
-            {parts.map((part, partIndex) => {
-              if (!part) return null;
-
-              // Las partes impares son las que coinciden con la regex (acordes o secciones).
-              if (partIndex % 2 === 1) {
-                if (isSectionMarker(part)) {
-                  // Si es una sección, la renderiza en negrita.
-                  return (
-                    <strong
-                      key={partIndex}
-                      className="font-bold text-foreground">
-                      {part}
-                    </strong>
-                  );
-                }
-                // Si es un acorde (puede estar entre corchetes o no), lo renderiza con el componente Chord.
-                const chordName = part.replace(/\[|\]/g, ""); // Limpia los corchetes.
+          <div key={lineIndex} className='whitespace-pre'>
+            {tokens.map((token, i) => {
+              if (token.type === 'chord') {
                 return (
                   <Chord
-                    key={partIndex}
-                    name={chordName}
+                    key={i}
+                    name={token.value}
                     transpose={transpose}
                   />
-                );
-              } else {
-                // Las partes pares son el texto normal (letra o espacios).
-                // Usamos un Fragment para evitar un <span> extra que podría interferir con el renderizado de los espacios.
-                return <React.Fragment key={partIndex}>{part}</React.Fragment>;
+                )
               }
+              // Si el token es una sección, lo renderiza en negrita. ej: [Intro], [Verso], etc.
+              if (token.type === 'section') {
+                return (
+                  <strong key={i} className='font-bold'>
+                    {token.value}
+                  </strong>
+                )
+              }
+
+              return <React.Fragment key={i}>{token.value}</React.Fragment>
             })}
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
