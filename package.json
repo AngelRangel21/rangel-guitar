@@ -15,6 +15,23 @@
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch"
   },
+  "release": {
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": ["package.json", "package-lok.json", "CHANGELOG.md"],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
     "@radix-ui/react-accordion": "1.2.12",
@@ -61,6 +78,10 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.5",
+    "@semantic-release/npm": "^13.1.4",
     "@tailwindcss/postcss": "4.1.17",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.0",
@@ -74,6 +95,7 @@
     "globals": "16.5.0",
     "jsdom": "28.0.0",
     "postcss": "8",
+    "semantic-release": "^25.0.3",
     "tailwindcss": "4.1.17",
     "ts-node": "10.9.2",
     "ts-standard": "12.0.2",
