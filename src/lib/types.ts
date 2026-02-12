@@ -6,7 +6,7 @@ export type Song = {
   slug: string; // Versión del título y artista para usar en URLs, también es el ID.
   title: string;
   artist: string;
-  coverArt: string; // URL de la imagen de portada.
+  coverArt: string | null // URL de la imagen de portada.
   lyrics?: string; // Letra sin acordes.
   chords?: string; // Letra con acordes.
   video?: string; // ID del video de YouTube.
@@ -22,4 +22,17 @@ export interface SongRequest {
   title: string;
   artist: string;
   requestedAt: Date; // Fecha en que se realizó la solicitud.
+}
+
+export interface SearchResult {
+  songs: Song[]
+  total: number
+}
+
+export interface SearchState {
+  query: string
+  results: Song[]
+  isLoading: boolean
+  error: string | null
+  hasSearched: boolean
 }
