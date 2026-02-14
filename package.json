@@ -1,6 +1,6 @@
 {
   "name": "rangel-guitar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,9 @@
     "test:watch": "vitest --watch"
   },
   "release": {
-    "branches": ["master"],
+    "branches": [
+      "master"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
@@ -26,7 +28,11 @@
       [
         "@semantic-release/git",
         {
-          "assets": ["package.json", "package-lok.json", "CHANGELOG.md"],
+          "assets": [
+            "package.json",
+            "package-lok.json",
+            "CHANGELOG.md"
+          ],
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
       ]
@@ -54,49 +60,48 @@
     "@radix-ui/react-switch": "1.2.6",
     "@radix-ui/react-tabs": "1.1.13",
     "@radix-ui/react-tooltip": "1.2.8",
-    "@supabase/supabase-js": "2.87.1",
+    "@supabase/supabase-js": "2.95.3",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
-    "dotenv": "17.2.3",
+    "dotenv": "17.3.1",
     "embla-carousel-react": "8.6.0",
-    "lucide-react": "0.559.0",
-    "next": "16.0.8",
+    "lucide-react": "0.564.0",
+    "next": "16.1.6",
     "next-themes": "0.4.6",
-    "react": "19.2.1",
-    "react-day-picker": "9.12.0",
-    "react-dom": "19.2.1",
-    "react-hook-form": "7.68.0",
+    "react": "19.2.4",
+    "react-day-picker": "9.13.2",
+    "react-dom": "19.2.4",
+    "react-hook-form": "7.71.1",
     "react-lite-youtube-embed": "3.3.3",
-    "recharts": "3.5.1",
+    "recharts": "3.7.0",
     "sonner": "2.0.7",
     "tailwind-merge": "3.4.0",
     "tailwindcss-animate": "1.0.7",
     "usehooks-ts": "3.1.1",
-    "zod": "4.1.13",
+    "zod": "4.3.6",
     "zustand": "5.0.11"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^12.0.5",
     "@semantic-release/npm": "^13.1.4",
-    "@tailwindcss/postcss": "4.1.17",
+    "@tailwindcss/postcss": "4.1.18",
     "@testing-library/jest-dom": "6.9.1",
-    "@testing-library/react": "16.3.0",
-    "@types/node": "25.0.0",
-    "@types/react": "19.2.7",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "25.2.3",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "5.1.3",
+    "@vitejs/plugin-react": "5.1.4",
     "@vitest/coverage-v8": "4.0.18",
     "@vitest/ui": "4.0.18",
-    "env": "0.0.2",
-    "globals": "16.5.0",
+    "globals": "17.3.0",
     "jsdom": "28.0.0",
-    "postcss": "8",
+    "postcss": "8.5.6",
     "semantic-release": "^25.0.3",
-    "tailwindcss": "4.1.17",
+    "supabase": "^2.76.8",
+    "tailwindcss": "4.1.18",
     "ts-node": "10.9.2",
     "ts-standard": "12.0.2",
     "typescript": "5.9.3",
