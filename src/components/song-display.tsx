@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, JSX } from 'react'
+import { useState, useEffect, JSX } from 'react'
 import type { Song } from '@/lib/types'
 import {
   Card,
@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChordSheet } from './chord-sheet'
-import { Minus, Plus, Heart, Pencil, Trash2 } from 'lucide-react'
+import { Minus, Plus, Pencil, Trash2 } from 'lucide-react'
 import {
   WhatsAppIcon,
   TelegramIcon,
@@ -19,15 +19,14 @@ import {
   FacebookIcon
 } from '@/components/icons'
 import { useI18n } from '@/context/i18n-context'
-import { useAuth, useFavorites } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DeleteSongDialog } from './delete-song-dialog'
 import Link from 'next/link'
 import { SongListItem } from './song-list-item'
-import { incrementVisitCount } from '@/lib/client/songs'
-import { revalidateAfterVisit } from '@/app/songs/[slug]/actions'
 import LiteYouTubeEmbed from 'react-lite-youtube-embed'
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+import { FavoriteButton } from './favorite-button'
 
 /**
  * Componente principal para mostrar una canción.
@@ -45,29 +44,12 @@ export function SongDisplay ({
 }): JSX.Element {
   const [transpose, setTranspose] = useState(0)
   const { t } = useI18n()
-  const { isAuthenticated, isAdmin } = useAuth()
-  const { isFavorite, toggleFavorite } = useFavorites()
+  const { isAdmin } = useAuth()
   const [currentUrl, setCurrentUrl] = useState('')
-  const visitLoggedRef = useRef(false)
 
   // Efecto para obtener la URL actual y registrar la visita a la canción.
   useEffect(() => {
     setCurrentUrl(window.location.href)
-
-    // `useRef` se usa para asegurar que la visita se registre solo una vez,
-    // evitando el doble conteo causado por el StrictMode de React en desarrollo.
-    if (!visitLoggedRef.current) {
-      const logVisit = async () => {
-        try {
-          await incrementVisitCount(song.id)
-          await revalidateAfterVisit() // Revalida la página de top charts.
-        } catch (error) {
-          console.error('Failed to increment visit count:', error)
-        }
-      }
-      logVisit()
-      visitLoggedRef.current = true // Marca la visita como registrada.
-    }
   }, [song.id])
 
   /**
@@ -89,7 +71,7 @@ export function SongDisplay ({
         <div className='lg:col-span-1'>
           <Card className='overflow-hidden lg:sticky lg:top-24'>
             {song.video !== null
-              ? (
+              && (
                 <div className='w-full aspect-video'>
                   <LiteYouTubeEmbed
                     id={`${song.video}`}
@@ -99,16 +81,7 @@ export function SongDisplay ({
                     webp
                   />
                 </div>
-               ) : (
-                // TODO: Agregar un placeholder para canciones sin video y hacerla que funcione.
-                <div className='w-full aspect-video'>
-                  <img
-                    src={song.coverArt}
-                    alt={song.title}
-                    className='w-full h-full object-cover'
-                  />
-                </div>
-                )}
+              )}
             <CardHeader>
               <div className='flex justify-between items-start'>
                 <div>
@@ -116,26 +89,7 @@ export function SongDisplay ({
                   <CardDescription>{song.artist}</CardDescription>
                 </div>
                 {/* Botón de Favoritos (solo para usuarios autenticados) */}
-                {isAuthenticated && (
-                  <Button
-                    variant='ghost'
-                    size='icon'
-                    onClick={async () => await toggleFavorite(song.id, song.slug)}
-                    aria-label={
-                      isFavorite(song.id)
-                        ? t('removeFromFavorites')
-                        : t('addToFavorites')
-                    }
-                    className='rounded-full'
-                  >
-                    <Heart
-                      className={`h-6 w-6 transition-colors ${isFavorite(song.id)
-                          ? 'fill-red-500 text-red-500'
-                          : 'text-foreground/70'
-                        }`}
-                    />
-                  </Button>
-                )}
+                <FavoriteButton song={song} />
               </div>
             </CardHeader>
             <CardContent>
