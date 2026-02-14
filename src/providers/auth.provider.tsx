@@ -1,30 +1,63 @@
 'use client'
 
 import { JSX, useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/auth.store'
-import { useSupabaseAuth } from '@/hooks/useSupabaseAuth'
 
 /**
  * Provider que sincroniza el estado de Supabase con Zustand
  * Este es el único lugar donde se conecta useSupabaseAuth con el store
  */
 export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.Element {
-  const { user: supabaseUser, loading } = useSupabaseAuth()
-  const { setSupabaseUser, setLoading, setInitialized } = useAuthStore()
+  const loadUserProfile = useAuthStore((s) => s.loadUserProfile)
+  const _setInitialized = useAuthStore((s) => s._setInitialized)
+  const _setLoading = useAuthStore((s) => s._setLoading)
+  const logout = useAuthStore((s) => s.logout)
 
   // Sincronizar supabaseUser con el store
   useEffect(() => {
-    setSupabaseUser(supabaseUser)
-  }, [supabaseUser, setSupabaseUser])
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.debug('[Auth]', event, session?.user?.id)
 
-  // Sincronizar loading state
-  useEffect(() => {
-    setLoading(loading)
+      switch (event) {
+        case 'INITIAL_SESSION':
+          if (session?.user != null) {
+            await loadUserProfile(session.user)
+          }
+          _setInitialized(true)
+          _setLoading(false)
+          break
+          
+        case 'SIGNED_IN':
+          if (session?.user != null) {
+            await loadUserProfile(session.user)
+          }
+          break
+        
+        case 'SIGNED_OUT':
+          useAuthStore.setState({
+            supabaseUser: null,
+            user: null,
+            favoriteIds: new Set()
+          })
+        
+        case 'USER_UPDATED':
+          if (session?.user != null) {
+            await loadUserProfile(session.user)
+          }
+          break
 
-    if (!loading) {
-      setInitialized(true)
+          case 'TOKEN_REFRESHED':
+            break
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
     }
-  }, [loading, setLoading, setInitialized])
+  }, [loadUserProfile, _setInitialized, _setLoading, logout])
 
   return <>{children}</>
 }

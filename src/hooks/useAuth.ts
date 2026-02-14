@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@/stores/auth.store'
-import { AuthCredentials, UserProfile } from '@/types/auth.types'
+import { AuthCredentials, UserProfile } from '@/types'
 import { useShallow } from 'zustand/react/shallow'
 
 /**
@@ -12,7 +12,6 @@ export function useAuth (): {
   isAuthenticated: boolean
   user: UserProfile | null
   isAdmin: boolean
-  favorites: string[]
   isLoaded: boolean
   isLoading: boolean
   isInitializing: boolean
@@ -29,7 +28,6 @@ export function useAuth (): {
       isAuthenticated: selectIsAuthenticated(state),
       user: state.user,
       isAdmin: selectIsAdmin(state),
-      favorites: state.favorites,
       isLoaded: state.isInitialized && !state.isLoading,
       isLoading: state.isLoading,
       isInitializing: state.isInitialized,
@@ -79,23 +77,6 @@ export function useUser (): {
     useShallow((state) => ({
       user: state.user,
       isAdmin: state.isAdmin
-    }))
-  )
-}
-
-/**
- * Hook optimizado para componentes que solo manejan favoritos
- */
-export function useFavorites (): {
-  favorites: string[]
-  toggleFavorite: (songId: string, songSlug: string) => Promise<void>
-  isFavorite: (songId: string) => boolean
-} {
-  return useAuthStore(
-    useShallow((state) => ({
-      favorites: state.favorites,
-      toggleFavorite: state.toggleFavorite,
-      isFavorite: state.isFavorite
     }))
   )
 }
