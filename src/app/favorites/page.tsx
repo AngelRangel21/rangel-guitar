@@ -3,45 +3,53 @@
 import { Header } from '@/components/header/Header'
 import { Footer } from '@/components/footer'
 import { SongList } from '@/components/song-list'
-import { useAuth, useFavorites } from '@/hooks/useAuth'
-import { getSongs } from '@/services/songs-service'
 import { useI18n } from '@/context/i18n-context'
 import { Heart } from 'lucide-react'
 import { ProtectedPage } from '@/components/protected-page'
 import { JSX, useEffect, useState } from 'react'
 import type { Song } from '@/lib/types'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAuthStore } from '@/stores/auth.store'
+import { supabase } from '@/lib/supabase'
+import { mapDbSongWithCounts } from '@/types'
 
-/**
- * Componente que muestra el contenido de la página de favoritos.
- * Se encarga de obtener las canciones favoritas del usuario y mostrarlas.
- * @returns {JSX.Element} El contenido de la página de favoritos.
- */
 function FavoritesContent (): JSX.Element {
-  // Hooks para el estado de autenticación, internacionalización y datos locales.
-  const { isLoaded } = useAuth()
-  const { favorites } = useFavorites()
   const { t } = useI18n()
+  const user = useAuthStore((s) => s.user)
+  const favoritesIds = useAuthStore((s) => s.favoriteIds)
+  const isInitialized = useAuthStore((s) => s.isInitialized)
+
   const [favoriteSongs, setFavoriteSongs] = useState<Song[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  // useEffect para cargar las canciones favoritas cuando el estado de autenticación está listo.
   useEffect(() => {
-    // Solo se ejecuta si el estado de autenticación ya se ha cargado.
-    if (isLoaded) {
-      setIsLoading(true)
-      // Obtiene todas las canciones.
-      getSongs().then((allSongs) => {
-        // Filtra las canciones para quedarse solo con las que están en la lista de favoritos del usuario.
-        const favs = allSongs.filter((song) => favorites.includes(song.id))
-        setFavoriteSongs(favs)
-        setIsLoading(false) // Termina la carga.
-      })
+    if (!isInitialized || user == null) return
+    if (favoritesIds.size === 0) {
+      setFavoriteSongs([])
+      setIsLoading(false)
+      return
     }
-  }, [favorites, isLoaded]) // Se vuelve a ejecutar si la lista de favoritos o el estado de carga cambian.
+
+    setIsLoading(true)
+
+    supabase
+      .from('songs_with_counts')
+      .select('*')
+      .in('id', Array.from(favoritesIds))
+      .eq('isPublished', true)
+      .then(({ data, error}) => {
+        if (error != null) {
+          console.error('Error loading favorite songs: ', error)
+          setFavoriteSongs([])
+        } else {
+          setFavoriteSongs((data ?? []).map(mapDbSongWithCounts))
+        }
+        setIsLoading(false)
+      })
+  }, [favoritesIds, isInitialized, user]) // Se vuelve a ejecutar si la lista de favoritos o el estado de carga cambian.
 
   // Muestra un esqueleto de carga mientras se obtienen los datos.
-  if (isLoading) {
+  if (!isInitialized || isLoading) {
     return (
       <div className='space-y-6'>
         <div className='flex items-center gap-4'>
