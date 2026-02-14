@@ -25,6 +25,7 @@ import React, { useState } from "react";
 import { addSongRequest } from "@/lib/client/requests";
 import { Spinner } from "./ui/spinner";
 import { toast } from "sonner"
+import { useAuthStore } from "@/stores/auth.store";
 
 /**
  * Esquema de validación del formulario de solicitud de canciones con Zod.
@@ -41,6 +42,7 @@ const formSchema = z.object({
 export function RequestSongForm() {
   const { t } = useI18n();
   const [ isLoading, setIsLoading ] = useState(false);
+  const user = useAuthStore((s) => s.user)
 
   // Inicializa el formulario con react-hook-form y el resolver de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,11 +58,20 @@ export function RequestSongForm() {
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (user == null) {
+      toast.error('Deves de iniciar sesión para hacer una solicitud')
+      return
+    }
+
     setIsLoading(true);
     try {
       // Llama a la función del cliente para agregar la solicitud a Supabase.
-      await addSongRequest(values);
-      toast.success(`¡Tu solicitud para "${values.title}" ha sido enviada! La revisaremos pronto.`);
+      await addSongRequest({
+        title: values.title,
+        artist: values.artist,
+        user_id: user.uid
+      });
+      toast.success(`¡Tu solicitud para "${values.title}" de "${values.artist}" ha sido enviada! La revisaremos pronto.`);
       form.reset(); // Limpia el formulario después de un envío exitoso.
     } catch (error) {
       toast.error(t("requestErrorDescription"));
@@ -105,7 +116,7 @@ export function RequestSongForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading || user == null}>
               {isLoading ? (
                 <>
                   <Spinner />
