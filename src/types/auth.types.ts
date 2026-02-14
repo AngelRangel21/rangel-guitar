@@ -1,16 +1,15 @@
 /**
- * Tipos compartidos para autenticación
+ * Tipos de autenticación — Supabase Auth.
+ *
+ * Supabase Auth devuelve un `session.user.id` (UUID) que corresponde
+ * al `uid` de nuestra tabla `public.users`.
  */
 
-export interface User {
-  uid: string
-  name: string
-  email?: string
-}
+import type { UserProfile, SongRequest, Song } from "./app.types"
 
-export interface UserProfile extends User {
-  isAdmin: boolean
-}
+// ─────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────
 
 export interface AuthCredentials {
   email: string
@@ -26,13 +25,25 @@ export interface AuthState {
   isLoaded: boolean
 }
 
+// ─────────────────────────────────────────────
+// FAVORITOS
+// ─────────────────────────────────────────────
+
+/**
+ * favoriteIds: set de song_id que el usuario tiene guardados.
+ * Se usa para saber instantáneamente si una canción está en favoritos
+ * sin ir a la DB en cada render.
+ */
 export interface FavoritesState {
-  favorites: string[]
-  toggleFavorite: (songId: string, songSlug: string) => Promise<void>
+  favoriteIds: Set<string>
+  toggleFavorite: (songId: string) => Promise<void>
   isFavorite: (songId: string) => boolean
 }
 
-// Tipos para los hooks
+// ─────────────────────────────────────────────
+// HOOKS — return types
+// ─────────────────────────────────────────────
+
 export interface UseAuthReturn extends AuthState, FavoritesState {
   signInWithGoogle: () => Promise<void>
   registerWithEmail: (credentials: AuthCredentials) => Promise<void>
@@ -51,4 +62,14 @@ export interface UseUserReturn {
   isAdmin: boolean
 }
 
-export interface UseFavoritesReturn extends FavoritesState {}
+export interface UseFavoritesReturn extends FavoritesState {
+  favoriteSongs: Song[]
+  isLoadingFavorites: boolean
+}
+
+export interface UseSongRequestsReturn {
+  requests: SongRequest[]
+  isLoading: boolean
+  error: string | null
+  submitRequest: (title: string, artist: string) => Promise<void>
+}
