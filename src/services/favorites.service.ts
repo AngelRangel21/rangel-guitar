@@ -1,90 +1,31 @@
-import { updateLikeCount } from '@/lib/client/songs'
-import { revalidateAfterLike } from '@/app/favorites/actions'
+import { supabase } from "@/lib/supabase";
 
-/**
- * Servicio de favoritos
- * Maneja la persistencia en localStorage y sincronización con backend
- */
-export class FavoritesService {
-  private static readonly STORAGE_PREFIX = 'favorites_'
+export class FavoriteService {
+  static async loadFavoriteIds(uid: string): Promise<Set<string>> {
+    const { data, error } = await supabase
+      .from('song_favorites')
+      .select('song_id')
+      .eq('user_id', uid)
 
-  /**
-   * Obtener favoritos del localStorage
-   */
-  static getFavorites (userId: string): string[] {
-    if (typeof window === 'undefined') return []
+    if (error != null) throw error
 
-    try {
-      const stored = localStorage.getItem(`${this.STORAGE_PREFIX}${userId}`)
-      return stored ? JSON.parse(stored) : []
-    } catch (error) {
-      console.error('Error loading favorites from localStorage:', error)
-      return []
-    }
+    return new Set(data.map((row) => row.song_id))
   }
 
-  /**
-   * Guardar favoritos en localStorage
-   */
-  static saveFavorites (userId: string, favorites: string[]): void {
-    if (typeof window === 'undefined') return
-
-    try {
-      localStorage.setItem(
-        `${this.STORAGE_PREFIX}${userId}`,
-        JSON.stringify(favorites)
-      )
-    } catch (error) {
-      console.error('Error saving favorites to localStorage:', error)
-    }
-  }
-
-  /**
-   * Agregar o quitar favorito
-   */
-  static async toggleFavorite (
-    userId: string,
+  static async toggleFavorite(
     songId: string,
-    songSlug: string,
-    currentFavorites: string[]
-  ): Promise<{ newFavorites: string[], wasAdded: boolean }> {
-    const isFavorite = currentFavorites.includes(songId)
-    const delta = isFavorite ? -1 : 1
+    userId: string
+  ): Promise<{ favorited: boolean }> {
+    const { data, error } = await supabase.rpc('toggle_song_favorite', {
+      p_song_id: songId,
+      p_user_id: userId,
+    })
 
-    const newFavorites = isFavorite
-      ? currentFavorites.filter((id) => id !== songId)
-      : [...currentFavorites, songId]
-
-    // Guardar optimísticamente
-    this.saveFavorites(userId, newFavorites)
-
-    try {
-      // Actualizar en backend
-      await Promise.all([
-        updateLikeCount(songId, delta),
-        revalidateAfterLike(songSlug)
-      ])
-
-      return { newFavorites, wasAdded: !isFavorite }
-    } catch (error) {
-      // Revertir en caso de error
-      this.saveFavorites(userId, currentFavorites)
-      throw error
-    }
+    if (error != null) throw error
+    return data as { favorited: boolean }
   }
 
-  /**
-   * Verificar si una canción es favorita
-   */
-  static isFavorite (songId: string, favorites: string[]): boolean {
-    return favorites.includes(songId)
-  }
-
-  /**
-   * Limpiar favoritos de un usuario
-   */
-  static clearFavorites (userId: string): void {
-    if (typeof window === 'undefined') return
-    localStorage.removeItem(`${this.STORAGE_PREFIX}${userId}`)
+  static isFavorite(songId: string, favoriteIds: Set<string>): boolean {
+    return favoriteIds.has(songId)
   }
 }
