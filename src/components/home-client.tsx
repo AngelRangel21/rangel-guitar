@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import { Header } from "@/components/header/Header";
 import { Footer } from "@/components/footer";
 import { SongList } from "@/components/song-list";
 import type { Song } from "@/lib/types";
 import { useI18n } from "@/context/i18n-context";
-import { FeatureTour } from "./feature-tour";
 import { SongSearch } from "./search";
 
 /**
@@ -33,8 +31,6 @@ export function HomeClient({ initialSongs }: { initialSongs: Song[] }) {
         <SongList songs={initialSongs} />
       </main>
       <Footer />
-      {/* Componente para el tour de características (actualmente deshabilitado). */}
-      <FeatureTour />
     </>
   );
 }
