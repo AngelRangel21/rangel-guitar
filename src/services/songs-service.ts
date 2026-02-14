@@ -118,22 +118,3 @@ export async function getArtists(): Promise<string[]> {
   const artistNames = new Set(data.map((song) => song.artist));
   return Array.from(artistNames);
 }
-
-/**
- * Obtiene las canciones más populares según un campo específico (visitas o "me gusta").
- * @param {'visitCount' | 'likeCount'} field - El campo por el cual ordenar.
- * @param {number} count - El número de canciones a obtener.
- * @returns {Promise<Song[]>} - Un array con las canciones más populares.
- */
-export async function getTopSongsBy(
-  field: "visitCount" | "likeCount",
-  count: number
-): Promise<Song[]> {
-  const { data, error } = await supabase
-    .from("songs")
-    .select("*")
-    .order(field, { ascending: false })
-    .limit(count);
-  if (error) throw error;
-  return data.map(mapDataToSong);
-}
