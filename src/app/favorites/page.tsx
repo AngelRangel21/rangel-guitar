@@ -7,7 +7,7 @@ import { useI18n } from '@/context/i18n-context'
 import { Heart } from 'lucide-react'
 import { ProtectedPage } from '@/components/protected-page'
 import { JSX, useEffect, useState } from 'react'
-import type { Song } from '@/lib/types'
+import type { Song } from '@/types'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuthStore } from '@/stores/auth.store'
 import { supabase } from '@/lib/supabase'
@@ -37,7 +37,7 @@ function FavoritesContent (): JSX.Element {
       .select('*')
       .in('id', Array.from(favoritesIds))
       .eq('isPublished', true)
-      .then(({ data, error}) => {
+      .then(({ data, error }) => {
         if (error != null) {
           console.error('Error loading favorite songs: ', error)
           setFavoriteSongs([])

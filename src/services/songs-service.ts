@@ -1,7 +1,7 @@
 'use server'
 
 import { supabase } from '@/lib/supabase'
-import type { Song } from '@/lib/types'
+import type { Song } from '@/types'
 import { createSlug } from '@/lib/utils'
 
 /**

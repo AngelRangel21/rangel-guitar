@@ -1,56 +1,56 @@
-"use client";
+'use client'
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+  CardDescription
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useI18n } from "@/context/i18n-context";
-import React, { useState } from "react";
-import { revalidateAndRedirectAfterEdit } from "@/app/songs/[slug]/edit/actions";
-import type { Song } from "@/lib/types";
-import { updateSong } from "@/lib/client/songs";
-import { createSlug } from "@/lib/utils";
-import { Spinner } from "./ui/spinner";
-import { toast } from "sonner"
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { useI18n } from '@/context/i18n-context'
+import React, { useState } from 'react'
+import { revalidateAndRedirectAfterEdit } from '@/app/songs/[slug]/edit/actions'
+import type { Song } from '@/types'
+import { updateSong } from '@/lib/client/songs'
+import { createSlug } from '@/lib/utils'
+import { Spinner } from './ui/spinner'
+import { toast } from 'sonner'
 
 /**
  * Esquema de validación del formulario de edición utilizando Zod.
  * Define la estructura y las reglas de los datos del formulario.
  */
 const formSchema = z.object({
-  title: z.string().min(1, { message: "El título es obligatorio." }),
-  artist: z.string().min(1, { message: "El artista es obligatorio." }),
+  title: z.string().min(1, { message: 'El título es obligatorio.' }),
+  artist: z.string().min(1, { message: 'El artista es obligatorio.' }),
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.string().url({ message: "Debe ser una URL válida." }),
-});
+  coverArt: z.string().url({ message: 'Debe ser una URL válida.' })
+})
 
 /**
  * Formulario para que los administradores editen una canción existente.
  * @param {{ song: Song }} props - Propiedades con los datos de la canción a editar.
  * @returns {JSX.Element} El componente del formulario de edición.
  */
-export function EditSongForm({ song }: { song: Song }) {
-  const { t } = useI18n();
-  const [ isLoading, setIsLoading ] = useState(false);
+export function EditSongForm ({ song }: { song: Song }) {
+  const { t } = useI18n()
+  const [isLoading, setIsLoading] = useState(false)
 
   // Inicialización de react-hook-form con el esquema de Zod y los valores por defecto de la canción.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,62 +58,62 @@ export function EditSongForm({ song }: { song: Song }) {
     defaultValues: {
       title: song.title,
       artist: song.artist,
-      lyrics: song.lyrics || "",
-      chords: song.chords || "",
-      video: song.video || "",
-      coverArt: song.coverArt,
-    },
-  });
+      lyrics: song.lyrics || '',
+      chords: song.chords || '',
+      video: song.video || '',
+      coverArt: song.coverArt
+    }
+  })
 
   /**
    * Función que se ejecuta al enviar el formulario.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+  async function onSubmit (values: z.infer<typeof formSchema>) {
+    setIsLoading(true)
     try {
-      const slug = createSlug(values.title, values.artist);
+      const slug = createSlug(values.title, values.artist)
       const songData = {
         title: values.title,
         artist: values.artist,
-        slug: slug,
+        slug,
         lyrics: values.lyrics,
         chords: values.chords,
         video: values.video,
-        coverArt: values.coverArt,
-      };
+        coverArt: values.coverArt
+      }
 
       // Llama a la función del cliente para actualizar la canción en Firestore.
-      await updateSong(song.id, songData);
+      await updateSong(song.id, songData)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
-      await revalidateAndRedirectAfterEdit(slug, values.artist);
+      await revalidateAndRedirectAfterEdit(slug, values.artist)
     } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error) return;
-      console.error("Error al editar la cancion: ", error);
-      toast.error(t("songUpdateError"));
-      setIsLoading(false);
+      if (error) return
+      console.error('Error al editar la cancion: ', error)
+      toast.error(t('songUpdateError'))
+      setIsLoading(false)
     }
   }
 
   return (
-    <Card className="w-full max-w-2xl">
+    <Card className='w-full max-w-2xl'>
       <CardHeader>
-        <CardTitle>{t("editSongTitle")}</CardTitle>
+        <CardTitle>{t('editSongTitle')}</CardTitle>
         <CardDescription>
-          {t("editSongDescription", { title: song.title })}
+          {t('editSongDescription', { title: song.title })}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("tableTitle")}</FormLabel>
+                    <FormLabel>{t('tableTitle')}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -123,10 +123,10 @@ export function EditSongForm({ song }: { song: Song }) {
               />
               <FormField
                 control={form.control}
-                name="artist"
+                name='artist'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("tableArtist")}</FormLabel>
+                    <FormLabel>{t('tableArtist')}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -137,23 +137,22 @@ export function EditSongForm({ song }: { song: Song }) {
             </div>
             <FormField
               control={form.control}
-              name="chords"
+              name='chords'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("chordsAndLyrics")}</FormLabel>
+                  <FormLabel>{t('chordsAndLyrics')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="
+                      placeholder='
                                         [Intro]
 
                                         C G Am F
 
-
                                         [Verse]
 
-                                        C            La 
+                                        C            La
                                         primera línea de la canción...
-                                        "
+                                        '
                       rows={10}
                       {...field}
                     />
@@ -164,13 +163,13 @@ export function EditSongForm({ song }: { song: Song }) {
             />
             <FormField
               control={form.control}
-              name="lyrics"
+              name='lyrics'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("lyricsOnly")}</FormLabel>
+                  <FormLabel>{t('lyricsOnly')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Solo la letra de la cancion..."
+                      placeholder='Solo la letra de la cancion...'
                       rows={10}
                       {...field}
                     />
@@ -179,15 +178,15 @@ export function EditSongForm({ song }: { song: Song }) {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
-                name="video"
+                name='video'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ID del Video de YouTube (Opcional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="dQw4w9WgXcQ" {...field} />
+                      <Input placeholder='dQw4w9WgXcQ' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -195,7 +194,7 @@ export function EditSongForm({ song }: { song: Song }) {
               />
               <FormField
                 control={form.control}
-                name="coverArt"
+                name='coverArt'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>URL de la Portada</FormLabel>
@@ -207,19 +206,21 @@ export function EditSongForm({ song }: { song: Song }) {
                 )}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Spinner />
-                  <p>{t("saving")}</p>
-                </>
-              ) : (
-                t("saveChanges")
-              )}
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              {isLoading
+                ? (
+                  <>
+                    <Spinner />
+                    <p>{t('saving')}</p>
+                  </>
+                  )
+                : (
+                    t('saveChanges')
+                  )}
             </Button>
           </form>
         </Form>
       </CardContent>
     </Card>
-  );
+  )
 }

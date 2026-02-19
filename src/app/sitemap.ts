@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
-import { getSongs, getArtists } from '@/services/songs-service'
+import { getArtists } from '@/services/songs-service'
+import { getSongs } from '@/services/song.service'
 
 export default async function sitemap (): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://rangelguitar.com'
