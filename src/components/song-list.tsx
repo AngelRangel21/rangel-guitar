@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import React, { useState, useMemo, useEffect, Fragment } from "react";
-import { Grid, List } from "lucide-react";
-import type { Song } from "@/lib/types";
-import { Button } from "@/components/ui/button";
-import { SongCard } from "@/components/song-card";
-import { SongListItem } from "@/components/song-list-item";
+import { useState, useMemo, useEffect, Fragment, JSX } from 'react'
+import { Grid, List } from 'lucide-react'
+import type { Song } from '@/types'
+import { Button } from '@/components/ui/button'
+import { SongCard } from '@/components/song-card'
+import { SongListItem } from '@/components/song-list-item'
 import {
   Pagination,
   PaginationContent,
@@ -13,36 +13,36 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
-import { useI18n } from "@/context/i18n-context";
+  PaginationEllipsis
+} from '@/components/ui/pagination'
+import { useI18n } from '@/context/i18n-context'
 
 // Constante para el número de canciones a mostrar por página.
-const SONGS_PER_PAGE = 16;
+const SONGS_PER_PAGE = 16
 
 /**
  * Componente que muestra una lista de canciones con opciones de vista (cuadrícula/lista) y paginación.
  * @param {{ songs: Song[] }} props - Propiedades del componente, contiene la lista de canciones.
  * @returns {JSX.Element} El componente de la lista de canciones.
  */
-export function SongList({ songs }: { songs: Song[] }) {
-  const [ view, setView ] = useState<"grid" | "list">("list");
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const { t } = useI18n();
+export function SongList ({ songs }: { songs: Song[] }): JSX.Element {
+  const [view, setView] = useState<'grid' | 'list'>('list')
+  const [currentPage, setCurrentPage] = useState(1)
+  const { t } = useI18n()
 
   // Efecto para resetear la paginación a la página 1 cada vez que la lista de canciones cambia (ej. por una búsqueda).
   useEffect(() => {
-    setCurrentPage(1);
-  }, [ songs ]);
+    setCurrentPage(1)
+  }, [songs])
 
-  const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE);
+  const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE)
 
   // `useMemo` para calcular las canciones de la página actual solo cuando sea necesario.
   const currentSongs = useMemo(() => {
-    const start = (currentPage - 1) * SONGS_PER_PAGE;
-    const end = start + SONGS_PER_PAGE;
-    return songs.slice(start, end);
-  }, [ currentPage, songs ]);
+    const start = (currentPage - 1) * SONGS_PER_PAGE
+    const end = start + SONGS_PER_PAGE
+    return songs.slice(start, end)
+  }, [currentPage, songs])
 
   /**
    * Maneja el cambio de página.
@@ -50,34 +50,34 @@ export function SongList({ songs }: { songs: Song[] }) {
    */
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setCurrentPage(page)
     }
-  };
+  }
 
   /**
    * Renderiza los controles de paginación.
    * @returns {JSX.Element} El componente de paginación.
    */
   const renderPagination = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 3;
-    const halfMaxPages = Math.floor(maxPagesToShow / 2);
+    const pageNumbers = []
+    const maxPagesToShow = 3
+    const halfMaxPages = Math.floor(maxPagesToShow / 2)
 
-    let startPage = Math.max(2, currentPage - halfMaxPages);
-    let endPage = Math.min(totalPages - 1, currentPage + halfMaxPages);
+    let startPage = Math.max(2, currentPage - halfMaxPages)
+    let endPage = Math.min(totalPages - 1, currentPage + halfMaxPages)
 
     if (currentPage <= maxPagesToShow) {
-      startPage = 2;
-      endPage = Math.min(totalPages - 1, maxPagesToShow);
+      startPage = 2
+      endPage = Math.min(totalPages - 1, maxPagesToShow)
     }
 
     if (currentPage > totalPages - maxPagesToShow) {
-      startPage = Math.max(2, totalPages - maxPagesToShow);
-      endPage = totalPages - 1;
+      startPage = Math.max(2, totalPages - maxPagesToShow)
+      endPage = totalPages - 1
     }
 
     for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
+      pageNumbers.push(i)
     }
 
     return (
@@ -140,62 +140,64 @@ export function SongList({ songs }: { songs: Song[] }) {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    );
-  };
+    )
+  }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Controles para cambiar la vista */}
-      <section className="flex justify-end items-center">
-        <nav className="flex items-center gap-2">
+      <section className='flex justify-end items-center'>
+        <nav className='flex items-center gap-2'>
           <Button
-            variant={view === "list" ? "secondary" : "ghost"}
-            size="icon"
-            onClick={() => setView("list")}
-            aria-label={t("listView")}
+            variant={view === 'list' ? 'secondary' : 'ghost'}
+            size='icon'
+            onClick={() => setView('list')}
+            aria-label={t('listView')}
           >
-            <List className="h-5 w-5" />
+            <List className='h-5 w-5' />
           </Button>
           <Button
-            variant={view === "grid" ? "secondary" : "ghost"}
-            size="icon"
-            onClick={() => setView("grid")}
-            aria-label={t("gridView")}
+            variant={view === 'grid' ? 'secondary' : 'ghost'}
+            size='icon'
+            onClick={() => setView('grid')}
+            aria-label={t('gridView')}
           >
-            <Grid className="h-5 w-5" />
+            <Grid className='h-5 w-5' />
           </Button>
         </nav>
       </section>
 
       {songs.length === 0 ? (
         // Mensaje si no se encuentran canciones (ej. después de una búsqueda).
-        <div className="text-center py-16">
-          <p className="text-muted-foreground">{t("noSongsFound")}</p>
+        <div className='text-center py-16'>
+          <p className='text-muted-foreground'>{t('noSongsFound')}</p>
         </div>
       ) : (
         <>
           {/* Contenedor que cambia entre cuadrícula y lista */}
           <div
-            className={`transition-all duration-300 ${view === "grid"
-                ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6"
-                : "flex flex-col space-y-3"
+            className={`transition-all duration-300 ${view === 'grid'
+                ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
+                : 'flex flex-col space-y-3'
               }`}
           >
             {currentSongs.map((song) => (
               <Fragment key={song.id}>
-                {view === "grid" ? (
-                  <SongCard song={song} />
-                ) : (
-                  <SongListItem song={song} />
-                )}
+                {view === 'grid'
+                  ? (
+                    <SongCard song={song} />
+                    )
+                  : (
+                    <SongListItem song={song} />
+                    )}
               </Fragment>
             ))}
           </div>
 
           {/* Muestra la paginación si hay más de una página. */}
-          {totalPages > 1 && <div className="pt-6">{renderPagination()}</div>}
+          {totalPages > 1 && <div className='pt-6'>{renderPagination()}</div>}
         </>
       )}
     </div>
-  );
+  )
 }
