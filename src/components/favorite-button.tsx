@@ -1,11 +1,12 @@
-import { useAuth } from "@/hooks/useAuth"
-import { Button } from "./ui/button"
-import { useAuthStore } from "@/stores/auth.store"
-import { Song } from "@/lib/types"
-import { useI18n } from "@/context/i18n-context"
-import { Heart } from "lucide-react"
+import { useAuth } from '@/hooks/useAuth'
+import { Button } from './ui/button'
+import { useAuthStore } from '@/stores/auth.store'
+import { Song } from '@/types'
+import { useI18n } from '@/context/i18n-context'
+import { Heart } from 'lucide-react'
+import { JSX } from 'react'
 
-export function FavoriteButton ({ song }: { song: Song }) {
+export function FavoriteButton ({ song }: { song: Song }): JSX.Element {
   const { isAuthenticated } = useAuth()
   const toggleFavorite = useAuthStore((s) => s.toggleFavorite)
   const favoriteIds = useAuthStore((s) => s.favoriteIds)
@@ -18,7 +19,7 @@ export function FavoriteButton ({ song }: { song: Song }) {
         <Button
           variant='ghost'
           size='icon'
-          onClick={() => toggleFavorite(song.id)}
+          onClick={async () => await toggleFavorite(song.id)}
           aria-label={
             isFavorite(song.id)
               ? t('removeFromFavorites')
