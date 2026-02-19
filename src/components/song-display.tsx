@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, JSX } from 'react'
-import type { Song } from '@/lib/types'
+import type { Song } from '@/types'
 import {
   Card,
   CardContent,
@@ -70,8 +70,8 @@ export function SongDisplay ({
         {/* Columna izquierda: Portada, controles y metadatos */}
         <div className='lg:col-span-1'>
           <Card className='overflow-hidden lg:sticky lg:top-24'>
-            {song.video !== null
-              && (
+            {song.video !== null &&
+              (
                 <div className='w-full aspect-video'>
                   <LiteYouTubeEmbed
                     id={`${song.video}`}
@@ -243,7 +243,7 @@ export function SongDisplay ({
             <TabsContent value='chords'>
               <Card>
                 <CardContent className='p-6'>
-                  <ChordSheet text={song.chords || ''} transpose={transpose} />
+                  <ChordSheet text={song.chords ?? ''} transpose={transpose} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -251,7 +251,7 @@ export function SongDisplay ({
               <Card>
                 <CardContent className='p-6'>
                   <div className='whitespace-pre-wrap font-sans text-base leading-relaxed'>
-                    {song.lyrics || ''}
+                    {song.lyrics ?? ''}
                   </div>
                 </CardContent>
               </Card>
