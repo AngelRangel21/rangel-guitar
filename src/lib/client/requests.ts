@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 export interface SongRequestInput {
   title: string;
   artist: string;
+  user_id: string
 }
 
 /**
@@ -15,10 +16,11 @@ export interface SongRequestInput {
  */
 export async function addSongRequest(request: SongRequestInput): Promise<void> {
     const { error } = await supabase.from('songs_requests').insert({
-        ...request,
-        requestedAt: new Date(),
+        title: request.title,
+        artist: request.artist,
+        user_id: request.user_id
     });
-    if (error) throw error;
+    if (error != null) throw error;
 }
 
 /**
