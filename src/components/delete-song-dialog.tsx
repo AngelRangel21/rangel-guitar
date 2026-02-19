@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,21 +10,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import type { Song } from "@/lib/types";
-import { useI18n } from "@/context/i18n-context";
-import { revalidateAndRedirectAfterDelete } from "@/app/songs/[slug]/actions";
-import { deleteSong } from "@/lib/client/songs";
-import { Spinner } from "./ui/spinner";
-import { toast } from "sonner";
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import type { Song } from '@/types'
+import { useI18n } from '@/context/i18n-context'
+import { revalidateAndRedirectAfterDelete } from '@/app/songs/[slug]/actions'
+import { deleteSong } from '@/lib/client/songs'
+import { Spinner } from './ui/spinner'
+import { toast } from 'sonner'
 
 /**
  * Propiedades que el componente DeleteSongDialog espera recibir.
  */
 interface DeleteSongDialogProps {
-  song: Song;
-  children: React.ReactNode; // El elemento que activará el diálogo (ej. un botón).
+  song: Song
+  children: React.ReactNode // El elemento que activará el diálogo (ej. un botón).
 }
 
 /**
@@ -33,59 +33,61 @@ interface DeleteSongDialogProps {
  * @param {DeleteSongDialogProps} props - Propiedades del componente.
  * @returns {JSX.Element} El diálogo de alerta.
  */
-export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
-  const [ isLoading, setIsLoading ] = useState(false);
-  const { t } = useI18n();
+export function DeleteSongDialog ({ song, children }: DeleteSongDialogProps) {
+  const [isLoading, setIsLoading] = useState(false)
+  const { t } = useI18n()
 
   /**
    * Maneja la lógica de eliminación cuando el usuario confirma la acción.
    */
   const handleDelete = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       // Llama a la función del cliente para eliminar la canción de Firestore.
-      await deleteSong(song.id);
+      await deleteSong(song.id)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
-      await revalidateAndRedirectAfterDelete();
+      await revalidateAndRedirectAfterDelete()
     } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error) return;
+      if (error) return
 
       // Maneja errores reales que no son de redirección.
-      console.error("Failed to delete song:", error);
-      toast.error(t("songDeleteError"));
-      setIsLoading(false);
+      console.error('Failed to delete song:', error)
+      toast.error(t('songDeleteError'))
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("deleteSongConfirmTitle")}</AlertDialogTitle>
+          <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t("deleteSongConfirmDescription", { title: song.title })}
+            {t('deleteSongConfirmDescription', { title: song.title })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             disabled={isLoading}
-            className="bg-destructive hover:bg-destructive/90"
+            className='bg-destructive hover:bg-destructive/90'
           >
-            {isLoading ? (
-              <>
-                <Spinner />
-                <p>{t("deleting")}</p>
-              </>
-            ) : (
-              t("delete")
-            )}
+            {isLoading
+              ? (
+                <>
+                  <Spinner />
+                  <p>{t('deleting')}</p>
+                </>
+                )
+              : (
+                  t('delete')
+                )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }
