@@ -1,22 +1,20 @@
-import { Header } from "@/components/header/Header";
-import { Footer } from "@/components/footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { JSX } from 'react'
 
 /**
  * Página estática que muestra la política de cookies del sitio web.
  * Contiene información legal sobre el uso de cookies.
  * @returns {JSX.Element} La página de política de cookies.
  */
-export default function CookiePolicyPage() {
+export default function CookiePolicyPage (): JSX.Element {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Header />
-      <main className="grow container mx-auto px-4 py-8">
+    <div className='flex flex-col min-h-screen bg-background'>
+      <main className='grow container mx-auto px-4 py-8'>
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl">Política de Cookies</CardTitle>
+            <CardTitle className='text-3xl'>Política de Cookies</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6 text-muted-foreground prose prose-invert max-w-none">
+          <CardContent className='space-y-6 text-muted-foreground prose prose-invert max-w-none'>
             {/* Contenido de la política de cookies */}
             <p>
               Este sitio web, Rangel Guitar, utiliza cookies para mejorar su
@@ -25,7 +23,7 @@ export default function CookiePolicyPage() {
               navegador, ya que son esenciales para el funcionamiento de las
               funcionalidades básicas del sitio web.
             </p>
-            <h2 className="text-xl font-semibold text-foreground pt-4">
+            <h2 className='text-xl font-semibold text-foreground pt-4'>
               ¿Qué son las cookies?
             </h2>
             <p>
@@ -34,7 +32,7 @@ export default function CookiePolicyPage() {
               los sitios web funcionen, o funcionen de manera más eficiente, así
               como para proporcionar información a los propietarios del sitio.
             </p>
-            <h2 className="text-xl font-semibold text-foreground pt-4">
+            <h2 className='text-xl font-semibold text-foreground pt-4'>
               Cómo usamos las cookies
             </h2>
             <p>
@@ -47,7 +45,7 @@ export default function CookiePolicyPage() {
               no, en caso de que se utilicen para proporcionar un servicio que
               utiliza.
             </p>
-            <h2 className="text-xl font-semibold text-foreground pt-4">
+            <h2 className='text-xl font-semibold text-foreground pt-4'>
               Desactivación de Cookies
             </h2>
             <p>
@@ -62,7 +60,6 @@ export default function CookiePolicyPage() {
           </CardContent>
         </Card>
       </main>
-      <Footer />
     </div>
-  );
+  )
 }

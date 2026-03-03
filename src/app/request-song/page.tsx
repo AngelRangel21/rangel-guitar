@@ -1,7 +1,5 @@
 'use client'
 
-import { Header } from '@/components/header/Header'
-import { Footer } from '@/components/footer'
 import { RequestSongForm } from '@/components/request-song-form'
 import { ProtectedPage } from '@/components/protected-page'
 import { JSX } from 'react'
@@ -16,12 +14,10 @@ export default function RequestSongPage (): JSX.Element {
     // Componente que protege la página, requiriendo que el usuario esté autenticado.
     <ProtectedPage>
       <div className='flex flex-col min-h-screen bg-background'>
-        <Header />
         <main className='grow flex items-center justify-center container mx-auto px-4 py-8'>
           {/* Componente que contiene la lógica y la interfaz del formulario de solicitud. */}
           <RequestSongForm />
         </main>
-        <Footer />
       </div>
     </ProtectedPage>
   )

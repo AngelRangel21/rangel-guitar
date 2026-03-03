@@ -1,7 +1,5 @@
 'use client'
 
-import { Header } from '@/components/header/Header'
-import { Footer } from '@/components/footer'
 import { SongList } from '@/components/song-list'
 import type { Song } from '@/types'
 import { useI18n } from '@/context/i18n-context'
@@ -20,7 +18,6 @@ export function HomeClient ({ initialSongs }: { initialSongs: Song[] }): JSX.Ele
   return (
     <>
       {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
-      <Header />
       <main className='grow container mx-auto px-4 py-8 space-y-6'>
         <SongSearch />
         <div className='flex justify-between items-center'>
@@ -31,7 +28,6 @@ export function HomeClient ({ initialSongs }: { initialSongs: Song[] }): JSX.Ele
         {/* La lista de canciones recibe las canciones filtradas para renderizar. */}
         <SongList songs={initialSongs} />
       </main>
-      <Footer />
     </>
   )
 }

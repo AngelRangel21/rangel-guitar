@@ -1,11 +1,10 @@
-import { Header } from '@/components/header/Header'
-import { Footer } from '@/components/footer'
 import { getSongBySlug } from '@/services/songs-service'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { SongDisplay } from '@/components/song-display'
 import type { Song } from '@/types'
 import { getSongs } from '@/services/song.service'
+import { JSX } from 'react'
 
 /**
  * Genera los parámetros estáticos para todas las páginas de canciones en tiempo de compilación.
@@ -91,7 +90,7 @@ export default async function SongPage ({
   params
 }: {
   params: Promise<{ slug: string }>
-}) {
+}): Promise<JSX.Element> {
   const { slug } = await params
 
   // Obtiene los datos de la canción a partir de su slug.
@@ -131,12 +130,10 @@ export default async function SongPage ({
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      <Header />
       <main className='grow container mx-auto px-4 py-8 opacity-0 animate-content-in'>
         {/* Componente de cliente que maneja la visualización interactiva de la canción. */}
         <SongDisplay song={song} suggestedSongs={suggestedSongs} />
       </main>
-      <Footer />
     </div>
   )
 }

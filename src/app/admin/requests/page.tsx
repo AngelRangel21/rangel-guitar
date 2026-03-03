@@ -1,5 +1,3 @@
-import { Header } from '@/components/header/Header'
-import { Footer } from '@/components/footer'
 import { AdminRequestsContent } from '@/components/admin-requests-content'
 import { ProtectedPage } from '@/components/protected-page'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
@@ -39,13 +37,11 @@ export default function AdminRequestsPage (): JSX.Element {
     // Componente que protege la página, requiriendo autenticación de administrador.
     <ProtectedPage adminOnly>
       <div className='flex flex-col min-h-screen bg-background'>
-        <Header />
         <main className='grow container mx-auto px-4 py-8'>
           <Suspense fallback={<RequestsLoader />}>
             <AdminRequestsContent />
           </Suspense>
         </main>
-        <Footer />
       </div>
     </ProtectedPage>
   )

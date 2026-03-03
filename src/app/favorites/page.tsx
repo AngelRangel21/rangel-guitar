@@ -1,7 +1,5 @@
 'use client'
 
-import { Header } from '@/components/header/Header'
-import { Footer } from '@/components/footer'
 import { SongList } from '@/components/song-list'
 import { useI18n } from '@/context/i18n-context'
 import { Heart } from 'lucide-react'
@@ -97,12 +95,10 @@ export default function FavoritesPage (): JSX.Element {
     // Componente que protege la página, requiriendo autenticación.
     <ProtectedPage>
       <div className='flex flex-col min-h-screen bg-background'>
-        <Header />
         <main className='grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in'>
           {/* El contenido se maneja en un componente separado. */}
           <FavoritesContent />
         </main>
-        <Footer />
       </div>
     </ProtectedPage>
   )

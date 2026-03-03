@@ -42,7 +42,7 @@ export default function DesktopNav (): JSX.Element {
     fetchInitialRequests()
 
     const channel = supabase
-      .channel('song-requests-chanel')
+      .channel('song-requests-channel')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'songs_requests' },
@@ -62,15 +62,15 @@ export default function DesktopNav (): JSX.Element {
   const baseLinks = [
     { href: '/', label: 'Inicio', title: 'Titulo Pagina Principal' },
     { href: '/artists', label: 'Artistas', title: 'Pagina artistas' },
-    {
-      href: '/top-charts',
-      label: 'Top canciones',
-      title: 'Pagina top canciones'
-    },
+    // {
+    //   href: '/top-charts',
+    //   label: 'Top canciones',
+    //   title: 'Pagina top canciones'
+    // },
     {
       href: '/request-song',
       label: 'Solicitar',
-      title: 'Pagina de solicitar cancion'
+      title: 'Pagina de solicitar canción'
     },
     { href: '/learn', label: 'Aprender', title: 'Pagina para aprender' }
   ]
@@ -96,7 +96,7 @@ export default function DesktopNav (): JSX.Element {
     {
       href: '/admin/upload-song',
       label: 'Subir',
-      title: 'Pagina para subir cancion'
+      title: 'Pagina para subir canción'
     }
   ]
 

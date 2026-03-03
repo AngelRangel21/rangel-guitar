@@ -1,28 +1,25 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { JSX } from 'react'
 
 /**
  * Página de error 404 personalizada.
  * Se muestra cuando un usuario intenta acceder a una ruta que no existe.
  * @returns {JSX.Element} La página 404.
  */
-export default function NotFound() {
+export default function NotFound (): JSX.Element {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Header />
-      <main className="grow flex flex-col items-center justify-center text-center px-4">
-        <h1 className="text-9xl font-bold text-primary">404</h1>
-        <h2 className="mt-4 text-3xl font-semibold text-foreground">Página No Encontrada</h2>
-        <p className="mt-2 text-muted-foreground">
+    <div className='flex flex-col min-h-screen bg-background'>
+      <main className='grow flex flex-col items-center justify-center text-center px-4'>
+        <h1 className='text-9xl font-bold text-primary'>404</h1>
+        <h2 className='mt-4 text-3xl font-semibold text-foreground'>Página No Encontrada</h2>
+        <p className='mt-2 text-muted-foreground'>
           Lo sentimos, no pudimos encontrar la página que estás buscando.
         </p>
-        <Button asChild className="mt-6">
-          <Link href="/">Volver al Inicio</Link>
+        <Button asChild className='mt-6'>
+          <Link href='/'>Volver al Inicio</Link>
         </Button>
       </main>
-      <Footer />
     </div>
-  );
+  )
 }
