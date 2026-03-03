@@ -7,6 +7,8 @@ import { I18nProvider } from '@/context/i18n-context'
 import { ThemeProvider } from '@/context/theme-provider'
 import Script from 'next/script'
 import { AuthProvider } from '@/providers/auth.provider'
+import { Header } from '@/components/header/Header'
+import { Footer } from '@/components/footer'
 
 // Configuración de la fuente 'Inter' de Google Fonts.
 const inter = Inter({
@@ -185,7 +187,9 @@ export default function RootLayout ({
           <I18nProvider>
             {/* Proveedor de autenticación para gestionar el estado del usuario. */}
             <AuthProvider>
+              <Header />
               {children}
+              <Footer />
             </AuthProvider>
           </I18nProvider>
         </ThemeProvider>
