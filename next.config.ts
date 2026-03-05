@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 // import withPWAInit from "@ducanh2912/next-pwa";
 
 // Inicializa el plugin de Next.js para Progressive Web Apps (PWA).
@@ -15,19 +15,25 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true
   },
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "img.youtube.com",
-        port: "",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        port: '',
+        pathname: '/**'
       },
-    ],
-  },
-};
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**'
+      }
+    ]
+  }
+}
 
 // export default withPWA(nextConfig);
-export default nextConfig;
+export default nextConfig
