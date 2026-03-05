@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect, Fragment, JSX } from 'react'
-import { Grid, List } from 'lucide-react'
+import { LayoutGrid, List } from 'lucide-react'
 import type { Song } from '@/types'
 import { Button } from '@/components/ui/button'
 import { SongCard } from '@/components/song-card'
@@ -162,7 +162,7 @@ export function SongList ({ songs }: { songs: Song[] }): JSX.Element {
             onClick={() => setView('grid')}
             aria-label={t('gridView')}
           >
-            <Grid className='h-5 w-5' />
+            <LayoutGrid className='h-5 w-5' />
           </Button>
         </nav>
       </section>
