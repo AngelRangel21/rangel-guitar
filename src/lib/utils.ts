@@ -18,8 +18,8 @@ export function cn(...inputs: ClassValue[]) {
  * @param {string} artist - El artista de la canción.
  * @returns {string} - El slug generado.
  */
-export const createSlug = (title: string, artist: string): string => {
-    const combined = `${title} ${artist}`;
+export const createSlug = (title: string): string => {
+    const combined = `${title}`;
     return combined.toLowerCase()
         .replace(/&/g, 'and') // Reemplaza '&' por 'and'.
         .replace(/[^a-z0-9\s-]/g, '') // Elimina caracteres no alfanuméricos (excepto espacios y guiones).
