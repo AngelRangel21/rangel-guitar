@@ -57,27 +57,27 @@ export function Footer (): JSX.Element {
         </div>
         <div className='flex flex-col md:flex-row justify-between items-center text-xs gap-4'>
           <div className='flex gap-8'>
-            <a
+            <Link
               className='hover:text-white transition-colors'
               href='/privacy-policy'
               title='Ir a la pagina de Política de Privacidad de Rangel Guitar'
             >
               Política de Privacidad
-            </a>
-            <a
+            </Link>
+            <Link
               className='hover:text-white transition-colors'
               href='/security'
               title='Ir a la pagina de Política de Seguridad de Rangel Guitar'
             >
               Seguridad
-            </a>
-            <a
+            </Link>
+            <Link
               className='hover:text-white transition-colors'
               href='/cookie-policy'
               title='Ir a la pagina de Política de Cookies de Rangel Guitar'
             >
               Política de Cookies
-            </a>
+            </Link>
           </div>
           <p>© {currentYear} Rangel Guitar. Todos los derechos reservados.</p>
         </div>
