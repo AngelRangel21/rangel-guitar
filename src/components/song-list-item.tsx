@@ -40,7 +40,7 @@ export function SongListItem ({ song }: { song: SongWithArtist }): JSX.Element {
         <div className='flex items-center gap-6'>
           <Link
             href={`/songs/${song.slug}`}
-            className='dark:hover:bg-slate-950 bg-slate-800 text-slate-200 px-5 py-2 rounded-xl text-sm font-bold transition-all border whitespace-nowrap'
+            className='hidden md:block dark:hover:bg-slate-950 bg-slate-800 text-slate-200 px-5 py-2 rounded-xl text-sm font-bold transition-all border whitespace-nowrap'
           >
             Ver Acordes
           </Link>
