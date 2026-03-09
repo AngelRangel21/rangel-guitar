@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { User } from 'lucide-react'
 import { ArtistCount } from '@/types/app.types'
 import { getArtistImage } from '@/services/artists.service'
+import { JSX } from 'react'
 
 /**
  * Componente que muestra una tarjeta individual para un artista.
@@ -11,15 +12,13 @@ import { getArtistImage } from '@/services/artists.service'
  * @param {{ artistName: string }} props - Propiedades del componente, contiene el nombre del artista.
  * @returns {JSX.Element} La tarjeta del artista.
  */
-export function ArtistCard({ artist }: { artist: ArtistCount }) {
+export function ArtistCard ({ artist }: { artist: ArtistCount }): JSX.Element {
   const songCount = artist.songs_2?.[0]?.count ?? 0
 
   const imageUrl = artist.image_url
     ? getArtistImage(artist.image_url)
     : 'https://placehold.co/400x400.png'
-  
-  console.log(imageUrl)
-  
+
   return (
     // Enlace que envuelve toda la tarjeta para la navegación.
     <Link href={`/artists/${artist.slug}`} aria-label={`Ver canciones de ${artist.name}`}>
@@ -33,6 +32,8 @@ export function ArtistCard({ artist }: { artist: ArtistCount }) {
             height={400}
             className='aspect-square object-cover w-full transition-transform duration-300 group-hover:scale-105'
             data-ai-hint='musician portrait'
+            priority={false}
+            loading='lazy'
           />
           {/* Superposición con icono que aparece al pasar el ratón. */}
           <div className='absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
@@ -42,15 +43,17 @@ export function ArtistCard({ artist }: { artist: ArtistCount }) {
         <div className='p-3 grow flex items-center justify-between'>
           {/* Nombre del artista. */}
           <h3 className='font-semibold text-foreground truncate'>{artist.name}</h3>
-            {songCount === 1 ? (
-              <p className="flex flex-row text-xs text-muted-foreground truncate">
+          {songCount === 1
+            ? (
+              <p className='flex flex-row text-xs text-muted-foreground truncate'>
                 {songCount} canción
               </p>
-          ) : (
-              <p className="flex flex-row text-xs text-muted-foreground truncate">
+              )
+            : (
+              <p className='flex flex-row text-xs text-muted-foreground truncate'>
                 {songCount} canciones
               </p>
-            )}
+              )}
         </div>
       </Card>
     </Link>
