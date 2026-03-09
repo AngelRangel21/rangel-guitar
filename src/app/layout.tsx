@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { JSX } from 'react'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -126,7 +126,7 @@ export default function RootLayout ({
   children
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>): JSX.Element {
   return (
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html
