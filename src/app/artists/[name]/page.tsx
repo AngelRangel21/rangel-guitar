@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Footer } from '@/components/footer'
 import { getSongsByArtist } from '@/services/songs-service'
 import { notFound } from 'next/navigation'
 import { ArtistDetailContent } from '@/components/artist-detail-content'
@@ -73,7 +72,6 @@ export default async function ArtistDetailPage ({
       <div className='flex flex-col min-h-screen bg-background'>
         {/* El contenido principal se delega a un Client Component para permitir interactividad y hooks. */}
         <ArtistDetailContent artistName={artistName} songs={artistSongs} />
-        <Footer />
       </div>
     )
   } catch (error) {
