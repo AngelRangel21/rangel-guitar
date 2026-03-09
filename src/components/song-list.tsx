@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, Fragment, JSX } from 'react'
 import { LayoutGrid, List } from 'lucide-react'
-import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 import { Button } from '@/components/ui/button'
 import { SongCard } from '@/components/song-card'
 import { SongListItem } from '@/components/song-list-item'
@@ -25,7 +25,7 @@ const SONGS_PER_PAGE = 16
  * @param {{ songs: Song[] }} props - Propiedades del componente, contiene la lista de canciones.
  * @returns {JSX.Element} El componente de la lista de canciones.
  */
-export function SongList ({ songs }: { songs: Song[] }): JSX.Element {
+export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
   const [view, setView] = useState<'grid' | 'list'>('list')
   const [currentPage, setCurrentPage] = useState(1)
   const { t } = useI18n()

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, JSX } from 'react'
-import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 import {
   Card,
   CardContent,
@@ -39,8 +39,8 @@ export function SongDisplay ({
   song,
   suggestedSongs
 }: {
-  song: Song
-  suggestedSongs: Song[]
+  song: SongWithArtist
+  suggestedSongs: SongWithArtist[]
 }): JSX.Element {
   const [transpose, setTranspose] = useState(0)
   const { t } = useI18n()
@@ -62,7 +62,7 @@ export function SongDisplay ({
     return `${direction} ${t('semitones')}`
   }
 
-  const shareText = t('shareText', { title: song.title, artist: song.artist })
+  const shareText = t('shareText', { title: song.title ?? '', artist: song.artist?.name ?? '' })
 
   return (
     <div className='opacity-0 animate-content-in'>
@@ -75,7 +75,7 @@ export function SongDisplay ({
                 <div className='w-full aspect-video'>
                   <LiteYouTubeEmbed
                     id={`${song.video}`}
-                    title={`Video de la cancion ${song.title} del artista ${song.artist}`}
+                    title={`Video de la canción ${song.title} del artista ${song.artist}`}
                     lazyLoad
                     poster='maxresdefault'
                     webp
@@ -86,7 +86,7 @@ export function SongDisplay ({
               <div className='flex justify-between items-start'>
                 <div>
                   <CardTitle className='text-2xl'>{song.title}</CardTitle>
-                  <CardDescription>{song.artist}</CardDescription>
+                  <CardDescription>{song.artist?.name ?? 'Artista desconocido'}</CardDescription>
                 </div>
                 {/* Botón de Favoritos (solo para usuarios autenticados) */}
                 <FavoriteButton song={song} />

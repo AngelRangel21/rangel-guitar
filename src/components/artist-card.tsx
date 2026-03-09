@@ -2,6 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { User } from 'lucide-react'
+import { ArtistCount } from '@/types/app.types'
+import { getArtistImage } from '@/services/artists.service'
 
 /**
  * Componente que muestra una tarjeta individual para un artista.
@@ -9,16 +11,24 @@ import { User } from 'lucide-react'
  * @param {{ artistName: string }} props - Propiedades del componente, contiene el nombre del artista.
  * @returns {JSX.Element} La tarjeta del artista.
  */
-export function ArtistCard ({ artistName }: { artistName: string }) {
+export function ArtistCard({ artist }: { artist: ArtistCount }) {
+  const songCount = artist.songs_2?.[0]?.count ?? 0
+
+  const imageUrl = artist.image_url
+    ? getArtistImage(artist.image_url)
+    : 'https://placehold.co/400x400.png'
+  
+  console.log(imageUrl)
+  
   return (
     // Enlace que envuelve toda la tarjeta para la navegación.
-    <Link href={`/artists/${encodeURIComponent(artistName)}`} aria-label={`Ver canciones de ${artistName}`}>
+    <Link href={`/artists/${artist.slug}`} aria-label={`Ver canciones de ${artist.name}`}>
       <Card className='group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full h-full cursor-pointer flex flex-col'>
         <div className='relative'>
           {/* Imagen del artista. */}
           <Image
-            src='https://placehold.co/400x400.png'
-            alt={`Foto de ${artistName}`}
+            src={imageUrl}
+            alt={`Foto de ${artist.name}`}
             width={400}
             height={400}
             className='aspect-square object-cover w-full transition-transform duration-300 group-hover:scale-105'
@@ -29,9 +39,18 @@ export function ArtistCard ({ artistName }: { artistName: string }) {
             <User className='h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0' />
           </div>
         </div>
-        <div className='p-3 grow flex items-center justify-center'>
+        <div className='p-3 grow flex items-center justify-between'>
           {/* Nombre del artista. */}
-          <h3 className='font-semibold text-foreground truncate w-full'>{artistName}</h3>
+          <h3 className='font-semibold text-foreground truncate'>{artist.name}</h3>
+            {songCount === 1 ? (
+              <p className="flex flex-row text-xs text-muted-foreground truncate">
+                {songCount} canción
+              </p>
+          ) : (
+              <p className="flex flex-row text-xs text-muted-foreground truncate">
+                {songCount} canciones
+              </p>
+            )}
         </div>
       </Card>
     </Link>

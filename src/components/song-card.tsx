@@ -1,4 +1,4 @@
-import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 import Link from 'next/link'
 import { JSX } from 'react'
 import Image from 'next/image'
@@ -8,7 +8,7 @@ import { FavoriteButton } from './favorite-button'
  * Propiedades que el componente SongCard espera recibir.
  */
 interface SongCardProps {
-  song: Song
+  song: SongWithArtist
 }
 
 /**
@@ -21,7 +21,7 @@ export function SongCard ({ song }: SongCardProps): JSX.Element {
     <div className='group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300'>
       <div className='h-auto w-auto aspect-video relative overflow-hidden'>
         <Image
-          alt={`${song.title} - ${song.artist}`}
+          alt={`${song.title} - ${song.artist.name}`}
           className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
           src={`${song.coverArt ?? ''}`}
           width='70'
@@ -36,7 +36,7 @@ export function SongCard ({ song }: SongCardProps): JSX.Element {
         >
           {song.title}
         </Link>
-        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{song.artist}</p>
+        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{song.artist.name}</p>
         <div className='flex items-center justify-between'>
           <button className='bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-slate-900 transition-all'>Ver Acordes</button>
           <FavoriteButton song={song} />

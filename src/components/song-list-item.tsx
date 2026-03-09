@@ -1,21 +1,21 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 import { JSX } from 'react'
 import { FavoriteButton } from './favorite-button'
 
-export function SongListItem ({ song }: { song: Song }): JSX.Element {
+export function SongListItem ({ song }: { song: SongWithArtist }): JSX.Element {
   return (
     <div
       className='flex flex-col gap-2'
-      title={`${song.title} - ${song.artist}`}
+      title={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
     >
       <div
         className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#1E293B] border border-transparent hover:border-slate-800 rounded-xl transition-all duration-200 group'
       >
         <div className='h-auto w-auto aspect-video relative overflow-hidden'>
           <Image
-            alt={`${song.title} - ${song.artist}`}
+            alt={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
             className='rounded-lg object-cover shrink-0'
             src={`${song.coverArt ?? ''}`}
             width='80'
@@ -34,7 +34,7 @@ export function SongListItem ({ song }: { song: Song }): JSX.Element {
           <p
             className='text-slate-400 text-sm'
           >
-            {song.artist}
+            {song.artist?.name ?? 'Unknown Artist'}
           </p>
         </div>
         <div className='flex items-center gap-6'>

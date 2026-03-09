@@ -1,7 +1,7 @@
 'use client'
 
 import { SongList } from '@/components/song-list'
-import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 import { useI18n } from '@/context/i18n-context'
 import { SongSearch } from './search'
 import { JSX } from 'react'
@@ -12,7 +12,7 @@ import { JSX } from 'react'
  * @param {{ initialSongs: Song[] }} props - Propiedades que contienen la lista inicial de canciones.
  * @returns {JSX.Element} El componente de la página de inicio.
  */
-export function HomeClient ({ initialSongs }: { initialSongs: Song[] }): JSX.Element {
+export function HomeClient ({ initialSongs }: { initialSongs: SongWithArtist[] }): JSX.Element {
   const { t } = useI18n()
 
   return (

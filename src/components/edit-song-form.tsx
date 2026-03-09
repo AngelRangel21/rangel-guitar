@@ -1,34 +1,29 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription
-} from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+
 import { useI18n } from '@/context/i18n-context'
-import React, { useState } from 'react'
-import { revalidateAndRedirectAfterEdit } from '@/app/songs/[slug]/edit/actions'
-import type { Song } from '@/types'
-import { updateSong } from '@/lib/client/songs'
+
+import type { SongWithArtist, Artist } from '@/types/app.types'
+
+import { updateSong } from '@/services/song.service'
 import { createSlug } from '@/lib/utils'
+import { getArtists } from '@/services/artists.service'
+
 import { Spinner } from './ui/spinner'
 import { toast } from 'sonner'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
+
+import { revalidateAndRedirectAfterEdit } from '@/app/songs/[slug]/edit/actions'
 
 /**
  * Esquema de validación del formulario de edición utilizando Zod.
@@ -36,7 +31,7 @@ import { toast } from 'sonner'
  */
 const formSchema = z.object({
   title: z.string().min(1, { message: 'El título es obligatorio.' }),
-  artist: z.string().min(1, { message: 'El artista es obligatorio.' }),
+  artist_id: z.string().min(1, { message: 'El artista es obligatorio.' }),
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
@@ -48,34 +43,44 @@ const formSchema = z.object({
  * @param {{ song: Song }} props - Propiedades con los datos de la canción a editar.
  * @returns {JSX.Element} El componente del formulario de edición.
  */
-export function EditSongForm ({ song }: { song: Song }) {
+export function EditSongForm ({ song }: { song: SongWithArtist }) {
   const { t } = useI18n()
+  const [artists, setArtists] = useState<Artist[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   // Inicialización de react-hook-form con el esquema de Zod y los valores por defecto de la canción.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: song.title,
-      artist: song.artist,
-      lyrics: song.lyrics || '',
-      chords: song.chords || '',
-      video: song.video || '',
-      coverArt: song.coverArt
+      title: song.title ?? '',
+      artist_id: song.artist.name ?? '',
+      lyrics: song.lyrics ?? '',
+      chords: song.chords ?? '',
+      video: song.video ?? '',
+      coverArt: song.coverArt ?? ''
     }
   })
+
+  useEffect(() => {
+    getArtists().then(setArtists)
+  }, [])
+
+  
 
   /**
    * Función que se ejecuta al enviar el formulario.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
-  async function onSubmit (values: z.infer<typeof formSchema>) {
+  async function onSubmit (values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
+
     try {
-      const slug = createSlug(values.title, values.artist)
+      const artist = artists.find(a => a.id === values.artist_id)
+      const slug = createSlug(values.title)
+
       const songData = {
         title: values.title,
-        artist: values.artist,
+        artist_id: values.artist_id,
         slug,
         lyrics: values.lyrics,
         chords: values.chords,
@@ -83,14 +88,24 @@ export function EditSongForm ({ song }: { song: Song }) {
         coverArt: values.coverArt
       }
 
-      // Llama a la función del cliente para actualizar la canción en Firestore.
+      // Llama a la función del cliente para actualizar la canción en Supabase.
       await updateSong(song.id, songData)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
-      await revalidateAndRedirectAfterEdit(slug, values.artist)
+      try {
+        await revalidateAndRedirectAfterEdit(
+          artist?.name ?? "",
+          slug
+        )
+      } catch (err) {
+        console.error("Error en redirect:", err)
+      }
+
+      toast.success('La canción se ha actualizado correctamente')
+
     } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
       if (error) return
-      console.error('Error al editar la cancion: ', error)
+      console.error('Error al editar la canción: ', error)
       toast.error(t('songUpdateError'))
       setIsLoading(false)
     }
@@ -101,12 +116,15 @@ export function EditSongForm ({ song }: { song: Song }) {
       <CardHeader>
         <CardTitle>{t('editSongTitle')}</CardTitle>
         <CardDescription>
-          {t('editSongDescription', { title: song.title })}
+          {t('editSongDescription', { title: song.title ?? '' })}
         </CardDescription>
       </CardHeader>
+
       <CardContent>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
@@ -121,20 +139,44 @@ export function EditSongForm ({ song }: { song: Song }) {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
-                name='artist'
+                name='artist_id'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('tableArtist')}</FormLabel>
+
                     <FormControl>
-                      <Input {...field} />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar artista" />
+                          </SelectTrigger>
+                        </FormControl>
+
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Artistas</SelectLabel>
+                            {artists.map((artist) => (
+                                  <SelectItem key={artist.id} value={artist.id}>
+                                    {artist.name}
+                                  </SelectItem>
+                              ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name='chords'
@@ -143,16 +185,16 @@ export function EditSongForm ({ song }: { song: Song }) {
                   <FormLabel>{t('chordsAndLyrics')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='
-                                        [Intro]
+                      placeholder={`
+[Intro]
 
-                                        C G Am F
+C G Am F
 
-                                        [Verse]
+[Verse]
 
-                                        C            La
-                                        primera línea de la canción...
-                                        '
+C            La
+primera línea de la canción...
+                      `}
                       rows={10}
                       {...field}
                     />
@@ -169,7 +211,7 @@ export function EditSongForm ({ song }: { song: Song }) {
                   <FormLabel>{t('lyricsOnly')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='Solo la letra de la cancion...'
+                      placeholder='Solo la letra de la canción...'
                       rows={10}
                       {...field}
                     />

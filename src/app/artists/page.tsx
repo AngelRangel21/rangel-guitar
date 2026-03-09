@@ -1,5 +1,5 @@
 import { ArtistList } from '@/components/artist-list'
-import { getArtists } from '@/services/songs-service'
+import { getArtists } from '@/services/artists.service'
 import { JSX } from 'react'
 
 /**

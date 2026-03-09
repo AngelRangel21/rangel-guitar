@@ -1,7 +1,6 @@
-/* eslint-disable react/react-in-jsx-scope */
 import { HomeClient } from '@/components/home-client'
-import { getSongs } from '@/services/song.service'
-import type { Song } from '@/types'
+import { getSongByArtist } from '@/services/song.service'
+import type { SongWithArtist } from '@/types/app.types'
 import { Metadata } from 'next'
 import { JSX } from 'react'
 
@@ -36,11 +35,11 @@ const jsonLd = {
  */
 export default async function Home (): Promise<JSX.Element> {
   // Inicializa un array para almacenar todas las canciones.
-  let allSongs: Song[] = []
+  let allSongs: SongWithArtist[] = []
   let error: Error | null = null
 
   try {
-    allSongs = await getSongs()
+    allSongs = await getSongByArtist()
   } catch (err) {
     error = err instanceof Error ? err : new Error('Unknown error')
 

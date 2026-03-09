@@ -15,7 +15,7 @@ import {
 import type { Song } from '@/types'
 import { useI18n } from '@/context/i18n-context'
 import { revalidateAndRedirectAfterDelete } from '@/app/songs/[slug]/actions'
-import { deleteSong } from '@/lib/client/songs'
+import { deleteSong } from '@/services/song.service'
 import { Spinner } from './ui/spinner'
 import { toast } from 'sonner'
 
@@ -43,7 +43,7 @@ export function DeleteSongDialog ({ song, children }: DeleteSongDialogProps) {
   const handleDelete = async () => {
     setIsLoading(true)
     try {
-      // Llama a la función del cliente para eliminar la canción de Firestore.
+      // Llama a la función del cliente para eliminar la canción de Supabase.
       await deleteSong(song.id)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       await revalidateAndRedirectAfterDelete()
@@ -65,7 +65,7 @@ export function DeleteSongDialog ({ song, children }: DeleteSongDialogProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {t('deleteSongConfirmDescription', { title: song.title })}
+            {t('deleteSongConfirmDescription', { title: song.title ?? '' })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

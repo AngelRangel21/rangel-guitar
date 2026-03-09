@@ -1,9 +1,8 @@
-import { getSongBySlug } from '@/services/songs-service'
+import { getSongBySlug, getSongByArtist } from '@/services/song.service'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { SongDisplay } from '@/components/song-display'
-import type { Song } from '@/types'
-import { getSongs } from '@/services/song.service'
+import type { SongWithArtist } from '@/types/app.types'
 import { JSX } from 'react'
 
 /**
@@ -11,8 +10,10 @@ import { JSX } from 'react'
  * Esto permite a Next.js pre-renderizar cada página de canción, mejorando el rendimiento.
  * @returns {Promise<{ slug: string }[]>} Un array de objetos con los slugs de todas las canciones.
  */
-export async function generateStaticParams () {
-  const songs = await getSongs()
+export async function generateStaticParams (): Promise<Array<{
+  slug: string | null
+}>> {
+  const songs = await getSongByArtist()
   return songs.map((song) => ({ slug: song.slug }))
 }
 
@@ -38,19 +39,19 @@ export async function generateMetadata ({
 
   const songSlice = `${song.lyrics}`.slice(0, 55)
 
-  const description = `${song.artist} - ${song.title} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`
+  const description = `${song.artist.name} - ${song.title} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`
 
   return {
-    title: `${song.title} - ${song.artist}`,
+    title: `${song.title} - ${song.artist.name}`,
     description,
     openGraph: {
-      title: `${song.title} - ${song.artist}`,
+      title: `${song.title} - ${song.artist.name}`,
       description,
       type: 'music.song',
       url: `/songs/${song.slug}`,
       images: [
         {
-          url: song.coverArt,
+          url: song.coverArt ?? '',
           width: 600,
           height: 600,
           alt: `Portada de ${song.title}`
@@ -58,10 +59,10 @@ export async function generateMetadata ({
       ]
     },
     twitter: {
-      title: `${song.title} - ${song.artist}`,
+      title: `${song.title} - ${song.artist.name}`,
       description,
       card: 'summary_large_image',
-      images: [song.coverArt],
+      images: [song.coverArt ?? ''],
       creator: '@rangelguitar'
     },
     verification: {
@@ -102,18 +103,18 @@ export default async function SongPage ({
   }
 
   // --- Lógica de Sugerencias ---
-  const allSongs = await getSongs()
+  const allSongs = await getSongByArtist()
   const MAX_SUGGESTIONS = 6
 
   // 1. Obtiene otras canciones del mismo artista.
-  let suggestedSongs: Song[] = allSongs.filter(
-    (s) => s.artist === song.artist && s.id !== song.id
+  let suggestedSongs: SongWithArtist[] = allSongs.filter(
+    (s) => s.artist.id === song.artist_id && s.id !== song.id
   )
 
   // 2. Si no hay suficientes, obtiene canciones aleatorias de otros artistas.
   if (suggestedSongs.length < MAX_SUGGESTIONS) {
     const otherSongs = allSongs.filter(
-      (s) => s.artist !== song.artist && s.id !== song.id
+      (s) => s.artist.id !== song.artist_id && s.id !== song.id
     )
 
     const remainingNeeded = MAX_SUGGESTIONS - suggestedSongs.length

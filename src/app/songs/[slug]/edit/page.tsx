@@ -1,5 +1,5 @@
 import { EditSongForm } from '@/components/edit-song-form'
-import { getSongBySlug } from '@/services/songs-service'
+import { getSongBySlug } from '@/services/song.service'
 import { notFound } from 'next/navigation'
 import { ProtectedPage } from '@/components/protected-page'
 
