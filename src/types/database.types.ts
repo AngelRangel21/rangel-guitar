@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      artists: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          slug: string
+          update_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          slug: string
+          update_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          slug?: string
+          update_at?: string
+        }
+        Relationships: []
+      }
       song_comments: {
         Row: {
           content: string
@@ -48,13 +75,6 @@ export type Database = {
             columns: ["song_id"]
             isOneToOne: false
             referencedRelation: "songs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "song_comments_song_fk"
-            columns: ["song_id"]
-            isOneToOne: false
-            referencedRelation: "songs_with_counts"
             referencedColumns: ["id"]
           },
           {
@@ -94,13 +114,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "song_favorites_song_fk"
-            columns: ["song_id"]
-            isOneToOne: false
-            referencedRelation: "songs_with_counts"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "song_favorites_user_fk"
             columns: ["user_id"]
             isOneToOne: false
@@ -134,13 +147,6 @@ export type Database = {
             columns: ["song_id"]
             isOneToOne: false
             referencedRelation: "songs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "song_likes_song_fk"
-            columns: ["song_id"]
-            isOneToOne: false
-            referencedRelation: "songs_with_counts"
             referencedColumns: ["id"]
           },
           {
@@ -183,13 +189,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "song_visits_song_fk"
-            columns: ["song_id"]
-            isOneToOne: false
-            referencedRelation: "songs_with_counts"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "song_visits_user_fk"
             columns: ["user_id"]
             isOneToOne: false
@@ -206,6 +205,7 @@ export type Database = {
           createdAt: string | null
           id: string
           isPublished: boolean | null
+          key: string | null
           lyrics: string | null
           slug: string | null
           title: string | null
@@ -219,6 +219,7 @@ export type Database = {
           createdAt?: string | null
           id?: string
           isPublished?: boolean | null
+          key?: string | null
           lyrics?: string | null
           slug?: string | null
           title?: string | null
@@ -232,6 +233,7 @@ export type Database = {
           createdAt?: string | null
           id?: string
           isPublished?: boolean | null
+          key?: string | null
           lyrics?: string | null
           slug?: string | null
           title?: string | null
@@ -239,6 +241,59 @@ export type Database = {
           video?: string | null
         }
         Relationships: []
+      }
+      songs_2: {
+        Row: {
+          artist_id: string | null
+          chords: string | null
+          coverArt: string | null
+          createdAt: string | null
+          id: string
+          isPublished: boolean | null
+          key: string | null
+          lyrics: string | null
+          slug: string | null
+          title: string | null
+          updatedAt: string | null
+          video: string | null
+        }
+        Insert: {
+          artist_id?: string | null
+          chords?: string | null
+          coverArt?: string | null
+          createdAt?: string | null
+          id?: string
+          isPublished?: boolean | null
+          key?: string | null
+          lyrics?: string | null
+          slug?: string | null
+          title?: string | null
+          updatedAt?: string | null
+          video?: string | null
+        }
+        Update: {
+          artist_id?: string | null
+          chords?: string | null
+          coverArt?: string | null
+          createdAt?: string | null
+          id?: string
+          isPublished?: boolean | null
+          key?: string | null
+          lyrics?: string | null
+          slug?: string | null
+          title?: string | null
+          updatedAt?: string | null
+          video?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "songs_2_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       songs_requests: {
         Row: {
@@ -333,6 +388,7 @@ export type Database = {
         Args: { field_name: string; increment_value: number; song_id: string }
         Returns: undefined
       }
+      is_admin: { Args: never; Returns: boolean }
       toggle_song_favorite: {
         Args: { p_song_id: string; p_user_id: string }
         Returns: Json
@@ -341,6 +397,7 @@ export type Database = {
         Args: { p_song_id: string; p_user_id: string }
         Returns: Json
       }
+      unaccent: { Args: { "": string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
