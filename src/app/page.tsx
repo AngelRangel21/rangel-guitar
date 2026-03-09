@@ -13,21 +13,6 @@ export const metadata: Metadata = {
   }
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Rangel Guitar',
-  url: 'https://rangelguitar.com',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://rangelguitar.com/search?q={search_term_string}'
-    },
-    'query-input': 'required name=search_term_string'
-  }
-}
-
 /**
  * Componente de página principal del servidor.
  * Esta página se renderiza en el servidor y es responsable de obtener los datos iniciales de las canciones.
@@ -73,10 +58,6 @@ export default async function Home (): Promise<JSX.Element> {
 
   return (
     <>
-      <script
-        type='application/ld+json'
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <HomeClient initialSongs={allSongs} />
     </>
   )

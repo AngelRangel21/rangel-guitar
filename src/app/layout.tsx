@@ -104,26 +104,6 @@ export const metadata: Metadata = {
   }
 }
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Rangel Guitar',
-  url: 'https://rangelguitar.com',
-  logo: 'https://rangelguitar.com/icon.png',
-  sameAs: [
-    'https://facebook.com/rangelguitar', // Placeholder
-    'https://twitter.com/rangelguitar', // Placeholder
-    'https://instagram.com/rangelguitar' // Placeholder
-  ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+1-555-555-5555', // Placeholder
-    contactType: 'customer service',
-    areaServed: 'ES',
-    availableLanguage: 'Spanish'
-  }
-}
-
 /**
  * Configuración del viewport para la aplicación.
  * Define el color del tema para la barra de estado del navegador en modos claro y oscuro.
@@ -169,6 +149,7 @@ export default function RootLayout ({
         {/* <!-- Google Tag Manager (noscript) --> */}
         <noscript>
           <iframe
+            title='Google Tag Manager'
             src='https://www.googletagmanager.com/ns.html?id=GTM-MS224ZBH'
             height='0'
             width='0'
@@ -195,10 +176,6 @@ export default function RootLayout ({
         </ThemeProvider>
         {/* Componente para mostrar notificaciones (toasts). */}
         <Toaster />
-        <script
-          type='application/ld+json'
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
       </body>
     </html>
   )
