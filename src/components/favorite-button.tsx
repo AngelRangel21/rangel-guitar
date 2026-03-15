@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from './ui/button'
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/auth/stores/auth.stores'
 import { Song } from '@/types'
 import { useI18n } from '@/context/i18n-context'
 import { Heart } from 'lucide-react'

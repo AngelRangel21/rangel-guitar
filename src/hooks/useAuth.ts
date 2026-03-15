@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@/stores/auth.store'
+import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@/auth/stores/auth.stores'
 import { AuthCredentials, UserProfile } from '@/types'
 import { useShallow } from 'zustand/react/shallow'
 
