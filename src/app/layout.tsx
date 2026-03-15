@@ -6,10 +6,9 @@ import { Toaster } from '@/components/ui/sonner'
 import { I18nProvider } from '@/context/i18n-context'
 import { ThemeProvider } from '@/context/theme-provider'
 import Script from 'next/script'
-import { AuthProvider } from '@/providers/auth.provider'
 import { Header } from '@/components/header/Header'
 import { Footer } from '@/components/footer'
-
+import { AuthProvider } from '@/auth/provider/auth.provider'
 // Configuración de la fuente 'Inter' de Google Fonts.
 const inter = Inter({
   subsets: ['latin'],
@@ -167,11 +166,11 @@ export default function RootLayout ({
           {/* Proveedor de internacionalización para manejar los idiomas. */}
           <I18nProvider>
             {/* Proveedor de autenticación para gestionar el estado del usuario. */}
-            <AuthProvider>
-              <Header />
-              {children}
-              <Footer />
-            </AuthProvider>
+              <AuthProvider>
+                <Header />
+                {children}
+                <Footer />
+              </AuthProvider>
           </I18nProvider>
         </ThemeProvider>
         {/* Componente para mostrar notificaciones (toasts). */}
