@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useI18n } from '@/context/i18n-context'
-import React, { JSX, useState } from 'react'
+import { JSX, useState } from 'react'
 import { addSongRequest } from '@/lib/client/requests'
 import { Spinner } from './ui/spinner'
 import { toast } from 'sonner'
