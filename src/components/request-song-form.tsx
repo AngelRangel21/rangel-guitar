@@ -25,7 +25,7 @@ import React, { JSX, useState } from 'react'
 import { addSongRequest } from '@/lib/client/requests'
 import { Spinner } from './ui/spinner'
 import { toast } from 'sonner'
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/auth/stores/auth.stores'
 
 /**
  * Esquema de validación del formulario de solicitud de canciones con Zod.

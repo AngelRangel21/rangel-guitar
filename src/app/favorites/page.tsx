@@ -7,7 +7,7 @@ import { ProtectedPage } from '@/components/protected-page'
 import { JSX, useEffect, useState } from 'react'
 import type { SongWithArtist } from '@/types/app.types'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/auth/stores/auth.stores'
 import { supabase } from '@/lib/supabase'
 import { mapDbSongWithCounts } from '@/types'
 
