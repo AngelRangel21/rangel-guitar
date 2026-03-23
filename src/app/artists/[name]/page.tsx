@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { getSongsByArtist } from '@/services/songs-service'
 import { notFound } from 'next/navigation'
 import { ArtistDetailContent } from '@/components/artist-detail-content'
 import { JSX } from 'react'
+import { getArtistImage, getSongsByArtistSlug } from '@/services/artists.service'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 3600
@@ -21,10 +21,14 @@ export async function generateMetadata ({
   params: Promise<{ name: string }>
 }): Promise<Metadata> {
   const { name } = await params
-  const artistName = decodeURIComponent(name)
-
+  const songs = await getSongsByArtistSlug(name)
+  const artistName = songs[0].artist.name
+  
   const description = `Explora todas las canciones y tablaturas de ${artistName} en Rangel Guitar. Aprende a tocar sus éxitos en guitarra.`
   const title = `Canciones de ${artistName}`
+  
+  const image = `${decodeURIComponent(name)}.webp`
+  const imageUrl = image ? getArtistImage(image) : 'https://placehold.co/1200x630.png'
 
   return {
     title,
@@ -35,7 +39,7 @@ export async function generateMetadata ({
       type: 'website',
       images: [
         {
-          url: 'https://placehold.co/1200x630.png',
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: `Canciones de ${artistName} en Rangel Guitar`
@@ -56,35 +60,18 @@ export default async function ArtistDetailPage ({
 }: {
   params: Promise<{ name: string }>
 }): Promise<JSX.Element> {
-  try {
-    const { name } = await params
-    // Decodifica el nombre del artista desde la URL (ej. "Guns%20N'%20Roses" -> "Guns N' Roses").
-    const artistName = decodeURIComponent(name)
-    // Obtiene todas las canciones del artista desde el servicio.
-    const artistSongs = await getSongsByArtist(artistName)
+  const { name } = await params
+  const songs = await getSongsByArtistSlug(name)
+  const artistName = songs[0].artist.name
 
-    // Si no se encuentran canciones, muestra la página de error 404.
-    if (!artistSongs || artistSongs.length === 0) {
-      notFound()
-    }
-
-    return (
-      <div className='flex flex-col min-h-screen bg-background'>
-        {/* El contenido principal se delega a un Client Component para permitir interactividad y hooks. */}
-        <ArtistDetailContent artistName={artistName} songs={artistSongs} />
-      </div>
-    )
-  } catch (error) {
-    console.error('Error loading artist page:', error)
-    return (
-      <div className='flex flex-col min-h-screen bg-background'>
-        <div className='grow container mx-auto px-4 py-8 flex items-center justify-center'>
-          <p className='text-lg text-red-500'>
-            Error al cargar las canciones del artista. Por favor, intenta de
-            nuevo más tarde.
-          </p>
-        </div>
-      </div>
-    )
+  if (!songs || songs.length === 0) {
+    notFound()
   }
+
+  return (
+    <div className='flex flex-col min-h-screen bg-background'>
+      {/* El contenido principal se delega a un Client Component para permitir interactividad y hooks. */}
+      <ArtistDetailContent artistName={artistName} songs={songs} />
+    </div>
+  )
 }
