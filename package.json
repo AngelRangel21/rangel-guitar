@@ -15,29 +15,6 @@
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch"
   },
-  "release": {
-    "branches": [
-      "master"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/github",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "package-lok.json",
-            "CHANGELOG.md"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ]
-    ]
-  },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
     "@radix-ui/react-accordion": "1.2.12",
@@ -67,7 +44,7 @@
     "dotenv": "17.3.1",
     "embla-carousel-react": "8.6.0",
     "lucide-react": "0.564.0",
-    "next": "16.1.6",
+    "next": "16.2.1",
     "next-themes": "0.4.6",
     "react": "19.2.4",
     "react-day-picker": "9.13.2",
@@ -85,8 +62,8 @@
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "12.0.5",
-    "@semantic-release/npm": "13.1.4",
+    "@semantic-release/github": "12.0.6",
+    "@semantic-release/npm": "13.1.5",
     "@tailwindcss/postcss": "4.1.18",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
