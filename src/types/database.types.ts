@@ -295,6 +295,43 @@ export type Database = {
           },
         ]
       }
+      songs_artists: {
+        Row: {
+          artist_id: string
+          song_id: string
+        }
+        Insert: {
+          artist_id: string
+          song_id: string
+        }
+        Update: {
+          artist_id?: string
+          song_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "songs_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "songs_artists_song_id_fkey"
+            columns: ["song_id"]
+            isOneToOne: false
+            referencedRelation: "songs_2"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "songs_artists_song_id_fkey"
+            columns: ["song_id"]
+            isOneToOne: false
+            referencedRelation: "songs_with_counts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       songs_requests: {
         Row: {
           adminNote: string | null
@@ -364,7 +401,7 @@ export type Database = {
     Views: {
       songs_with_counts: {
         Row: {
-          artist: string | null
+          artist_id: string | null
           chords: string | null
           comment_count: number | null
           coverArt: string | null
@@ -380,7 +417,15 @@ export type Database = {
           video: string | null
           visit_count: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "songs_2_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
