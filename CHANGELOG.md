@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.0...v1.0.1) (2026-03-24)
+
+
+### Bug Fixes
+
+* new types of typescript ([adcf991](https://github.com/AngelRangel21/rangel-guitar/commit/adcf99147ba98ed2502e9d2e32ceb1edfcae5789))
+
 # 1.0.0 (2026-03-24)
 
 
