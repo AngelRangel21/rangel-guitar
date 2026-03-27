@@ -1,15 +1,18 @@
 import { supabase } from '@/lib/supabase'
 import type { ArtistCount, SongWithArtist } from '@/types/app.types'
 
-export async function getArtists(): Promise<ArtistCount[]> {
+export async function getArtists (): Promise<ArtistCount[]> {
   const { data, error } = await supabase
     .from('artists')
-    .select('*, songs_2(count)')
+    .select('*, song:songs_artists(songs:songs_2(id))')
     .order('name', { ascending: true })
 
-  if (error) throw error
+  if (error != null) throw error
 
-  return data ?? []
+  return data?.map(artist => ({
+    ...artist,
+    count: artist.song.length
+  })) ?? []
 }
 
 export async function getSongsByArtistSlug(slug: string): Promise<SongWithArtist[]> {
