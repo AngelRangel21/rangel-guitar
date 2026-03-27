@@ -2,11 +2,6 @@ import { ArtistList } from '@/components/artist-list'
 import { getArtists } from '@/services/artists.service'
 import { JSX } from 'react'
 
-/**
- * Página que muestra una lista de todos los artistas disponibles en la biblioteca.
- * Es un Server Component que obtiene la lista de artistas en tiempo de compilación.
- * @returns {Promise<JSX.Element>} La página con la lista de todos los artistas.
- */
 export default async function ArtistsPage (): Promise<JSX.Element> {
   // Obtiene la lista completa de artistas desde el servicio.
   const artists = await getArtists()
