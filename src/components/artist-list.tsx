@@ -1,8 +1,9 @@
-"use client";
+'use client'
 
-import { ArtistCard } from "@/components/artist-card";
-import { useI18n } from "@/context/i18n-context";
-import { ArtistCount } from "@/types/app.types";
+import { ArtistCard } from '@/components/artist-card'
+import { useI18n } from '@/context/i18n-context'
+import { ArtistCount } from '@/types/app.types'
+import { JSX } from 'react'
 
 /**
  * Componente que muestra una cuadrícula de todos los artistas.
@@ -10,24 +11,24 @@ import { ArtistCount } from "@/types/app.types";
  * @param {{ artists: string[] }} props - Propiedades del componente, contiene la lista de nombres de artistas.
  * @returns {JSX.Element} La lista de artistas en una cuadrícula.
  */
-export function ArtistList({ artists }: { artists: ArtistCount[] }) {
-  const { t } = useI18n(); // Hook para obtener las traducciones.
+export function ArtistList ({ artists }: { artists: ArtistCount[] }): JSX.Element {
+  const { t } = useI18n() // Hook para obtener las traducciones.
 
   // Ordena los artistas alfabéticamente en el cliente
-  const sortedArtists = [...artists].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedArtists = [...artists].sort((a, b) => a.name.localeCompare(b.name))
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-foreground">{t('allArtists')}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+    <div className='space-y-6'>
+      <h2 className='text-3xl font-bold text-foreground'>{t('allArtists')}</h2>
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
         {/* Itera sobre la lista de artistas y renderiza una tarjeta para cada uno. */}
         {sortedArtists.map((artist, index) => (
           // La animación se retrasa ligeramente para cada tarjeta, creando un efecto de cascada.
-          <div key={artist.id} style={{ animationDelay: `${index * 50}ms` }} className="opacity-0 animate-content-in">
+          <div key={artist.id} style={{ animationDelay: `${index * 50}ms` }} className='opacity-0 animate-content-in'>
             <ArtistCard artist={artist} />
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
