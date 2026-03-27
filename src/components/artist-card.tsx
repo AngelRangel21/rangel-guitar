@@ -13,7 +13,7 @@ import { JSX } from 'react'
  * @returns {JSX.Element} La tarjeta del artista.
  */
 export function ArtistCard ({ artist }: { artist: ArtistCount }): JSX.Element {
-  const songCount = artist.songs_2?.[0]?.count ?? 0
+  const songCount = artist.count ?? 0
 
   const imageUrl = artist.image_url
     ? getArtistImage(artist.image_url)
