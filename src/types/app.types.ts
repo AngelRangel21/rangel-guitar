@@ -29,14 +29,14 @@ export interface UserProfile {
 export type Song = Tables<'songs_2'>
 
 /** Canción enriquecida con conteos (view songs_with_counts) */
-export type DbSongWithCounts = Tables<"songs_with_counts">
+export type DbSongWithCounts = Tables<'songs_with_counts'>
 
 // ARTISTA
 export type Artist = Tables<'artists'>
 
 // ARTISTA CON CONTADOR DE CANCIONES
 export type ArtistCount = Artist & {
-  songs_2?: { count: number }[]
+  count: number
 }
 
 // ARTISTA + CANCIÓN
@@ -50,12 +50,12 @@ export type SongWithArtist = Song & {
  */
 type SongNoKey = Omit<Song, 'key'>
 
-export function mapDbSongWithCounts(row: DbSongWithCounts): SongNoKey {
+export function mapDbSongWithCounts (row: DbSongWithCounts): SongNoKey {
   return {
-    id: row.id ?? "",
-    slug: row.slug ?? "",
-    title: row.title ?? "",
-    artist_id: row.artist ?? "",
+    id: row.id ?? '',
+    slug: row.slug ?? '',
+    title: row.title ?? '',
+    artist_id: row.artist_id ?? '',
     coverArt: row.coverArt ?? null,
     lyrics: row.lyrics ?? null,
     chords: row.chords ?? null,
