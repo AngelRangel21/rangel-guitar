@@ -18,7 +18,7 @@ export interface UserProfile {
   uid: string
   email: string
   name: string | null
-  avatar_url: string | null
+  avatarUrl: string | null
   isAdmin: boolean
   createdAt: string | null
 }

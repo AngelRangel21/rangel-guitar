@@ -41,6 +41,21 @@ export type Database = {
         }
         Relationships: []
       }
+      roles: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       song_comments: {
         Row: {
           content: string
@@ -77,13 +92,6 @@ export type Database = {
             referencedRelation: "songs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "song_comments_user_fk"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
-          },
         ]
       }
       song_favorites: {
@@ -113,13 +121,6 @@ export type Database = {
             referencedRelation: "songs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "song_favorites_user_fk"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
-          },
         ]
       }
       song_likes: {
@@ -148,13 +149,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "songs"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "song_likes_user_fk"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
           },
         ]
       }
@@ -187,13 +181,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "songs"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "song_visits_user_fk"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
           },
         ]
       }
@@ -298,14 +285,17 @@ export type Database = {
       songs_artists: {
         Row: {
           artist_id: string
+          id: string
           song_id: string
         }
         Insert: {
           artist_id: string
+          id?: string
           song_id: string
         }
         Update: {
           artist_id?: string
+          id?: string
           song_id?: string
         }
         Relationships: [
@@ -360,13 +350,28 @@ export type Database = {
           title?: string
           user_id?: string
         }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          role_id: string
+          user_id: string
+        }
+        Insert: {
+          role_id: string
+          user_id: string
+        }
+        Update: {
+          role_id?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "songs_requests_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "user_roles_role_id_fkey"
+            columns: ["role_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["uid"]
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -375,27 +380,38 @@ export type Database = {
           avatar_url: string | null
           createdAt: string | null
           email: string
-          isAdmin: boolean | null
+          isAdmin: boolean
           name: string | null
+          role: string
           uid: string
         }
         Insert: {
           avatar_url?: string | null
           createdAt?: string | null
           email: string
-          isAdmin?: boolean | null
+          isAdmin?: boolean
           name?: string | null
+          role?: string
           uid: string
         }
         Update: {
           avatar_url?: string | null
           createdAt?: string | null
           email?: string
-          isAdmin?: boolean | null
+          isAdmin?: boolean
           name?: string | null
+          role?: string
           uid?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_role_fkey"
+            columns: ["role"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["name"]
+          },
+        ]
       }
     }
     Views: {
