@@ -1,3 +1,17 @@
+## [1.0.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.1...v1.0.2) (2026-04-01)
+
+
+### Bug Fixes
+
+*  Eliminando el name del page para usar el slug ([10d9690](https://github.com/AngelRangel21/rangel-guitar/commit/10d9690716214886ce811bc27d74bb5de97c237f))
+* Acortando el tipado para usar el counter de canciones ([7a1287c](https://github.com/AngelRangel21/rangel-guitar/commit/7a1287c76ff8de59a26db7cf2157a43def60301c))
+* eliminando lineas innecesarias ([82eaff3](https://github.com/AngelRangel21/rangel-guitar/commit/82eaff320be689ed11504b4ab7df52fa615b63b2))
+* Mejorando el tipado y la legibilidad del código ([6302c8b](https://github.com/AngelRangel21/rangel-guitar/commit/6302c8b430f3dd1e9c81e0b7a8287a444b69d3d0))
+* Mejorando el tipado y la legibilidad del código ([8275878](https://github.com/AngelRangel21/rangel-guitar/commit/82758789c939eba023fee75430989481f1ebfce8))
+* mejorando la legibilidad del código ([dbd0faa](https://github.com/AngelRangel21/rangel-guitar/commit/dbd0faa4094b33467b45e2c7e12a95e5ffe8f592))
+* new getArtists ([2eade35](https://github.com/AngelRangel21/rangel-guitar/commit/2eade351c8c650fd4763c5b7c93a72722f066fe9))
+* Separando el provider de Auth para mejorar su legibilidad ([9c3fb13](https://github.com/AngelRangel21/rangel-guitar/commit/9c3fb1366a930b513f84c7bbbd8d860240395712))
+
 ## [1.0.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.0...v1.0.1) (2026-03-24)
 
 
