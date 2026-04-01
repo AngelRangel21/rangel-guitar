@@ -5,6 +5,7 @@ import { AuthService } from '../service/auth.service'
 import { toast } from 'sonner'
 import type { AuthCredentials, UserProfile } from '@/types'
 import { FavoriteService } from '@/services/favorites.service'
+import { UserService } from '../service/user.service'
 
 interface AuthState {
   // ── Estado ──────────────────────────────────
@@ -144,10 +145,10 @@ export const useAuthStore = create<AuthState>()(
           set({ supabaseUser }, false, 'loadUserProfile:setSupabaseUser')
 
           // Upsert primero (garantiza que el row existe)
-          await AuthService.upsertUserProfile(supabaseUser)
+          await UserService.syncUser(supabaseUser)
 
           // Luego leer el perfil completo
-          const profile = await AuthService.getUserProfile(supabaseUser.id)
+          const profile = await UserService.getProfile(supabaseUser.id)
           set({ user: profile }, false, 'loadUserProfile:success')
 
           // Cargar favoritos
@@ -200,7 +201,7 @@ export const useAuthStore = create<AuthState>()(
 
       isFavorite: (songId) => {
         return get().favoriteIds.has(songId)
-      },
+      }
     }),
     { name: 'AuthStore' }
   )
