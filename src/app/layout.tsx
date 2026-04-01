@@ -1,6 +1,5 @@
 import React, { JSX } from 'react'
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { I18nProvider } from '@/context/i18n-context'
@@ -9,11 +8,6 @@ import Script from 'next/script'
 import { Header } from '@/components/header/Header'
 import { Footer } from '@/components/footer'
 import { AuthProvider } from '@/auth/provider/auth.provider'
-// Configuración de la fuente 'Inter' de Google Fonts.
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter' // Asigna la fuente a una variable CSS para usarla en Tailwind.
-})
 
 /**
  * Metadatos globales para toda la aplicación.
@@ -130,7 +124,7 @@ export default function RootLayout ({
     // suppressHydrationWarning se usa para evitar advertencias con next-themes.
     <html
       lang='es'
-      className={`${inter.variable}`}
+      className=''
       suppressHydrationWarning
     >
       {/* <!-- Google Tag Manager --> */}

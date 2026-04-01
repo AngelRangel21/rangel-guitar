@@ -3,18 +3,8 @@
 import { useState, useMemo, useEffect, Fragment, JSX } from 'react'
 import { LayoutGrid, List } from 'lucide-react'
 import type { SongWithArtist } from '@/types/app.types'
-import { Button } from '@/components/ui/button'
 import { SongCard } from '@/components/song-card'
 import { SongListItem } from '@/components/song-list-item'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis
-} from '@/components/ui/pagination'
 import { useI18n } from '@/context/i18n-context'
 
 // Constante para el número de canciones a mostrar por página.
@@ -54,148 +44,95 @@ export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
     }
   }
 
-  /**
-   * Renderiza los controles de paginación.
-   * @returns {JSX.Element} El componente de paginación.
-   */
-  const renderPagination = () => {
-    const pageNumbers = []
-    const maxPagesToShow = 3
-    const halfMaxPages = Math.floor(maxPagesToShow / 2)
-
-    let startPage = Math.max(2, currentPage - halfMaxPages)
-    let endPage = Math.min(totalPages - 1, currentPage + halfMaxPages)
-
-    if (currentPage <= maxPagesToShow) {
-      startPage = 2
-      endPage = Math.min(totalPages - 1, maxPagesToShow)
-    }
-
-    if (currentPage > totalPages - maxPagesToShow) {
-      startPage = Math.max(2, totalPages - maxPagesToShow)
-      endPage = totalPages - 1
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i)
-    }
-
-    return (
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              isActive={currentPage === 1}
-              onClick={() => handlePageChange(1)}
-            >
-              1
-            </PaginationLink>
-          </PaginationItem>
-
-          {startPage > 2 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {pageNumbers.map((number) => (
-            <PaginationItem key={number}>
-              <PaginationLink
-                isActive={currentPage === number}
-                onClick={() => handlePageChange(number)}
-              >
-                {number}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          {endPage < totalPages - 1 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          {totalPages > 1 && (
-            <PaginationItem>
-              <PaginationLink
-                isActive={currentPage === totalPages}
-                onClick={() => handlePageChange(totalPages)}
-              >
-                {totalPages}
-              </PaginationLink>
-            </PaginationItem>
-          )}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    )
-  }
-
   return (
-    <div className='space-y-6'>
-      {/* Controles para cambiar la vista */}
-      <section className='flex justify-end items-center'>
-        <nav className='flex items-center gap-2'>
-          <Button
-            variant={view === 'list' ? 'secondary' : 'ghost'}
-            size='icon'
+    <div className='space-y-2' style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif" }}>
+      {/* View Toggle toolbar */}
+      <section className='flex justify-between items-center pb-1' style={{ borderBottom: '1px solid #808080' }}>
+        <span style={{ fontSize: '10px', color: '#444' }}>{songs.length} canciones</span>
+        <nav className='flex items-center gap-1'>
+          <button
+            className='win-button'
+            style={{ padding: '1px 5px', background: view === 'list' ? '#a0a0a0' : '#d4d0c8' }}
             onClick={() => setView('list')}
             aria-label={t('listView')}
+            title='Vista lista'
           >
-            <List className='h-5 w-5' />
-          </Button>
-          <Button
-            variant={view === 'grid' ? 'secondary' : 'ghost'}
-            size='icon'
+            <List className='h-3 w-3' />
+          </button>
+          <button
+            className='win-button'
+            style={{ padding: '1px 5px', background: view === 'grid' ? '#a0a0a0' : '#d4d0c8' }}
             onClick={() => setView('grid')}
             aria-label={t('gridView')}
+            title='Vista cuadrícula'
           >
-            <LayoutGrid className='h-5 w-5' />
-          </Button>
+            <LayoutGrid className='h-3 w-3' />
+          </button>
         </nav>
       </section>
 
       {songs.length === 0 ? (
-        // Mensaje si no se encuentran canciones (ej. después de una búsqueda).
-        <div className='text-center py-16'>
-          <p className='text-muted-foreground'>{t('noSongsFound')}</p>
+        <div className='win-inset p-4 text-center'>
+          <p style={{ fontSize: '11px' }}>{t('noSongsFound')}</p>
         </div>
       ) : (
         <>
-          {/* Contenedor que cambia entre cuadrícula y lista */}
+          {/* Song list/grid — with alternating row colors in list view */}
           <div
-            className={`transition-all duration-300 ${view === 'grid'
-                ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
-                : 'flex flex-col space-y-3'
-              }`}
+            className={view === 'grid'
+              ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2'
+              : 'win-inset'
+            }
           >
-            {currentSongs.map((song) => (
+            {currentSongs.map((song, idx) => (
               <Fragment key={song.id}>
                 {view === 'grid'
-                  ? (
-                    <SongCard song={song} />
-                    )
+                  ? <SongCard song={song} />
                   : (
-                    <SongListItem song={song} />
+                    <div style={{ background: idx % 2 === 0 ? '#ffffff' : '#f0f0f0' }}>
+                      <SongListItem song={song} />
+                    </div>
                     )}
               </Fragment>
             ))}
           </div>
 
-          {/* Muestra la paginación si hay más de una página. */}
-          {totalPages > 1 && <div className='pt-6'>{renderPagination()}</div>}
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className='flex justify-center items-center gap-1 pt-2'>
+              <button
+                className='win-button'
+                style={{ fontSize: '10px', padding: '1px 6px' }}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                &lt; Ant
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  className='win-button'
+                  style={{
+                    fontSize: '10px',
+                    padding: '1px 6px',
+                    fontWeight: currentPage === page ? 'bold' : 'normal',
+                    background: currentPage === page ? '#a0a0a0' : '#d4d0c8'
+                  }}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className='win-button'
+                style={{ fontSize: '10px', padding: '1px 6px' }}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Sig &gt;
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

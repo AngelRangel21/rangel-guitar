@@ -10,12 +10,14 @@ export function Logo() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2"
+      className="flex items-center gap-1"
       aria-label="Rangel Guitar Inicio"
       title="Titulo Pagina Principal"
     >
-      <Music className="h-8 w-8 text-accent" />
-      <h1 className="text-2xl font-bold whitespace-nowrap">{t("appName")}</h1>
+      <Music className="h-4 w-4" style={{ color: '#000080' }} />
+      <span style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif", fontSize: '11px', fontWeight: 'bold', color: '#000000' }}>
+        {t("appName")}
+      </span>
     </Link>
   );
 }

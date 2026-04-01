@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-body: var(--font-inter), sans-serif;
-  --font-headline: var(--font-inter), sans-serif;
-  --font-code: monospace;
+  --font-body: 'Tahoma', 'MS Sans Serif', 'Arial', sans-serif;
+  --font-headline: 'Tahoma', 'MS Sans Serif', 'Arial', sans-serif;
+  --font-code: 'Courier New', monospace;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -112,31 +112,101 @@
 
 @layer utilities {
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Tahoma', 'MS Sans Serif', 'Arial', sans-serif;
+    font-size: 11px;
+  }
+}
+
+/* ── Windows 2000 beveled border utilities ── */
+@layer utilities {
+  .win-raised {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    box-shadow: inset -1px -1px 0 #404040, inset 1px 1px 0 #dfdfdf;
+  }
+  .win-sunken {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #808080 #ffffff #ffffff #808080;
+    box-shadow: inset 1px 1px 0 #404040, inset -1px -1px 0 #dfdfdf;
+  }
+  .win-button {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ffffff #404040 #404040 #ffffff;
+    box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #f0f0f0;
+    background: #d4d0c8;
+    color: #000000;
+    cursor: default;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  .win-button:active {
+    border-color: #404040 #ffffff #ffffff #404040;
+    box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #f0f0f0;
+    padding: 4px 9px 2px 11px;
+  }
+  .win-title-bar {
+    background: linear-gradient(to right, #0a246a, #a6caf0);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .win-window {
+    background: #d4d0c8;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ffffff #404040 #404040 #ffffff;
+    box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #f0f0f0;
+  }
+  .win-inset {
+    background: #ffffff;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #808080 #ffffff #ffffff #808080;
+    box-shadow: inset 1px 1px 0 #404040;
+  }
+  .win-menu-bar {
+    background: #d4d0c8;
+    border-bottom: 1px solid #808080;
+    font-size: 11px;
+  }
+  .win-status-bar {
+    background: #d4d0c8;
+    border-top: 1px solid #808080;
+    font-size: 10px;
+    padding: 2px 6px;
   }
 }
 
 @layer base {
   :root {
-    --background: 204 17% 94%;
-    --foreground: 210 22% 31%;
-    --card: 204 17% 98%;
-    --card-foreground: 210 22% 31%;
-    --popover: 204 17% 98%;
-    --popover-foreground: 210 22% 31%;
-    --primary: 210 22% 31%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 20% 88%;
-    --secondary-foreground: 210 22% 31%;
-    --muted: 210 20% 88%;
-    --muted-foreground: 210 15% 55%;
-    --accent: 45 89% 50%;
-    --accent-foreground: 210 22% 21%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 20% 80%;
-    --input: 210 20% 84%;
-    --ring: 45 89% 50%;
+    /* Windows 2000 color palette */
+    --background: 40 8% 82%;        /* #d4d0c8 - classic win2k grey */
+    --foreground: 0 0% 0%;          /* #000000 - black text */
+    --card: 0 0% 100%;              /* #ffffff - white window content */
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 224 77% 24%;         /* #0a246a - win2k title bar dark blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 8% 82%;         /* #d4d0c8 - win2k grey */
+    --secondary-foreground: 0 0% 0%;
+    --muted: 40 8% 75%;             /* slightly darker grey */
+    --muted-foreground: 0 0% 30%;
+    --accent: 211 82% 80%;          /* #a6caf0 - title bar light blue */
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 50%;             /* #808080 - mid grey border */
+    --input: 0 0% 100%;
+    --ring: 224 77% 24%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -144,37 +214,38 @@
     --chart-5: 27 87% 67%;
     --chart-6: 300 50% 55%;
     --info: 221 83% 53%;
-    --info-foreground: 210 40% 98%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --info-foreground: 0 0% 100%;
+    --radius: 0rem;                  /* NO rounded corners in win2k */
+    --sidebar-background: 40 8% 82%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 224 77% 24%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 8% 75%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 50%;
+    --sidebar-ring: 224 77% 24%;
   }
   .dark {
-    --background: 210 22% 15%;
-    --foreground: 210 40% 94%;
-    --card: 210 22% 20%;
-    --card-foreground: 210 40% 94%;
-    --popover: 210 22% 15%;
-    --popover-foreground: 210 40% 94%;
-    --primary: 210 22% 11%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 22% 25%;
-    --secondary-foreground: 210 40% 94%;
-    --muted: 210 22% 25%;
-    --muted-foreground: 210 20% 65%;
-    --accent: 45 89% 50%;
-    --accent-foreground: 210 22% 15%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 22% 25%;
-    --input: 210 22% 25%;
-    --ring: 45 89% 50%;
+    /* Keep same win2k light theme even in dark mode - it's always "system grey" */
+    --background: 40 8% 82%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 224 77% 24%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 8% 82%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 40 8% 75%;
+    --muted-foreground: 0 0% 30%;
+    --accent: 211 82% 80%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 50%;
+    --input: 0 0% 100%;
+    --ring: 224 77% 24%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -182,15 +253,15 @@
     --chart-5: 340 75% 55%;
     --chart-6: 300 60% 65%;
     --info: 221 83% 53%;
-    --info-foreground: 210 40% 98%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --info-foreground: 0 0% 100%;
+    --sidebar-background: 40 8% 82%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 224 77% 24%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 40 8% 75%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 50%;
+    --sidebar-ring: 224 77% 24%;
   }
 }
 

@@ -274,59 +274,98 @@ export function SongSearch({
   }
 
   return (
-    <div ref={containerRef} className={`relative w-full ${className}`}>
+    <div ref={containerRef} className={`relative w-full ${className}`} style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif" }}>
       {/* ── Input ── */}
-      <div className='relative flex items-center'>
-        <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />
-
-        <input
-          ref={inputRef}
-          type='text'
-          role='combobox'
-          aria-expanded={showDropdown}
-          aria-autocomplete='list'
-          aria-controls='search-results'
-          aria-activedescendant={activeIndex >= 0 ? `result-${activeIndex}` : undefined}
-          value={query}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className='w-full h-10 pl-9 pr-9 text-sm bg-background border border-input rounded-lg
-            placeholder:text-muted-foreground
-            focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
-            transition-shadow'
-          autoComplete='off'
-          spellCheck={false}
-        />
-
-        {/* Botón limpiar o spinner */}
-        {isLoading ? (
-          <Spinner className='absolute right-3 w-4 h-4' />
-        ) : query ? (
-          <button
-            type='button'
-            onClick={handleClear}
-            aria-label='Limpiar búsqueda'
-            className='absolute right-3 text-muted-foreground hover:text-foreground transition-colors'
-          >
-            <X className='w-4 h-4' />
-          </button>
-        ) : null}
+      <div className='relative flex items-center gap-1'>
+        <label style={{ fontSize: '11px', whiteSpace: 'nowrap', flexShrink: 0 }}>Buscar:</label>
+        <div className='relative flex items-center flex-1'>
+          <input
+            ref={inputRef}
+            type='text'
+            role='combobox'
+            aria-expanded={showDropdown}
+            aria-autocomplete='list'
+            aria-controls='search-results'
+            aria-activedescendant={activeIndex >= 0 ? `result-${activeIndex}` : undefined}
+            value={query}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            className='w-full win-inset px-2 py-0.5'
+            style={{ fontSize: '11px', outline: 'none', background: '#fff' }}
+            autoComplete='off'
+            spellCheck={false}
+          />
+          {isLoading ? (
+            <Spinner className='absolute right-2 w-3 h-3' />
+          ) : query ? (
+            <button
+              type='button'
+              onClick={handleClear}
+              aria-label='Limpiar búsqueda'
+              className='absolute right-1'
+              style={{ fontSize: '9px', color: '#444' }}
+            >
+              ✕
+            </button>
+          ) : null}
+        </div>
+        <button
+          type='button'
+          className='win-button flex items-center gap-1'
+          style={{ fontSize: '11px' }}
+          onClick={() => query && searchImmediate(query)}
+        >
+          <Search className='w-3 h-3' />
+          Buscar
+        </button>
       </div>
 
       {/* ── Dropdown ── */}
       {showDropdown && (
-        <SearchDropdown
-          results={results}
-          query={query}
-          isLoading={isLoading}
-          hasSearched={hasSearched}
-          error={error}
-          activeIndex={activeIndex}
-          onMouseEnter={setActiveIndex}
-          onClose={handleClose}
-        />
+        <div className='absolute top-full left-0 right-0 mt-0 z-50 win-window' style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          {isLoading ? (
+            <div className='p-2'>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className='flex items-center gap-2 px-2 py-1'>
+                  <div className='w-4 h-4 bg-muted animate-pulse' />
+                  <div className='flex-1 h-2 bg-muted animate-pulse w-3/4' />
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className='p-2'>
+              <p style={{ fontSize: '11px', color: '#c00' }}>{error}</p>
+            </div>
+          ) : hasSearched && results.length === 0 ? (
+            <div className='p-2'>
+              <p style={{ fontSize: '11px' }}>No se encontraron resultados para &quot;{query}&quot;</p>
+            </div>
+          ) : results.length > 0 ? (
+            <div>
+              {results.map((song, i) => (
+                <Link
+                  key={song.id}
+                  href={`/songs/${song.slug}`}
+                  onClick={handleClose}
+                  onMouseEnter={() => setActiveIndex(i)}
+                  className='flex items-center gap-2 px-2 py-0.5'
+                  style={{
+                    background: i === activeIndex ? '#000080' : i % 2 === 0 ? '#fff' : '#f0f0f0',
+                    color: i === activeIndex ? '#fff' : '#000',
+                    fontSize: '11px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <SongCover src={song.coverArt} alt={song.title} />
+                  <span className='flex-1 truncate'>{song.title}</span>
+                  <span style={{ fontSize: '10px', opacity: 0.7 }}>{song.artist}</span>
+                </Link>
+              ))}
+            </div>
+          ) : null}
+        </div>
       )}
     </div>
   )

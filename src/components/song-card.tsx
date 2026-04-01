@@ -18,27 +18,35 @@ interface SongCardProps {
  */
 export function SongCard ({ song }: SongCardProps): JSX.Element {
   return (
-    <div className='group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300'>
-      <div className='h-auto w-auto aspect-video relative overflow-hidden'>
+    <div className='win-window flex flex-col' style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif" }}>
+      {/* Mini title bar */}
+      <div style={{ background: 'linear-gradient(to right, #0a246a, #a6caf0)', padding: '2px 4px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+        <span style={{ fontSize: '9px', color: '#fff', fontWeight: 'bold', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', flex: 1 }}>{song.title}</span>
+      </div>
+      {/* Cover art in inset frame */}
+      <div className='win-inset m-1' style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
         <Image
           alt={`${song.title} - ${song.artist.name}`}
-          className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
+          className='w-full h-full object-cover'
           src={`${song.coverArt ?? ''}`}
-          width='70'
-          height='100'
+          width='200'
+          height='112'
           unoptimized
         />
       </div>
-      <div className='p-5'>
+      <div className='px-2 pb-2'>
         <Link
           href={`/songs/${song.slug}`}
-          className='text-lg font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors'
+          className='block font-bold text-foreground truncate'
+          style={{ fontSize: '11px', textDecoration: 'none' }}
         >
           {song.title}
         </Link>
-        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{song.artist.name}</p>
+        <p className='text-muted-foreground truncate mb-2' style={{ fontSize: '10px' }}>{song.artist.name}</p>
         <div className='flex items-center justify-between'>
-          <button className='bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-slate-900 transition-all'>Ver Acordes</button>
+          <Link href={`/songs/${song.slug}`} className='win-button' style={{ fontSize: '10px', textDecoration: 'none', color: '#000' }}>
+            Ver Acordes
+          </Link>
           <FavoriteButton song={song} />
         </div>
       </div>

@@ -7,45 +7,43 @@ import { FavoriteButton } from './favorite-button'
 export function SongListItem ({ song }: { song: SongWithArtist }): JSX.Element {
   return (
     <div
-      className='flex flex-col gap-2'
+      className='flex items-center gap-2 px-1 py-0.5 cursor-default hover:bg-primary hover:text-primary-foreground group'
       title={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
+      style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif", fontSize: '11px' }}
     >
-      <div
-        className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#1E293B] border border-transparent hover:border-slate-800 rounded-xl transition-all duration-200 group'
-      >
-        <div className='h-auto w-auto aspect-video relative overflow-hidden'>
-          <Image
-            alt={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
-            className='rounded-lg object-cover shrink-0'
-            src={`${song.coverArt ?? ''}`}
-            width='80'
-            height='48'
-            decoding='async'
-            unoptimized
-          />
-        </div>
-        <div className='grow min-w-0'>
-          <Link
-            href={`/songs/${song.slug}`}
-            className='text-white font-bold truncate transition-colors'
-          >
-            {song.title}
-          </Link>
-          <p
-            className='text-slate-400 text-sm'
-          >
-            {song.artist?.name ?? 'Unknown Artist'}
-          </p>
-        </div>
-        <div className='flex items-center gap-6'>
-          <Link
-            href={`/songs/${song.slug}`}
-            className='hidden md:block dark:hover:bg-slate-950 bg-slate-800 text-slate-200 px-5 py-2 rounded-xl text-sm font-bold transition-all border whitespace-nowrap'
-          >
-            Ver Acordes
-          </Link>
-          <FavoriteButton song={song} />
-        </div>
+      {/* Small 16x16 style icon */}
+      <div className='shrink-0' style={{ width: '16px', height: '16px', overflow: 'hidden', border: '1px solid #808080' }}>
+        <Image
+          alt={`${song.title ?? 'Unknown Title'}`}
+          src={`${song.coverArt ?? ''}`}
+          width='16'
+          height='16'
+          decoding='async'
+          unoptimized
+          className='w-full h-full object-cover'
+        />
+      </div>
+      <div className='grow min-w-0 flex items-center gap-4'>
+        <Link
+          href={`/songs/${song.slug}`}
+          className='truncate text-foreground group-hover:text-primary-foreground font-normal'
+          style={{ fontSize: '11px', textDecoration: 'none' }}
+        >
+          {song.title}
+        </Link>
+        <span className='text-muted-foreground group-hover:text-primary-foreground/80 shrink-0' style={{ fontSize: '11px' }}>
+          {song.artist?.name ?? 'Unknown Artist'}
+        </span>
+      </div>
+      <div className='flex items-center gap-2 shrink-0'>
+        <Link
+          href={`/songs/${song.slug}`}
+          className='win-button text-xs hidden md:block group-hover:text-foreground'
+          style={{ fontSize: '10px', padding: '1px 6px', textDecoration: 'none', color: '#000' }}
+        >
+          Ver Acordes
+        </Link>
+        <FavoriteButton song={song} />
       </div>
     </div>
   )

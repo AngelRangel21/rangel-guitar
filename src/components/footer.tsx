@@ -30,56 +30,47 @@ export function Footer (): JSX.Element {
   ]
 
   return (
-    <footer className='bg-slate-900 text-slate-400 py-12'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center md:text-left mb-10 border-b border-slate-800 pb-10'>
-          <div>
-            <h4 className='text-white font-bold mb-4'>¿Te gusta lo que hacemos?</h4>
-            <p className='text-sm mb-6'>Ayúdanos a mantener el sitio libre de publicidad y con más contenido cada día.</p>
+    <footer style={{ background: '#d4d0c8', fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif", borderTop: '2px solid', borderColor: '#808080 #ffffff #ffffff #808080', boxShadow: 'inset 1px 1px 0 #404040' }}>
+      {/* Win2K Status bar style footer */}
+      <div className='max-w-7xl mx-auto px-2 py-2'>
+        {/* Top row: social + donate */}
+        <div className='flex flex-col md:flex-row justify-between items-start gap-3 pb-2' style={{ borderBottom: '1px solid #808080' }}>
+          <div className='win-window p-2' style={{ minWidth: '200px' }}>
+            <div className='win-title-bar mb-1'>
+              <span style={{ fontSize: '10px' }}>💛 Apoyar el proyecto</span>
+            </div>
+            <p style={{ fontSize: '10px', marginBottom: '6px' }}>Ayúdanos a mantener el sitio sin publicidad.</p>
+            <PayPal />
           </div>
-          <PayPal />
-          <div className='flex flex-col justify-center md:justify-end'>
-            <p className='text-center md:text-end mb-2'>Nuestras Redes sociales</p>
-            <nav className='flex justify-center md:justify-end gap-4'>
-              {social.map((social) => (
+          <div className='win-window p-2'>
+            <div className='win-title-bar mb-1'>
+              <span style={{ fontSize: '10px' }}>📡 Redes Sociales</span>
+            </div>
+            <nav className='flex gap-1 flex-wrap'>
+              {social.map((s) => (
                 <Link
-                  key={social.href}
-                  href={social.href}
-                  aria-label={social.label}
-                  title={social.title}
-                  className='p-2 bg-slate-800 rounded-full hover:bg-primary hover:text-slate-900 transition-all'
+                  key={s.href}
+                  href={s.href}
+                  aria-label={s.label}
+                  title={s.title}
+                  className='win-button flex items-center gap-1'
+                  style={{ fontSize: '10px', padding: '2px 6px', textDecoration: 'none', color: '#000' }}
                 >
-                  {social.icon}
+                  {s.icon}
+                  <span>{s.label}</span>
                 </Link>
               ))}
             </nav>
           </div>
         </div>
-        <div className='flex flex-col md:flex-row justify-between items-center text-xs gap-4'>
-          <div className='flex gap-8'>
-            <Link
-              className='hover:text-white transition-colors'
-              href='/privacy-policy'
-              title='Ir a la pagina de Política de Privacidad de Rangel Guitar'
-            >
-              Política de Privacidad
-            </Link>
-            <Link
-              className='hover:text-white transition-colors'
-              href='/security'
-              title='Ir a la pagina de Política de Seguridad de Rangel Guitar'
-            >
-              Seguridad
-            </Link>
-            <Link
-              className='hover:text-white transition-colors'
-              href='/cookie-policy'
-              title='Ir a la pagina de Política de Cookies de Rangel Guitar'
-            >
-              Política de Cookies
-            </Link>
+        {/* Bottom row: links + copyright */}
+        <div className='win-status-bar flex flex-col md:flex-row justify-between items-center gap-1 pt-1'>
+          <div className='flex gap-4'>
+            <Link className='hover:underline' href='/privacy-policy' title='Política de Privacidad' style={{ fontSize: '10px', color: '#000' }}>Privacidad</Link>
+            <Link className='hover:underline' href='/security' title='Seguridad' style={{ fontSize: '10px', color: '#000' }}>Seguridad</Link>
+            <Link className='hover:underline' href='/cookie-policy' title='Cookies' style={{ fontSize: '10px', color: '#000' }}>Cookies</Link>
           </div>
-          <p>© {currentYear} Rangel Guitar. Todos los derechos reservados.</p>
+          <p style={{ fontSize: '10px' }}>© {currentYear} Rangel Guitar. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

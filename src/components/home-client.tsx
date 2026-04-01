@@ -17,16 +17,28 @@ export function HomeClient ({ initialSongs }: { initialSongs: SongWithArtist[] }
 
   return (
     <>
-      {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
-      <main className='grow container mx-auto px-4 py-8 space-y-6'>
-        <SongSearch />
-        <div className='flex justify-between items-center'>
-          <h2 className='text-3xl font-bold text-foreground'>
-            {t('allSongs')}
-          </h2>
+      <main className='grow container mx-auto px-2 py-3' style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif" }}>
+        {/* Win2K Window frame */}
+        <div className='win-window mb-3'>
+          {/* Window title bar */}
+          <div className='win-title-bar'>
+            <span style={{ fontSize: '11px' }}>🔍 Buscar Canciones</span>
+          </div>
+          {/* Window content */}
+          <div className='p-2'>
+            <SongSearch />
+          </div>
         </div>
-        {/* La lista de canciones recibe las canciones filtradas para renderizar. */}
-        <SongList songs={initialSongs} />
+
+        {/* Songs panel */}
+        <div className='win-window'>
+          <div className='win-title-bar'>
+            <span style={{ fontSize: '11px' }}>🎵 {t('allSongs')}</span>
+          </div>
+          <div className='p-2'>
+            <SongList songs={initialSongs} />
+          </div>
+        </div>
       </main>
     </>
   )

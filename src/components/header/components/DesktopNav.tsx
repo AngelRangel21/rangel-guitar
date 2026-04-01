@@ -1,5 +1,4 @@
 import { ThemeToggle } from '@/components/theme-toggle'
-import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { supabase } from '@/lib/supabase'
 import { SongRequest } from '@/lib/types'
@@ -105,63 +104,52 @@ export default function DesktopNav (): JSX.Element {
 
   return (
     <>
-      <nav className='hidden xl:flex gap-6'>
+      <nav className='hidden xl:flex items-center gap-0'>
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className='hover:text-[#d2d2d2] transition-colors font-medium'
+            className='px-3 py-1 text-xs text-foreground hover:bg-primary hover:text-primary-foreground'
             title={link.title}
+            style={{ fontFamily: "'Tahoma', 'MS Sans Serif', sans-serif" }}
           >
             {link.label}
           </Link>
         ))}
       </nav>
 
-      {/* --- Desktop Actions --- */}
-      <section className='hidden xl:flex items-center gap-3'>
+      {/* Desktop Actions */}
+      <section className='hidden xl:flex items-center gap-1'>
         {isAdmin && (
           <Link
             href='/admin/requests'
-            className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full'
+            className='win-button flex items-center gap-1 text-xs relative'
             title='Solicitudes'
           >
-            <Bell />
+            <Bell size={12} />
             {notifications.count > 0 && (
-              <span className='absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground'>
+              <span style={{ background: '#c0392b', color: '#fff', borderRadius: '50%', width: '14px', height: '14px', fontSize: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', position: 'absolute', top: '-4px', right: '-4px' }}>
                 {notifications.count}
               </span>
             )}
           </Link>
         )}
-        {/* Tema modo claro/obscuro */}
         <ThemeToggle />
-
         {isAuthenticated
           ? (
-            <div className='hidden xl:flex'>
-              <Button
-                variant='secondary'
-                size='sm'
-                onClick={logout}
-                className='font-semibold'
-              >
-                Cerrar sesión
-              </Button>
-            </div>
+            <button
+              className='win-button text-xs'
+              onClick={logout}
+            >
+              Cerrar sesión
+            </button>
             )
           : (
-            <div className='hidden xl:flex gap-2'>
-              <Link
-                href='/login'
-                className='font-semibold rounded-[8px] py-3 px-2.5 hover:text-[#d2d2d2]'
-              >
+            <div className='flex gap-1'>
+              <Link href='/login' className='win-button text-xs' style={{ textDecoration: 'none' }}>
                 Iniciar sesión
               </Link>
-              <Link
-                href='/register'
-                className='font-semibold rounded-[8px] py-3 px-2.5 border-white hover:text-[#d2d2d2]'
-              >
+              <Link href='/register' className='win-button text-xs' style={{ textDecoration: 'none' }}>
                 Registrarse
               </Link>
             </div>
