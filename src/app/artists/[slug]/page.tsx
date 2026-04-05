@@ -11,11 +11,10 @@ export async function generateMetadata ({
   const { slug } = await params
   const songs = await getSongsByArtistSlug(slug)
   console.log(songs)
-  const artistName = songs[0]?.artists.find(a => a.slug === slug)?.name || 'Artista desconocido'
-  console.log(artistName)
+  const artistName = songs[0]?.artists.find(a => a.slug === slug)?.name ?? 'Artista desconocido'
 
   const description = `Explora todas las canciones y tablaturas de ${artistName} en Rangel Guitar. Aprende a tocar sus éxitos en guitarra.`
-  const title = `Canciones de ${artistName}` || ''
+  const title = `Canciones de ${artistName}`
 
   const image = `${decodeURIComponent(slug)}.webp`
   const imageUrl = image ? getArtistImage(image) : 'https://placehold.co/1200x630.png'
