@@ -2,7 +2,6 @@ import { getSongBySlug, getSongByArtist } from '@/services/song.service'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { SongDisplay } from '@/components/song-display'
-import type { SongWithArtist } from '@/types/app.types'
 import { JSX } from 'react'
 
 /**
@@ -33,36 +32,42 @@ export async function generateMetadata ({
 
   if (song == null) {
     return {
-      title: 'Canción no encontrada'
+      title: 'Canción no encontrada - Rangel Guitar'
     }
   }
 
-  const songSlice = `${song.lyrics}`.slice(0, 55)
+  const artistsName = song?.artists?.map(a => a.name).join(', ') ?? 'Artista desconocido'
+  const songTitle = song?.title ?? 'Sin titulo'
+  const songSlug = song?.slug ?? 'Sin slug'
+  const songCover = song?.coverArt ?? ''
+  const songLyrics = song?.lyrics ?? ''
 
-  const description = `${song.artist.name} - ${song.title} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`
+  const songSlice = `${songLyrics}`.slice(0, 50) ?? ''
 
+  const description = `${artistsName} - ${songTitle} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`
+  console.log(description)
   return {
-    title: `${song.title} - ${song.artist.name}`,
+    title: `${songTitle} - ${artistsName}`,
     description,
     openGraph: {
-      title: `${song.title} - ${song.artist.name}`,
+      title: `${songTitle} - ${artistsName}`,
       description,
       type: 'music.song',
-      url: `/songs/${song.slug}`,
+      url: `/songs/${songSlug}`,
       images: [
         {
-          url: song.coverArt ?? '',
+          url: songCover,
           width: 600,
           height: 600,
-          alt: `Portada de ${song.title}`
+          alt: `Portada de ${songTitle}`
         }
       ]
     },
     twitter: {
-      title: `${song.title} - ${song.artist.name}`,
+      title: `${songTitle} - ${artistsName}`,
       description,
       card: 'summary_large_image',
-      images: [song.coverArt ?? ''],
+      images: [songCover],
       creator: '@rangelguitar'
     },
     verification: {
@@ -98,7 +103,7 @@ export default async function SongPage ({
   const song = await getSongBySlug(slug)
 
   // Si la canción no existe, muestra la página 404.
-  if (song == null) {
+  if (song != null) {
     notFound()
   }
 
@@ -106,28 +111,27 @@ export default async function SongPage ({
   const allSongs = await getSongByArtist()
   const MAX_SUGGESTIONS = 6
 
+  // IDs de los artistas de la canción actual para comparar
+  const currentArtistIds = song?.artists?.map(a => a.id)
+
   // 1. Obtiene otras canciones del mismo artista.
-  let suggestedSongs: SongWithArtist[] = allSongs.filter(
-    (s) => s.artist.id === song.artist_id && s.id !== song.id
+  let suggestedSongs = allSongs.filter(s =>
+    s.id !== song?.id &&
+    s.artists.some(a => currentArtistIds?.includes(a.id))
   )
 
   // 2. Si no hay suficientes, obtiene canciones aleatorias de otros artistas.
   if (suggestedSongs.length < MAX_SUGGESTIONS) {
-    const otherSongs = allSongs.filter(
-      (s) => s.artist.id !== song.artist_id && s.id !== song.id
+    const otherSongs = allSongs.filter(s =>
+      s.id !== song?.id &&
+      (suggestedSongs.find(alreadySuggested => alreadySuggested.id === song?.id) == null)
     )
-
-    const remainingNeeded = MAX_SUGGESTIONS - suggestedSongs.length
 
     // Mezcla las otras canciones para obtener una selección aleatoria.
     const shuffledOtherSongs = otherSongs.sort(() => 0.5 - Math.random())
 
-    suggestedSongs.push(...shuffledOtherSongs.slice(0, remainingNeeded))
+    suggestedSongs = [...suggestedSongs, ...shuffledOtherSongs].slice(0, MAX_SUGGESTIONS)
   }
-
-  // 3. Se asegura de no exceder el número máximo de sugerencias.
-  suggestedSongs = suggestedSongs.slice(0, MAX_SUGGESTIONS)
-  // --- Fin de la Lógica de Sugerencias ---
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>

@@ -46,6 +46,12 @@ export function SongDisplay ({
   const { t } = useI18n()
   const { isAdmin } = useAuth()
   const [currentUrl, setCurrentUrl] = useState('')
+  const artistsName = song.artists.map(a => a.name).join(', ') ?? 'Artista desconocido'
+  const songTitle = song.title ?? 'Sin titulo'
+  const songSlug = song.slug ?? 'Sin slug'
+  const songVideo = song.video ?? ''
+  const songChords = song.chords ?? ''
+  const songLyrics = song.lyrics ?? ''
 
   // Efecto para obtener la URL actual y registrar la visita a la canción.
   useEffect(() => {
@@ -62,7 +68,7 @@ export function SongDisplay ({
     return `${direction} ${t('semitones')}`
   }
 
-  const shareText = t('shareText', { title: song.title ?? '', artist: song.artist?.name ?? '' })
+  const shareText = t('shareText', { title: songTitle, artist: artistsName })
 
   return (
     <div className='opacity-0 animate-content-in'>
@@ -70,12 +76,12 @@ export function SongDisplay ({
         {/* Columna izquierda: Portada, controles y metadatos */}
         <div className='lg:col-span-1'>
           <Card className='overflow-hidden lg:sticky lg:top-24'>
-            {song.video !== null &&
+            {songVideo !== null &&
               (
                 <div className='w-full aspect-video'>
                   <LiteYouTubeEmbed
-                    id={`${song.video}`}
-                    title={`Video de la canción ${song.title} del artista ${song.artist}`}
+                    id={`${songVideo}`}
+                    title={`Video de la canción ${songTitle} del artista ${artistsName}`}
                     lazyLoad
                     poster='maxresdefault'
                     webp
@@ -85,8 +91,8 @@ export function SongDisplay ({
             <CardHeader>
               <div className='flex justify-between items-start'>
                 <div>
-                  <CardTitle className='text-2xl'>{song.title}</CardTitle>
-                  <CardDescription>{song.artist?.name ?? 'Artista desconocido'}</CardDescription>
+                  <CardTitle className='text-2xl'>{songTitle}</CardTitle>
+                  <CardDescription>{artistsName}</CardDescription>
                 </div>
                 {/* Botón de Favoritos (solo para usuarios autenticados) */}
                 <FavoriteButton song={song} />
@@ -101,7 +107,7 @@ export function SongDisplay ({
                   </h2>
                   <div className='flex justify-center gap-4'>
                     <Button asChild variant='outline'>
-                      <Link href={`/songs/${song.slug}/edit`}>
+                      <Link href={`/songs/${songSlug}/edit`}>
                         <Pencil className='mr-2' /> {t('edit')}
                       </Link>
                     </Button>
@@ -243,7 +249,7 @@ export function SongDisplay ({
             <TabsContent value='chords'>
               <Card>
                 <CardContent className='p-6'>
-                  <ChordSheet text={song.chords ?? ''} transpose={transpose} />
+                  <ChordSheet text={songChords} transpose={transpose} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -251,7 +257,7 @@ export function SongDisplay ({
               <Card>
                 <CardContent className='p-6'>
                   <div className='whitespace-pre-wrap font-sans text-base leading-relaxed'>
-                    {song.lyrics ?? ''}
+                    {songLyrics}
                   </div>
                 </CardContent>
               </Card>
