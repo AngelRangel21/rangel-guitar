@@ -4,18 +4,18 @@ import type { ArtistCount, SongWithArtist } from '@/types/app.types'
 export async function getArtists (): Promise<ArtistCount[]> {
   const { data, error } = await supabase
     .from('artists')
-    .select('*, song:songs_artists(songs:songs_2(id))')
+    .select('*, song_count:songs_artists(count)')
     .order('name', { ascending: true })
 
   if (error != null) throw error
 
   return data?.map(artist => ({
     ...artist,
-    count: artist.song.length
+    count: artist.song_count[0]?.count || 0
   })) ?? []
 }
 
-export async function getSongsByArtistSlug(slug: string): Promise<SongWithArtist[]> {
+export async function getSongsByArtistSlug (slug: string): Promise<SongWithArtist[]> {
   if (!slug) return []
 
   // 1. Obtener artista
@@ -25,22 +25,34 @@ export async function getSongsByArtistSlug(slug: string): Promise<SongWithArtist
     .eq('slug', slug)
     .single()
 
+  if (artistError || !artist) {
+    console.error('Artist not found:', slug)
+    return []
+  }
+
   // 2. Obtener canciones (relación directa)
   const { data, error } = await supabase
     .from('songs_2')
     .select(`
       *,
-      artist:artists(*)
+      artist_list:songs_artists
+      (
+        artist:artists (*)
+      )
     `)
-    .eq('artist_id', artist.id)
+    .eq('songs_artists.artist_id', artist.id)
     .eq('isPublished', true)
+    .order('title', { ascending: true })
 
-  if (error != null) {
+  if (error != null || !data) {
     console.error('Error fetching songs:', error)
     return []
   }
 
-  return data ?? []
+  return data.map(song => ({
+    ...song,
+    artists: (song.artist_list as any[] || []).map(item => item.artist)
+  })) as SongWithArtist[]
 }
 
 export function getArtistImage (path: string) {
