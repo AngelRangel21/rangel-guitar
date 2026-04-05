@@ -32,38 +32,43 @@ export async function getSongByArtist (): Promise<SongWithArtist[]> {
     .from('songs_2')
     .select(`
       *,
-      artist:artists (
-        id,
-        name,
-        slug
+      artists_list:songs_artists(
+        artist:artists (
+          id,
+          name,
+          slug
+        )
       )
     `)
-    .order('title', { ascending: true })
-    .returns<SongWithArtist[]>()
-
-  if (data == null) {
-    console.error('[getSongByArtist]', Error)
-  }
+    .eq('isPublished', true)
+    .order('createdAt', { ascending: true })
+    // .returns<SongWithArtist[]>()
 
   if (error != null) {
-    throw new Error('Error al obtener las canciones', error)
+    console.error('[getSongByArtist]', Error)
+    throw new Error(`Error al obtener las canciones: ${error.message}`)
   }
 
-  return data
+  // Opcional: Mapear los datos para limpiar el anidamiento de la tabla intermedia
+  return (data || [])?.map(song => ({
+    ...song,
+    artists: (song.artists_list as any[] || []).map((item: any) => item.artist)
+  })) as SongWithArtist[]
 }
 
-export async function getSongBySlug (slug: string): Promise<SongWithArtist> {
+export async function getSongBySlug (slug: string): Promise<SongWithArtist | null> {
   const { data, error } = await supabase
     .from('songs_2')
-    .select('*, artist:artists (*)')
+    .select('*, artists_list:songs_artists(artist:artists (*))')
     .eq('slug', slug)
-    .limit(1)
     .single()
-    .returns<SongWithArtist>()
-  
-  if (error != null) throw error
 
-  return data
+  if ((error != null) || !data) return null
+
+  return {
+    ...data,
+    artists: (data.artists_list as any[] || []).map(item => item.artist)
+  } as SongWithArtist
 }
 
 export async function addSong (songData: NewSongData): Promise<void> {

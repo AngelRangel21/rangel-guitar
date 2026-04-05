@@ -41,7 +41,11 @@ export type ArtistCount = Artist & {
 
 // ARTISTA + CANCIÓN
 export type SongWithArtist = Song & {
-  artist: Artist
+  artists: Array<{
+    id: string
+    name: string
+    slug: string
+  }>
 }
 
 /**
