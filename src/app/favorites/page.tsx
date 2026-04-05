@@ -9,7 +9,6 @@ import type { SongWithArtist } from '@/types/app.types'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAuthStore } from '@/auth/stores/auth.stores'
 import { supabase } from '@/lib/supabase'
-import { mapDbSongWithCounts } from '@/types'
 
 function FavoritesContent (): JSX.Element {
   const { t } = useI18n()
@@ -31,16 +30,19 @@ function FavoritesContent (): JSX.Element {
     setIsLoading(true)
 
     supabase
-      .from('songs_with_counts')
-      .select('*')
+      .from('songs_2')
+      .select('*, artists:songs_artists(artist:artists(id, name, slug))')
       .in('id', Array.from(favoritesIds))
       .eq('isPublished', true)
       .then(({ data, error }) => {
         if (error != null) {
           console.error('Error loading favorite songs: ', error)
-          setFavoriteSongs([])
         } else {
-          setFavoriteSongs((data ?? []).map(mapDbSongWithCounts))
+          const formatted = data?.map(song => ({
+            ...song,
+            artists: song.artists.map((a: any) => a.artist)
+          }))
+          setFavoriteSongs(formatted || [])
         }
         setIsLoading(false)
       })
