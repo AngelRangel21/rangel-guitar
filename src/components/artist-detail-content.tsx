@@ -1,15 +1,15 @@
 'use client'
 
-import type { Song } from '@/types'
 import { useI18n } from '@/context/i18n-context'
 import { SongList } from '@/components/song-list'
+import { SongWithArtist } from '@/types/app.types'
 
 /**
  * Propiedades que el componente ArtistDetailContent espera recibir.
  */
 interface ArtistDetailContentProps {
   artistName: string
-  songs: Song[]
+  songs: SongWithArtist[]
 }
 
 /**

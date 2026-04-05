@@ -3,10 +3,6 @@ import { supabase } from '@/lib/supabase'
 import { Tables } from '@/types'
 
 type User = Tables<'users'>
-type Roles = Tables<'roles'>
-type UsersAndRoles = User & {
-  roles: Roles
-}
 
 export class UserRepository {
   static async upsert (user: {
@@ -26,10 +22,10 @@ export class UserRepository {
     if (error != null) throw error
   }
 
-  static async getById (uid: string): Promise<UsersAndRoles> {
+  static async getById (uid: string): Promise<User> {
     const { data, error } = await supabase
       .from('users')
-      .select('uid, email, name, role, roles:roles(id, name), avatar_url, createdAt, isAdmin')
+      .select('uid, email, name, role, avatar_url, createdAt, isAdmin')
       .eq('uid', uid)
       .single()
 

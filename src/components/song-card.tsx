@@ -17,13 +17,18 @@ interface SongCardProps {
  * @returns {JSX.Element} La tarjeta de la canción.
  */
 export function SongCard ({ song }: SongCardProps): JSX.Element {
+  const artistsName = song.artists.map(a => a.name).join(', ') ?? 'Artista desconocido'
+  const songTitle = song.title ?? 'Sin titulo'
+  const songSlug = song.slug ?? 'Sin slug'
+  const songCover = song.coverArt ?? ''
+
   return (
-    <div className='group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300'>
+    <div className='group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300'>
       <div className='h-auto w-auto aspect-video relative overflow-hidden'>
         <Image
-          alt={`${song.title} - ${song.artist.name}`}
+          alt={`${songTitle} - ${artistsName}`}
           className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
-          src={`${song.coverArt ?? ''}`}
+          src={`${songCover}`}
           width='70'
           height='100'
           unoptimized
@@ -31,12 +36,12 @@ export function SongCard ({ song }: SongCardProps): JSX.Element {
       </div>
       <div className='p-5'>
         <Link
-          href={`/songs/${song.slug}`}
+          href={`/songs/${songSlug}`}
           className='text-lg font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors'
         >
-          {song.title}
+          {songTitle}
         </Link>
-        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{song.artist.name}</p>
+        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{artistsName}</p>
         <div className='flex items-center justify-between'>
           <button className='bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-slate-900 transition-all'>Ver Acordes</button>
           <FavoriteButton song={song} />

@@ -5,19 +5,24 @@ import { JSX } from 'react'
 import { FavoriteButton } from './favorite-button'
 
 export function SongListItem ({ song }: { song: SongWithArtist }): JSX.Element {
+  const artistsName = song.artists.map(a => a.name).join(', ') ?? 'Artista desconocido'
+  const songTitle = song.title ?? 'Sin titulo'
+  const songSlug = song.slug ?? 'Sin slug'
+  const songCover = song.coverArt ?? ''
+
   return (
     <div
       className='flex flex-col gap-2'
-      title={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
+      title={`${songTitle} - ${artistsName}`}
     >
       <div
         className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#1E293B] border border-transparent hover:border-slate-800 rounded-xl transition-all duration-200 group'
       >
         <div className='h-auto w-auto aspect-video relative overflow-hidden'>
           <Image
-            alt={`${song.title ?? 'Unknown Title'} - ${song.artist?.name || 'Unknown Artist'}`}
+            alt={`${songTitle} - ${artistsName}`}
             className='rounded-lg object-cover shrink-0'
-            src={`${song.coverArt ?? ''}`}
+            src={`${songCover}`}
             width='80'
             height='48'
             decoding='async'
@@ -26,20 +31,20 @@ export function SongListItem ({ song }: { song: SongWithArtist }): JSX.Element {
         </div>
         <div className='grow min-w-0'>
           <Link
-            href={`/songs/${song.slug}`}
-            className='text-white font-bold truncate transition-colors'
+            href={`/songs/${songSlug}`}
+            className='text-white font-bold transition-colors'
           >
-            {song.title}
+            {songTitle}
           </Link>
           <p
-            className='text-slate-400 text-sm'
+            className='text-slate-900 dark:text-white text-sm'
           >
-            {song.artist?.name ?? 'Unknown Artist'}
+            {artistsName}
           </p>
         </div>
         <div className='flex items-center gap-6'>
           <Link
-            href={`/songs/${song.slug}`}
+            href={`/songs/${songSlug}`}
             className='hidden md:block dark:hover:bg-slate-950 bg-slate-800 text-slate-200 px-5 py-2 rounded-xl text-sm font-bold transition-all border whitespace-nowrap'
           >
             Ver Acordes
