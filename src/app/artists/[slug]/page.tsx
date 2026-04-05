@@ -10,7 +10,6 @@ export async function generateMetadata ({
 }): Promise<Metadata> {
   const { slug } = await params
   const songs = await getSongsByArtistSlug(slug)
-  console.log(songs)
   const artistName = songs[0]?.artists.find(a => a.slug === slug)?.name ?? 'Artista desconocido'
 
   const description = `Explora todas las canciones y tablaturas de ${artistName} en Rangel Guitar. Aprende a tocar sus éxitos en guitarra.`
@@ -64,9 +63,10 @@ export default async function ArtistDetailPage ({
     return <div>No se encontraron canciones.</div>
   }
 
-  const currentArtist = songs[0].artists.find(a => a.slug === slug)
-  const artistName = currentArtist?.name ? songs[0].artists[0]?.name : 'Artista desconocido'
-  console.log(artistName)
+  const currentArtist = songs[0].artists.find(a => a.slug === slug)?.name
+  const artistName = songs.length > 0
+    ? currentArtist
+    : 'Artista desconocido'
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>

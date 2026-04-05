@@ -45,7 +45,7 @@ export async function generateMetadata ({
   const songSlice = `${songLyrics}`.slice(0, 50) ?? ''
 
   const description = `${artistsName} - ${songTitle} letra, acordes y video disponibles para practicar disponible en Rangel Guitar. - ${songSlice}`
-  console.log(description)
+
   return {
     title: `${songTitle} - ${artistsName}`,
     description,

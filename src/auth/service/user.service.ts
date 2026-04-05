@@ -68,8 +68,6 @@ export class UserService {
         const FullbackName =
         uid.split('@', 1)[0] ?? 'Anonymous'
 
-        console.log(FullbackName)
-
         return {
           uid,
           email: uid.includes('@') ? uid : '',

@@ -35,8 +35,7 @@ export async function getSongsByArtistSlug (slug: string): Promise<SongWithArtis
     .from('songs_2')
     .select(`
       *,
-      artist_list:songs_artists
-      (
+      artists_list:songs_artists!inner (
         artist:artists (*)
       )
     `)
@@ -51,7 +50,7 @@ export async function getSongsByArtistSlug (slug: string): Promise<SongWithArtis
 
   return data.map(song => ({
     ...song,
-    artists: (song.artist_list as any[] || []).map(item => item.artist)
+    artists: (song.artists_list as any[] || []).map(item => item.artist)
   })) as SongWithArtist[]
 }
 
