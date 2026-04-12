@@ -1,3 +1,26 @@
+# [1.1.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.2...v1.1.0) (2026-04-12)
+
+
+### Bug Fixes
+
+* arreglando problemas al obtener las canciones favoritas por el usuario ([a04636e](https://github.com/AngelRangel21/rangel-guitar/commit/a04636ecf0e8448cc454585c6bbe0e2c37184e37))
+* Migrando de pnpm a bun en semantic release ([cea123e](https://github.com/AngelRangel21/rangel-guitar/commit/cea123e959c637efba55c14ff69df0e55ef503d2))
+* Migrando de pnpm a bun en semantic release ([e27a379](https://github.com/AngelRangel21/rangel-guitar/commit/e27a3791538f675056f9df5b5b0418d4f5c36c52))
+* Migrando de pnpm a bun en semantic release ([7f87cc4](https://github.com/AngelRangel21/rangel-guitar/commit/7f87cc42e1bce68ae118f7b0376b76625f3a5073))
+* Quitando pnpm y usando bun ([89cfe63](https://github.com/AngelRangel21/rangel-guitar/commit/89cfe63fdd2dbef5a276076ed712a4e6d4e2c14d))
+
+
+### Features
+
+* Arreglando errores al obtener la canción en la página de la canción y el tipado de song-display ([aca5709](https://github.com/AngelRangel21/rangel-guitar/commit/aca5709d59c0dab0f85459a3c4292c05072349d7))
+* Arreglando errores al obtener los artistas en getSongsByArtistSlug en el sitemap ([7fe2aa9](https://github.com/AngelRangel21/rangel-guitar/commit/7fe2aa94a84b758fcd2c9b514417330a8f537771))
+* iArreglando errores al obtener los artistas en getSongsByArtistSlug ([0d6df1a](https://github.com/AngelRangel21/rangel-guitar/commit/0d6df1a2771a40760a059a22d6bde21a9cfa84b6))
+* implementar relación muchos-a-muchos entre canciones y artistas ([c43209f](https://github.com/AngelRangel21/rangel-guitar/commit/c43209fdbe9a217a11f2715465670da5cdbf172a))
+* implementar relación muchos-a-muchos entre canciones y artistas ([6ae88fc](https://github.com/AngelRangel21/rangel-guitar/commit/6ae88fc4c1b9332fee733427adc2a2f88f833709))
+* implementar relación muchos-a-muchos entre canciones y artistas ([4fa0b67](https://github.com/AngelRangel21/rangel-guitar/commit/4fa0b67005e2ca0af1abdb55904e419f4827cf3a))
+* implementar relación muchos-a-muchos entre canciones y artistas ([4f0c58c](https://github.com/AngelRangel21/rangel-guitar/commit/4f0c58c1a01ac731b1b259a8a2612f8a73731258))
+* **ui:** actualizar visualización y metadatos para múltiples artistas ([b09e2fa](https://github.com/AngelRangel21/rangel-guitar/commit/b09e2fae776ebdaf1f84ca1aa8dc186e1f1c6677))
+
 ## [1.0.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.1...v1.0.2) (2026-04-01)
 
 
