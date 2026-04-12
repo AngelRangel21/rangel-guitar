@@ -62,7 +62,7 @@ export function SongDisplay ({
    * Genera el texto que describe el estado de la transposición.
    * @returns {string} - El texto descriptivo (ej. "Tono Original", "+2 semitonos").
    */
-  const getTransposedKeyText = () => {
+  const getTransposedKeyText = (): string => {
     if (transpose === 0) return t('originalKey')
     const direction = transpose > 0 ? `+${transpose}` : transpose
     return `${direction} ${t('semitones')}`

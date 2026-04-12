@@ -103,7 +103,7 @@ export default async function SongPage ({
   const song = await getSongBySlug(slug)
 
   // Si la canción no existe, muestra la página 404.
-  if (song != null) {
+  if (song == null) {
     notFound()
   }
 
