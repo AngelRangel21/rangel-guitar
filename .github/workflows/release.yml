@@ -23,6 +23,12 @@ jobs:
         with:
           version: latest # O la versión que estés usando localmente
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'bun' # Esto acelera tus builds futuros
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
