@@ -9,6 +9,7 @@ import {
   getTranslations,
   setRequestLocale
 } from 'next-intl/server'
+import type React from 'react'
 import type { JSX } from 'react'
 import { AuthProvider } from '@/auth/provider/auth.provider'
 import { Footer } from '@/components/footer/Footer'
@@ -99,10 +100,15 @@ export async function generateMetadata({
   }
 }
 
+interface LayoutProps {
+  children: React.ReactNode
+  params: { locale: string }
+}
+
 export default async function RootLayout({
   children,
   params
-}: LayoutProps<'/[locale]'>): Promise<JSX.Element> {
+}: LayoutProps): Promise<JSX.Element> {
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) {
     notFound()

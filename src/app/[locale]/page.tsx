@@ -4,9 +4,13 @@ import { HomeClient } from '@/components/home-client'
 import { getSongByArtist } from '@/services/song.service'
 import type { SongWithArtist } from '@/types/app.types'
 
+interface HomePageProps {
+  params: { locale: string }
+}
+
 export default async function Home({
   params
-}: PageProps<'/[locale]'>): Promise<JSX.Element> {
+}: HomePageProps): Promise<JSX.Element> {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations('page')
