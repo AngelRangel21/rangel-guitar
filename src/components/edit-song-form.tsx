@@ -1,29 +1,44 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
 import * as z from 'zod'
-
+import { revalidateAndRedirectAfterEdit } from '@/app/[locale]/songs/[slug]/edit/actions'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-
 import { useI18n } from '@/context/i18n-context'
-
-import type { SongWithArtist, Artist } from '@/types/app.types'
-
-import { updateSong } from '@/services/song.service'
 import { createSlug } from '@/lib/utils'
 import { getArtists } from '@/services/artists.service'
-
+import { updateSong } from '@/services/song.service'
+import type { Artist, SongWithArtist } from '@/types/app.types'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from './ui/select'
 import { Spinner } from './ui/spinner'
-import { toast } from 'sonner'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
-
-import { revalidateAndRedirectAfterEdit } from '@/app/songs/[slug]/edit/actions'
 
 /**
  * Esquema de validación del formulario de edición utilizando Zod.
@@ -43,7 +58,7 @@ const formSchema = z.object({
  * @param {{ song: Song }} props - Propiedades con los datos de la canción a editar.
  * @returns {JSX.Element} El componente del formulario de edición.
  */
-export function EditSongForm ({ song }: { song: SongWithArtist }) {
+export function EditSongForm({ song }: { song: SongWithArtist }) {
   const { t } = useI18n()
   const [artists, setArtists] = useState<Artist[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -53,7 +68,7 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: song.title ?? '',
-      artist_id: song.artist.name ?? '',
+      artist_id: song.artists.map((a) => a.name).join(', ') ?? '',
       lyrics: song.lyrics ?? '',
       chords: song.chords ?? '',
       video: song.video ?? '',
@@ -65,17 +80,15 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
     getArtists().then(setArtists)
   }, [])
 
-  
-
   /**
    * Función que se ejecuta al enviar el formulario.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
-  async function onSubmit (values: z.infer<typeof formSchema>): Promise<void> {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
 
     try {
-      const artist = artists.find(a => a.id === values.artist_id)
+      const artist = artists.find((a) => a.id === values.artist_id)
       const slug = createSlug(values.title)
 
       const songData = {
@@ -92,16 +105,12 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
       await updateSong(song.id, songData)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       try {
-        await revalidateAndRedirectAfterEdit(
-          artist?.name ?? "",
-          slug
-        )
+        await revalidateAndRedirectAfterEdit(artist?.name ?? '', slug)
       } catch (err) {
-        console.error("Error en redirect:", err)
+        console.error('Error en redirect:', err)
       }
 
       toast.success('La canción se ha actualizado correctamente')
-
     } catch (error) {
       // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
       if (error) return
@@ -121,10 +130,8 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
       </CardHeader>
 
       <CardContent>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
@@ -152,10 +159,9 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Seleccionar artista" />
+                            <SelectValue placeholder='Seleccionar artista' />
                           </SelectTrigger>
                         </FormControl>
 
@@ -163,10 +169,10 @@ export function EditSongForm ({ song }: { song: SongWithArtist }) {
                           <SelectGroup>
                             <SelectLabel>Artistas</SelectLabel>
                             {artists.map((artist) => (
-                                  <SelectItem key={artist.id} value={artist.id}>
-                                    {artist.name}
-                                  </SelectItem>
-                              ))}
+                              <SelectItem key={artist.id} value={artist.id}>
+                                {artist.name}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -249,16 +255,14 @@ primera línea de la canción...
               />
             </div>
             <Button type='submit' className='w-full' disabled={isLoading}>
-              {isLoading
-                ? (
-                  <>
-                    <Spinner />
-                    <p>{t('saving')}</p>
-                  </>
-                  )
-                : (
-                    t('saveChanges')
-                  )}
+              {isLoading ? (
+                <>
+                  <Spinner />
+                  <p>{t('saving')}</p>
+                </>
+              ) : (
+                t('saveChanges')
+              )}
             </Button>
           </form>
         </Form>

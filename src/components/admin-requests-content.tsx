@@ -1,41 +1,41 @@
 'use client'
 
-import React, { useState, useEffect, JSX } from 'react'
+import { format } from 'date-fns'
+import { enUS, es } from 'date-fns/locale'
+import { Trash2 } from 'lucide-react'
+import Link from 'next/link'
+import { type JSX, useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { revalidateAfterRequestDelete } from '@/app/[locale]/admin/requests/actions'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card'
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-  TableCaption
+  TableRow
 } from '@/components/ui/table'
 import { useI18n } from '@/context/i18n-context'
-import { format } from 'date-fns'
-import { es, enUS } from 'date-fns/locale'
-import type { SongRequest } from '@/lib/types'
-import Link from 'next/link'
-import { Button } from './ui/button'
-import { Trash2 } from 'lucide-react'
-import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions'
 import { deleteSongRequest } from '@/lib/client/requests'
 import { supabase } from '@/lib/supabase'
+import type { SongRequest } from '@/lib/types'
+import { Button } from './ui/button'
 import { Skeleton } from './ui/skeleton'
-import { toast } from 'sonner'
 
 /**
  * Componente de cliente que muestra el contenido de la página de solicitudes de administrador.
  * Renderiza una tabla con las solicitudes de canciones pendientes.
  * @returns {JSX.Element} El componente de contenido de solicitudes.
  */
-export function AdminRequestsContent (): JSX.Element {
+export function AdminRequestsContent(): JSX.Element {
   // Estados para manejar las solicitudes, el estado de carga y la internacionalización.
   const [requests, setRequests] = useState<SongRequest[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -83,13 +83,15 @@ export function AdminRequestsContent (): JSX.Element {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [t, toast])
+  }, [])
 
   /**
    * Maneja la eliminación de una solicitud de canción.
    * @param {string} requestId - El ID de la solicitud a eliminar.
    */
-  const handleDelete: (requestId: string) => Promise<void> = async (requestId: string) => {
+  const handleDelete: (requestId: string) => Promise<void> = async (
+    requestId: string
+  ) => {
     const originalRequests = [...requests] // Guarda el estado original para posible reversión.
 
     // Actualización optimista: elimina la solicitud de la UI inmediatamente.
@@ -157,10 +159,11 @@ export function AdminRequestsContent (): JSX.Element {
                 <TableCell className='font-medium'>
                   {/* Enlace para ir a la página de agregar canción con los datos pre-rellenados. */}
                   <Link
-                    href={`/admin/add-song?id=${req.id
-                      }&title=${encodeURIComponent(
-                        req.title
-                      )}&artist=${encodeURIComponent(req.artist)}`}
+                    href={`/admin/add-song?id=${
+                      req.id
+                    }&title=${encodeURIComponent(
+                      req.title
+                    )}&artist=${encodeURIComponent(req.artist)}`}
                     className='hover:underline'
                   >
                     {req.title}

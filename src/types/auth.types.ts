@@ -5,7 +5,7 @@
  * al `uid` de nuestra tabla `public.users`.
  */
 
-import type { UserProfile, SongRequest, Song } from "./app.types"
+import type { Song, SongRequest, UserProfile } from './app.types'
 
 // ─────────────────────────────────────────────
 // AUTH

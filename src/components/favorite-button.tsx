@@ -1,12 +1,12 @@
-import { useAuth } from '@/hooks/useAuth'
-import { Button } from './ui/button'
-import { useAuthStore } from '@/auth/stores/auth.stores'
-import { Song } from '@/types'
-import { useI18n } from '@/context/i18n-context'
 import { Heart } from 'lucide-react'
-import { JSX } from 'react'
+import type { JSX } from 'react'
+import { useAuthStore } from '@/auth/stores/auth.stores'
+import { useI18n } from '@/context/i18n-context'
+import { useAuth } from '@/hooks/useAuth'
+import type { Song } from '@/types'
+import { Button } from './ui/button'
 
-export function FavoriteButton ({ song }: { song: Song }): JSX.Element {
+export function FavoriteButton({ song }: { song: Song }): JSX.Element {
   const { isAuthenticated } = useAuth()
   const toggleFavorite = useAuthStore((s) => s.toggleFavorite)
   const favoriteIds = useAuthStore((s) => s.favoriteIds)
@@ -21,17 +21,16 @@ export function FavoriteButton ({ song }: { song: Song }): JSX.Element {
           size='icon'
           onClick={async () => await toggleFavorite(song.id)}
           aria-label={
-            isFavorite(song.id)
-              ? t('removeFromFavorites')
-              : t('addToFavorites')
+            isFavorite(song.id) ? t('removeFromFavorites') : t('addToFavorites')
           }
           className='rounded-full'
         >
           <Heart
-            className={`h-6 w-6 transition-colors ${isFavorite(song.id)
+            className={`h-6 w-6 transition-colors ${
+              isFavorite(song.id)
                 ? 'fill-red-500 text-red-500'
                 : 'text-foreground/70'
-              }`}
+            }`}
           />
         </Button>
       )}

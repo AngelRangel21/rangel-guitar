@@ -54,7 +54,7 @@ export type SongWithArtist = Song & {
  */
 type SongNoKey = Omit<Song, 'key'>
 
-export function mapDbSongWithCounts (row: DbSongWithCounts): SongNoKey {
+export function mapDbSongWithCounts(row: DbSongWithCounts): SongNoKey {
   return {
     id: row.id ?? '',
     slug: row.slug ?? '',
@@ -127,7 +127,7 @@ export interface SongComment {
   updatedAt: string
   isDeleted: boolean
   // Join con users (cuando se hace select con embed)
-  user?: Pick<UserProfile, 'uid' | 'name' | 'avatar_url'>
+  user?: Pick<UserProfile, 'uid' | 'name' | 'avatarUrl'>
 }
 
 /** Para crear un comentario nuevo */

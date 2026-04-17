@@ -1,10 +1,15 @@
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
+/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import type { User } from '@supabase/supabase-js'
 import { UserRepository } from './user.repository'
 
 export const ADMIN_EMAILS = ['angel145256@gmail.com']
 
 export class UserService {
-  static buildProfile (user: User, displayName?: string): {
+  static buildProfile(
+    user: User,
+    displayName?: string
+  ): {
     uid: string
     email: string
     name: any
@@ -19,9 +24,7 @@ export class UserService {
       'Anonymous'
 
     const avatar_url =
-      user.user_metadata?.avatar_url ??
-      user.user_metadata?.picture ??
-      null
+      user.user_metadata?.avatar_url ?? user.user_metadata?.picture ?? null
 
     const isAdmin = ADMIN_EMAILS.includes(user.email ?? '')
 
@@ -34,8 +37,8 @@ export class UserService {
     }
   }
 
-  static async syncUser (user: User, displayName?: string): Promise<void> {
-    const profile = this.buildProfile(user, displayName)
+  static async syncUser(user: User, displayName?: string): Promise<void> {
+    const profile = UserService.buildProfile(user, displayName)
 
     try {
       await UserRepository.upsert(profile)
@@ -44,7 +47,7 @@ export class UserService {
     }
   }
 
-  static async getProfile (uid: string): Promise<{
+  static async getProfile(uid: string): Promise<{
     uid: string
     email: string
     name: string
@@ -65,8 +68,7 @@ export class UserService {
       }
     } catch (error: any) {
       if (error.code === 'PGRST116') {
-        const FullbackName =
-        uid.split('@', 1)[0] ?? 'Anonymous'
+        const FullbackName = uid.split('@', 1)[0] ?? 'Anonymous'
 
         return {
           uid,

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { SearchState } from '@/lib/types'
 import { SearchService } from '@/services/search.service'
-import { Song, SearchState } from '@/lib/types'
 
 const DEBOUNCE_MS = 500
 
@@ -12,7 +12,7 @@ export function useSearch() {
     results: [],
     isLoading: false,
     error: null,
-    hasSearched: false,
+    hasSearched: false
   })
 
   // Ref para cancelar debounce anterior
@@ -24,21 +24,21 @@ export function useSearch() {
     // Cancelar debounce anterior
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
-    setState(prev => ({ ...prev, query }))
+    setState((prev) => ({ ...prev, query }))
 
     // Query vacía o muy corta: limpiar resultados sin buscar
     if (query.trim().length < 2) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         results: [],
         isLoading: false,
         error: null,
-        hasSearched: false,
+        hasSearched: false
       }))
       return
     }
 
-    setState(prev => ({ ...prev, isLoading: true, error: null }))
+    setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
     debounceRef.current = setTimeout(async () => {
       // Cancelar petición anterior si existe
@@ -48,23 +48,23 @@ export function useSearch() {
       try {
         const { songs } = await SearchService.search(query)
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           results: songs,
           isLoading: false,
           hasSearched: true,
-          error: null,
+          error: null
         }))
       } catch (err) {
         // Ignorar errores de abort (búsqueda cancelada)
         if (err instanceof Error && err.name === 'AbortError') return
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           results: [],
           isLoading: false,
           hasSearched: true,
-          error: 'Error al buscar. Intenta de nuevo.',
+          error: 'Error al buscar. Intenta de nuevo.'
         }))
       }
     }, DEBOUNCE_MS)
@@ -73,25 +73,25 @@ export function useSearch() {
   const searchImmediate = useCallback(async (query: string) => {
     if (query.trim().length < 2) return
 
-    setState(prev => ({ ...prev, isLoading: true, error: null }))
+    setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
     try {
       const { songs } = await SearchService.search(query)
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         results: songs,
         isLoading: false,
         hasSearched: true,
-        error: null,
+        error: null
       }))
     } catch {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         results: [],
         isLoading: false,
         hasSearched: true,
-        error: 'Error al buscar. Intenta de nuevo.',
+        error: 'Error al buscar. Intenta de nuevo.'
       }))
     }
   }, [])
@@ -103,7 +103,7 @@ export function useSearch() {
       results: [],
       isLoading: false,
       error: null,
-      hasSearched: false,
+      hasSearched: false
     })
   }, [])
 
@@ -119,6 +119,6 @@ export function useSearch() {
     ...state,
     search,
     searchImmediate,
-    clear,
+    clear
   }
 }

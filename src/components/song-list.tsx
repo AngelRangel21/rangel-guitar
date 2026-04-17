@@ -1,21 +1,21 @@
 'use client'
 
-import { useState, useMemo, useEffect, Fragment, JSX } from 'react'
 import { LayoutGrid, List } from 'lucide-react'
-import type { SongWithArtist } from '@/types/app.types'
-import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
+import { Fragment, type JSX, useEffect, useMemo, useState } from 'react'
 import { SongCard } from '@/components/song-card'
 import { SongListItem } from '@/components/song-list-item'
+import { Button } from '@/components/ui/button'
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis
+  PaginationPrevious
 } from '@/components/ui/pagination'
-import { useI18n } from '@/context/i18n-context'
+import type { SongWithArtist } from '@/types/app.types'
 
 // Constante para el número de canciones a mostrar por página.
 const SONGS_PER_PAGE = 16
@@ -25,15 +25,15 @@ const SONGS_PER_PAGE = 16
  * @param {{ songs: Song[] }} props - Propiedades del componente, contiene la lista de canciones.
  * @returns {JSX.Element} El componente de la lista de canciones.
  */
-export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
+export function SongList({ songs }: { songs: SongWithArtist[] }): JSX.Element {
   const [view, setView] = useState<'grid' | 'list'>('list')
   const [currentPage, setCurrentPage] = useState(1)
-  const { t } = useI18n()
+  const t = useTranslations('songList')
 
   // Efecto para resetear la paginación a la página 1 cada vez que la lista de canciones cambia (ej. por una búsqueda).
   useEffect(() => {
     setCurrentPage(1)
-  }, [songs])
+  }, [])
 
   const totalPages = Math.ceil(songs.length / SONGS_PER_PAGE)
 
@@ -152,7 +152,7 @@ export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
             variant={view === 'list' ? 'secondary' : 'ghost'}
             size='icon'
             onClick={() => setView('list')}
-            aria-label={t('listView')}
+            aria-label={t('list.listView')}
           >
             <List className='h-5 w-5' />
           </Button>
@@ -160,7 +160,7 @@ export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
             variant={view === 'grid' ? 'secondary' : 'ghost'}
             size='icon'
             onClick={() => setView('grid')}
-            aria-label={t('gridView')}
+            aria-label={t('grid.gridView')}
           >
             <LayoutGrid className='h-5 w-5' />
           </Button>
@@ -176,20 +176,19 @@ export function SongList ({ songs }: { songs: SongWithArtist[] }): JSX.Element {
         <>
           {/* Contenedor que cambia entre cuadrícula y lista */}
           <div
-            className={`transition-all duration-300 ${view === 'grid'
+            className={`transition-all duration-300 ${
+              view === 'grid'
                 ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6'
                 : 'flex flex-col space-y-3'
-              }`}
+            }`}
           >
             {currentSongs.map((song) => (
               <Fragment key={song.id}>
-                {view === 'grid'
-                  ? (
-                    <SongCard song={song} />
-                    )
-                  : (
-                    <SongListItem song={song} />
-                    )}
+                {view === 'grid' ? (
+                  <SongCard song={song} />
+                ) : (
+                  <SongListItem song={song} />
+                )}
               </Fragment>
             ))}
           </div>

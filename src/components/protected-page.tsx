@@ -1,8 +1,9 @@
 'use client'
 
-import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
-import React, { JSX, useEffect, useState } from 'react'
+import type React from 'react'
+import { type JSX, useEffect, useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
 // import { useI18n } from '@/context/i18n-context'
 import { Spinner } from './ui/spinner'
 
@@ -12,7 +13,11 @@ interface ProtectedPageProps {
   redirectTo?: string
 }
 
-export function ProtectedPage ({ children, adminOnly = false, redirectTo = '/login' }: ProtectedPageProps): JSX.Element | null {
+export function ProtectedPage({
+  children,
+  adminOnly = false,
+  redirectTo = '/login'
+}: ProtectedPageProps): JSX.Element | null {
   const { isLoaded, isAuthenticated = false, isAdmin = false } = useAuth()
   const router = useRouter()
   // const { t } = useI18n()
@@ -49,9 +54,7 @@ export function ProtectedPage ({ children, adminOnly = false, redirectTo = '/log
       <div className='flex items-center justify-center min-h-screen'>
         <div className='flex flex-col items-center gap-2'>
           <Spinner />
-          <p className='text-sm text-muted-foreground'>
-            Redirigiendo
-          </p>
+          <p className='text-sm text-muted-foreground'>Redirigiendo</p>
         </div>
       </div>
     )
@@ -71,9 +74,5 @@ export function ProtectedPage ({ children, adminOnly = false, redirectTo = '/log
   }
 
   // Estado 4: Cargó y tiene acceso, mostrar contenido
-  return (
-    <>
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

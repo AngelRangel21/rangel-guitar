@@ -1,7 +1,8 @@
 // services/search.service.ts
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 
 import { supabase } from '@/lib/supabase'
-import { Song, SearchResult } from '@/lib/types'
+import type { SearchResult, Song } from '@/lib/types'
 
 const SEARCH_LIMIT = 10
 const MIN_QUERY_LENGTH = 2
@@ -28,18 +29,18 @@ export class SearchService {
       .order('title', { ascending: true })
       .limit(SEARCH_LIMIT)
 
-    if (error) throw new Error(error.message)
+    if (error != null) throw new Error(error.message)
 
     return {
       songs: (data as Song[]) ?? [],
-      total: count ?? 0,
+      total: count ?? 0
     }
   }
 
   /**
    * Búsqueda solo por artista (para autocompletar artistas únicos)
    */
-  static async searchByArtist(query: string): Promise<string[]> {
+  static async searchByArtist(query: string): Promise<Array<string | null>> {
     const trimmed = query.trim()
 
     if (trimmed.length < MIN_QUERY_LENGTH) return []
@@ -51,10 +52,12 @@ export class SearchService {
       .order('artist', { ascending: true })
       .limit(5)
 
-    if (error) throw new Error(error.message)
+    if (error != null) throw new Error(error.message)
 
     // Retornar artistas únicos
-    const unique = [...new Set((data ?? []).map((d: { artist: string }) => d.artist))]
-    return unique
+    const unique: Array<string | null> = [
+      ...new Set((data ?? []).map((d: { artist: string | null }) => d.artist))
+    ]
+    return unique || null
   }
 }

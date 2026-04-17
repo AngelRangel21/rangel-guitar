@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import { useI18n } from "@/context/i18n-context";
-import { ChordsList } from "@/components/chords-list";
+import { ChordsList } from '@/components/chords-list'
+import { useI18n } from '@/context/i18n-context'
 
 /**
  * Propiedades que el componente ChordsPageContent espera recibir.
  */
 interface ChordsPageContentProps {
-    majorChords: string[];
-    minorChords: string[];
-    seventhChords: string[];
+  majorChords: string[]
+  minorChords: string[]
+  seventhChords: string[]
 }
 
 /**
@@ -18,18 +18,22 @@ interface ChordsPageContentProps {
  * @param {ChordsPageContentProps} props - Las listas de acordes a mostrar.
  * @returns {JSX.Element} El contenido principal de la página de acordes.
  */
-export function ChordsPageContent({ majorChords, minorChords, seventhChords }: ChordsPageContentProps) {
-    const { t } = useI18n(); // Hook para obtener traducciones.
+export function ChordsPageContent({
+  majorChords,
+  minorChords,
+  seventhChords
+}: ChordsPageContentProps) {
+  const { t } = useI18n() // Hook para obtener traducciones.
 
-    return (
-        <main className="grow container mx-auto px-4 py-8 space-y-8">
-            <h1 className="text-4xl font-bold text-center">{t('chordsPageTitle')}</h1>
-            {/* Componente que renderiza las listas de acordes. */}
-            <ChordsList
-                majorChords={majorChords}
-                minorChords={minorChords}
-                seventhChords={seventhChords}
-            />
-        </main>
-    )
+  return (
+    <main className='grow container mx-auto px-4 py-8 space-y-8'>
+      <h1 className='text-4xl font-bold text-center'>{t('chordsPageTitle')}</h1>
+      {/* Componente que renderiza las listas de acordes. */}
+      <ChordsList
+        majorChords={majorChords}
+        minorChords={minorChords}
+        seventhChords={seventhChords}
+      />
+    </main>
+  )
 }

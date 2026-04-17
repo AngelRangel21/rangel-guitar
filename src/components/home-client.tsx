@@ -1,10 +1,10 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+import type { JSX } from 'react'
 import { SongList } from '@/components/song-list'
 import type { SongWithArtist } from '@/types/app.types'
-import { useI18n } from '@/context/i18n-context'
 import { SongSearch } from './search'
-import { JSX } from 'react'
 
 /**
  * Componente de cliente para la página de inicio.
@@ -12,14 +12,18 @@ import { JSX } from 'react'
  * @param {{ initialSongs: Song[] }} props - Propiedades que contienen la lista inicial de canciones.
  * @returns {JSX.Element} El componente de la página de inicio.
  */
-export function HomeClient ({ initialSongs }: { initialSongs: SongWithArtist[] }): JSX.Element {
-  const { t } = useI18n()
+export function HomeClient({
+  initialSongs
+}: {
+  initialSongs: SongWithArtist[]
+}): JSX.Element {
+  const t = useTranslations('homeClient')
 
   return (
     <>
       {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
       <main className='grow container mx-auto px-4 py-8 space-y-6'>
-        <SongSearch />
+        <SongSearch placeholder={t('search.placeholder')} />
         <div className='flex justify-between items-center'>
           <h2 className='text-3xl font-bold text-foreground'>
             {t('allSongs')}

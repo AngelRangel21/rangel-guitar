@@ -1,7 +1,8 @@
-'use client';
+'use client'
 
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
+import dynamic from 'next/dynamic'
+import type { JSX } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
 
 /**
  * Carga dinámica del componente CircleOfFifths.
@@ -15,18 +16,19 @@ import { Skeleton } from '@/components/ui/skeleton';
  *   mientras el componente principal se está cargando en el cliente.
  */
 const DynamicCircleOfFifths = dynamic(
-  () => import('@/components/circle-of-fifths').then(mod => mod.CircleOfFifths),
-  { 
+  () =>
+    import('@/components/circle-of-fifths').then((mod) => mod.CircleOfFifths),
+  {
     ssr: false,
-    loading: () => <Skeleton className="h-[440px] w-[440px] rounded-full" />
+    loading: () => <Skeleton className='h-110 w-110 rounded-full' />
   }
-);
+)
 
 /**
  * Componente "wrapper" o envoltorio que se encarga de renderizar el Círculo de Quintas
  * cargado dinámicamente con su estado de carga.
  * @returns {JSX.Element} El componente del círculo de quintas dinámico.
  */
-export function CircleOfFifthsWrapper() {
-  return <DynamicCircleOfFifths />;
+export function CircleOfFifthsWrapper(): JSX.Element {
+  return <DynamicCircleOfFifths />
 }

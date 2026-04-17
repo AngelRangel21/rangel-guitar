@@ -1,35 +1,49 @@
-
 'use client'
 
-import React, { JSX, useEffect, useState } from 'react'
+import { formatDistanceToNow } from 'date-fns'
+import { enUS, es } from 'date-fns/locale'
+import {
+  Bell,
+  FilePlus2,
+  GitPullRequest,
+  Globe,
+  GraduationCap,
+  Heart,
+  LogOut,
+  Menu,
+  Music,
+  Search,
+  Shield,
+  TrendingUp,
+  X
+} from 'lucide-react'
 import Link from 'next/link'
-import { Menu, Music, Search, LogOut, Globe, Heart, GitPullRequest, Shield, Bell, X, GraduationCap, FilePlus2, TrendingUp } from 'lucide-react'
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'
+import type React from 'react'
+import { type JSX, useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { revalidateAfterRequestDelete } from '@/app/[locale]/admin/requests/actions'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuPortal
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { useAuth, useAuthStatus } from '@/hooks/useAuth'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Input } from '@/components/ui/input'
 import { useI18n } from '@/context/i18n-context'
-import { ThemeToggle } from './theme-toggle'
-import { revalidateAfterRequestDelete } from '@/app/admin/requests/actions'
+import { useAuth, useAuthStatus } from '@/hooks/useAuth'
 import { deleteSongRequest } from '@/lib/client/requests'
-import { formatDistanceToNow } from 'date-fns'
-import { es, enUS } from 'date-fns/locale'
-import type { SongRequest } from '@/lib/types'
-import { Badge } from './ui/badge'
 import { supabase } from '@/lib/supabase'
-import { toast } from 'sonner'
+import type { SongRequest } from '@/lib/types'
+import { ThemeToggle } from './theme-toggle'
+import { Badge } from './ui/badge'
 
 /**
  * Componente del encabezado principal de la aplicación.
@@ -37,11 +51,20 @@ import { toast } from 'sonner'
  * @param {{ searchTerm?: string; onSearchChange?: (value: string) => void }} props - Propiedades para el control de la búsqueda.
  * @returns {JSX.Element} El componente del encabezado.
  */
-export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, onSearchChange?: (value: string) => void }): JSX.Element {
+export function Header({
+  searchTerm,
+  onSearchChange
+}: {
+  searchTerm?: string
+  onSearchChange?: (value: string) => void
+}): JSX.Element {
   const { user, logout } = useAuth()
   const { isAuthenticated, isAdmin } = useAuthStatus()
   const { t, language, setLanguage } = useI18n()
-  const [notifications, setNotifications] = useState<{ count: number, recentRequests: SongRequest[] }>({ count: 0, recentRequests: [] })
+  const [notifications, setNotifications] = useState<{
+    count: number
+    recentRequests: SongRequest[]
+  }>({ count: 0, recentRequests: [] })
 
   // Efecto para escuchar notificaciones de solicitudes de canciones en tiempo real para administradores.
   useEffect(() => {
@@ -64,16 +87,23 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
 
       setNotifications({
         count: requests.length,
-        recentRequests: requests.slice(0, 5).map(r => ({ ...r, requestedAt: new Date(r.requestedAt) }))
+        recentRequests: requests
+          .slice(0, 5)
+          .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) }))
       })
     }
 
     fetchInitialRequests()
 
-    const channel = supabase.channel('song-requests-chanel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'songs_requests' }, () => {
-        fetchInitialRequests() // Re-fetch all requests on any change
-      })
+    const channel = supabase
+      .channel('song-requests-chanel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'songs_requests' },
+        () => {
+          fetchInitialRequests() // Re-fetch all requests on any change
+        }
+      )
       .subscribe()
 
     // Limpia el listener cuando el componente se desmonta para evitar fugas de memoria.
@@ -89,16 +119,19 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
    * @param {React.MouseEvent} e - Evento del mouse.
    * @param {string} requestId - ID de la solicitud a eliminar.
    */
-  const handleDeleteNotification = async (e: React.MouseEvent, requestId: string) => {
+  const handleDeleteNotification = async (
+    e: React.MouseEvent,
+    requestId: string
+  ) => {
     e.preventDefault()
     e.stopPropagation()
 
     const originalNotifications = { ...notifications }
 
     // Actualización optimista de la UI.
-    setNotifications(prev => ({
+    setNotifications((prev) => ({
       count: Math.max(0, prev.count - 1),
-      recentRequests: prev.recentRequests.filter(req => req.id !== requestId)
+      recentRequests: prev.recentRequests.filter((req) => req.id !== requestId)
     }))
 
     try {
@@ -119,9 +152,16 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
   return (
     <header className='bg-primary text-primary-foreground shadow-md sticky top-0 z-50'>
       <div className='container mx-auto flex h-16 items-center justify-between px-4'>
-        <Link href='/' className='flex items-center gap-2' aria-label='Rangel Guitar Home' title='Principal Page'>
+        <Link
+          href='/'
+          className='flex items-center gap-2'
+          aria-label='Rangel Guitar Home'
+          title='Principal Page'
+        >
           <Music className='h-8 w-8 text-accent' />
-          <h1 className='text-2xl font-bold whitespace-nowrap'>{t('appName')}</h1>
+          <h1 className='text-2xl font-bold whitespace-nowrap'>
+            {t('appName')}
+          </h1>
         </Link>
 
         {/* Barra de búsqueda (solo visible en escritorio y si se pasan las props) */}
@@ -144,7 +184,12 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
           {isAdmin && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='ghost' size='icon' className='relative h-10 w-10 hover:bg-primary-foreground/10 rounded-full' aria-label={t('notifications')}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='relative h-10 w-10 hover:bg-primary-foreground/10 rounded-full'
+                  aria-label={t('notifications')}
+                >
                   <Bell className='h-6 w-6' />
                   {notifications.count > 0 && (
                     <span className='absolute top-1.5 right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground'>
@@ -156,37 +201,48 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
               <DropdownMenuContent align='end' className='w-80'>
                 <DropdownMenuLabel>{t('notificationsTitle')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {notifications.recentRequests.length > 0
-                  ? (
-                      notifications.recentRequests.map((req, index) => (
-                        <DropdownMenuItem key={`${req.id}-${index}`} onSelect={(e) => e.preventDefault()} className='p-0 focus:bg-transparent'>
-                          <div className='flex items-center justify-between w-full hover:bg-accent rounded-sm'>
-                            <Link
-                              href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`}
-                              className='grow grid gap-1 px-2 py-1.5'
-                            >
-                              <p className='font-semibold'>{req.title}</p>
-                              <p className='text-sm text-muted-foreground'>{t('byArtist', { artist: req.artist })}</p>
-                              <p className='text-xs text-muted-foreground'>
-                                {formatDistanceToNow(new Date(req.requestedAt), { addSuffix: true, locale })}
-                              </p>
-                            </Link>
-                            <Button
-                              variant='ghost'
-                              size='icon'
-                              className='h-8 w-8 mr-1 shrink-0 rounded-full'
-                              onClick={async (e) => await handleDeleteNotification(e, req.id)}
-                              aria-label={t('deleteNotification')}
-                            >
-                              <X className='h-4 w-4' />
-                            </Button>
-                          </div>
-                        </DropdownMenuItem>
-                      ))
-                    )
-                  : (
-                    <DropdownMenuItem disabled>{t('noNewRequests')}</DropdownMenuItem>
-                    )}
+                {notifications.recentRequests.length > 0 ? (
+                  notifications.recentRequests.map((req) => (
+                    <DropdownMenuItem
+                      key={req.id}
+                      onSelect={(e) => e.preventDefault()}
+                      className='p-0 focus:bg-transparent'
+                    >
+                      <div className='flex items-center justify-between w-full hover:bg-accent rounded-sm'>
+                        <Link
+                          href={`/admin/add-song?id=${req.id}&title=${encodeURIComponent(req.title)}&artist=${encodeURIComponent(req.artist)}`}
+                          className='grow grid gap-1 px-2 py-1.5'
+                        >
+                          <p className='font-semibold'>{req.title}</p>
+                          <p className='text-sm text-muted-foreground'>
+                            {t('byArtist', { artist: req.artist })}
+                          </p>
+                          <p className='text-xs text-muted-foreground'>
+                            {formatDistanceToNow(new Date(req.requestedAt), {
+                              addSuffix: true,
+                              locale
+                            })}
+                          </p>
+                        </Link>
+                        <Button
+                          variant='ghost'
+                          size='icon'
+                          className='h-8 w-8 mr-1 shrink-0 rounded-full'
+                          onClick={async (e) =>
+                            await handleDeleteNotification(e, req.id)
+                          }
+                          aria-label={t('deleteNotification')}
+                        >
+                          <X className='h-4 w-4' />
+                        </Button>
+                      </div>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <DropdownMenuItem disabled>
+                    {t('noNewRequests')}
+                  </DropdownMenuItem>
+                )}
                 {notifications.count > 0 && (
                   <>
                     <DropdownMenuSeparator />
@@ -207,27 +263,35 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
           {/* Menú principal de usuario y navegación */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='ghost' size='icon' className='h-10 w-10 hover:bg-primary-foreground/10 rounded-full' aria-label='Open user menu'>
-                {isAuthenticated && (user != null)
-                  ? (
-                    <Avatar className='h-10 w-10'>
-                      <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    )
-                  : (
-                    <Menu className='h-6 w-6' />
-                    )}
+              <Button
+                variant='ghost'
+                size='icon'
+                className='h-10 w-10 hover:bg-primary-foreground/10 rounded-full'
+                aria-label='Open user menu'
+              >
+                {isAuthenticated && user != null ? (
+                  <Avatar className='h-10 w-10'>
+                    <AvatarFallback>
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Menu className='h-6 w-6' />
+                )}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-64'>
-              {isAuthenticated && (user != null)
-                ? (
+              {isAuthenticated && user != null ? (
                 // Menú para usuarios autenticados
                 <>
                   <DropdownMenuLabel className='font-normal'>
                     <div className='flex flex-col space-y-1'>
-                      <p className='text-sm font-medium leading-none'>{t('signedInAs')}</p>
-                      <p className='text-xs leading-none text-muted-foreground'>{user.name}</p>
+                      <p className='text-sm font-medium leading-none'>
+                        {t('signedInAs')}
+                      </p>
+                      <p className='text-xs leading-none text-muted-foreground'>
+                        {user.name}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -258,17 +322,17 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
                     <span>{t('logout')}</span>
                   </DropdownMenuItem>
                 </>
-                  ) : (
-                  // Menú para usuarios no autenticados
-                  <>
-                    <DropdownMenuItem asChild>
-                      <Link href='/login'>{t('login')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href='/register'>{t('register')}</Link>
-                    </DropdownMenuItem>
-                  </>
-                  )}
+              ) : (
+                // Menú para usuarios no autenticados
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href='/login'>{t('login')}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href='/register'>{t('register')}</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               {/* Barra de búsqueda para móviles */}
               <div className='md:hidden p-2'>
@@ -305,12 +369,17 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href='/learn' className='flex w-full items-center justify-between'>
+                <Link
+                  href='/learn'
+                  className='flex w-full items-center justify-between'
+                >
                   <div className='flex items-center'>
                     <GraduationCap className='mr-2 h-4 w-4' />
                     <span>{t('topCharts')}</span>
                   </div>
-                  <Badge variant='info' className='text-xs'>{t('beta')}</Badge>
+                  <Badge variant='info' className='text-xs'>
+                    {t('beta')}
+                  </Badge>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -322,8 +391,12 @@ export function Header ({ searchTerm, onSearchChange }: { searchTerm?: string, o
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>
-                    <DropdownMenuItem onClick={() => setLanguage('es')}>{t('spanish')}</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setLanguage('en')}>{t('english')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setLanguage('es')}>
+                      {t('spanish')}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setLanguage('en')}>
+                      {t('english')}
+                    </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
               </DropdownMenuSub>

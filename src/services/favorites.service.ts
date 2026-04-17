@@ -1,7 +1,8 @@
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 import { supabase } from '@/lib/supabase'
 
 export class FavoriteService {
-  static async loadFavoriteIds (uid: string): Promise<Set<string>> {
+  static async loadFavoriteIds(uid: string): Promise<Set<string>> {
     const { data, error } = await supabase
       .from('song_favorites')
       .select('song_id')
@@ -12,7 +13,7 @@ export class FavoriteService {
     return new Set(data.map((row) => row.song_id))
   }
 
-  static async toggleFavorite (
+  static async toggleFavorite(
     songId: string,
     userId: string
   ): Promise<{ favorited: boolean }> {
@@ -29,7 +30,7 @@ export class FavoriteService {
     return data as { favorited: boolean }
   }
 
-  static isFavorite (songId: string, favoriteIds: Set<string>): boolean {
+  static isFavorite(songId: string, favoriteIds: Set<string>): boolean {
     return favoriteIds.has(songId)
   }
 }

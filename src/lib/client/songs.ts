@@ -3,25 +3,25 @@ import { supabase } from '@/lib/supabase'
 import type { Song } from '@/types/app.types'
 
 // Tipo para agregar una nueva canción, sin los campos generados por la base de datos (id, contadores).
-export type NewSongData = Omit<Song, 'id' | 'key' | 'createdAt' | 'isPublished' | 'updatedAt'>
+export type NewSongData = Omit<
+  Song,
+  'id' | 'key' | 'createdAt' | 'isPublished' | 'updatedAt'
+>
 
 /**
  * Agrega una nueva canción a la base de datos.
  * @param {NewSongData} songData - Los datos de la nueva canción.
  */
-export async function addSong (songData: NewSongData): Promise<void> {
-  const { error } = await supabase
-    .from('songs_2')
-    .insert({ ...songData })
+export async function addSong(songData: NewSongData): Promise<void> {
+  const { error } = await supabase.from('songs_2').insert({ ...songData })
   if (error != null) throw error
 }
-
 
 /**
  * Elimina una canción de la base de datos por su ID.
  * @param {string} id - El ID de la canción a eliminar.
  */
-export async function deleteSong (id: string): Promise<void> {
+export async function deleteSong(id: string): Promise<void> {
   const { error } = await supabase.from('songs').delete().eq('id', id)
   if (error != null) throw error
 }
@@ -30,7 +30,7 @@ export async function deleteSong (id: string): Promise<void> {
  * Incrementa el contador de visitas de una canción en 1.
  * @param {string} id - El ID de la canción visitada.
  */
-export async function incrementVisitCount (id: string): Promise<void> {
+export async function incrementVisitCount(id: string): Promise<void> {
   const { error } = await supabase.rpc('increment_song_counter', {
     song_id: id,
     field_name: 'visitCount',
@@ -44,7 +44,7 @@ export async function incrementVisitCount (id: string): Promise<void> {
  * @param {string} id - El ID de la canción.
  * @param {1 | -1} delta - El valor a sumar (1 para "me gusta", -1 para "no me gusta").
  */
-export async function updateLikeCount (
+export async function updateLikeCount(
   id: string,
   delta: -1 | 1
 ): Promise<void> {

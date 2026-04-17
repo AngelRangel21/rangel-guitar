@@ -1,33 +1,33 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Rangel Guitar",
-    short_name: "Rangel Guitar",
+    name: 'Rangel Guitar',
+    short_name: 'Rangel Guitar',
     description:
-      "Tu destino para encontrar tablaturas, letras y acordes de tu instrumento favorito para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.",
-    start_url: "/",
-    display: "standalone",
-    orientation: "portrait",
-    background_color: "#eef0f3",
-    theme_color: "#1d232a",
+      'Tu destino para encontrar tablaturas, letras y acordes de tu instrumento favorito para tus canciones favoritas. Aprende a tocar con nuestra gran colección de música.',
+    start_url: '/',
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#eef0f3',
+    theme_color: '#1d232a',
     icons: [
       {
-        src: "/icons/icon-192x192.png",
-        sizes: "192x192",
-        type: "image/png",
+        src: '/icons/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png'
       },
       {
-        src: "/icons/icon-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
+        src: '/icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png'
       },
       {
-        src: "/icons/icon-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
-      },
-    ],
-  };
+        src: '/icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable'
+      }
+    ]
+  }
 }

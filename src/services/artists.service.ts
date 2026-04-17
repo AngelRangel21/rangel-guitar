@@ -1,7 +1,8 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import { supabase } from '@/lib/supabase'
 import type { ArtistCount, SongWithArtist } from '@/types/app.types'
 
-export async function getArtists (): Promise<ArtistCount[]> {
+export async function getArtists(): Promise<ArtistCount[]> {
   const { data, error } = await supabase
     .from('artists')
     .select('*, song_count:songs_artists(count)')
@@ -9,13 +10,17 @@ export async function getArtists (): Promise<ArtistCount[]> {
 
   if (error != null) throw error
 
-  return data?.map(artist => ({
-    ...artist,
-    count: artist.song_count[0]?.count || 0
-  })) ?? []
+  return (
+    data?.map((artist) => ({
+      ...artist,
+      count: artist.song_count[0]?.count || 0
+    })) ?? []
+  )
 }
 
-export async function getSongsByArtistSlug (slug: string): Promise<SongWithArtist[]> {
+export async function getSongsByArtistSlug(
+  slug: string
+): Promise<SongWithArtist[]> {
   if (!slug) return []
 
   // 1. Obtener artista
@@ -48,17 +53,14 @@ export async function getSongsByArtistSlug (slug: string): Promise<SongWithArtis
     return []
   }
 
-  return data.map(song => ({
+  return data.map((song) => ({
     ...song,
-    artists: (song.artists_list as any[] || []).map(item => item.artist)
+    artists: ((song.artists_list as any[]) || []).map((item) => item.artist)
   })) as SongWithArtist[]
 }
 
-export function getArtistImage (path: string) {
-  const { data } = supabase
-    .storage
-    .from('artist-image')
-    .getPublicUrl(path)
+export function getArtistImage(path: string) {
+  const { data } = supabase.storage.from('artist-image').getPublicUrl(path)
 
   return data.publicUrl
 }

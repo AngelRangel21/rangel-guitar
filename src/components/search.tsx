@@ -2,12 +2,20 @@
 
 // components/SongSearch.tsx
 
-import React, { useRef, useEffect, useState, KeyboardEvent } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useSearch } from '@/hooks/useSearch'
-import { Song } from '@/lib/types'
 import { MusicIcon, Search, X } from 'lucide-react'
+import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import type React from 'react'
+import {
+  type JSX,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import { useSearch } from '@/hooks/useSearch'
+import { Link } from '@/i18n/navigation'
+import type { Song } from '@/lib/types'
 import { Spinner } from './ui/spinner'
 
 // ─── Subcomponentes ───────────────────────────────────────────────────────────
@@ -41,20 +49,26 @@ function SongCover({ src, alt }: { src: string | null; alt: string }) {
 function HighlightMatch({ text, query }: { text: string; query: string }) {
   if (!query.trim()) return <span>{text}</span>
 
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  const regex = new RegExp(
+    `(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
+    'gi'
+  )
   const parts = text.split(regex)
 
   return (
     <span>
-      {parts.map((part, i) =>
-        regex.test(part) ? (
-          <mark key={i} className='bg-transparent text-white font-semibold'>
+      {parts.map((part, i) => {
+        // Creamos una key única basada en el contenido y la posición
+        const key = `part-${i}-${part}`
+
+        return regex.test(part) ? (
+          <mark key={key} className='bg-transparent text-white font-semibold'>
             {part}
           </mark>
         ) : (
-          <span key={i}>{part}</span>
+          <span key={key}>{part}</span>
         )
-      )}
+      })}
     </span>
   )
 }
@@ -64,7 +78,7 @@ function ResultItem({
   query,
   isActive,
   onMouseEnter,
-  onClick,
+  onClick
 }: {
   song: Song
   query: string
@@ -74,7 +88,7 @@ function ResultItem({
 }) {
   return (
     <Link
-      href={`/songs/${song.slug}`}
+      href={{ pathname: '/songs/[slug]', params: { slug: `${song.slug}` } }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer outline-none
@@ -101,7 +115,7 @@ function SearchDropdown({
   error,
   activeIndex,
   onMouseEnter,
-  onClose,
+  onClose
 }: {
   results: Song[]
   query: string
@@ -111,13 +125,17 @@ function SearchDropdown({
   activeIndex: number
   onMouseEnter: (i: number) => void
   onClose: () => void
-}) {
+}): JSX.Element | null {
+  const t = useTranslations('homeClient.search')
   // Loading skeleton
   if (isLoading) {
     return (
       <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-2'>
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className='flex items-center gap-3 px-3 py-2.5'>
+        {Array.from({ length: 3 }).map((i) => (
+          <div
+            key={`skeleton-${i}`}
+            className='flex items-center gap-3 px-3 py-2.5'
+          >
             <div className='w-10 h-10 rounded-md bg-muted animate-pulse shrink-0' />
             <div className='flex-1 space-y-1.5'>
               <div className='h-3 bg-muted rounded animate-pulse w-3/4' />
@@ -144,7 +162,7 @@ function SearchDropdown({
       <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-6'>
         <div className='flex flex-col items-center gap-2 text-muted-foreground'>
           <MusicIcon className='w-8 h-8 opacity-40' />
-          <p className='text-sm'>No encontramos resultados para</p>
+          <p className='text-sm'>{t('noResults')}</p>
           <p className='text-sm font-medium text-foreground'>"{query}"</p>
         </div>
       </div>
@@ -182,12 +200,20 @@ interface SongSearchProps {
 }
 
 export function SongSearch({
-  placeholder = 'Buscar canción o artista...',
+  placeholder = '',
   className = '',
-  onSelect,
-}: SongSearchProps) {
-  const { query, results, isLoading, error, hasSearched, search, searchImmediate, clear } =
-    useSearch()
+  onSelect
+}: SongSearchProps): JSX.Element {
+  const {
+    query,
+    results,
+    isLoading,
+    error,
+    hasSearched,
+    search,
+    searchImmediate,
+    clear
+  } = useSearch()
 
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -195,12 +221,16 @@ export function SongSearch({
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const showDropdown = isOpen && (isLoading || hasSearched || results.length > 0)
+  const showDropdown =
+    isOpen && (isLoading || hasSearched || results.length > 0)
 
   // ── Cerrar al hacer clic fuera ──────────────────────────────────────────────
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current != null &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false)
         setActiveIndex(-1)
       }
@@ -212,7 +242,7 @@ export function SongSearch({
   // ── Reset activeIndex cuando cambian resultados ─────────────────────────────
   useEffect(() => {
     setActiveIndex(-1)
-  }, [results])
+  }, [])
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
@@ -233,12 +263,12 @@ export function SongSearch({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setActiveIndex(prev => Math.min(prev + 1, results.length - 1))
+        setActiveIndex((prev) => Math.min(prev + 1, results.length - 1))
         break
 
       case 'ArrowUp':
         e.preventDefault()
-        setActiveIndex(prev => Math.max(prev - 1, -1))
+        setActiveIndex((prev) => Math.max(prev - 1, -1))
         break
 
       case 'Enter':
@@ -286,7 +316,9 @@ export function SongSearch({
           aria-expanded={showDropdown}
           aria-autocomplete='list'
           aria-controls='search-results'
-          aria-activedescendant={activeIndex >= 0 ? `result-${activeIndex}` : undefined}
+          aria-activedescendant={
+            activeIndex >= 0 ? `result-${activeIndex}` : undefined
+          }
           value={query}
           onChange={handleChange}
           onFocus={handleFocus}

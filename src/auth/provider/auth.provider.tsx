@@ -1,14 +1,17 @@
 'use client'
 
+import { type JSX, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { JSX, useEffect } from 'react'
 import { useAuthStore } from '../stores/auth.stores'
 
-export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.Element {
+export function AuthProvider({
+  children
+}: {
+  children: React.ReactNode
+}): JSX.Element {
   const loadUserProfile = useAuthStore((s) => s.loadUserProfile)
   const _setInitialized = useAuthStore((s) => s._setInitialized)
   const _setLoading = useAuthStore((s) => s._setLoading)
-  const logout = useAuthStore((s) => s.logout)
 
   // Sincronizar supabaseUser con el store
   useEffect(() => {
@@ -54,7 +57,7 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
     return () => {
       subscription.unsubscribe()
     }
-  }, [loadUserProfile, _setInitialized, _setLoading, logout])
+  }, [loadUserProfile, _setInitialized, _setLoading])
 
   return <>{children}</>
 }

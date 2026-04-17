@@ -1,8 +1,8 @@
 'use client'
 
+import type { User } from '@supabase/supabase-js'
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { User } from '@supabase/supabase-js'
 
 export interface SupabaseAuth {
   user: User | null
@@ -16,7 +16,7 @@ export interface SupabaseAuth {
  * Escucha cambios de sesión y actualiza el estado del usuario sincronizando
  */
 
-export function useSupabaseAuth (): SupabaseAuth {
+export function useSupabaseAuth(): SupabaseAuth {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -67,15 +67,15 @@ export function useSupabaseAuth (): SupabaseAuth {
     initializeAuth()
 
     // 2️⃣ Escuchar cambios de sesión (login, logout, refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (mounted) {
-          setUser(session?.user ?? null)
-          setError(null)
-          setLoading(false)
-        }
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) {
+        setUser(session?.user ?? null)
+        setError(null)
+        setLoading(false)
       }
-    )
+    })
 
     // 3️⃣ Cleanup al desmontar
     return () => {

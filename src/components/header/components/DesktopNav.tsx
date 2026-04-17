@@ -1,13 +1,21 @@
+import { Bell } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type ComponentProps, type JSX, useEffect, useState } from 'react'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
+import { Link } from '@/i18n/navigation'
 import { supabase } from '@/lib/supabase'
-import { SongRequest } from '@/lib/types'
-import { Bell } from 'lucide-react'
-import Link from 'next/link'
-import React, { useEffect, useState, JSX } from 'react'
+import type { SongRequest } from '@/lib/types'
 
-export default function DesktopNav (): JSX.Element {
+interface NavLink {
+  href: ComponentProps<typeof Link>['href']
+  label: string
+  title: string
+}
+
+export default function DesktopNav(): JSX.Element {
+  const t = useTranslations('header')
   const { isAuthenticated, isAdmin, logout } = useAuth()
   const [notifications, setNotifications] = useState<{
     count: number
@@ -59,9 +67,10 @@ export default function DesktopNav (): JSX.Element {
   }, [isAdmin])
 
   // Enlaces base para todos los usuarios
-  const baseLinks = [
-    { href: '/', label: 'Inicio', title: 'Titulo Pagina Principal' },
-    { href: '/artists', label: 'Artistas', title: 'Pagina artistas' },
+  const baseLinks: NavLink[] = [
+    { href: '/', label: t('home.label'), title: t('home.title') },
+    { href: '/artists', label: t('artists.label'), title: t('artists.title') },
+    // TODO: agregar las canciones top por me gusta
     // {
     //   href: '/top-charts',
     //   label: 'Top canciones',
@@ -69,34 +78,34 @@ export default function DesktopNav (): JSX.Element {
     // },
     {
       href: '/request-song',
-      label: 'Solicitar',
-      title: 'Pagina de solicitar canción'
+      label: t('request.label'),
+      title: t('request.title')
     },
-    { href: '/learn', label: 'Aprender', title: 'Pagina para aprender' }
+    { href: '/learn', label: t('learn.label'), title: t('learn.title') }
   ]
 
   // Enlaces adicionales según el tipo de usuario
-  const userLinks = isAuthenticated
+  const userLinks: NavLink[] = isAuthenticated
     ? [
         ...baseLinks,
         {
           href: '/favorites',
-          label: 'Favoritos',
-          title: 'Pagina de favoritos'
+          label: t('favorites.label'),
+          title: t('favorites.title')
         }
       ]
     : baseLinks
-  const adminLinks = [
+  const adminLinks: NavLink[] = [
     ...userLinks,
     {
       href: '/admin/requests',
-      label: 'Solicitudes',
-      title: 'Pagina de solicitudes canciones'
+      label: t('request.label'),
+      title: t('request.title')
     },
     {
       href: '/admin/upload-song',
-      label: 'Subir',
-      title: 'Pagina para subir canción'
+      label: t('upload.label'),
+      title: t('upload.title')
     }
   ]
 
@@ -108,7 +117,7 @@ export default function DesktopNav (): JSX.Element {
       <nav className='hidden xl:flex gap-6'>
         {navLinks.map((link) => (
           <Link
-            key={link.href}
+            key={link.label}
             href={link.href}
             className='hover:text-[#d2d2d2] transition-colors font-medium'
             title={link.title}
@@ -124,7 +133,7 @@ export default function DesktopNav (): JSX.Element {
           <Link
             href='/admin/requests'
             className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full'
-            title='Solicitudes'
+            title={t('request.title')}
           >
             <Bell />
             {notifications.count > 0 && (
@@ -137,35 +146,33 @@ export default function DesktopNav (): JSX.Element {
         {/* Tema modo claro/obscuro */}
         <ThemeToggle />
 
-        {isAuthenticated
-          ? (
-            <div className='hidden xl:flex'>
-              <Button
-                variant='secondary'
-                size='sm'
-                onClick={logout}
-                className='font-semibold'
-              >
-                Cerrar sesión
-              </Button>
-            </div>
-            )
-          : (
-            <div className='hidden xl:flex gap-2'>
-              <Link
-                href='/login'
-                className='font-semibold rounded-[8px] py-3 px-2.5 hover:text-[#d2d2d2]'
-              >
-                Iniciar sesión
-              </Link>
-              <Link
-                href='/register'
-                className='font-semibold rounded-[8px] py-3 px-2.5 border-white hover:text-[#d2d2d2]'
-              >
-                Registrarse
-              </Link>
-            </div>
-            )}
+        {isAuthenticated ? (
+          <div className='hidden xl:flex'>
+            <Button
+              variant='secondary'
+              size='sm'
+              onClick={logout}
+              className='font-semibold'
+            >
+              {t('logout')}
+            </Button>
+          </div>
+        ) : (
+          <div className='hidden xl:flex gap-2'>
+            <Link
+              href='/login'
+              className='font-semibold rounded-[8px] py-3 px-2.5 hover:text-[#d2d2d2]'
+            >
+              {t('login')}
+            </Link>
+            <Link
+              href='/register'
+              className='font-semibold rounded-[8px] py-3 px-2.5 border-white hover:text-[#d2d2d2]'
+            >
+              {t('register')}
+            </Link>
+          </div>
+        )}
       </section>
     </>
   )

@@ -1,15 +1,18 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { type JSX, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
+import { useAuthStore } from '@/auth/stores/auth.stores'
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card'
 import {
   Form,
@@ -21,11 +24,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useI18n } from '@/context/i18n-context'
-import { JSX, useState } from 'react'
 import { addSongRequest } from '@/lib/client/requests'
 import { Spinner } from './ui/spinner'
-import { toast } from 'sonner'
-import { useAuthStore } from '@/auth/stores/auth.stores'
 
 /**
  * Esquema de validación del formulario de solicitud de canciones con Zod.
@@ -39,7 +39,7 @@ const formSchema = z.object({
  * Componente del formulario para que los usuarios soliciten nuevas canciones.
  * @returns {JSX.Element} El formulario de solicitud de canciones.
  */
-export function RequestSongForm (): JSX.Element {
+export function RequestSongForm(): JSX.Element {
   const { t } = useI18n()
   const [isLoading, setIsLoading] = useState(false)
   const user = useAuthStore((s) => s.user)
@@ -57,9 +57,9 @@ export function RequestSongForm (): JSX.Element {
    * Maneja el envío del formulario.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
-  async function onSubmit (values: z.infer<typeof formSchema>): Promise<void> {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     if (user == null) {
-      toast.error('Deves de iniciar sesión para hacer una solicitud')
+      toast.error('Debes de iniciar sesión para hacer una solicitud')
       return
     }
 
@@ -71,7 +71,9 @@ export function RequestSongForm (): JSX.Element {
         artist: values.artist,
         user_id: user.uid
       })
-      toast.success(`¡Tu solicitud para "${values.title}" de "${values.artist}" ha sido enviada! La revisaremos pronto.`)
+      toast.success(
+        `¡Tu solicitud para "${values.title}" de "${values.artist}" ha sido enviada! La revisaremos pronto.`
+      )
       form.reset() // Limpia el formulario después de un envío exitoso.
     } catch (error) {
       toast.error(t('requestErrorDescription'))
@@ -116,17 +118,19 @@ export function RequestSongForm (): JSX.Element {
                 </FormItem>
               )}
             />
-            <Button type='submit' className='w-full' disabled={isLoading || user == null}>
-              {isLoading
-                ? (
-                  <>
-                    <Spinner />
-                    <p>{t('sending') + '...'}</p>
-                  </>
-                  )
-                : (
-                    t('sendRequest')
-                  )}
+            <Button
+              type='submit'
+              className='w-full'
+              disabled={isLoading || user == null}
+            >
+              {isLoading ? (
+                <>
+                  <Spinner />
+                  <p>{`${t('sending')}...`}</p>
+                </>
+              ) : (
+                t('sendRequest')
+              )}
             </Button>
           </form>
         </Form>

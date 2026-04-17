@@ -1,15 +1,19 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import { type JSX, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { GoogleIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card'
 import {
   Form,
@@ -21,22 +25,18 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useAuth, useAuthStatus } from '@/hooks/useAuth'
-import Link from 'next/link'
-import { useI18n } from '@/context/i18n-context'
-import { GoogleIcon } from '@/components/icons'
-import { JSX, useEffect, useState } from 'react'
+import { Link } from '@/i18n/navigation'
 import { Spinner } from './ui/spinner'
-import { useRouter } from 'next/navigation'
 
 /**
  * Componente del formulario de registro de nuevos usuarios.
  * Permite a los usuarios crear una cuenta con nombre, correo/contraseña o con Google.
  * @returns {JSX.Element} El formulario de registro.
  */
-export function RegisterForm (): JSX.Element {
+export function RegisterForm(): JSX.Element {
   const { registerWithEmail, signInWithGoogle } = useAuth()
   const { isAuthenticated } = useAuthStatus()
-  const { t } = useI18n()
+  const t = useTranslations('register')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -44,7 +44,7 @@ export function RegisterForm (): JSX.Element {
     if (isAuthenticated) {
       router.replace('/')
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, router])
 
   // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
@@ -67,7 +67,7 @@ export function RegisterForm (): JSX.Element {
    * Maneja el envío del formulario de registro con correo y contraseña.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
-  async function onSubmit (values: z.infer<typeof formSchema>): Promise<void> {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
     await registerWithEmail(values)
     setIsLoading(false)
@@ -130,15 +130,13 @@ export function RegisterForm (): JSX.Element {
               )}
             />
             <Button type='submit' className='w-full' disabled={isLoading}>
-              {isLoading
-                ? (
-                  <>
-                    <Spinner /> <p>{t('loading') + '...'} </p>
-                  </>
-                  )
-                : (
-                    t('createAccount')
-                  )}
+              {isLoading ? (
+                <>
+                  <Spinner /> <p>{`${t('loading')}...`}</p>
+                </>
+              ) : (
+                t('createAccount')
+              )}
             </Button>
           </form>
         </Form>

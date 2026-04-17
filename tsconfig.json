@@ -34,10 +34,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/footer/Paypal.tsx",
+    ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "rangel-guitar-test/test-song.js"
+    ".next"
   ]
 }

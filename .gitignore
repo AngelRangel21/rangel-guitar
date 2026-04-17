@@ -32,7 +32,14 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# No ignorar el archivo de ejemplo
+!.env.example
 
 # vercel
 .vercel
@@ -40,3 +47,33 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDEs and editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/skills/*
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Next.js 15+ 
+.next/
+out/
+build/
+
+# Husky (solo ignorar la carpeta interna de gestión)
+.husky/_/
+
+# Supabase
+/supabase/.temp/
+/supabase/pull/
+/supabase/.branches/
+/supabase/storage/
+/supabase/functions/.import_map.json
+# Ignorar logs locales de la base de datos si usas el CLI local
+/supabase/debug.log

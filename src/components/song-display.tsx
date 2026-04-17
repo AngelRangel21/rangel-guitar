@@ -1,30 +1,30 @@
 'use client'
 
-import { useState, useEffect, JSX } from 'react'
-import type { SongWithArtist } from '@/types/app.types'
+import { Minus, Pencil, Plus, Trash2 } from 'lucide-react'
+import Link from 'next/link'
+import { type JSX, useEffect, useState } from 'react'
+import LiteYouTubeEmbed from 'react-lite-youtube-embed'
+import {
+  FacebookIcon,
+  TelegramIcon,
+  WhatsAppIcon,
+  XTwitter
+} from '@/components/icons'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
-  CardTitle,
-  CardDescription
+  CardTitle
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { ChordSheet } from './chord-sheet'
-import { Minus, Plus, Pencil, Trash2 } from 'lucide-react'
-import {
-  WhatsAppIcon,
-  TelegramIcon,
-  XTwitter,
-  FacebookIcon
-} from '@/components/icons'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import type { SongWithArtist } from '@/types/app.types'
+import { ChordSheet } from './chord-sheet'
 import { DeleteSongDialog } from './delete-song-dialog'
-import Link from 'next/link'
 import { SongListItem } from './song-list-item'
-import LiteYouTubeEmbed from 'react-lite-youtube-embed'
 import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import { FavoriteButton } from './favorite-button'
 
@@ -35,7 +35,7 @@ import { FavoriteButton } from './favorite-button'
  * @param {{ song: Song, suggestedSongs: Song[] }} props - Datos de la canción y sugerencias.
  * @returns {JSX.Element} El componente de visualización de la canción.
  */
-export function SongDisplay ({
+export function SongDisplay({
   song,
   suggestedSongs
 }: {
@@ -46,7 +46,8 @@ export function SongDisplay ({
   const { t } = useI18n()
   const { isAdmin } = useAuth()
   const [currentUrl, setCurrentUrl] = useState('')
-  const artistsName = song.artists.map(a => a.name).join(', ') ?? 'Artista desconocido'
+  const artistsName =
+    song.artists.map((a) => a.name).join(', ') ?? 'Artista desconocido'
   const songTitle = song.title ?? 'Sin titulo'
   const songSlug = song.slug ?? 'Sin slug'
   const songVideo = song.video ?? ''
@@ -56,7 +57,7 @@ export function SongDisplay ({
   // Efecto para obtener la URL actual y registrar la visita a la canción.
   useEffect(() => {
     setCurrentUrl(window.location.href)
-  }, [song.id])
+  }, [])
 
   /**
    * Genera el texto que describe el estado de la transposición.
@@ -76,18 +77,17 @@ export function SongDisplay ({
         {/* Columna izquierda: Portada, controles y metadatos */}
         <div className='lg:col-span-1'>
           <Card className='overflow-hidden lg:sticky lg:top-24'>
-            {songVideo !== null &&
-              (
-                <div className='w-full aspect-video'>
-                  <LiteYouTubeEmbed
-                    id={`${songVideo}`}
-                    title={`Video de la canción ${songTitle} del artista ${artistsName}`}
-                    lazyLoad
-                    poster='maxresdefault'
-                    webp
-                  />
-                </div>
-              )}
+            {songVideo !== null && (
+              <div className='w-full aspect-video'>
+                <LiteYouTubeEmbed
+                  id={`${songVideo}`}
+                  title={`Video de la canción ${songTitle} del artista ${artistsName}`}
+                  lazyLoad
+                  poster='maxresdefault'
+                  webp
+                />
+              </div>
+            )}
             <CardHeader>
               <div className='flex justify-between items-start'>
                 <div>
@@ -150,27 +150,25 @@ export function SongDisplay ({
                       <Plus className='h-4 w-4' />
                     </Button>
                   </div>
-                  {transpose !== 0
-                    ? (
-                      <Button
-                        variant='ghost'
-                        size='sm'
-                        onClick={() => setTranspose(0)}
-                        className='w-full mt-4'
-                      >
-                        {t('resetTone')}
-                      </Button>
-                      )
-                    : (
-                      <Button
-                        variant='ghost'
-                        disabled
-                        size='sm'
-                        className='w-full mt-4'
-                      >
-                        {t('resetTone')}
-                      </Button>
-                      )}
+                  {transpose !== 0 ? (
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => setTranspose(0)}
+                      className='w-full mt-4'
+                    >
+                      {t('resetTone')}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant='ghost'
+                      disabled
+                      size='sm'
+                      className='w-full mt-4'
+                    >
+                      {t('resetTone')}
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -187,7 +185,8 @@ export function SongDisplay ({
                       window.open(
                         `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
                         '_blank'
-                      )}
+                      )
+                    }
                     aria-label={t('shareOnFacebook')}
                   >
                     <FacebookIcon className='h-5 w-5 text-blue-600' />
@@ -201,7 +200,8 @@ export function SongDisplay ({
                           shareText
                         )}`,
                         '_blank'
-                      )}
+                      )
+                    }
                     aria-label={t('shareOnTwitter')}
                   >
                     <XTwitter className='h-5 w-5 text-blue-400' />
@@ -215,7 +215,8 @@ export function SongDisplay ({
                           `${shareText} ${currentUrl}`
                         )}`,
                         '_blank'
-                      )}
+                      )
+                    }
                     aria-label={t('shareOnWhatsApp')}
                   >
                     <WhatsAppIcon className='h-5 w-5 text-green-500' />
@@ -229,7 +230,8 @@ export function SongDisplay ({
                           shareText
                         )}`,
                         '_blank'
-                      )}
+                      )
+                    }
                     aria-label={t('shareOnTelegram')}
                   >
                     <TelegramIcon className='h-5 w-5 text-blue-500' />

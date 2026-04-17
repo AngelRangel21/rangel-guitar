@@ -1,10 +1,14 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import { supabase } from '@/lib/supabase'
-import { Song } from '@/types'
-import { SongWithArtist } from '@/types/app.types'
+import type { Song } from '@/types'
+import type { SongWithArtist } from '@/types/app.types'
 
-export type NewSongData = Omit<Song, 'id' | 'key' | 'createdAt' | 'isPublished' | 'updatedAt'>
+export type NewSongData = Omit<
+  Song,
+  'id' | 'key' | 'createdAt' | 'isPublished' | 'updatedAt'
+>
 
-export async function getSongs (): Promise<Song[]> {
+export async function getSongs(): Promise<Song[]> {
   const { data, error } = await supabase
     .from('songs')
     .select('id, slug, title, artist, "coverArt", chords, lyrics') // ✅ Solo campos necesarios
@@ -18,7 +22,7 @@ export async function getSongs (): Promise<Song[]> {
   }
 
   // ✅ Validar que data existe y es array
-  if ((data === null) || !Array.isArray(data)) {
+  if (data === null || !Array.isArray(data)) {
     console.warn('[getSongs] Supabase devolvió data inválida:', data)
     return []
   }
@@ -27,7 +31,7 @@ export async function getSongs (): Promise<Song[]> {
   return data
 }
 
-export async function getSongByArtist (): Promise<SongWithArtist[]> {
+export async function getSongByArtist(): Promise<SongWithArtist[]> {
   const { data, error } = await supabase
     .from('songs_2')
     .select(`
@@ -42,7 +46,7 @@ export async function getSongByArtist (): Promise<SongWithArtist[]> {
     `)
     .eq('isPublished', true)
     .order('createdAt', { ascending: true })
-    // .returns<SongWithArtist[]>()
+  // .returns<SongWithArtist[]>()
 
   if (error != null) {
     console.error('[getSongByArtist]', Error)
@@ -50,46 +54,45 @@ export async function getSongByArtist (): Promise<SongWithArtist[]> {
   }
 
   // Opcional: Mapear los datos para limpiar el anidamiento de la tabla intermedia
-  return (data || [])?.map(song => ({
+  return (data || [])?.map((song) => ({
     ...song,
-    artists: (song.artists_list as any[] || []).map((item: any) => item.artist)
+    artists: ((song.artists_list as any[]) || []).map(
+      (item: any) => item.artist
+    )
   })) as SongWithArtist[]
 }
 
-export async function getSongBySlug (slug: string): Promise<SongWithArtist | null> {
+export async function getSongBySlug(
+  slug: string
+): Promise<SongWithArtist | null> {
   const { data, error } = await supabase
     .from('songs_2')
     .select('*, artists_list:songs_artists(artist:artists (*))')
     .eq('slug', slug)
     .single()
 
-  if ((error != null) || !data) return null
+  if (error != null || !data) return null
 
   return {
     ...data,
-    artists: (data.artists_list as any[] || []).map(item => item.artist)
+    artists: ((data.artists_list as any[]) || []).map((item) => item.artist)
   } as SongWithArtist
 }
 
-export async function addSong (songData: NewSongData): Promise<void> {
-  const { error } = await supabase
-    .from('songs_2')
-    .insert({ ...songData })
+export async function addSong(songData: NewSongData): Promise<void> {
+  const { error } = await supabase.from('songs_2').insert({ ...songData })
   if (error != null) throw error
 }
 
-export async function updateSong (id: string, songData: Partial<SongWithArtist>): Promise<void> {
-  const { error } = await supabase
-    .from('songs_2')
-    .update(songData)
-    .eq('id', id)
+export async function updateSong(
+  id: string,
+  songData: Partial<SongWithArtist>
+): Promise<void> {
+  const { error } = await supabase.from('songs_2').update(songData).eq('id', id)
   if (error != null) throw error
 }
 
-export async function deleteSong (id: string): Promise<void> {
-  const { error } = await supabase
-    .from('songs_2')
-    .delete()
-    .eq('id', id)
+export async function deleteSong(id: string): Promise<void> {
+  const { error } = await supabase.from('songs_2').delete().eq('id', id)
   if (error != null) throw error
 }

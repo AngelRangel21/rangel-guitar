@@ -1,9 +1,9 @@
 'use client'
 
+import type { JSX } from 'react'
 import { ArtistCard } from '@/components/artist-card'
 import { useI18n } from '@/context/i18n-context'
-import { ArtistCount } from '@/types/app.types'
-import { JSX } from 'react'
+import type { ArtistCount } from '@/types/app.types'
 
 /**
  * Componente que muestra una cuadrícula de todos los artistas.
@@ -11,11 +11,17 @@ import { JSX } from 'react'
  * @param {{ artists: string[] }} props - Propiedades del componente, contiene la lista de nombres de artistas.
  * @returns {JSX.Element} La lista de artistas en una cuadrícula.
  */
-export function ArtistList ({ artists }: { artists: ArtistCount[] }): JSX.Element {
+export function ArtistList({
+  artists
+}: {
+  artists: ArtistCount[]
+}): JSX.Element {
   const { t } = useI18n() // Hook para obtener las traducciones.
 
   // Ordena los artistas alfabéticamente en el cliente
-  const sortedArtists = [...artists].sort((a, b) => a.name.localeCompare(b.name))
+  const sortedArtists = [...artists].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  )
 
   return (
     <div className='space-y-6'>
@@ -24,7 +30,11 @@ export function ArtistList ({ artists }: { artists: ArtistCount[] }): JSX.Elemen
         {/* Itera sobre la lista de artistas y renderiza una tarjeta para cada uno. */}
         {sortedArtists.map((artist, index) => (
           // La animación se retrasa ligeramente para cada tarjeta, creando un efecto de cascada.
-          <div key={artist.id} style={{ animationDelay: `${index * 50}ms` }} className='opacity-0 animate-content-in'>
+          <div
+            key={artist.id}
+            style={{ animationDelay: `${index * 50}ms` }}
+            className='opacity-0 animate-content-in'
+          >
             <ArtistCard artist={artist} />
           </div>
         ))}

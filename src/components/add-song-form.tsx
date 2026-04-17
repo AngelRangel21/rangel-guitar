@@ -1,41 +1,41 @@
-"use client";
+'use client'
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as z from 'zod'
+import { revalidateAndRedirect } from '@/app/[locale]/admin/add-song/actions'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   CardDescription,
-} from "@/components/ui/card";
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
-import { revalidateAndRedirect } from "@/app/admin/add-song/actions";
-import { addSong, type NewSongData } from "@/lib/client/songs";
-import { deleteSongRequest } from "@/lib/client/requests";
-import { createSlug } from "@/lib/utils";
-import { Spinner } from "./ui/spinner";
-import { toast } from "sonner";
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { deleteSongRequest } from '@/lib/client/requests'
+import { addSong, type NewSongData } from '@/lib/client/songs'
+import { createSlug } from '@/lib/utils'
+import { Spinner } from './ui/spinner'
 
 /**
  * Propiedades que el componente AddSongForm espera recibir.
  */
 interface AddSongFormProps {
-  requestId: string;
-  initialTitle: string;
-  initialArtist: string;
+  requestId: string
+  initialTitle: string
+  initialArtist: string
 }
 
 /**
@@ -43,13 +43,13 @@ interface AddSongFormProps {
  * Define la estructura y las reglas de los datos del formulario.
  */
 const formSchema = z.object({
-  title: z.string().min(1, { message: "El título es obligatorio." }),
-  artist: z.string().min(1, { message: "El artista es obligatorio." }),
+  title: z.string().min(1, { message: 'El título es obligatorio.' }),
+  artist: z.string().min(1, { message: 'El artista es obligatorio.' }),
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.string().url({ message: "Debe ser una URL válida." }),
-});
+  coverArt: z.string().url({ message: 'Debe ser una URL válida.' })
+})
 
 /**
  * Formulario para que los administradores agreguen una nueva canción,
@@ -60,9 +60,9 @@ const formSchema = z.object({
 export function AddSongForm({
   requestId,
   initialTitle,
-  initialArtist,
+  initialArtist
 }: AddSongFormProps) {
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   // Inicialización de react-hook-form con el esquema de Zod.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,49 +70,49 @@ export function AddSongForm({
     defaultValues: {
       title: initialTitle,
       artist: initialArtist,
-      lyrics: "",
-      chords: "",
-      video: "",
-      coverArt: "https://img.youtube.com/vi/ID_VIDEO/maxresdefault.jpg",
-    },
-  });
+      lyrics: '',
+      chords: '',
+      video: '',
+      coverArt: 'https://img.youtube.com/vi/ID_VIDEO/maxresdefault.jpg'
+    }
+  })
 
   /**
    * Función que se ejecuta al enviar el formulario.
    * @param {z.infer<typeof formSchema>} values - Los datos del formulario validados.
    */
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const slug = createSlug(values.title, values.artist);
+      const slug = createSlug(values.title)
       const songData: NewSongData = {
         title: values.title,
-        artist: values.artist,
-        slug: slug,
-        lyrics: values.lyrics,
-        chords: values.chords,
-        video: values.video,
-        coverArt: values.coverArt,
-      };
+        artist_id: values.artist,
+        slug,
+        lyrics: values.lyrics ?? null,
+        chords: values.chords ?? null,
+        video: values.video ?? null,
+        coverArt: values.coverArt
+      }
 
       // Ejecuta las escrituras en la base de datos del lado del cliente.
-      await addSong(songData); // Agrega la nueva canción.
-      await deleteSongRequest(requestId); // Elimina la solicitud completada.
+      await addSong(songData) // Agrega la nueva canción.
+      await deleteSongRequest(requestId) // Elimina la solicitud completada.
 
       // Llama a la acción del servidor para revalidar rutas y redirigir.
-      await revalidateAndRedirect(values.artist, slug);
+      await revalidateAndRedirect(values.artist, slug)
     } catch (error) {
       if (error) {
-        console.error("Failed to add song and remove request:", error);
-        toast.error("No se pudo agregar la canción. Intenta de nuevo.");
+        console.error('Failed to add song and remove request:', error)
+        toast.error('No se pudo agregar la canción. Intenta de nuevo.')
       } else {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
   }
 
   return (
-    <Card className="w-full max-w-2xl">
+    <Card className='w-full max-w-2xl'>
       <CardHeader>
         <CardTitle>Agregar Nueva Canción</CardTitle>
         <CardDescription>
@@ -121,11 +121,11 @@ export function AddSongForm({
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
-                name="title"
+                name='title'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Título</FormLabel>
@@ -138,7 +138,7 @@ export function AddSongForm({
               />
               <FormField
                 control={form.control}
-                name="artist"
+                name='artist'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Artista</FormLabel>
@@ -152,13 +152,13 @@ export function AddSongForm({
             </div>
             <FormField
               control={form.control}
-              name="chords"
+              name='chords'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Acordes y Letra</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="[Intro]\nC G Am F\n\n[Verse]\nC\nLa primera línea de la canción..."
+                      placeholder='[Intro]\nC G Am F\n\n[Verse]\nC\nLa primera línea de la canción...'
                       rows={10}
                       {...field}
                     />
@@ -169,13 +169,13 @@ export function AddSongForm({
             />
             <FormField
               control={form.control}
-              name="lyrics"
+              name='lyrics'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Solo Letra</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="La primera línea de la canción..."
+                      placeholder='La primera línea de la canción...'
                       rows={10}
                       {...field}
                     />
@@ -184,15 +184,15 @@ export function AddSongForm({
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <FormField
                 control={form.control}
-                name="video"
+                name='video'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ID del Video de YouTube (Opcional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="dQw4w9WgXcQ" {...field} />
+                      <Input placeholder='dQw4w9WgXcQ' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -200,7 +200,7 @@ export function AddSongForm({
               />
               <FormField
                 control={form.control}
-                name="coverArt"
+                name='coverArt'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>URL de la Portada</FormLabel>
@@ -212,18 +212,18 @@ export function AddSongForm({
                 )}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type='submit' className='w-full' disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Spinner /> <p>{"Agregando..."}</p>
+                  <Spinner /> <p>Agregando...</p>
                 </>
               ) : (
-                "Agregar Canción y Completar Solicitud"
+                'Agregar Canción y Completar Solicitud'
               )}
             </Button>
           </form>
         </Form>
       </CardContent>
     </Card>
-  );
+  )
 }

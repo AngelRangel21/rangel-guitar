@@ -1,10 +1,10 @@
+import type { User } from '@supabase/supabase-js'
+import { toast } from 'sonner'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { User } from '@supabase/supabase-js'
-import { AuthService } from '../service/auth.service'
-import { toast } from 'sonner'
-import type { AuthCredentials, UserProfile } from '@/types'
 import { FavoriteService } from '@/services/favorites.service'
+import type { AuthCredentials, UserProfile } from '@/types'
+import { AuthService } from '../service/auth.service'
 import { UserService } from '../service/user.service'
 
 interface AuthState {
@@ -59,14 +59,12 @@ export const useAuthStore = create<AuthState>()(
       _setSupabaseUser: (supabaseUser) =>
         set({ supabaseUser }, false, 'setSupabaseUser'),
 
-      _setUser: (user) =>
-        set({ user }, false, 'setUser'),
+      _setUser: (user) => set({ user }, false, 'setUser'),
 
       _setFavoriteIds: (favoriteIds) =>
         set({ favoriteIds }, false, 'setFavoriteIds'),
 
-      _setLoading: (isLoading) =>
-        set({ isLoading }, false, 'setLoading'),
+      _setLoading: (isLoading) => set({ isLoading }, false, 'setLoading'),
 
       _setInitialized: (isInitialized) =>
         set({ isInitialized }, false, 'setInitialized'),

@@ -1,6 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { revalidateAndRedirectAfterDelete } from '@/app/[locale]/songs/[slug]/actions'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,12 +15,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
-import type { Song } from '@/types'
 import { useI18n } from '@/context/i18n-context'
-import { revalidateAndRedirectAfterDelete } from '@/app/songs/[slug]/actions'
 import { deleteSong } from '@/services/song.service'
+import type { Song } from '@/types'
 import { Spinner } from './ui/spinner'
-import { toast } from 'sonner'
 
 /**
  * Propiedades que el componente DeleteSongDialog espera recibir.
@@ -33,7 +34,7 @@ interface DeleteSongDialogProps {
  * @param {DeleteSongDialogProps} props - Propiedades del componente.
  * @returns {JSX.Element} El diálogo de alerta.
  */
-export function DeleteSongDialog ({ song, children }: DeleteSongDialogProps) {
+export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
   const { t } = useI18n()
 
@@ -75,16 +76,14 @@ export function DeleteSongDialog ({ song, children }: DeleteSongDialogProps) {
             disabled={isLoading}
             className='bg-destructive hover:bg-destructive/90'
           >
-            {isLoading
-              ? (
-                <>
-                  <Spinner />
-                  <p>{t('deleting')}</p>
-                </>
-                )
-              : (
-                  t('delete')
-                )}
+            {isLoading ? (
+              <>
+                <Spinner />
+                <p>{t('deleting')}</p>
+              </>
+            ) : (
+              t('delete')
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

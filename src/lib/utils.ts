@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 /**
  * Función de utilidad para combinar clases de Tailwind CSS de forma segura.
@@ -19,10 +19,11 @@ export function cn(...inputs: ClassValue[]) {
  * @returns {string} - El slug generado.
  */
 export const createSlug = (title: string): string => {
-    const combined = `${title}`;
-    return combined.toLowerCase()
-        .replace(/&/g, 'and') // Reemplaza '&' por 'and'.
-        .replace(/[^a-z0-9\s-]/g, '') // Elimina caracteres no alfanuméricos (excepto espacios y guiones).
-        .trim() // Elimina espacios al principio y al final.
-        .replace(/\s+/g, '-'); // Reemplaza espacios por guiones.
-};
+  const combined = `${title}`
+  return combined
+    .toLowerCase()
+    .replace(/&/g, 'and') // Reemplaza '&' por 'and'.
+    .replace(/[^a-z0-9\s-]/g, '') // Elimina caracteres no alfanuméricos (excepto espacios y guiones).
+    .trim() // Elimina espacios al principio y al final.
+    .replace(/\s+/g, '-') // Reemplaza espacios por guiones.
+}

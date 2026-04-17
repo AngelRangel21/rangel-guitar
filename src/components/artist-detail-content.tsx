@@ -1,8 +1,8 @@
 'use client'
 
-import { useI18n } from '@/context/i18n-context'
 import { SongList } from '@/components/song-list'
-import { SongWithArtist } from '@/types/app.types'
+import { useI18n } from '@/context/i18n-context'
+import type { SongWithArtist } from '@/types/app.types'
 
 /**
  * Propiedades que el componente ArtistDetailContent espera recibir.
@@ -19,12 +19,17 @@ interface ArtistDetailContentProps {
  * @param {ArtistDetailContentProps} props - Propiedades del componente.
  * @returns {JSX.Element} El contenido principal de la página de detalle del artista.
  */
-export function ArtistDetailContent ({ artistName, songs }: ArtistDetailContentProps) {
+export function ArtistDetailContent({
+  artistName,
+  songs
+}: ArtistDetailContentProps) {
   const { t } = useI18n() // Hook para obtener las traducciones.
 
   return (
     <main className='grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in'>
-      <h1 className='text-4xl font-bold'>{t('songsBy', { artist: artistName })}</h1>
+      <h1 className='text-4xl font-bold'>
+        {t('songsBy', { artist: artistName })}
+      </h1>
       {/* Componente que renderiza la lista de canciones. */}
       <SongList songs={songs} />
     </main>

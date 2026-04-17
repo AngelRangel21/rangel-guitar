@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react'
 
 // Punto de ruptura para considerar un dispositivo como móvil.
 const MOBILE_BREAKPOINT = 768
@@ -15,20 +15,20 @@ export function useIsMobile() {
   React.useEffect(() => {
     // Media query para detectar cambios en el tamaño de la ventana.
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    
+
     // Función que se ejecuta cuando cambia el tamaño de la ventana.
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
     }
-    
+
     // Añade un listener para el evento de cambio.
-    mql.addEventListener("change", onChange)
-    
+    mql.addEventListener('change', onChange)
+
     // Establece el estado inicial al montar el componente.
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    
+
     // Limpia el listener cuando el componente se desmonta.
-    return () => mql.removeEventListener("change", onChange)
+    return () => mql.removeEventListener('change', onChange)
   }, [])
 
   return !!isMobile

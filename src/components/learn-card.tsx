@@ -1,19 +1,25 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { useI18n } from '@/context/i18n-context';
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+import { Badge } from '@/components/ui/badge'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
+import { useI18n } from '@/context/i18n-context'
 
 /**
  * Propiedades que el componente LearnCard espera recibir.
  */
 interface LearnCardProps {
-    href: string;
-    icon: React.ReactNode;
-    title: string;
-    description: string;
+  href: string
+  icon: React.ReactNode
+  title: string
+  description: string
 }
 
 /**
@@ -23,28 +29,26 @@ interface LearnCardProps {
  * @returns {JSX.Element} La tarjeta de aprendizaje.
  */
 export function LearnCard({ href, icon, title, description }: LearnCardProps) {
-    const { t } = useI18n();
-    return (
-        <Link href={href} className="group block">
-            <Card className="relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col">
-                {/* Etiqueta "Beta" para indicar que la herramienta está en fase de pruebas. */}
-                <Badge variant="info" className="absolute top-4 right-4">{t('beta')}</Badge>
-                <CardHeader>
-                    {icon}
-                </CardHeader>
-                <CardContent className="flex flex-col grow">
-                    <CardTitle className="text-xl font-semibold group-hover:text-accent transition-colors">
-                        {title}
-                    </CardTitle>
-                    <CardDescription className="mt-2 grow">
-                        {description}
-                    </CardDescription>
-                    <div className="mt-4 flex items-center font-semibold text-accent">
-                        <span>{t('seeMore')}</span>
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                </CardContent>
-            </Card>
-        </Link>
-    )
+  const { t } = useI18n()
+  return (
+    <Link href={href} className='group block'>
+      <Card className='relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col'>
+        {/* Etiqueta "Beta" para indicar que la herramienta está en fase de pruebas. */}
+        <Badge variant='info' className='absolute top-4 right-4'>
+          {t('beta')}
+        </Badge>
+        <CardHeader>{icon}</CardHeader>
+        <CardContent className='flex flex-col grow'>
+          <CardTitle className='text-xl font-semibold group-hover:text-accent transition-colors'>
+            {title}
+          </CardTitle>
+          <CardDescription className='mt-2 grow'>{description}</CardDescription>
+          <div className='mt-4 flex items-center font-semibold text-accent'>
+            <span>{t('seeMore')}</span>
+            <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover:translate-x-1' />
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
 }

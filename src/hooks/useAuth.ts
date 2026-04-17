@@ -1,14 +1,18 @@
 'use client'
 
-import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@/auth/stores/auth.stores'
-import { AuthCredentials, UserProfile } from '@/types'
 import { useShallow } from 'zustand/react/shallow'
+import {
+  selectIsAdmin,
+  selectIsAuthenticated,
+  useAuthStore
+} from '@/auth/stores/auth.stores'
+import type { AuthCredentials, UserProfile } from '@/types'
 
 /**
  * Hook para usar autenticación en componentes
  * Wrapper sobre el store de Zustand con selección optimizada
  */
-export function useAuth (): {
+export function useAuth(): {
   isAuthenticated: boolean
   user: UserProfile | null
   isAdmin: boolean
@@ -20,7 +24,8 @@ export function useAuth (): {
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>
   logout: () => Promise<void>
   toggleFavorite: (songId: string, songSlug: string) => Promise<void>
-  isFavorite: (songId: string) => boolean } {
+  isFavorite: (songId: string) => boolean
+} {
   // Seleccionar solo lo que necesitas para evitar re-renders innecesarios
   return useAuthStore(
     useShallow((state) => ({
@@ -48,7 +53,7 @@ export function useAuth (): {
 /**
  * Hook optimizado para componentes que solo necesitan el estado de autenticación
  */
-export function useAuthStatus (): {
+export function useAuthStatus(): {
   isAuthenticated: boolean
   isLoading: boolean
   isLoaded: boolean
@@ -69,7 +74,7 @@ export function useAuthStatus (): {
 /**
  * Hook optimizado para componentes que solo necesitan datos del usuario
  */
-export function useUser (): {
+export function useUser(): {
   user: UserProfile | null
   isAdmin: boolean
 } {

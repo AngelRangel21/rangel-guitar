@@ -1,17 +1,27 @@
 'use client'
 
-import Link from 'next/link'
-import { useState, useEffect, JSX } from 'react'
-import { Menu, X, Bell, Heart, Shield, FilePlus2 } from 'lucide-react'
+import { Bell, FilePlus2, Heart, Menu, Shield, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type ComponentProps, type JSX, useEffect, useState } from 'react'
 import { useAuth, useAuthStatus } from '@/hooks/useAuth'
-import { ThemeToggle } from '../theme-toggle'
-import { Logo } from './components/Logo'
-import DesktopNav from './components/DesktopNav'
-import type { SongRequest } from '@/lib/types'
+import { Link } from '@/i18n/navigation'
 import { supabase } from '@/lib/supabase'
+import type { SongRequest } from '@/lib/types'
+import { ThemeToggle } from '../theme-toggle'
+import { Avatar, AvatarFallback } from '../ui/avatar'
+import { Button } from '../ui/button'
+import DesktopNav from './components/DesktopNav'
+import { Logo } from './components/Logo'
 
-export function Header (): JSX.Element {
-  const { logout } = useAuth()
+interface NavLink {
+  href: ComponentProps<typeof Link>['href']
+  label: string
+  title: string
+}
+
+export function Header(): JSX.Element {
+  const t = useTranslations('header')
+  const { logout, user } = useAuth()
   const { isAuthenticated, isAdmin } = useAuthStatus()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [notifications, setNotifications] = useState<{
@@ -64,9 +74,9 @@ export function Header (): JSX.Element {
   }, [isAdmin])
 
   // Enlaces base para todos los usuarios
-  const baseLinks = [
-    { href: '/', label: 'Inicio', title: 'Titulo Pagina Principal' },
-    { href: '/artists', label: 'Artistas', title: 'Pagina artistas' },
+  const baseLinks: NavLink[] = [
+    { href: '/', label: t('home.label'), title: t('home.title') },
+    { href: '/artists', label: t('artists.label'), title: t('artists.title') },
     // {
     //   href: '/top-charts',
     //   label: 'Top canciones',
@@ -74,38 +84,36 @@ export function Header (): JSX.Element {
     // },
     {
       href: '/request-song',
-      label: 'Solicitar',
-      title: 'Pagina de solicitar canción'
+      label: t('request.label'),
+      title: t('request.title')
     },
-    { href: '/learn', label: 'Aprender', title: 'Pagina para aprender' }
+    { href: '/learn', label: t('learn.label'), title: t('learn.title') }
   ]
 
   // Enlaces adicionales según el tipo de usuario
-  const userLinks = isAuthenticated
+  const userLinks: NavLink[] = isAuthenticated
     ? [
         ...baseLinks,
         {
           href: '/favorites',
-          label: 'Favoritos',
-          title: 'Pagina de favoritos'
+          label: t('favorites.label'),
+          title: t('favorites.title')
         }
       ]
     : baseLinks
-  const adminLinks = isAdmin
-    ? [
-        ...userLinks,
-        {
-          href: '/admin/requests',
-          label: 'Solicitudes',
-          title: 'Pagina de solicitudes de canciones'
-        },
-        {
-          href: '/admin/upload-song',
-          label: 'Subir',
-          title: 'Pagina para subir canción'
-        }
-      ]
-    : userLinks
+  const adminLinks: NavLink[] = [
+    ...userLinks,
+    {
+      href: '/admin/requests',
+      label: t('request.label'),
+      title: t('request.title')
+    },
+    {
+      href: '/admin/upload-song',
+      label: t('upload.label'),
+      title: t('upload.title')
+    }
+  ]
 
   // Selecciona qué links mostrar según el rol
   const navLinks = isAdmin ? adminLinks : userLinks
@@ -125,7 +133,7 @@ export function Header (): JSX.Element {
             <Link
               href='/admin/requests'
               className='xl:hidden flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 rounded-full mr-4 size-10 relative hover:bg-primary-foreground/10'
-              title='Solicitudes'
+              title={t('request.title')}
             >
               <Bell />
               {notifications.count > 0 && (
@@ -135,20 +143,29 @@ export function Header (): JSX.Element {
               )}
             </Link>
           )}
-          <button
+          <Button
             onClick={() => setMobileOpen(!mobileOpen)}
             className='xl:hidden flex items-center justify-center h-10 w-10 rounded-md hover:bg-primary-foreground/10'
             title='Mostrar Menú'
             aria-label='Mostrar Menú'
           >
-            {mobileOpen
-              ? (
+            {/* TODO: Obtener la imagen del usuario para mostrar en el menu si esta autenticado */}
+            {isAuthenticated && user != null ? (
+              mobileOpen ? (
                 <X className='h-6 w-6' />
-                )
-              : (
-                <Menu className='h-6 w-6' />
-                )}
-          </button>
+              ) : (
+                <Avatar className='h-6 w-6'>
+                  <AvatarFallback>
+                    {user?.avatarUrl ?? user?.name?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              )
+            ) : mobileOpen ? (
+              <X className='h-6 w-6' />
+            ) : (
+              <Menu className='h-6 w-6' />
+            )}
+          </Button>
         </section>
       </div>
 
@@ -158,7 +175,7 @@ export function Header (): JSX.Element {
           <nav className='flex flex-col space-y-2 p-4'>
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10 font-medium'
                 onClick={() => setMobileOpen(false)}
@@ -170,67 +187,68 @@ export function Header (): JSX.Element {
 
             <div className='border-t border-primary-foreground/10 my-2' />
 
-            {isAuthenticated
-              ? (
-                <>
-                  {isAdmin && (
-                    <>
-                      <Link
-                        href='/admin/requests'
-                        className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        <Shield className='inline mr-2 h-4 w-4' /> Solicitudes
-                      </Link>
-                      <Link
-                        href='/admin/upload-song'
-                        className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        <FilePlus2 className='inline mr-2 h-4 w-4' /> Subir
-                      </Link>
-                    </>
-                  )}
-                  <Link
-                    href='/favorites'
-                    className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <Heart className='inline mr-2 h-4 w-4' /> Favoritos
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout()
-                      setMobileOpen(false)
-                    }}
-                    className='block py-2 px-3 text-left rounded-md hover:bg-primary-foreground/10 font-semibold'
-                  >
-                    Cerrar sesión
-                  </button>
-                </>
-                )
-              : (
-                <>
-                  <Link
-                    href='/login'
-                    className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10 font-semibold'
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Iniciar sesión
-                  </Link>
-                  <Link
-                    href='/register'
-                    className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10 font-semibold'
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Registrarse
-                  </Link>
-                </>
+            {isAuthenticated ? (
+              <>
+                {isAdmin && (
+                  <>
+                    <Link
+                      href='/admin/requests'
+                      className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <Shield className='inline mr-2 h-4 w-4' />{' '}
+                      {t('request.label')}
+                    </Link>
+                    <Link
+                      href='/admin/upload-song'
+                      className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <FilePlus2 className='inline mr-2 h-4 w-4' />{' '}
+                      {t('upload.label')}
+                    </Link>
+                  </>
                 )}
+                <Link
+                  href='/favorites'
+                  className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Heart className='inline mr-2 h-4 w-4' />{' '}
+                  {t('favorites.label')}
+                </Link>
+                <Button
+                  onClick={() => {
+                    logout()
+                    setMobileOpen(false)
+                  }}
+                  className='block py-2 px-3 text-left rounded-md hover:bg-primary-foreground/10 font-semibold'
+                >
+                  {t('logout')}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href='/login'
+                  className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10 font-semibold'
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {t('login')}
+                </Link>
+                <Link
+                  href='/register'
+                  className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10 font-semibold'
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {t('register')}
+                </Link>
+              </>
+            )}
 
             <div className='border-t border-primary-foreground/10 my-2' />
             <div className='flex justify-between items-center px-3'>
-              <span className='text-sm'>Tema</span>
+              <span className='text-sm'>{t('teme')}</span>
               <ThemeToggle />
             </div>
           </nav>

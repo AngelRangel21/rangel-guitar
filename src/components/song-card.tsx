@@ -1,7 +1,8 @@
-import type { SongWithArtist } from '@/types/app.types'
-import Link from 'next/link'
-import { JSX } from 'react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import type { JSX } from 'react'
+import { Link } from '@/i18n/navigation'
+import type { SongWithArtist } from '@/types/app.types'
 import { FavoriteButton } from './favorite-button'
 
 /**
@@ -16,10 +17,12 @@ interface SongCardProps {
  * @param {SongCardProps} props - Propiedades del componente, contiene los datos de la canción.
  * @returns {JSX.Element} La tarjeta de la canción.
  */
-export function SongCard ({ song }: SongCardProps): JSX.Element {
-  const artistsName = song.artists.map(a => a.name).join(', ') ?? 'Artista desconocido'
-  const songTitle = song.title ?? 'Sin titulo'
-  const songSlug = song.slug ?? 'Sin slug'
+export function SongCard({ song }: SongCardProps): JSX.Element {
+  const t = useTranslations('songList.grid')
+  const artistsName =
+    song.artists.map((a) => a.name).join(', ') ?? t('notArtists')
+  const songTitle = song.title ?? t('notTitle')
+  const songSlug = song.slug ?? t('notSlug')
   const songCover = song.coverArt ?? ''
 
   return (
@@ -36,14 +39,24 @@ export function SongCard ({ song }: SongCardProps): JSX.Element {
       </div>
       <div className='p-5'>
         <Link
-          href={`/songs/${songSlug}`}
+          href={{ pathname: '/songs/[slug]', params: { slug: `${songSlug}` } }}
           className='text-lg font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors'
         >
           {songTitle}
         </Link>
-        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>{artistsName}</p>
+        <p className='text-slate-500 dark:text-slate-400 text-sm mb-4 truncate'>
+          {artistsName}
+        </p>
         <div className='flex items-center justify-between'>
-          <button className='bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-slate-900 transition-all'>Ver Acordes</button>
+          <Link
+            href={{
+              pathname: '/songs/[slug]',
+              params: { slug: `${songSlug}` }
+            }}
+            className='bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary hover:text-slate-900 transition-all'
+          >
+            {t('viewChords')}
+          </Link>
           <FavoriteButton song={song} />
         </div>
       </div>
