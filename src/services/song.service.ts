@@ -88,7 +88,11 @@ export async function updateSong(
   id: string,
   songData: Partial<SongWithArtist>
 ): Promise<void> {
-  const { error } = await supabase.from('songs_2').update(songData).eq('id', id)
+  const { artists, ...dataToUpdate } = songData
+  const { error } = await supabase
+    .from('songs_2')
+    .update(dataToUpdate)
+    .eq('id', id)
   if (error != null) throw error
 }
 
