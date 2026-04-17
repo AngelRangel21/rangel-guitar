@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.2.0...v1.3.0) (2026-04-17)
+
+
+### Features
+
+* New robots.ts ([285448e](https://github.com/AngelRangel21/rangel-guitar/commit/285448e423b0fccac62ba3e5662b78c21e96a18b))
+
 # [1.2.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.1.0...v1.2.0) (2026-04-17)
 
 
