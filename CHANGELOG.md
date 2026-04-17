@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.1.0...v1.2.0) (2026-04-17)
+
+
+### Bug Fixes
+
+* Se actualizan dependencias del package.json del proyecto ([6e3e292](https://github.com/AngelRangel21/rangel-guitar/commit/6e3e292da27ceca7d1abe1d13196fdc985d9c627))
+
+
+### Features
+
+* implement internationalization (i18n) and professional SEO structure ([e0c589a](https://github.com/AngelRangel21/rangel-guitar/commit/e0c589acb06ed1730f75c9c8c3cd3eda1de7f81c))
+* implement internationalization (i18n) and professional SEO structure ([7313618](https://github.com/AngelRangel21/rangel-guitar/commit/7313618a5341a84ce7583b1af817ad602ac70ec8))
+
 # [1.1.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.0.2...v1.1.0) (2026-04-12)
 
 
