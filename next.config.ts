@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
   /* config options here */
   async redirects() {
     return [
+      // php
+      {
+        source: '/:path.php',
+        destination: '/',
+        permanent: true
+      },
       {
         source: '/songs/afs-natanael-cano',
         destination: '/es/cancion/afs',
