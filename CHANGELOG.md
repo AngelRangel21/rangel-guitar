@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.1...v1.3.2) (2026-04-20)
+
+
+### Bug Fixes
+
+* Se arreglan los colores y etiquetas de html en confligto ([cf04b5d](https://github.com/AngelRangel21/rangel-guitar/commit/cf04b5d13dd83b46434cab6c96f62f84f1181408))
+
 ## [1.3.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.0...v1.3.1) (2026-04-20)
 
 
