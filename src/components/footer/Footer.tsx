@@ -36,7 +36,7 @@ export function Footer(): JSX.Element {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center md:text-left mb-10 border-b border-slate-800 pb-10'>
           <div>
-            <h4 className='text-white font-bold mb-4'>{t('youLiked')}</h4>
+            <h3 className='text-white font-bold mb-4'>{t('youLiked')}</h3>
             <p className='text-sm mb-6'>{t('free')}</p>
           </div>
           <PayPal />

@@ -16,7 +16,7 @@ export function SongListItem({ song }: { song: SongWithArtist }): JSX.Element {
 
   return (
     <div className='flex flex-col gap-2'>
-      <div className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#1E293B] border border-transparent hover:border-slate-800 rounded-xl transition-all duration-200 group'>
+      <div className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#4b628f] dark:hover:bg-[#1E293B] border border-transparent rounded-xl transition-all duration-200 group'>
         <div className='h-auto w-auto aspect-video relative overflow-hidden'>
           <Image
             alt={`${songTitle} - ${artistsName}`}
@@ -34,7 +34,7 @@ export function SongListItem({ song }: { song: SongWithArtist }): JSX.Element {
               pathname: '/songs/[slug]',
               params: { slug: `${songSlug}` }
             }}
-            className='text-white font-bold transition-colors'
+            className='text-slate-950 dark:text-white font-bold transition-colors'
           >
             {songTitle}
           </Link>
