@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.0...v1.3.1) (2026-04-20)
+
+
+### Bug Fixes
+
+* Arreglando problemas del SEO ([9717bd0](https://github.com/AngelRangel21/rangel-guitar/commit/9717bd0fc503142a096e16261d52def69555f3cd))
+
 # [1.3.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.2.0...v1.3.0) (2026-04-17)
 
 
