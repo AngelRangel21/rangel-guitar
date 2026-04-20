@@ -3,6 +3,15 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
   /* config options here */
+  async redirects() {
+    return [
+      {
+        source: '/songs/afs-natanael-cano',
+        destination: '/es/cancion/afs',
+        permanent: true
+      }
+    ]
+  },
   typescript: {
     ignoreBuildErrors: true
   },

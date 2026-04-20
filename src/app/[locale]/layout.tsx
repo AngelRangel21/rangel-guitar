@@ -93,9 +93,6 @@ export async function generateMetadata({
         'max-image-preview': 'large',
         'max-snippet': -1
       }
-    },
-    verification: {
-      google: 'google-site-verification-code'
     }
   }
 }

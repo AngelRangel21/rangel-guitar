@@ -52,6 +52,11 @@ export async function generateMetadata({
     ])
   )
 
+  languages['x-default'] = `https://rangelguitar.com${getPathname({
+    locale: 'es',
+    href: { pathname: '/songs/[slug]', params: { slug: songSlug } }
+  })}`
+
   return {
     title: {
       default: `${songTitle} - ${artistsName}`,
@@ -82,9 +87,6 @@ export async function generateMetadata({
       card: 'summary_large_image',
       images: [songCover],
       creator: '@rangelguitar'
-    },
-    verification: {
-      google: 'google-site-verification-code' // Placeholder
     },
     robots: {
       index: true,
