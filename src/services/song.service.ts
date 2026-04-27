@@ -45,7 +45,7 @@ export async function getSongByArtist(): Promise<SongWithArtist[]> {
       )
     `)
     .eq('isPublished', true)
-    .order('createdAt', { ascending: true })
+    .order('createdAt', { ascending: false })
   // .returns<SongWithArtist[]>()
 
   if (error != null) {

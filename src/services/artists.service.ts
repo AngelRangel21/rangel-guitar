@@ -26,7 +26,7 @@ export async function getSongsByArtistSlug(
   // 1. Obtener artista
   const { data: artist, error: artistError } = await supabase
     .from('artists')
-    .select('id, name')
+    .select('id')
     .eq('slug', slug)
     .single()
 
@@ -36,20 +36,32 @@ export async function getSongsByArtistSlug(
   }
 
   // 2. Obtener canciones (relación directa)
+  const { data: songLink, error: linkError } = await supabase
+    .from('songs_artists')
+    .select('song_id')
+    .eq('artist_id', artist.id)
+
+  if (linkError != null || !songLink) {
+    console.error('Error fetching songs:', linkError)
+    return []
+  }
+
+  const songIds = songLink.map((link) => link.song_id)
+
   const { data, error } = await supabase
     .from('songs_2')
     .select(`
       *,
-      artists_list:songs_artists!inner (
+      artists_list:songs_artists (
         artist:artists (*)
-      )
-    `)
-    .eq('songs_artists.artist_id', artist.id)
+        )
+      `)
+    .in('id', songIds)
     .eq('isPublished', true)
     .order('title', { ascending: true })
 
   if (error != null || !data) {
-    console.error('Error fetching songs:', error)
+    console.error('Error fetching songs:', linkError)
     return []
   }
 

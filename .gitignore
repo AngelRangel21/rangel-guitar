@@ -13,6 +13,8 @@
 # testing
 /coverage
 src/__tests__
+test-results
+playwright-report
 
 # next.js
 /.next/
