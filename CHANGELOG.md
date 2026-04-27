@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.4...v1.3.5) (2026-04-27)
+
+
+### Bug Fixes
+
+* Agregando PlayWright para hacer tests visuales y arreglando problemas al obtener los artistas de una canción ([cff6293](https://github.com/AngelRangel21/rangel-guitar/commit/cff6293783583c8da637d07b1efbf694d8e9b79d))
+
 ## [1.3.4](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.3...v1.3.4) (2026-04-20)
 
 
