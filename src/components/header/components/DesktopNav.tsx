@@ -1,12 +1,11 @@
-import { Bell } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { type ComponentProps, type JSX, useEffect, useState } from 'react'
+import type { ComponentProps, JSX } from 'react'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
-import { supabase } from '@/lib/supabase'
-import type { SongRequest } from '@/lib/types'
+import { AvatarUser } from './AvatarUser'
+import { Notifications } from './Notifications'
 
 interface NavLink {
   href: ComponentProps<typeof Link>['href']
@@ -17,54 +16,6 @@ interface NavLink {
 export default function DesktopNav(): JSX.Element {
   const t = useTranslations('header')
   const { isAuthenticated, isAdmin, logout } = useAuth()
-  const [notifications, setNotifications] = useState<{
-    count: number
-    recentRequests: SongRequest[]
-  }>({ count: 0, recentRequests: [] })
-
-  useEffect(() => {
-    if (!isAdmin) {
-      setNotifications({ count: 0, recentRequests: [] })
-      return // No hacer nada si el usuario no es administrador.
-    }
-
-    const fetchInitialRequests = async () => {
-      const { data: requests, error } = await supabase
-        .from('songs_requests')
-        .select('*')
-        .order('requestedAt', { ascending: false })
-
-      if (error != null) {
-        console.error('Error fetching initial song requests:', error)
-        return
-      }
-
-      setNotifications({
-        count: requests.length,
-        recentRequests: requests
-          .slice(0, 99)
-          .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) }))
-      })
-    }
-
-    fetchInitialRequests()
-
-    const channel = supabase
-      .channel('song-requests-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'songs_requests' },
-        () => {
-          fetchInitialRequests() // Re-fetch all requests on any change
-        }
-      )
-      .subscribe()
-
-    // Limpia el listener cuando el componente se desmonta para evitar fugas de memoria.
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [isAdmin])
 
   // Enlaces base para todos los usuarios
   const baseLinks: NavLink[] = [
@@ -129,20 +80,7 @@ export default function DesktopNav(): JSX.Element {
 
       {/* --- Desktop Actions --- */}
       <section className='hidden xl:flex items-center gap-3'>
-        {isAdmin && (
-          <Link
-            href='/admin/requests'
-            className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full'
-            title={t('requests.title')}
-          >
-            <Bell />
-            {notifications.count > 0 && (
-              <span className='absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground'>
-                {notifications.count}
-              </span>
-            )}
-          </Link>
-        )}
+        <Notifications />
         {/* Tema modo claro/obscuro */}
         <ThemeToggle />
 
@@ -156,6 +94,10 @@ export default function DesktopNav(): JSX.Element {
             >
               {t('logout')}
             </Button>
+
+            <span className='hidden xl:flex ml-4 items-center'>
+              <AvatarUser />
+            </span>
           </div>
         ) : (
           <div className='hidden xl:flex gap-2'>
