@@ -4,68 +4,57 @@ import { Album, Ear, Gauge, Library, Scale } from 'lucide-react'
 import { useI18n } from '@/context/i18n-context'
 import { LearnCard } from './learn-card'
 
-/**
- * Componente que renderiza el contenido principal de la página "Aprender".
- * Muestra una cuadrícula de tarjetas que enlazan a las diferentes herramientas de aprendizaje.
- * @returns {JSX.Element} El contenido de la página "Aprender".
- */
 export function LearnPageContent() {
-  const { t } = useI18n() // Hook para obtener traducciones.
+  const { t } = useI18n()
 
   return (
-    <main className='grow container mx-auto px-4 py-8 opacity-0 animate-content-in'>
-      <div className='text-center mb-12'>
-        <h1 className='text-4xl font-bold tracking-tight lg:text-5xl'>
+    <main className='grow container mx-auto px-4 py-12'>
+      <div className='text-center mb-16 animate-fade-up'>
+        <h1 className='text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight font-headline text-foreground'>
           {t('learnPageTitle')}
         </h1>
-        <p className='mt-4 text-lg text-muted-foreground'>
+        <p className='mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto'>
           {t('learnPageDescription')}
         </p>
       </div>
 
-      {/* Cuadrícula de tarjetas de aprendizaje. */}
-      <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Tarjeta para la Biblioteca de Acordes */}
-        <div style={{ animationDelay: '150ms' }}>
+      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='animate-fade-up' style={{ animationDelay: '100ms' }}>
           <LearnCard
             href='/chords'
-            icon={<Library className='h-8 w-8 text-accent' />}
+            icon={<Library className='h-10 w-10' />}
             title={t('chordLibrary')}
             description={t('chordLibraryDescription')}
           />
         </div>
-        {/* Tarjeta para la Biblioteca de Escalas */}
-        <div style={{ animationDelay: '250ms' }}>
+        <div className='animate-fade-up' style={{ animationDelay: '200ms' }}>
           <LearnCard
             href='/scales'
-            icon={<Scale className='h-8 w-8 text-accent' />}
+            icon={<Scale className='h-10 w-10' />}
             title={t('scaleLibrary')}
             description={t('scaleLibraryDescription')}
           />
         </div>
-        {/* Tarjeta para el Metrónomo */}
-        <div style={{ animationDelay: '350ms' }}>
+        <div className='animate-fade-up' style={{ animationDelay: '300ms' }}>
           <LearnCard
             href='/learn/metronome'
-            icon={<Gauge className='h-8 w-8 text-accent' />}
+            icon={<Gauge className='h-10 w-10' />}
             title={t('metronome')}
             description={t('metronomeDescription')}
           />
         </div>
-        {/* Tarjeta para el Entrenador de Oído */}
-        <div style={{ animationDelay: '450ms' }}>
+        <div className='animate-fade-up' style={{ animationDelay: '400ms' }}>
           <LearnCard
             href='/learn/ear-trainer'
-            icon={<Ear className='h-8 w-8 text-accent' />}
+            icon={<Ear className='h-10 w-10' />}
             title={t('earTrainer')}
             description={t('earTrainerDescription')}
           />
         </div>
-        {/* Tarjeta para el Círculo de Quintas */}
-        <div style={{ animationDelay: '550ms' }}>
+        <div className='animate-fade-up' style={{ animationDelay: '500ms' }}>
           <LearnCard
             href='/learn/circle-of-fifths'
-            icon={<Album className='h-8 w-8 text-accent' />}
+            icon={<Album className='h-10 w-10' />}
             title={t('circleOfFifths')}
             description={t('circleOfFifthsDescription')}
           />

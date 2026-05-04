@@ -17,13 +17,13 @@ export function SongListItem({ song }: { song: SongWithArtist }): JSX.Element {
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex items-center gap-4 p-3 bg-transparent hover:bg-[#4b628f] dark:hover:bg-[#1E293B] border border-transparent rounded-xl transition-all duration-200 group'>
-        <div className='h-auto w-auto aspect-video relative overflow-hidden'>
+        <div className='h-auto w-20 aspect-video relative overflow-hidden'>
           <Image
             alt={`${songTitle} - ${artistsName}`}
-            className='rounded-lg object-cover shrink-0'
+            className='rounded-lg object-cover w-full h-auto'
             src={`${songCover}`}
-            width='80'
-            height='48'
+            width={80}
+            height={45}
             decoding='async'
             unoptimized
           />

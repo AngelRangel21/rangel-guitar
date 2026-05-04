@@ -11,12 +11,17 @@ export function Logo(): JSX.Element {
   return (
     <Link
       href='/'
-      className='flex items-center gap-2'
+      className='flex items-center gap-2.5 group'
       aria-label={t('ariaLabel')}
       title={t('title')}
     >
-      <Music className='h-8 w-8 text-accent' />
-      <h1 className='text-2xl font-bold whitespace-nowrap'>{t('appName')}</h1>
+      <div className='relative'>
+        <Music className='h-8 w-8 text-accent transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12' />
+        <div className='absolute inset-0 bg-accent/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+      </div>
+      <h1 className='text-2xl font-bold whitespace-nowrap font-headline tracking-tight'>
+        Rangel Guitar
+      </h1>
     </Link>
   )
 }

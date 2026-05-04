@@ -2,7 +2,8 @@ import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  compress: true,
+  poweredByHeader: false,
   async redirects() {
     return [
       // php
@@ -18,7 +19,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/songs/te-metiste-ariel-camacho',
-        destination: '/es/cancion/te-metiste', // Ajusta al slug real que tengas ahora
+        destination: '/es/cancion/te-metiste',
         permanent: true
       },
       {
@@ -53,10 +54,46 @@ const nextConfig: NextConfig = {
       }
     ]
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ]
+      }
+    ]
+  },
   typescript: {
     ignoreBuildErrors: true
   },
   images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

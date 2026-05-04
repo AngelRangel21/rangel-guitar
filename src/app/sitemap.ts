@@ -2,35 +2,65 @@
 
 import type { MetadataRoute } from 'next'
 import { getPathname } from '@/i18n/navigation'
-import { routing } from '@/i18n/routing' // Importamos tu config
+import { routing } from '@/i18n/routing'
 import { getArtists } from '@/services/artists.service'
 import { getSongByArtist } from '@/services/song.service'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://rangelguitar.com'
   const locales = routing.locales
+  const now = new Date()
 
   const staticPaths = [
-    '/',
-    '/artists',
-    '/chords',
-    '/learn',
-    '/scales',
-    '/request-song',
-    '/privacy-policy',
-    '/security',
-    '/cookie-policy'
+    { path: '/', priority: 1 as const, freq: 'weekly' as const },
+    { path: '/artists', priority: 0.9 as const, freq: 'weekly' as const },
+    { path: '/chords', priority: 0.8 as const, freq: 'monthly' as const },
+    { path: '/learn', priority: 0.8 as const, freq: 'monthly' as const },
+    { path: '/scales', priority: 0.8 as const, freq: 'monthly' as const },
+    { path: '/request-song', priority: 0.7 as const, freq: 'monthly' as const },
+    {
+      path: '/privacy-policy',
+      priority: 0.3 as const,
+      freq: 'yearly' as const
+    },
+    { path: '/security', priority: 0.3 as const, freq: 'yearly' as const },
+    { path: '/cookie-policy', priority: 0.3 as const, freq: 'yearly' as const }
   ]
 
-  // 1. Rutas Estáticas con i18n
-  const staticRoutes = staticPaths.flatMap((path) =>
+  const staticRoutes = staticPaths.flatMap(({ path, priority, freq }) =>
     locales.map((locale) => {
       const pathname = getPathname({ locale, href: path as any })
       return {
         url: `${siteUrl}${pathname}`,
-        lastModified: new Date(),
+        lastModified: now,
+        changeFrequency: freq,
+        priority,
+        alternates: {
+          languages: Object.fromEntries(
+            locales.map((l) => [
+              l,
+              `${siteUrl}${getPathname({ locale: l, href: path as any })}`
+            ])
+          )
+        }
+      }
+    })
+  )
+
+  const dynamicPages = [
+    { path: '/learn/metronome', priority: 0.7 as const },
+    { path: '/learn/ear-trainer', priority: 0.7 as const },
+    { path: '/learn/circle-of-fifths', priority: 0.7 as const }
+  ]
+
+  const learnRoutes = dynamicPages.flatMap(({ path, priority }) =>
+    locales.map((locale) => {
+      const pathname = getPathname({ locale, href: path as any })
+      return {
+        url: `${siteUrl}${pathname}`,
+        lastModified: now,
         changeFrequency: 'monthly' as const,
-        priority: path === '/' ? 1 : 0.8,
+        priority,
         alternates: {
           languages: Object.fromEntries(
             locales.map((l) => [
@@ -49,7 +79,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       getArtists()
     ])
 
-    // 2. Rutas de Canciones dinámicas
     const songRoutes = songs
       .filter((song) => song.slug)
       .flatMap((song) =>
@@ -60,7 +89,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           }
           return {
             url: `${siteUrl}${getPathname({ locale, href })}`,
-            lastModified: new Date(),
+            lastModified: song.updatedAt ? new Date(song.updatedAt) : now,
             changeFrequency: 'weekly' as const,
             priority: 0.9,
             alternates: {
@@ -75,7 +104,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       )
 
-    // 3. Rutas de Artistas dinámicas
     const artistRoutes = artists
       .filter((artist) => artist.slug)
       .flatMap((artist) =>
@@ -86,7 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           }
           return {
             url: `${siteUrl}${getPathname({ locale, href })}`,
-            lastModified: new Date(),
+            lastModified: now,
             changeFrequency: 'monthly' as const,
             priority: 0.8,
             alternates: {
@@ -101,9 +129,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       )
 
-    return [...staticRoutes, ...songRoutes, ...artistRoutes]
+    return [...staticRoutes, ...learnRoutes, ...songRoutes, ...artistRoutes]
   } catch (error) {
     console.error('❌ Sitemap build error:', error)
-    return staticRoutes
+    return [...staticRoutes, ...learnRoutes]
   }
 }

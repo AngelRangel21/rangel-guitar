@@ -99,8 +99,8 @@ export default function DesktopNav(): JSX.Element {
     ...userLinks,
     {
       href: '/admin/requests',
-      label: t('request.label'),
-      title: t('request.title')
+      label: t('requests.label'),
+      title: t('requests.title')
     },
     {
       href: '/admin/upload-song',
@@ -133,7 +133,7 @@ export default function DesktopNav(): JSX.Element {
           <Link
             href='/admin/requests'
             className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full'
-            title={t('request.title')}
+            title={t('requests.title')}
           >
             <Bell />
             {notifications.count > 0 && (

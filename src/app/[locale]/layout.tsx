@@ -19,7 +19,10 @@ import { ThemeProvider } from '@/context/theme-provider'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter'
+})
 
 export async function generateMetadata({
   params
@@ -55,8 +58,22 @@ export async function generateMetadata({
     metadataBase: new URL('https://rangelguitar.com'),
     applicationName: 'Rangel Guitar',
     authors: [{ name: 'Rangel Guitar Team', url: 'https://rangelguitar.com' }],
-    // Las keywords se pueden traducir si quieres, pero muchas son universales
-    keywords: ['guitarra', 'acordes', 'tabs', 'chords', 'regional mexicano'],
+    creator: 'Rangel Guitar',
+    publisher: 'Rangel Guitar',
+    keywords: [
+      'guitarra',
+      'acordes',
+      'tablaturas',
+      'tabs',
+      'chords',
+      'regional mexicano',
+      'canciones',
+      'aprender guitarra',
+      'tabs guitar',
+      'guitar chords'
+    ],
+    category: 'music',
+    classification: 'Entertainment',
     alternates: {
       canonical: `https://rangelguitar.com${pathname}`,
       languages: languages
@@ -66,22 +83,23 @@ export async function generateMetadata({
       description: t('description'),
       url: `https://rangelguitar.com${pathname}`,
       siteName: 'Rangel Guitar',
-      // locale: locale === 'es' ? 'es_MX' : 'en_US', // Ajusta según tu público
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
       type: 'website',
       images: [
         {
-          url: '/og-image.jpg',
+          url: 'https://rangelguitar.com/og-image.jpg',
           width: 1200,
           height: 630,
-          alt: t('ogImageAlt')
+          alt: 'Rangel Guitar - Tu sitio de tablaturas y acordes'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Rangel Guitar',
+      title: t('title'),
       description: t('description'),
-      images: ['/og-image.jpg']
+      images: ['https://rangelguitar.com/og-image.jpg'],
+      creator: '@rangelguitar'
     },
     robots: {
       index: true,
@@ -93,6 +111,10 @@ export async function generateMetadata({
         'max-image-preview': 'large',
         'max-snippet': -1
       }
+    },
+    other: {
+      'og:locale': locale === 'es' ? 'es_MX' : 'en_US',
+      'og:locale:alternate': locale === 'es' ? 'en_US' : 'es_MX'
     }
   }
 }

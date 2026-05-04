@@ -6,12 +6,6 @@ import { SongList } from '@/components/song-list'
 import type { SongWithArtist } from '@/types/app.types'
 import { SongSearch } from './search'
 
-/**
- * Componente de cliente para la página de inicio.
- * Recibe la lista inicial de canciones desde el servidor y maneja la lógica de búsqueda del lado del cliente.
- * @param {{ initialSongs: Song[] }} props - Propiedades que contienen la lista inicial de canciones.
- * @returns {JSX.Element} El componente de la página de inicio.
- */
 export function HomeClient({
   initialSongs
 }: {
@@ -20,18 +14,26 @@ export function HomeClient({
   const t = useTranslations('homeClient')
 
   return (
-    <>
-      {/* El encabezado recibe el término de búsqueda y la función para actualizarlo. */}
-      <main className='grow container mx-auto px-4 py-8 space-y-6'>
+    <main className='grow container mx-auto px-4 py-8 space-y-8'>
+      <section className='text-center space-y-4 animate-fade-up'>
+        <h2 className='text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight font-headline'>
+          {t('allSongs')}
+        </h2>
+        <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>
+          {t('discoverAndLearn')}
+        </p>
+      </section>
+
+      <div
+        className='max-w-xl mx-auto animate-fade-up'
+        style={{ animationDelay: '100ms' }}
+      >
         <SongSearch placeholder={t('search.placeholder')} />
-        <div className='flex justify-between items-center'>
-          <h2 className='text-3xl font-bold text-foreground'>
-            {t('allSongs')}
-          </h2>
-        </div>
-        {/* La lista de canciones recibe las canciones filtradas para renderizar. */}
+      </div>
+
+      <div className='animate-fade-up' style={{ animationDelay: '200ms' }}>
         <SongList songs={initialSongs} />
-      </main>
-    </>
+      </div>
+    </main>
   )
 }

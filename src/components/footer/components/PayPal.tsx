@@ -11,9 +11,9 @@ export function PayPal(): JSX.Element {
         target='_blank'
         rel='noopener noreferrer'
         href='https://www.paypal.com/paypalme/angelrangelm'
-        className='bg-[#facc15] text-slate-900 px-8 py-3 rounded-xl font-bold hover:scale-95 transition-all flex items-center gap-2'
+        className='bg-accent text-accent-foreground px-8 py-3.5 rounded-xl font-bold hover:scale-95 transition-all duration-200 hover:shadow-lg hover:shadow-accent/25 flex items-center gap-2.5'
       >
-        <Coffee />
+        <Coffee className='h-5 w-5' />
         {t('paypal')}
       </Link>
     </div>

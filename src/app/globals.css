@@ -4,9 +4,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Outfit';
+  src: url('https://fonts.gstatic.com/s/outfit/v11/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1C4G-EiAou6Y.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('https://fonts.gstatic.com/s/plusjakartasans/v8/LDIbaomQNQcsA88c7O9Fb_fwX9Ii5xT1vY4ubtemvXnx.woff2') format('woff2');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
 @theme {
-  --font-body: var(--font-inter), sans-serif;
-  --font-headline: var(--font-inter), sans-serif;
+  --font-body: 'Plus Jakarta Sans', var(--font-inter), sans-serif;
+  --font-headline: 'Outfit', var(--font-inter), sans-serif;
   --font-code: monospace;
 
   --color-background: hsl(var(--background));
@@ -112,8 +126,87 @@
 
 @layer utilities {
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', Arial, Helvetica, sans-serif;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px hsl(var(--accent) / 0.2);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted) / 0) 0%,
+    hsl(var(--muted) / 0.3) 50%,
+    hsl(var(--muted) / 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 @layer base {

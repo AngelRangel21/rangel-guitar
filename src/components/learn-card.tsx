@@ -12,9 +12,6 @@ import {
 } from '@/components/ui/card'
 import { useI18n } from '@/context/i18n-context'
 
-/**
- * Propiedades que el componente LearnCard espera recibir.
- */
 interface LearnCardProps {
   href: string
   icon: React.ReactNode
@@ -22,30 +19,30 @@ interface LearnCardProps {
   description: string
 }
 
-/**
- * Componente de tarjeta reutilizable para la página "Aprender".
- * Muestra un enlace a una herramienta de aprendizaje con un ícono, título y descripción.
- * @param {LearnCardProps} props - Propiedades del componente.
- * @returns {JSX.Element} La tarjeta de aprendizaje.
- */
 export function LearnCard({ href, icon, title, description }: LearnCardProps) {
   const { t } = useI18n()
   return (
     <Link href={href} className='group block'>
-      <Card className='relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl bg-card flex flex-col'>
-        {/* Etiqueta "Beta" para indicar que la herramienta está en fase de pruebas. */}
-        <Badge variant='info' className='absolute top-4 right-4'>
+      <Card className='relative h-full transition-all duration-300 hover:border-accent hover:shadow-xl hover:shadow-accent/10 hover:-translate-y-1 bg-card flex flex-col overflow-hidden'>
+        <div className='absolute inset-0 bg-linear-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+        <Badge variant='info' className='absolute top-4 right-4 z-10'>
           {t('beta')}
         </Badge>
-        <CardHeader>{icon}</CardHeader>
-        <CardContent className='flex flex-col grow'>
-          <CardTitle className='text-xl font-semibold group-hover:text-accent transition-colors'>
+        <CardHeader className='relative z-10'>
+          <div className='text-accent transition-transform duration-300 group-hover:rotate-3'>
+            {icon}
+          </div>
+        </CardHeader>
+        <CardContent className='relative z-10 flex flex-col grow'>
+          <CardTitle className='text-xl font-semibold group-hover:text-accent transition-colors duration-200'>
             {title}
           </CardTitle>
-          <CardDescription className='mt-2 grow'>{description}</CardDescription>
+          <CardDescription className='mt-2 grow text-muted-foreground'>
+            {description}
+          </CardDescription>
           <div className='mt-4 flex items-center font-semibold text-accent'>
             <span>{t('seeMore')}</span>
-            <ArrowRight className='ml-2 h-4 w-4 transition-transform group-hover:translate-x-1' />
+            <ArrowRight className='ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2' />
           </div>
         </CardContent>
       </Card>
