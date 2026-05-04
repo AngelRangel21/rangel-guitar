@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.5...v1.4.0) (2026-05-04)
+
+
+### Bug Fixes
+
+* Add & aliminates traductions ([1209fc6](https://github.com/AngelRangel21/rangel-guitar/commit/1209fc6f4a717b6c1f08786fe0ca649456e49da7))
+
+
+### Features
+
+* add new skills and update existing ones ([fc1379d](https://github.com/AngelRangel21/rangel-guitar/commit/fc1379dd799372f23684903802132f4a8d95128e))
+
 ## [1.3.5](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.4...v1.3.5) (2026-04-27)
 
 
