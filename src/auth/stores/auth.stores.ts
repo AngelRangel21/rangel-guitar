@@ -142,9 +142,6 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ supabaseUser }, false, 'loadUserProfile:setSupabaseUser')
 
-          // Upsert primero (garantiza que el row existe)
-          await UserService.syncUser(supabaseUser)
-
           // Luego leer el perfil completo
           const profile = await UserService.getProfile(supabaseUser.id)
           set({ user: profile }, false, 'loadUserProfile:success')

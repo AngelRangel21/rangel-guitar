@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 import { supabase } from '@/lib/supabase'
 import type { AuthCredentials } from '@/types'
-import { UserService } from './user.service'
 
 export class AuthService {
   static getRedirectUrl() {
@@ -35,9 +34,7 @@ export class AuthService {
 
     if (error != null) throw error
 
-    if (data.user != null) {
-      await UserService.syncUser(data.user, name)
-    }
+    if (data.user != null) null
 
     return {
       user: data.user,
@@ -55,8 +52,6 @@ export class AuthService {
     })
 
     if (error != null) throw error
-
-    await UserService.syncUser(data.user)
 
     return {
       user: data.user,

@@ -37,16 +37,6 @@ export class UserService {
     }
   }
 
-  static async syncUser(user: User, displayName?: string): Promise<void> {
-    const profile = UserService.buildProfile(user, displayName)
-
-    try {
-      await UserRepository.upsert(profile)
-    } catch (e) {
-      console.error('User sync failed', e)
-    }
-  }
-
   static async getProfile(uid: string): Promise<{
     uid: string
     email: string
