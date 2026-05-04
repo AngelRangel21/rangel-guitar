@@ -1,3 +1,11 @@
+## [1.4.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.4.0...v1.4.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* Eliminando syncUser ([32a26d1](https://github.com/AngelRangel21/rangel-guitar/commit/32a26d11e50c2d97022eb4fabbacb6392d3c0e6a))
+* resolve realtime and refactoring components ([727110c](https://github.com/AngelRangel21/rangel-guitar/commit/727110c7fbe744aba4f19b6e4a59386b494423d4))
+
 # [1.4.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.3.5...v1.4.0) (2026-05-04)
 
 
