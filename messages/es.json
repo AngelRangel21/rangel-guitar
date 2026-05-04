@@ -13,7 +13,8 @@
     "search": {
       "noResults": "No encontramos resultados para",
       "placeholder": "Buscar canción o artista..."
-    }
+    },
+    "discoverAndLearn": "Explora, aprende y toca tus canciones favoritas con acordes y tablaturas."
   },
   "logo": {
     "ariaLabel": "Rangel Guitar Inicio",
@@ -46,6 +47,10 @@
     "request": {
       "label": "Solicitar",
       "title": "Solicitar canción"
+    },
+    "requests": {
+      "label": "Solicitudes",
+      "title": "Canciones solicitadas"
     },
     "learn": {
       "label": "Aprender",

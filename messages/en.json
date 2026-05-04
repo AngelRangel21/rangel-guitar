@@ -13,7 +13,8 @@
     "search": {
       "noResults": "We found no results for",
       "placeholder": "Search for a song or artist..."
-    }
+    },
+    "discoverAndLearn": "Explore, learn and play your favorite songs with chords and tabs."
   },
   "logo": {
     "ariaLabel": "Rangel Guitar Home",
@@ -46,6 +47,10 @@
     "request": {
       "label": "Request",
       "title": "Request song"
+    },
+    "requests": {
+      "label": "Requests",
+      "title": "Request songs"
     },
     "learn": {
       "label": "Learn",
