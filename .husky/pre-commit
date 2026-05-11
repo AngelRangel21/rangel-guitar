@@ -17,7 +17,3 @@ git pull || exit 1
 echo "Proyecto sincronizado"
 
 echo "Todo perfecto. Creando commit..."
-
-echo "Sincronizando proyecto..."
-git push || exit 1
-echo "Proyecto sincronizado ir a Github del proyecto o al dashboard de Vercel"
