@@ -24,8 +24,7 @@ export type {
   SongRequest,
   SongRequestStatus,
   ToggleFavoriteResult,
-  ToggleLikeResult,
-  UserProfile
+  ToggleLikeResult
 } from './app.types'
 
 export {

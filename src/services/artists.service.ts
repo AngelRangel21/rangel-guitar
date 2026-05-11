@@ -49,7 +49,7 @@ export async function getSongsByArtistSlug(
   const songIds = songLink.map((link) => link.song_id)
 
   const { data, error } = await supabase
-    .from('songs_2')
+    .from('songs')
     .select(`
       *,
       artists_list:songs_artists (

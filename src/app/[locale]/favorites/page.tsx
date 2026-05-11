@@ -30,7 +30,7 @@ function FavoritesContent(): JSX.Element {
     setIsLoading(true)
 
     supabase
-      .from('songs_2')
+      .from('songs')
       .select('*, artists:songs_artists(artist:artists(id, name, slug))')
       .in('id', Array.from(favoritesIds))
       .eq('isPublished', true)

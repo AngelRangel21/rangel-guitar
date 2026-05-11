@@ -5,7 +5,7 @@
  * al `uid` de nuestra tabla `public.users`.
  */
 
-import type { Song, SongRequest, UserProfile } from './app.types'
+import type { DbUser, Song, SongRequest } from './app.types'
 
 // ─────────────────────────────────────────────
 // AUTH
@@ -19,7 +19,7 @@ export interface AuthCredentials {
 
 export interface AuthState {
   isAuthenticated: boolean
-  user: UserProfile | null
+  user: DbUser | null
   isAdmin: boolean
   isLoading: boolean
   isLoaded: boolean
@@ -58,7 +58,7 @@ export interface UseAuthStatusReturn {
 }
 
 export interface UseUserReturn {
-  user: UserProfile | null
+  user: DbUser | null
   isAdmin: boolean
 }
 

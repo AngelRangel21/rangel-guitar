@@ -1,4 +1,4 @@
-import { FilePlus2, Heart, Menu, Shield, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { type ComponentProps, useState } from 'react'
@@ -20,7 +20,7 @@ export function MovileNav() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   // Enlaces base para todos los usuarios
-  const baseLinks: NavLink[] = [
+  const navLinks: NavLink[] = [
     { href: '/', label: t('home.label'), title: t('home.title') },
     { href: '/artists', label: t('artists.label'), title: t('artists.title') },
     // {
@@ -37,32 +37,28 @@ export function MovileNav() {
   ]
 
   // Enlaces adicionales según el tipo de usuario
-  const userLinks: NavLink[] = isAuthenticated
-    ? [
-        ...baseLinks,
-        {
-          href: '/favorites',
-          label: t('favorites.label'),
-          title: t('favorites.title')
-        }
-      ]
-    : baseLinks
-  const adminLinks: NavLink[] = [
-    ...userLinks,
-    {
-      href: '/admin/requests',
-      label: t('request.label'),
-      title: t('request.title')
-    },
-    {
-      href: '/admin/upload-song',
-      label: t('upload.label'),
-      title: t('upload.title')
-    }
-  ]
+  if (isAuthenticated) {
+    navLinks.push({
+      href: '/favorites',
+      label: t('favorites.label'),
+      title: t('favorites.title')
+    })
+  }
 
-  // Selecciona qué links mostrar según el rol
-  const navLinks = isAdmin ? adminLinks : userLinks
+  if (isAdmin || user?.role === 'admin') {
+    navLinks.push(
+      {
+        href: '/admin/requests',
+        label: t('requests.label'),
+        title: t('requests.title')
+      },
+      {
+        href: '/admin/upload-song',
+        label: t('upload.label'),
+        title: t('upload.title')
+      }
+    )
+  }
 
   return (
     <>
@@ -108,45 +104,15 @@ export function MovileNav() {
             <div className='border-t border-primary-foreground/10 my-2' />
 
             {isAuthenticated ? (
-              <>
-                {isAdmin && (
-                  <>
-                    <Link
-                      href='/admin/requests'
-                      className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      <Shield className='inline mr-2 h-4 w-4' />{' '}
-                      {t('request.label')}
-                    </Link>
-                    <Link
-                      href='/admin/upload-song'
-                      className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      <FilePlus2 className='inline mr-2 h-4 w-4' />{' '}
-                      {t('upload.label')}
-                    </Link>
-                  </>
-                )}
-                <Link
-                  href='/favorites'
-                  className='block py-2 px-3 rounded-md hover:bg-primary-foreground/10'
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <Heart className='inline mr-2 h-4 w-4' />{' '}
-                  {t('favorites.label')}
-                </Link>
-                <Button
-                  onClick={() => {
-                    logout()
-                    setMobileOpen(false)
-                  }}
-                  className='block py-2 px-3 text-left rounded-md hover:bg-primary-foreground/10 font-semibold'
-                >
-                  {t('logout')}
-                </Button>
-              </>
+              <Button
+                onClick={() => {
+                  logout()
+                  setMobileOpen(false)
+                }}
+                className='block py-2 px-3 text-left rounded-md hover:bg-primary-foreground/10 font-semibold'
+              >
+                {t('logout')}
+              </Button>
             ) : (
               <>
                 <Link

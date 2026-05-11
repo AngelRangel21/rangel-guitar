@@ -13,7 +13,7 @@ export type NewSongData = Omit<
  * @param {NewSongData} songData - Los datos de la nueva canción.
  */
 export async function addSong(songData: NewSongData): Promise<void> {
-  const { error } = await supabase.from('songs_2').insert({ ...songData })
+  const { error } = await supabase.from('songs').insert({ ...songData })
   if (error != null) throw error
 }
 

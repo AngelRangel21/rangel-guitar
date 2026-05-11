@@ -15,10 +15,10 @@ interface NavLink {
 
 export default function DesktopNav(): JSX.Element {
   const t = useTranslations('header')
-  const { isAuthenticated, isAdmin, logout } = useAuth()
+  const { isAuthenticated, isAdmin, logout, user } = useAuth()
 
   // Enlaces base para todos los usuarios
-  const baseLinks: NavLink[] = [
+  const navLinks: NavLink[] = [
     { href: '/', label: t('home.label'), title: t('home.title') },
     { href: '/artists', label: t('artists.label'), title: t('artists.title') },
     // TODO: agregar las canciones top por me gusta
@@ -36,32 +36,28 @@ export default function DesktopNav(): JSX.Element {
   ]
 
   // Enlaces adicionales según el tipo de usuario
-  const userLinks: NavLink[] = isAuthenticated
-    ? [
-        ...baseLinks,
-        {
-          href: '/favorites',
-          label: t('favorites.label'),
-          title: t('favorites.title')
-        }
-      ]
-    : baseLinks
-  const adminLinks: NavLink[] = [
-    ...userLinks,
-    {
-      href: '/admin/requests',
-      label: t('requests.label'),
-      title: t('requests.title')
-    },
-    {
-      href: '/admin/upload-song',
-      label: t('upload.label'),
-      title: t('upload.title')
-    }
-  ]
+  if (isAuthenticated) {
+    navLinks.push({
+      href: '/favorites',
+      label: t('favorites.label'),
+      title: t('favorites.title')
+    })
+  }
 
-  // Selecciona qué links mostrar según el rol
-  const navLinks = isAdmin ? adminLinks : userLinks
+  if (isAdmin || user?.role === 'admin') {
+    navLinks.push(
+      {
+        href: '/admin/requests',
+        label: t('requests.label'),
+        title: t('requests.title')
+      },
+      {
+        href: '/admin/upload-song',
+        label: t('upload.label'),
+        title: t('upload.title')
+      }
+    )
+  }
 
   return (
     <>

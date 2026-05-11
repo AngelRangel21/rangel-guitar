@@ -11,7 +11,7 @@ export class UserRepository {
     email: string
     name: string
     avatar_url: string | null
-    isAdmin: boolean
+    role: string
   }): Promise<void> {
     const { error } = await supabase.from('users').upsert(user, {
       onConflict: 'uid',
@@ -24,7 +24,7 @@ export class UserRepository {
   static async getById(uid: string): Promise<User> {
     const { data, error } = await supabase
       .from('users')
-      .select('uid, email, name, role, avatar_url, createdAt, isAdmin')
+      .select('uid, email, name, role, avatar_url, createdAt')
       .eq('uid', uid)
       .single()
 

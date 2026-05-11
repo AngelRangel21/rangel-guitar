@@ -33,7 +33,7 @@ export async function getSongs(): Promise<Song[]> {
 
 export async function getSongByArtist(): Promise<SongWithArtist[]> {
   const { data, error } = await supabase
-    .from('songs_2')
+    .from('songs')
     .select(`
       *,
       artists_list:songs_artists(
@@ -66,7 +66,7 @@ export async function getSongBySlug(
   slug: string
 ): Promise<SongWithArtist | null> {
   const { data, error } = await supabase
-    .from('songs_2')
+    .from('songs')
     .select('*, artists_list:songs_artists(artist:artists (*))')
     .eq('slug', slug)
     .single()
@@ -80,7 +80,7 @@ export async function getSongBySlug(
 }
 
 export async function addSong(songData: NewSongData): Promise<void> {
-  const { error } = await supabase.from('songs_2').insert({ ...songData })
+  const { error } = await supabase.from('songs').insert({ ...songData })
   if (error != null) throw error
 }
 
@@ -90,13 +90,13 @@ export async function updateSong(
 ): Promise<void> {
   const { artists, ...dataToUpdate } = songData
   const { error } = await supabase
-    .from('songs_2')
+    .from('songs')
     .update(dataToUpdate)
     .eq('id', id)
   if (error != null) throw error
 }
 
 export async function deleteSong(id: string): Promise<void> {
-  const { error } = await supabase.from('songs_2').delete().eq('id', id)
+  const { error } = await supabase.from('songs').delete().eq('id', id)
   if (error != null) throw error
 }

@@ -3,23 +3,22 @@ import { toast } from 'sonner'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { FavoriteService } from '@/services/favorites.service'
-import type { AuthCredentials, UserProfile } from '@/types'
+import type { AuthCredentials, DbUser } from '@/types'
 import { AuthService } from '../service/auth.service'
 import { UserService } from '../service/user.service'
 
 interface AuthState {
   // ── Estado ──────────────────────────────────
   supabaseUser: User | null
-  user: UserProfile | null
+  user: DbUser | null
   /** Set de song_id para O(1) en isFavorite() */
   favoriteIds: Set<string>
   isLoading: boolean
   isInitialized: boolean
-  isAdmin: boolean
 
   // ── Setters internos ─────────────────────────
   _setSupabaseUser: (user: User | null) => void
-  _setUser: (user: UserProfile | null) => void
+  _setUser: (user: DbUser | null) => void
   _setFavoriteIds: (ids: Set<string>) => void
   _setLoading: (loading: boolean) => void
   _setInitialized: (initialized: boolean) => void
@@ -41,8 +40,8 @@ interface AuthState {
 
 // ── Selectores derivados (fuera del store, sin re-renders extra) ──────────
 export const selectIsAuthenticated = (s: AuthState): boolean => s.user != null
-export const selectIsAdmin = (s: AuthState): boolean => s.user?.isAdmin ?? false
-export const selectUser = (s: AuthState): UserProfile | null => s.user
+export const selectIsAdmin = (s: AuthState): boolean => s.user?.role === 'admin'
+export const selectUser = (s: AuthState): DbUser | null => s.user
 export const selectFavoriteIds = (s: AuthState): Set<string> => s.favoriteIds
 
 export const useAuthStore = create<AuthState>()(

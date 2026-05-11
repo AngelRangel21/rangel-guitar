@@ -177,11 +177,11 @@ export function AdminRequestsContent(): JSX.Element {
                   <Button
                     variant='ghost'
                     size='icon'
-                    className='rounded-full'
+                    className='rounded-full text-white hover:text-red-600 hover:bg-transparent'
                     onClick={async () => await handleDelete(req.id)}
                     aria-label={t('deleteRequest')}
                   >
-                    <Trash2 className='h-4 w-4 text-destructive' />
+                    <Trash2 className='h-4 w-4' />
                   </Button>
                 </TableCell>
               </TableRow>

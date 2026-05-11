@@ -37,6 +37,7 @@ export function ArtistCard({ artist }: { artist: ArtistCount }): JSX.Element {
             data-ai-hint='musician portrait'
             priority={false}
             loading='lazy'
+            unoptimized
           />
           {/* Superposición con icono que aparece al pasar el ratón. */}
           <div className='absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>

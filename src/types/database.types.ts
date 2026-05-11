@@ -184,52 +184,52 @@ export type Database = {
           }
         ]
       }
+      // songs: {
+      //   Row: {
+      //     artist: string | null
+      //     chords: string | null
+      //     coverArt: string | null
+      //     createdAt: string | null
+      //     id: string
+      //     isPublished: boolean | null
+      //     key: string | null
+      //     lyrics: string | null
+      //     slug: string | null
+      //     title: string | null
+      //     updatedAt: string | null
+      //     video: string | null
+      //   }
+      //   Insert: {
+      //     artist?: string | null
+      //     chords?: string | null
+      //     coverArt?: string | null
+      //     createdAt?: string | null
+      //     id?: string
+      //     isPublished?: boolean | null
+      //     key?: string | null
+      //     lyrics?: string | null
+      //     slug?: string | null
+      //     title?: string | null
+      //     updatedAt?: string | null
+      //     video?: string | null
+      //   }
+      //   Update: {
+      //     artist?: string | null
+      //     chords?: string | null
+      //     coverArt?: string | null
+      //     createdAt?: string | null
+      //     id?: string
+      //     isPublished?: boolean | null
+      //     key?: string | null
+      //     lyrics?: string | null
+      //     slug?: string | null
+      //     title?: string | null
+      //     updatedAt?: string | null
+      //     video?: string | null
+      //   }
+      //   Relationships: []
+      // }
       songs: {
-        Row: {
-          artist: string | null
-          chords: string | null
-          coverArt: string | null
-          createdAt: string | null
-          id: string
-          isPublished: boolean | null
-          key: string | null
-          lyrics: string | null
-          slug: string | null
-          title: string | null
-          updatedAt: string | null
-          video: string | null
-        }
-        Insert: {
-          artist?: string | null
-          chords?: string | null
-          coverArt?: string | null
-          createdAt?: string | null
-          id?: string
-          isPublished?: boolean | null
-          key?: string | null
-          lyrics?: string | null
-          slug?: string | null
-          title?: string | null
-          updatedAt?: string | null
-          video?: string | null
-        }
-        Update: {
-          artist?: string | null
-          chords?: string | null
-          coverArt?: string | null
-          createdAt?: string | null
-          id?: string
-          isPublished?: boolean | null
-          key?: string | null
-          lyrics?: string | null
-          slug?: string | null
-          title?: string | null
-          updatedAt?: string | null
-          video?: string | null
-        }
-        Relationships: []
-      }
-      songs_2: {
         Row: {
           artist_id: string | null
           chords: string | null
@@ -274,7 +274,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'songs_2_artist_id_fkey'
+            foreignKeyName: 'songs_artist_id_fkey'
             columns: ['artist_id']
             isOneToOne: false
             referencedRelation: 'artists'
@@ -310,7 +310,7 @@ export type Database = {
             foreignKeyName: 'songs_artists_song_id_fkey'
             columns: ['song_id']
             isOneToOne: false
-            referencedRelation: 'songs_2'
+            referencedRelation: 'songs'
             referencedColumns: ['id']
           },
           {
@@ -380,7 +380,6 @@ export type Database = {
           avatar_url: string | null
           createdAt: string | null
           email: string
-          isAdmin: boolean
           name: string | null
           role: string
           uid: string
@@ -389,7 +388,6 @@ export type Database = {
           avatar_url?: string | null
           createdAt?: string | null
           email: string
-          isAdmin?: boolean
           name?: string | null
           role?: string
           uid: string
@@ -398,7 +396,6 @@ export type Database = {
           avatar_url?: string | null
           createdAt?: string | null
           email?: string
-          isAdmin?: boolean
           name?: string | null
           role?: string
           uid?: string
@@ -435,7 +432,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'songs_2_artist_id_fkey'
+            foreignKeyName: 'songs_artist_id_fkey'
             columns: ['artist_id']
             isOneToOne: false
             referencedRelation: 'artists'

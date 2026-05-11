@@ -9,24 +9,19 @@ import type { Tables } from './database.types'
 // ─────────────────────────────────────────────
 // USUARIO
 // ─────────────────────────────────────────────
+export type Roles = 'user' | 'moderator' | 'admin'
 
 /** Fila completa de un usuario tal como viene de Supabase */
-export type DbUser = Tables<'users'>
+export type Users = Tables<'users'>
 
-/** Perfil de usuario para uso en la app (sin nulls innecesarios) */
-export interface UserProfile {
-  uid: string
-  email: string
-  name: string | null
-  avatarUrl: string | null
-  isAdmin: boolean
-  createdAt: string | null
+export interface DbUser extends Omit<Users, 'role'> {
+  role: Roles
 }
 
 // ─────────────────────────────────────────────
 // CANCIÓN
 // ─────────────────────────────────────────────
-export type Song = Tables<'songs_2'>
+export type Song = Tables<'songs'>
 
 /** Canción enriquecida con conteos (view songs_with_counts) */
 export type DbSongWithCounts = Tables<'songs_with_counts'>
@@ -127,7 +122,7 @@ export interface SongComment {
   updatedAt: string
   isDeleted: boolean
   // Join con users (cuando se hace select con embed)
-  user?: Pick<UserProfile, 'uid' | 'name' | 'avatarUrl'>
+  user?: Pick<DbUser, 'uid' | 'name' | 'avatar_url'>
 }
 
 /** Para crear un comentario nuevo */

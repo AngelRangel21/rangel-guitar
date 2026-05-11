@@ -6,26 +6,12 @@ import {
   selectIsAuthenticated,
   useAuthStore
 } from '@/auth/stores/auth.stores'
-import type { AuthCredentials, UserProfile } from '@/types'
 
 /**
  * Hook para usar autenticación en componentes
  * Wrapper sobre el store de Zustand con selección optimizada
  */
-export function useAuth(): {
-  isAuthenticated: boolean
-  user: UserProfile | null
-  isAdmin: boolean
-  isLoaded: boolean
-  isLoading: boolean
-  isInitializing: boolean
-  signInWithGoogle: () => Promise<void>
-  registerWithEmail: (credentials: AuthCredentials) => Promise<void>
-  signInWithEmail: (credentials: AuthCredentials) => Promise<void>
-  logout: () => Promise<void>
-  toggleFavorite: (songId: string, songSlug: string) => Promise<void>
-  isFavorite: (songId: string) => boolean
-} {
+export function useAuth() {
   // Seleccionar solo lo que necesitas para evitar re-renders innecesarios
   return useAuthStore(
     useShallow((state) => ({
@@ -53,19 +39,13 @@ export function useAuth(): {
 /**
  * Hook optimizado para componentes que solo necesitan el estado de autenticación
  */
-export function useAuthStatus(): {
-  isAuthenticated: boolean
-  isLoading: boolean
-  isLoaded: boolean
-  isAdmin: boolean
-  isInitializing: boolean
-} {
+export function useAuthStatus() {
   return useAuthStore(
     useShallow((state) => ({
       isAuthenticated: selectIsAuthenticated(state),
       isLoading: state.isLoading,
       isLoaded: state.isInitialized,
-      isAdmin: state.isAdmin,
+      isAdmin: selectIsAdmin(state),
       isInitializing: state.isInitialized
     }))
   )
@@ -74,14 +54,11 @@ export function useAuthStatus(): {
 /**
  * Hook optimizado para componentes que solo necesitan datos del usuario
  */
-export function useUser(): {
-  user: UserProfile | null
-  isAdmin: boolean
-} {
+export function useUser() {
   return useAuthStore(
     useShallow((state) => ({
       user: state.user,
-      isAdmin: state.isAdmin
+      isAdmin: selectIsAdmin(state)
     }))
   )
 }

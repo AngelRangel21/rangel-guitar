@@ -24,7 +24,9 @@ export class SearchService {
 
     const { data, error, count } = await supabase
       .from('songs')
-      .select('id, slug, title, artist, "coverArt"', { count: 'exact' })
+      .select('id, slug, title, artist:artist_id, "coverArt"', {
+        count: 'exact'
+      })
       .or(`title.ilike.${pattern},artist.ilike.${pattern}`)
       .order('title', { ascending: true })
       .limit(SEARCH_LIMIT)
@@ -47,7 +49,7 @@ export class SearchService {
 
     const { data, error } = await supabase
       .from('songs')
-      .select('artist')
+      .select('artist:artist_id')
       .ilike('artist', `%${trimmed}%`)
       .order('artist', { ascending: true })
       .limit(5)

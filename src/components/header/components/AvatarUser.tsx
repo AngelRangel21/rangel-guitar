@@ -6,7 +6,7 @@ export function AvatarUser() {
   return (
     <Avatar className='w-8 h-8'>
       <AvatarFallback>
-        {user?.avatarUrl ?? user?.name?.charAt(0).toUpperCase()}
+        {user?.avatar_url ?? user?.name?.charAt(0).toUpperCase()}
       </AvatarFallback>
     </Avatar>
   )

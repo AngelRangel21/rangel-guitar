@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
@@ -18,11 +17,6 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/context/theme-provider'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter'
-})
 
 export async function generateMetadata({
   params
@@ -138,11 +132,7 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html
-      lang={locale}
-      className={clsx(inter.className)}
-      suppressHydrationWarning
-    >
+    <html lang={locale}>
       {/* <!-- Google Tag Manager --> */}
       <Script id='google-tag-manager' strategy='afterInteractive'>
         {`
