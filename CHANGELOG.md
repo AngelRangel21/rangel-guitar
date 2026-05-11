@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.4.1...v1.5.0) (2026-05-11)
+
+
+### Features
+
+* migrate user authentication to role-based system ([8cf172e](https://github.com/AngelRangel21/rangel-guitar/commit/8cf172e1f4fe81256df9e3bde975e2a8aa1ccc9b))
+
 ## [1.4.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.4.0...v1.4.1) (2026-05-04)
 
 
