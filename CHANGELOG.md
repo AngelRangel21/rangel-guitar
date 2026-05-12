@@ -1,3 +1,13 @@
+## [1.6.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.0...v1.6.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* Añadiendo automatizaciones de comandos ([59cba5a](https://github.com/AngelRangel21/rangel-guitar/commit/59cba5a4fda731b76f82ede6b0f9c3c85545feae))
+* Añadiendo automatizaciones de comandos ([4dfe109](https://github.com/AngelRangel21/rangel-guitar/commit/4dfe109813bb87be16b86f9b4f49f0eb15e7077c))
+* Refactorizando y arreglando redirect al editar canción ([a399e9a](https://github.com/AngelRangel21/rangel-guitar/commit/a399e9a0999b0ffda576e3e3fcee09a9447e074b))
+* Regresando el pre-commit ([f3f8140](https://github.com/AngelRangel21/rangel-guitar/commit/f3f81405cf3ca50fd32ed62ba005b59df7c0a0fc))
+
 # [1.6.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.5.0...v1.6.0) (2026-05-11)
 
 
