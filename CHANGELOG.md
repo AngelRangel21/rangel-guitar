@@ -1,3 +1,11 @@
+## [1.6.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.1...v1.6.2) (2026-05-12)
+
+
+### Bug Fixes
+
+* Actualizando las release ([500ff78](https://github.com/AngelRangel21/rangel-guitar/commit/500ff782787dc669b6084f72db64d5897a584229))
+* Actualizando las release ([bdc3916](https://github.com/AngelRangel21/rangel-guitar/commit/bdc39164ff9a4021b5d0ab2e3b8ff34aec40b635))
+
 ## [1.6.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.0...v1.6.1) (2026-05-12)
 
 
