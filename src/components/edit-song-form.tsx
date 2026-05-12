@@ -25,7 +25,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useI18n } from '@/context/i18n-context'
-import { createSlug } from '@/lib/utils'
 import { getArtists } from '@/services/artists.service'
 import { updateSong } from '@/services/song.service'
 import type { Artist, SongWithArtist } from '@/types/app.types'
@@ -47,6 +46,7 @@ import { Spinner } from './ui/spinner'
 const formSchema = z.object({
   title: z.string().min(1, { message: 'El título es obligatorio.' }),
   artist_id: z.string().min(1, { message: 'El artista es obligatorio.' }),
+  slug: z.string().optional(),
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
@@ -69,6 +69,7 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
     defaultValues: {
       title: song.title ?? '',
       artist_id: song.artists.map((a) => a.name).join(', ') ?? '',
+      slug: song.slug ?? '',
       lyrics: song.lyrics ?? '',
       chords: song.chords ?? '',
       video: song.video ?? '',
@@ -87,35 +88,39 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
 
+    const songData = {
+      title: values.title,
+      artist_id: values.artist_id,
+      slug: values.slug,
+      lyrics: values.lyrics,
+      chords: values.chords,
+      video: values.video,
+      coverArt: values.coverArt
+    }
+
     try {
-      const artist = artists.find((a) => a.id === values.artist_id)
-      const slug = createSlug(values.title)
-
-      const songData = {
-        title: values.title,
-        artist_id: values.artist_id,
-        slug,
-        lyrics: values.lyrics,
-        chords: values.chords,
-        video: values.video,
-        coverArt: values.coverArt
-      }
-
       // Llama a la función del cliente para actualizar la canción en Supabase.
       await updateSong(song.id, songData)
       // Llama a la acción del servidor para revalidar rutas y redirigir.
       try {
-        await revalidateAndRedirectAfterEdit(artist?.name ?? '', slug)
+        await revalidateAndRedirectAfterEdit(songData.slug || '')
       } catch (err) {
         console.error('Error en redirect:', err)
       }
 
       toast.success('La canción se ha actualizado correctamente')
     } catch (error) {
-      // La redirección de Next.js en una acción de servidor lanza un error, se debe capturar.
-      if (error) return
-      console.error('Error al editar la canción: ', error)
-      toast.error(t('songUpdateError'))
+      if (
+        error ||
+        songData.artist_id === '' ||
+        songData.artist_id === undefined ||
+        songData.artist_id === null
+      ) {
+        console.error('Error al editar la canción: ', error)
+        toast.error(t('songUpdateError'))
+      }
+      setIsLoading(false)
+    } finally {
       setIsLoading(false)
     }
   }
