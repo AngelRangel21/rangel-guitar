@@ -21,12 +21,12 @@ jobs:
       - name: Install bun
         uses: oven-sh/setup-bun@v2
         with:
-          version: latest # O la versión que estés usando localmente
+          bun-version: latest # O la versión que estés usando localmente
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 24
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
