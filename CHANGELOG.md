@@ -1,3 +1,11 @@
+## [1.6.4](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.3...v1.6.4) (2026-05-19)
+
+
+### Bug Fixes
+
+* Agregando Speed Insights de Vercel ([fa27438](https://github.com/AngelRangel21/rangel-guitar/commit/fa274387add6fca4facfb5c65e4733f9fcd30293))
+* Cambiando de versión de Biome ([29ddf6b](https://github.com/AngelRangel21/rangel-guitar/commit/29ddf6bc6d6251bcd122987e5b78fc35997f8ceb))
+
 ## [1.6.3](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.2...v1.6.3) (2026-05-19)
 
 
