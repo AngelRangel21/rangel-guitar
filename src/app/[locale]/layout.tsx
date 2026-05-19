@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
@@ -171,6 +171,7 @@ export default async function RootLayout({
           </NextIntlClientProvider>
         </ThemeProvider>
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   )
