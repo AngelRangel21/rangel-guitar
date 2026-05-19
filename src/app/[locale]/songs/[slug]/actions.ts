@@ -1,27 +1,35 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
+import { getLocale } from 'next-intl/server'
+import { redirect } from '@/i18n/navigation'
+import { supabaseServer } from '@/lib/supabase/server'
 
 /**
  * Acción de servidor que se ejecuta después de eliminar una canción.
  * Revalida todas las rutas relevantes y redirige al usuario a la página de inicio.
  */
 export async function revalidateAndRedirectAfterDelete() {
-  // Invalida el caché de datos para las rutas afectadas para que reflejen la eliminación.
-  revalidatePath('/') // Página de inicio
-  revalidatePath('/artists') // Lista de artistas
-  revalidatePath('/sitemap.ts') // Mapa del sitio
-  revalidatePath('/top-charts') // Top de canciones
+  const cookieStore = await cookies()
+  const supabase = await supabaseServer(cookieStore)
 
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+  const userRole = user?.app_metadata?.role || 'user'
+
+  if (!user || userRole !== 'admin') {
+    throw new Error(
+      'No autorizado. Solo los administradores pueden eliminar contenido.'
+    )
+  }
+
+  const locale = await getLocale()
+  revalidatePath('/')
   // Redirige al usuario a la página de inicio.
-  redirect('/')
-}
-
-/**
- * Acción de servidor que se ejecuta cuando un usuario visita una canción.
- * Revalida la página de "Top Canciones" para que el contador de visitas se actualice.
- */
-export async function revalidateAfterVisit() {
-  revalidatePath('/top-charts')
+  redirect({
+    href: '/',
+    locale: locale
+  })
 }
