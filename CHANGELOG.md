@@ -1,3 +1,11 @@
+## [1.6.3](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.2...v1.6.3) (2026-05-19)
+
+
+### Bug Fixes
+
+* Agregando middleware y server de Supabase ([bf47542](https://github.com/AngelRangel21/rangel-guitar/commit/bf4754267eaae5c42bc9046ad256b81468a5f24f))
+* Modificando las actions para revalidar la eliminacion de canciones ([1a9e51b](https://github.com/AngelRangel21/rangel-guitar/commit/1a9e51bd17a9aabcc9d2621fb1f8a20c424b935e))
+
 ## [1.6.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.1...v1.6.2) (2026-05-12)
 
 
