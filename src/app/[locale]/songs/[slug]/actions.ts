@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
 import { getLocale } from 'next-intl/server'
 import { redirect } from '@/i18n/navigation'
 import { supabaseServer } from '@/lib/supabase/server'
@@ -11,8 +10,7 @@ import { supabaseServer } from '@/lib/supabase/server'
  * Revalida todas las rutas relevantes y redirige al usuario a la página de inicio.
  */
 export async function revalidateAndRedirectAfterDelete() {
-  const cookieStore = await cookies()
-  const supabase = await supabaseServer(cookieStore)
+  const supabase = await supabaseServer()
 
   const {
     data: { user }
