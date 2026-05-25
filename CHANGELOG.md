@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.4...v1.7.0) (2026-05-25)
+
+
+### Features
+
+* Agregar funcionalidad para subir artistas y mejorar la gestión de formularios ([0dfc4ef](https://github.com/AngelRangel21/rangel-guitar/commit/0dfc4efec532ab4336d49a00d5e88fcea53fa0e0))
+
 ## [1.6.4](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.3...v1.6.4) (2026-05-19)
 
 
