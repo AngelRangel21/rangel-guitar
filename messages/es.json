@@ -317,6 +317,23 @@
   "playNote": "Tocar Nota",
   "score": "Puntaje",
   "keyOf": "Tonalidad de {key}",
+  "admin": {
+    "artists": {
+      "title": "Artistas",
+      "description": "Administra todos los artistas registrados en la plataforma.",
+      "total_one": "{count} artista",
+      "total_other": "{count} artistas",
+      "artist": "Artista",
+      "slug": "Slug",
+      "createdAt": "Fecha de Creación",
+      "updatedAt": "Fecha de Actualización",
+      "actions": "Acciones",
+      "edit": "Editar artista",
+      "delete": "Eliminar artista",
+      "noArtists": "No se encontraron artistas.",
+      "viewSongs": "Ver canciones"
+    }
+  },
   "beta": "Pruebas",
   "new": "Nuevo",
   "seeMore": "Ver más",

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import { supabase } from '@/lib/supabase'
-import type { ArtistCount, SongWithArtist } from '@/types/app.types'
+import type { Artist, ArtistCount, SongWithArtist } from '@/types/app.types'
 
 export async function getArtists(): Promise<ArtistCount[]> {
   const { data, error } = await supabase
@@ -69,6 +69,18 @@ export async function getSongsByArtistSlug(
     ...song,
     artists: ((song.artists_list as any[]) || []).map((item) => item.artist)
   })) as SongWithArtist[]
+}
+
+export async function getArtistBySlug(slug: string): Promise<Artist | null> {
+  const { data, error } = await supabase
+    .from('artists')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error != null || !data) return null
+
+  return data
 }
 
 export function getArtistImage(path: string) {

@@ -317,6 +317,23 @@
   "playNote": "Play Note",
   "score": "Score",
   "keyOf": "Key of {key}",
+  "admin": {
+    "artists": {
+      "title": "Artists",
+      "description": "Manage all artists registered in the platform.",
+      "total_one": "{count} artist",
+      "total_other": "{count} artists",
+      "artist": "Artist",
+      "slug": "Slug",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions",
+      "edit": "Edit artist",
+      "delete": "Delete artist",
+      "noArtists": "No artists found.",
+      "viewSongs": "View songs"
+    }
+  },
   "beta": "Beta",
   "new": "New",
   "seeMore": "See more",
