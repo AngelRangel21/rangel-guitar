@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.7.0...v1.8.0) (2026-05-29)
+
+
+### Features
+
+* adding new admin page to the artists ([8432f71](https://github.com/AngelRangel21/rangel-guitar/commit/8432f713e2a08e27df4df76509bbb5ad9e6de5bd))
+
 # [1.7.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.6.4...v1.7.0) (2026-05-25)
 
 
