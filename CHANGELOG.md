@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.0...v1.8.1) (2026-06-06)
+
+
+### Bug Fixes
+
+* Arreglando problemas del auth ([cb88122](https://github.com/AngelRangel21/rangel-guitar/commit/cb88122195d434a2dba6575f995c74ed0a015cae))
+
 # [1.8.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.7.0...v1.8.0) (2026-05-29)
 
 
