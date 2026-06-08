@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.1...v1.8.2) (2026-06-08)
+
+
+### Bug Fixes
+
+* Agregando VewTransition al ThemeToggle ([561b3c9](https://github.com/AngelRangel21/rangel-guitar/commit/561b3c9cf8caef2523460e36273f4005af33043b))
+
 ## [1.8.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.0...v1.8.1) (2026-06-06)
 
 
