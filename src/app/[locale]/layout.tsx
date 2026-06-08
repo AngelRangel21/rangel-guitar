@@ -132,7 +132,7 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       {/* <!-- Google Tag Manager --> */}
       <Script id='google-tag-manager' strategy='afterInteractive'>
         {`
@@ -156,12 +156,7 @@ export default async function RootLayout({
           />
         </noscript>
         {/* <!-- End Google Tag Manager (noscript) --> */}
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute='class' defaultTheme='system'>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <AuthProvider>
               <Header />
