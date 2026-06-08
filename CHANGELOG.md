@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.3...v1.8.4) (2026-06-08)
+
+
+### Bug Fixes
+
+* Agregando la imagen del usuario ([2b79275](https://github.com/AngelRangel21/rangel-guitar/commit/2b79275d0200d5240b17ca3b34ca2af14df9157a))
+
 ## [1.8.3](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.2...v1.8.3) (2026-06-08)
 
 
