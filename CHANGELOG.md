@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.2...v1.8.3) (2026-06-08)
+
+
+### Bug Fixes
+
+* Agregando Nombre en toast al iniciar sesión ([17bdb92](https://github.com/AngelRangel21/rangel-guitar/commit/17bdb920b3331f9680ed3baa2082752aa281c577))
+
 ## [1.8.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.1...v1.8.2) (2026-06-08)
 
 
