@@ -2,6 +2,7 @@ import type { User } from '@supabase/supabase-js'
 import { toast } from 'sonner'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import { supabase } from '@/lib/supabase'
 import { FavoriteService } from '@/services/favorites.service'
 import type { AuthCredentials, DbUser } from '@/types'
 import { AuthService } from '../service/auth.service'
@@ -102,7 +103,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true }, false, 'signInWithEmail:start')
           await AuthService.signInWithEmail(credentials)
-          toast.success('¡Bienvenido de nuevo!')
+
+          const {
+            data: { user }
+          } = await supabase.auth.getUser()
+          toast.success(
+            `¡Hola, ${user?.user_metadata?.full_name}! Bienvenido de nuevo.`
+          )
         } catch (error) {
           console.error('Sign in error:', error)
           toast.error('Email o contraseña incorrectos')
