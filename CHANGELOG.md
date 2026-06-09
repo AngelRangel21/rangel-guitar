@@ -1,3 +1,10 @@
+## [1.8.6](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.5...v1.8.6) (2026-06-09)
+
+
+### Bug Fixes
+
+* Add LICENCE MIT open source ([d3c0b54](https://github.com/AngelRangel21/rangel-guitar/commit/d3c0b5405c2b472fb3c73095dc7652494d380188))
+
 ## [1.8.5](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.4...v1.8.5) (2026-06-09)
 
 
