@@ -1,3 +1,10 @@
+## [1.8.8](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.7...v1.8.8) (2026-06-09)
+
+
+### Bug Fixes
+
+* Mejora el README.md con enlaces y actualizaciones de instalación ([07aa33d](https://github.com/AngelRangel21/rangel-guitar/commit/07aa33df597fe09b55fb4dd17fb30f2d2780dcf1))
+
 ## [1.8.7](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.6...v1.8.7) (2026-06-09)
 
 
