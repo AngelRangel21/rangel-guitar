@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.4...v1.8.5) (2026-06-09)
+
+
+### Bug Fixes
+
+* agregando SUPABASE_SERVICE_ROLE_KEY ([1d6f021](https://github.com/AngelRangel21/rangel-guitar/commit/1d6f02127fa976beeb70660e8c3ada72f20cfc56))
+
 ## [1.8.4](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.3...v1.8.4) (2026-06-08)
 
 
