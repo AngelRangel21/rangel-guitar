@@ -1,6 +1,24 @@
-# Rangel Guitar
+<a name="readme-top"></a>
 
-Rangel Guitar es una aplicación web moderna e interactiva diseñada para entusiastas de la guitarra. Proporciona una plataforma completa para encontrar, ver y aprender canciones con tablaturas y acordes precisos. Construida con una potente pila tecnológica, ofrece una experiencia de usuario fluida y con muchas funciones.
+<div align="center">
+
+[![Deployment Status](https://github.com/AngelRangel21/rangel-guitar/actions/workflows/release.yml/badge.svg)](https://github.com/AngelRangel21/rangel-guitar/actions)
+[![Vercel Deployment](https://vercelbadge.vercel.app/api/angelrangel21/rangel-guitar)](https://vercel.com/)
+[![Release Status](https://img.shields.io/github/actions/workflow/status/AngelRangel21/rangel-guitar/release.yml?style=for-the-badge&label=DEPLOYMENT)](https://github.com/AngelRangel21/rangel-guitar/actions)
+[![Contributors](https://img.shields.io/github/contributors/AngelRangel21/rangel-guitar?style=for-the-badge&color=green)](https://github.com/AngelRangel21/rangel-guitar/graphs/contributors)
+[![Forks](https://img.shields.io/github/forks/AngelRangel21/rangel-guitar?style=for-the-badge&color=blue)](https://github.com/AngelRangel21/rangel-guitar/network/members)
+[![Stars](https://img.shields.io/github/stars/AngelRangel21/rangel-guitar?style=for-the-badge&color=blue)](https://github.com/AngelRangel21/rangel-guitar/stargazers)
+[![Issues](https://img.shields.io/github/issues/AngelRangel21/rangel-guitar?style=for-the-badge&color=yellow)](https://github.com/AngelRangel21/rangel-guitar/issues)
+
+<a href="https://rangelguitar.com/" target="_blank" rel="noopener noreferrer">
+  <img width="300px" src="./public/favicon.svg" alt="Logo de la web oficial de Rangel Guitar" />
+</a>
+
+# Web oficial de Rangel Guitar
+
+Rangel Guitar es una aplicación web moderna e interactiva diseñada para entusiastas de la guitarra. Proporciona una plataforma completa para encontrar, ver y aprender canciones con tablaturas y acordes precisos. Construida con una potente pila tecnológica, ofrece una experiencia de usuario fluida y con muchas funciones. [Reportar error](https://gitgub.com/AngelRangel21/rangel-guitar/issues) · [Sugerir algo](https://gitgub.com/AngelRangel21/rangel-guitar/issues)
+
+</div>
 
 ## Características Principales
 
@@ -32,16 +50,15 @@ Para ejecutar este proyecto en tu máquina local, sigue estos pasos.
 
 Asegúrate de tener instalado lo siguiente:
 - [Node.js](https://nodejs.org/) (v18 o posterior)
-- [npm](https://www.npmjs.com/)
+- [bun](https://bun.com/)
 - [Supabase CLI](https://supabase.com/docs/guides/cli)
 
 ### Instalación
 
 1. Clona el repositorio:
    ```bash
-   git clone <url_del_repositorio>
+   git clone https://gitgub.com/AngelRangel21/rangel-guitar.git
    ```
-   Reemplaza `<url_del_repositorio>` con la URL real de tu repositorio.
 
 2. Navega al directorio del proyecto:
    ```bash
@@ -50,7 +67,7 @@ Asegúrate de tener instalado lo siguiente:
 
 3. Instala las dependencias:
    ```bash
-   npm install
+   bun install
    ```
 
 ### Configuración
@@ -59,11 +76,12 @@ Asegúrate de tener instalado lo siguiente:
    - Crea una nueva cuenta en [Supabase](https://supabase.com) si aún no tienes una.
    - Crea un nuevo proyecto desde el Dashboard de Supabase.
    - Una vez creado el proyecto, ve a la sección de configuración del proyecto.
-   - Copia las credenciales de tu proyecto (`NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
-   - Crea un archivo `.env` en la raíz de tu proyecto y añade las variables de entorno:
+   - Copia las credenciales de tu proyecto (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_ROLE_KEY`).
+   - Crea un archivo `.env` o `.env.local` en la raíz de tu proyecto y añade las variables de entorno:
      ```bash
-     NEXT_PUBLIC_SUPABASE_URL=tu-url-de-proyecto
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anonima
+     NEXT_PUBLIC_SUPABASE_URL='TU_PUBLIC_SUPABASE_URL'
+     NEXT_PUBLIC_SUPABASE_ANON_KEY='TU_PUBLIC_SUPABASE_ANON_KEY'
+     SUPABASE_SERVICE_ROLE_KEY='TU_SUPABASE_SERVICE_ROLE_KEY'
      ```
    - **Importante:** En la sección de Authentication de Supabase, habilita los proveedores que desees (Email, Google, etc.).
 
@@ -79,7 +97,7 @@ Asegúrate de tener instalado lo siguiente:
 Para ejecutar la aplicación en modo desarrollo:
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 Tu aplicación ahora debería estar ejecutándose en `http://localhost:3000` o la que tengas configurada.
@@ -102,8 +120,8 @@ Puedes desplegar tu aplicación en varias plataformas. Aquí te mostramos cómo 
 
 ## Contribución
 
-¡Aceptamos contribuciones! Consulta el archivo `CONTRIBUTING.md` (cuando esté disponible) para obtener detalles sobre cómo contribuir.
+¡Aceptamos contribuciones! Consulta el archivo `CONTRIBUTING.md` para obtener detalles sobre cómo contribuir.
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT.
+Este proyecto está bajo la `Licencia MIT`.
