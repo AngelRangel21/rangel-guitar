@@ -1,3 +1,10 @@
+## [1.8.7](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.6...v1.8.7) (2026-06-09)
+
+
+### Bug Fixes
+
+* Add CONTRIBUTING.md ([abff017](https://github.com/AngelRangel21/rangel-guitar/commit/abff01734351ba19c8b76dfc81a34d8ec8cd06ab))
+
 ## [1.8.6](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.5...v1.8.6) (2026-06-09)
 
 
