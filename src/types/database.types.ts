@@ -91,6 +91,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: 'songs'
             referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'song_comments_song_fk'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs_with_counts'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -115,10 +122,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'song_favorites_song_fk'
+            foreignKeyName: 'song_favorites_song_id_fkey'
             columns: ['song_id']
             isOneToOne: false
             referencedRelation: 'songs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'song_favorites_song_id_fkey'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs_with_counts'
             referencedColumns: ['id']
           }
         ]
@@ -148,6 +162,13 @@ export type Database = {
             columns: ['song_id']
             isOneToOne: false
             referencedRelation: 'songs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'song_likes_song_fk'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs_with_counts'
             referencedColumns: ['id']
           }
         ]
@@ -181,54 +202,16 @@ export type Database = {
             isOneToOne: false
             referencedRelation: 'songs'
             referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'song_visits_song_fk'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs_with_counts'
+            referencedColumns: ['id']
           }
         ]
       }
-      // songs: {
-      //   Row: {
-      //     artist: string | null
-      //     chords: string | null
-      //     coverArt: string | null
-      //     createdAt: string | null
-      //     id: string
-      //     isPublished: boolean | null
-      //     key: string | null
-      //     lyrics: string | null
-      //     slug: string | null
-      //     title: string | null
-      //     updatedAt: string | null
-      //     video: string | null
-      //   }
-      //   Insert: {
-      //     artist?: string | null
-      //     chords?: string | null
-      //     coverArt?: string | null
-      //     createdAt?: string | null
-      //     id?: string
-      //     isPublished?: boolean | null
-      //     key?: string | null
-      //     lyrics?: string | null
-      //     slug?: string | null
-      //     title?: string | null
-      //     updatedAt?: string | null
-      //     video?: string | null
-      //   }
-      //   Update: {
-      //     artist?: string | null
-      //     chords?: string | null
-      //     coverArt?: string | null
-      //     createdAt?: string | null
-      //     id?: string
-      //     isPublished?: boolean | null
-      //     key?: string | null
-      //     lyrics?: string | null
-      //     slug?: string | null
-      //     title?: string | null
-      //     updatedAt?: string | null
-      //     video?: string | null
-      //   }
-      //   Relationships: []
-      // }
       songs: {
         Row: {
           artist_id: string | null
@@ -350,28 +333,13 @@ export type Database = {
           title?: string
           user_id?: string
         }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          role_id: string
-          user_id: string
-        }
-        Insert: {
-          role_id: string
-          user_id: string
-        }
-        Update: {
-          role_id?: string
-          user_id?: string
-        }
         Relationships: [
           {
-            foreignKeyName: 'user_roles_role_id_fkey'
-            columns: ['role_id']
+            foreignKeyName: 'user_id_pkey'
+            columns: ['user_id']
             isOneToOne: false
-            referencedRelation: 'roles'
-            referencedColumns: ['id']
+            referencedRelation: 'users'
+            referencedColumns: ['uid']
           }
         ]
       }
