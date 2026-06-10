@@ -1,3 +1,10 @@
+## [1.8.10](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.9...v1.8.10) (2026-06-10)
+
+
+### Bug Fixes
+
+* Arreglando colores de footer ([e0d1d74](https://github.com/AngelRangel21/rangel-guitar/commit/e0d1d74f6c7c4c0088b3fe50212908618e4a8374))
+
 ## [1.8.9](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.8...v1.8.9) (2026-06-10)
 
 
