@@ -1,3 +1,10 @@
+## [1.8.9](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.8...v1.8.9) (2026-06-10)
+
+
+### Bug Fixes
+
+* Generating new types of Supabase ([4f33974](https://github.com/AngelRangel21/rangel-guitar/commit/4f33974696f2ab796fc88edcf8ed1e19d3aa30b8))
+
 ## [1.8.8](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.7...v1.8.8) (2026-06-09)
 
 
