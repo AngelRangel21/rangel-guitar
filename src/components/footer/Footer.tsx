@@ -85,7 +85,7 @@ export function Footer(): JSX.Element {
               {t('politics.cookies.label')}
             </Link>
           </div>
-          <p className='text-muted-foreground/50'>
+          <p className='text-muted-foreground'>
             {t('copyright', { year: `${currentYear}` })}
           </p>
         </div>
