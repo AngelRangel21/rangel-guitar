@@ -2,7 +2,7 @@
 
 import { Minus, Pencil, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { type JSX, useEffect, useState } from 'react'
+import { type JSX, useId, useState } from 'react'
 import LiteYouTubeEmbed from 'react-lite-youtube-embed'
 import {
   FacebookIcon,
@@ -45,7 +45,8 @@ export function SongDisplay({
   const [transpose, setTranspose] = useState(0)
   const { t } = useI18n()
   const { isAdmin } = useAuth()
-  const [currentUrl, setCurrentUrl] = useState('')
+  const ID = useId()
+  const songId = `song-${ID}`
   const artistsName =
     song.artists.map((a) => a.name).join(', ') ?? 'Artista desconocido'
   const songTitle = song.title ?? 'Sin titulo'
@@ -53,11 +54,6 @@ export function SongDisplay({
   const songVideo = song.video ?? ''
   const songChords = song.chords ?? ''
   const songLyrics = song.lyrics ?? ''
-
-  // Efecto para obtener la URL actual y registrar la visita a la canción.
-  useEffect(() => {
-    setCurrentUrl(window.location.href)
-  }, [])
 
   /**
    * Genera el texto que describe el estado de la transposición.
@@ -91,8 +87,12 @@ export function SongDisplay({
             <CardHeader>
               <div className='flex justify-between items-start'>
                 <div>
-                  <CardTitle className='text-2xl'>{songTitle}</CardTitle>
-                  <CardDescription>{artistsName}</CardDescription>
+                  <CardTitle className='text-2xl'>
+                    <h1>{songTitle}</h1>
+                  </CardTitle>
+                  <CardDescription>
+                    <h2>{artistsName}</h2>
+                  </CardDescription>
                 </div>
                 {/* Botón de Favoritos (solo para usuarios autenticados) */}
                 <FavoriteButton song={song} />
@@ -102,9 +102,9 @@ export function SongDisplay({
               {/* Acciones de Administrador (solo para administradores) */}
               {isAdmin && (
                 <div className='mb-8 p-4 bg-secondary/50 rounded-lg'>
-                  <h2 className='text-lg font-semibold mb-3 text-center'>
+                  <span className='text-lg font-semibold mb-3 text-center'>
                     {t('adminActions')}
-                  </h2>
+                  </span>
                   <div className='flex justify-center gap-4'>
                     <Button asChild variant='outline'>
                       <Link href={`/songs/${songSlug}/edit`}>
@@ -183,7 +183,9 @@ export function SongDisplay({
                     size='icon'
                     onClick={() =>
                       window.open(
-                        `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
+                        `https://www.facebook.com/sharer/sharer.php?text=${encodeURIComponent(
+                          shareText
+                        )}`,
                         '_blank'
                       )
                     }
@@ -196,7 +198,7 @@ export function SongDisplay({
                     size='icon'
                     onClick={() =>
                       window.open(
-                        `https://twitter.com/intent/tweet?url=${currentUrl}&text=${encodeURIComponent(
+                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
                           shareText
                         )}`,
                         '_blank'
@@ -212,7 +214,7 @@ export function SongDisplay({
                     onClick={() =>
                       window.open(
                         `https://api.whatsapp.com/send?text=${encodeURIComponent(
-                          `${shareText} ${currentUrl}`
+                          `${shareText}`
                         )}`,
                         '_blank'
                       )
@@ -226,7 +228,7 @@ export function SongDisplay({
                     size='icon'
                     onClick={() =>
                       window.open(
-                        `https://t.me/share/url?url=${currentUrl}&text=${encodeURIComponent(
+                        `https://t.me/share/url?url=${encodeURIComponent(
                           shareText
                         )}`,
                         '_blank'
@@ -273,7 +275,7 @@ export function SongDisplay({
           <h4 className='text-3xl font-bold mb-6'>{t('suggestedSongs')}</h4>
           <div className='flex flex-col space-y-3'>
             {suggestedSongs.map((s) => (
-              <SongListItem key={s.id} song={s} />
+              <SongListItem key={`${songId}-${s.id}`} song={s} />
             ))}
           </div>
         </div>
