@@ -1,3 +1,10 @@
+## [1.8.11](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.10...v1.8.11) (2026-06-14)
+
+
+### Bug Fixes
+
+* Se mejora el SEO de las páginas de canciones y eliminando estados sin usar ([95ebc9e](https://github.com/AngelRangel21/rangel-guitar/commit/95ebc9e9a1045c553aee065e4722f1ef730be5ea))
+
 ## [1.8.10](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.9...v1.8.10) (2026-06-10)
 
 
