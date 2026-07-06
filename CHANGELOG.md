@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.11...v1.9.0) (2026-07-06)
+
+
+### Features
+
+* **chords:** replace row HTML whith interactive Popover components ([8f7ff03](https://github.com/AngelRangel21/rangel-guitar/commit/8f7ff03ca760242efad49a05fbdf1618e35ca8a7))
+
 ## [1.8.11](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.10...v1.8.11) (2026-06-14)
 
 
