@@ -1,9 +1,8 @@
 'use client'
 
-import { Minus, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { type JSX, useId, useState } from 'react'
-import LiteYouTubeEmbed from 'react-lite-youtube-embed'
 import {
   FacebookIcon,
   TelegramIcon,
@@ -22,19 +21,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
 import type { SongWithArtist } from '@/types/app.types'
-import { ChordSheet } from './chord-sheet'
 import { DeleteSongDialog } from './delete-song-dialog'
-import { SongListItem } from './song-list-item'
-import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
 import { FavoriteButton } from './favorite-button'
+import { SongViewer } from './song-chords'
+import { SongListItem } from './song-list-item'
+import { SongLyrics } from './song-lyrics'
+import { TransposeControls } from './transpose-controls'
+import { Video } from './video'
 
-/**
- * Componente principal para mostrar una canción.
- * Incluye la portada, controles de transposición, botones para compartir,
- * la hoja de acordes/letra, y sugerencias de otras canciones.
- * @param {{ song: Song, suggestedSongs: Song[] }} props - Datos de la canción y sugerencias.
- * @returns {JSX.Element} El componente de visualización de la canción.
- */
 export function SongDisplay({
   song,
   suggestedSongs
@@ -42,7 +36,7 @@ export function SongDisplay({
   song: SongWithArtist
   suggestedSongs: SongWithArtist[]
 }): JSX.Element {
-  const [transpose, setTranspose] = useState(0)
+  const [transpose, setTranspose] = useState<number>(0)
   const { t } = useI18n()
   const { isAdmin } = useAuth()
   const ID = useId()
@@ -53,17 +47,6 @@ export function SongDisplay({
   const songSlug = song.slug ?? 'Sin slug'
   const songVideo = song.video ?? ''
   const songChords = song.chords ?? ''
-  const songLyrics = song.lyrics ?? ''
-
-  /**
-   * Genera el texto que describe el estado de la transposición.
-   * @returns {string} - El texto descriptivo (ej. "Tono Original", "+2 semitonos").
-   */
-  const getTransposedKeyText = (): string => {
-    if (transpose === 0) return t('originalKey')
-    const direction = transpose > 0 ? `+${transpose}` : transpose
-    return `${direction} ${t('semitones')}`
-  }
 
   const shareText = t('shareText', { title: songTitle, artist: artistsName })
 
@@ -75,12 +58,9 @@ export function SongDisplay({
           <Card className='overflow-hidden lg:sticky lg:top-24'>
             {songVideo !== null && (
               <div className='w-full aspect-video'>
-                <LiteYouTubeEmbed
-                  id={`${songVideo}`}
+                <Video
+                  videoId={`${songVideo}`}
                   title={`Video de la canción ${songTitle} del artista ${artistsName}`}
-                  lazyLoad
-                  poster='maxresdefault'
-                  webp
                 />
               </div>
             )}
@@ -122,54 +102,12 @@ export function SongDisplay({
 
               {/* Controles de Transposición */}
               <div className='space-y-4'>
-                <div>
-                  <h3 className='text-lg font-semibold mb-2 text-center'>
-                    {t('changeTone')}
-                  </h3>
-                  <div className='flex items-center justify-between gap-4'>
-                    <Button
-                      variant='outline'
-                      size='icon'
-                      onClick={() => setTranspose((t) => t - 1)}
-                      aria-label={t('decreaseSemitone')}
-                    >
-                      <Minus className='h-4 w-4' />
-                    </Button>
-                    <span
-                      className='font-bold text-lg w-32 text-center'
-                      aria-live='polite'
-                    >
-                      {getTransposedKeyText()}
-                    </span>
-                    <Button
-                      variant='outline'
-                      size='icon'
-                      onClick={() => setTranspose((t) => t + 1)}
-                      aria-label={t('increaseSemitone')}
-                    >
-                      <Plus className='h-4 w-4' />
-                    </Button>
-                  </div>
-                  {transpose !== 0 ? (
-                    <Button
-                      variant='ghost'
-                      size='sm'
-                      onClick={() => setTranspose(0)}
-                      className='w-full mt-4'
-                    >
-                      {t('resetTone')}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant='ghost'
-                      disabled
-                      size='sm'
-                      className='w-full mt-4'
-                    >
-                      {t('resetTone')}
-                    </Button>
-                  )}
-                </div>
+                <TransposeControls
+                  transposeAmount={transpose}
+                  onUp={() => setTranspose((t) => t + 1)}
+                  onDown={() => setTranspose((t) => t - 1)}
+                  onReset={() => setTranspose(0)}
+                />
               </div>
 
               {/* Botones para Compartir */}
@@ -253,7 +191,7 @@ export function SongDisplay({
             <TabsContent value='chords'>
               <Card>
                 <CardContent className='p-6'>
-                  <ChordSheet text={songChords} transpose={transpose} />
+                  <SongViewer chordSheet={songChords} transpose={transpose} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -261,7 +199,7 @@ export function SongDisplay({
               <Card>
                 <CardContent className='p-6'>
                   <div className='whitespace-pre-wrap font-sans text-base leading-relaxed'>
-                    {songLyrics}
+                    <SongLyrics chordSheet={songChords} />
                   </div>
                 </CardContent>
               </Card>
