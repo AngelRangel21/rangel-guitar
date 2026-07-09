@@ -21,10 +21,13 @@ export const routing = defineRouting({
       es: '/cancion/[slug]'
     },
     '/request-song': {
-      es: '/solicitar'
+      es: '/solicitar-cancion'
     },
     '/learn': {
       es: '/aprender'
+    },
+    '/chords': {
+      es: '/acordes'
     },
     '/favorites': {
       es: '/favoritos'
