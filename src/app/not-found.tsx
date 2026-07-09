@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import type { JSX } from 'react'
 import { Button } from '@/components/ui/button'
+import { Link } from '@/i18n/navigation'
 
 /**
  * Página de error 404 personalizada.
