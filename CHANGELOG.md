@@ -1,3 +1,12 @@
+## [1.9.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.9.0...v1.9.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* **Routes:** Se agregan nuevas rutas traducidas y se cambia la ruta de solicitar canción ([7f74ff6](https://github.com/AngelRangel21/rangel-guitar/commit/7f74ff6cb33279c8e84865d6c2ec810ffd719df0))
+* **SEO:** Mejorando el SEO de la página blockeando las carpetas de NextJs ([8373068](https://github.com/AngelRangel21/rangel-guitar/commit/8373068d14b78d0357128041644b0da027200d5b))
+* **Traductions:** Se cambio el link de Next a el de next-intl ([9c9b29c](https://github.com/AngelRangel21/rangel-guitar/commit/9c9b29c30b2ea097121124f57828c89716ac9d01))
+
 # [1.9.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.8.11...v1.9.0) (2026-07-06)
 
 
