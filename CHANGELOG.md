@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/AngelRangel21/rangel-guitar/compare/v1.9.1...v1.9.2) (2026-07-09)
+
+
+### Bug Fixes
+
+* **Release:** Se cambio la versión de node en las release de Github Actions ([1eef49a](https://github.com/AngelRangel21/rangel-guitar/commit/1eef49a5edeb5db5dbadeaed4cd65a5c3c5f6345))
+
 ## [1.9.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.9.0...v1.9.1) (2026-07-09)
 
 
