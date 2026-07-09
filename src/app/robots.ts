@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         '/*/security'
       ],
       disallow: [
+        '/_next/',
         '/*/_next/',
         '/api/',
         '/admin/', // Bloqueamos el panel de administración
