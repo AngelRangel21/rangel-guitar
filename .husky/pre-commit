@@ -8,8 +8,12 @@ bun run type-check || exit 1
 echo "💅 Ejecutando Linter (biome)..."
 bunx lint-staged || exit 1
 
-# 3. Simular un build rápido (Opcional pero recomendado para apps críticas)
-# echo "🏗️ Verificando integridad de la Build..."
-# npm run build || exit 1
+# 3. Ejecutar React Doctor
+echo "Ejecutando React Doctor..."
+bunx react-doctor@latest --verbose || exit 1
+
+# 4. Simular un build rápido (Opcional pero recomendado para apps críticas)
+echo "🏗️ Verificando integridad de la Build..."
+npm run build || exit 1
 
 echo "✅ Todo perfecto. Creando commit..."

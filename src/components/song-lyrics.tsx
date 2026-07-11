@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: explain */
 'use client'
 
 import {
@@ -6,6 +5,7 @@ import {
   FormatterSettings,
   HtmlFormatter
 } from 'chordproject-parser-fork'
+import parse from 'html-react-parser'
 import { useMemo } from 'react'
 
 interface SongLyricsProps {
@@ -29,10 +29,5 @@ export function SongLyrics({ chordSheet }: SongLyricsProps) {
     return htmlString
   }, [chordSheet])
 
-  return (
-    <div
-      className='font-mono text-sm'
-      dangerouslySetInnerHTML={{ __html: parsedReactContent }}
-    />
-  )
+  return <div className='font-mono text-sm'>{parse(parsedReactContent)}</div>
 }

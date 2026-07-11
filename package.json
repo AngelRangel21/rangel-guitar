@@ -17,7 +17,8 @@
     "test:watch": "vitest --watch",
     "prepare": "husky",
     "prw:test": "playwright test",
-    "prwtest:ui": "playwright test --ui"
+    "prwtest:ui": "playwright test --ui",
+    "doctor": "bunx react-doctor@latest"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
