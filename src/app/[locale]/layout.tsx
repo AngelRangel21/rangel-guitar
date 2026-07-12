@@ -132,7 +132,7 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning={true}>
       {/* <!-- Google Tag Manager --> */}
       <Script id='google-tag-manager' strategy='afterInteractive'>
         {`
@@ -153,6 +153,7 @@ export default async function RootLayout({
             height='0'
             width='0'
             style={{ display: 'none', visibility: 'hidden' }}
+            sandbox=''
           />
         </noscript>
         {/* <!-- End Google Tag Manager (noscript) --> */}

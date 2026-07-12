@@ -7,7 +7,7 @@ import { supabaseServer } from '@/lib/supabase/server'
 
 type SupabaseClient = Awaited<ReturnType<typeof supabaseServer>>
 
-async function adminCheck(supabase: SupabaseClient) {
+export async function adminCheck(supabase: SupabaseClient) {
   const {
     data: { user }
   } = await supabase.auth.getUser()
@@ -79,6 +79,8 @@ export async function updateArtistAction(formData: FormData) {
 }
 
 export async function redirectAfterEdit() {
+  const supabase = await supabaseServer()
+  await adminCheck(supabase)
   const locale = await getLocale()
   redirect(`/${locale}/admin/artists`)
 }

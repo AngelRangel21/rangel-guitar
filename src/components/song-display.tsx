@@ -2,7 +2,7 @@
 
 import { Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { type JSX, useId, useState } from 'react'
+import { type JSX, useState } from 'react'
 import {
   FacebookIcon,
   TelegramIcon,
@@ -39,14 +39,17 @@ export function SongDisplay({
   const [transpose, setTranspose] = useState<number>(0)
   const { t } = useI18n()
   const { isAdmin } = useAuth()
-  const ID = useId()
-  const songId = `song-${ID}`
   const artistsName =
     song.artists.map((a) => a.name).join(', ') ?? 'Artista desconocido'
   const songTitle = song.title ?? 'Sin titulo'
   const songSlug = song.slug ?? 'Sin slug'
   const songVideo = song.video ?? ''
   const songChords = song.chords ?? ''
+
+  const uniqueSuggestedSongs = suggestedSongs.filter(
+    (suggestedSong, index, self) =>
+      index === self.findIndex((s) => s.id === suggestedSong.id)
+  )
 
   const shareText = t('shareText', { title: songTitle, artist: artistsName })
 
@@ -208,12 +211,12 @@ export function SongDisplay({
         </div>
       </div>
       {/* Sección de Canciones Sugeridas */}
-      {suggestedSongs.length > 0 && (
+      {uniqueSuggestedSongs.length > 0 && (
         <div className='mt-16'>
           <h4 className='text-3xl font-bold mb-6'>{t('suggestedSongs')}</h4>
           <div className='flex flex-col space-y-3'>
-            {suggestedSongs.map((s) => (
-              <SongListItem key={`${songId}-${s.id}`} song={s} />
+            {uniqueSuggestedSongs.map((s) => (
+              <SongListItem key={`${s.id}`} song={s} />
             ))}
           </div>
         </div>

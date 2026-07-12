@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.14",
+    "@playwright/test": "1.59.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "12.0.6",
@@ -90,13 +91,13 @@
     "globals": "17.6.0",
     "jsdom": "29.1.1",
     "postcss": "8.5.14",
+    "react-doctor": "^0.7.6",
     "semantic-release": "25.0.3",
     "supabase": "2.98.2",
     "tailwindcss": "4.2.4",
     "ts-node": "10.9.2",
     "typescript": "6.0.3",
-    "vitest": "4.1.5",
-    "@playwright/test": "1.59.1"
+    "vitest": "4.1.5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

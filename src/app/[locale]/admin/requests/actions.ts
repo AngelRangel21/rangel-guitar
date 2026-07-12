@@ -1,6 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { supabaseServer } from '@/lib/supabase/server'
+import { adminCheck } from '../artists/[slug]/edit/actions'
 
 // La función `getAdminNotifications` ha sido eliminada porque causaba errores de permisos
 // en el entorno de producción. Los datos de notificaciones ahora se obtienen directamente
@@ -15,6 +17,8 @@ export async function revalidateAfterRequestDelete(): Promise<{
   success: boolean
 }> {
   try {
+    const supabase = await supabaseServer()
+    await adminCheck(supabase)
     // Invalida el caché de la ruta '/admin/requests', forzando una recarga de datos frescos.
     revalidatePath('/admin/requests')
     return { success: true }

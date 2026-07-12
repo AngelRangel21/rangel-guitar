@@ -2,6 +2,8 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { supabaseServer } from '@/lib/supabase/server'
+import { adminCheck } from '../artists/[slug]/edit/actions'
 
 /**
  * Acción de servidor que revalida varias rutas y redirige al usuario.
@@ -10,6 +12,8 @@ import { redirect } from 'next/navigation'
  * @param {string} artist - El nombre del artista de la canción agregada para revalidar su página específica.
  */
 export async function revalidateAndRedirect(artist: string, slug: string) {
+  const supabase = await supabaseServer()
+  await adminCheck(supabase)
   // Revalida las rutas para mostrar listas actualizadas.
   // Esto limpia el caché de datos para estas páginas, forzando una recarga de datos frescos.
   revalidatePath('/admin/requests') // La lista de solicitudes.
