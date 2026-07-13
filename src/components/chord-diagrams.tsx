@@ -59,7 +59,7 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
     : null
 
   return (
-    <div>
+    <div suppressHydrationWarning={true}>
       <div className='flex items-center justify-between mb-2'>
         <h4 className='font-bold text-lg'>
           {t('chord')}: {chordName}

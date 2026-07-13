@@ -144,7 +144,7 @@ export function SongList({ songs }: { songs: SongWithArtist[] }): JSX.Element {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6' suppressHydrationWarning={true}>
       {/* Controles para cambiar la vista */}
       <section className='flex justify-end items-center'>
         <nav className='flex items-center gap-2'>

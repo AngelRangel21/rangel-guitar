@@ -12,12 +12,34 @@ import {
 import type { Artist } from '@/types/app.types'
 import { ArtistsActions } from './artists-actions'
 
+const formatters = {
+  es: new Intl.DateTimeFormat('es-MX', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }),
+  en: new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
 function formatDate(dateStr: string, locale: string): string {
-  const formatter = new Intl.DateTimeFormat(
-    locale === 'es' ? 'es-MX' : 'en-US',
-    { year: 'numeric', month: 'short', day: 'numeric' }
-  )
+  const formatter = locale === 'es' ? formatters.es : formatters.en
   return formatter.format(new Date(dateStr))
+}
+
+interface ArtistsTableProps {
+  artists: Artist[]
+  locale: string
+  artistLabel: string
+  slugLabel: string
+  createdAtLabel: string
+  actionsLabel: string
+  noArtistsLabel: string
+  editLabel: string
+  viewSongsLabel: string
 }
 
 export function ArtistsTable({
@@ -30,17 +52,7 @@ export function ArtistsTable({
   noArtistsLabel,
   editLabel,
   viewSongsLabel
-}: {
-  artists: Artist[]
-  locale: string
-  artistLabel: string
-  slugLabel: string
-  createdAtLabel: string
-  actionsLabel: string
-  noArtistsLabel: string
-  editLabel: string
-  viewSongsLabel: string
-}): JSX.Element {
+}: ArtistsTableProps): JSX.Element {
   return (
     <Table>
       <TableHeader>

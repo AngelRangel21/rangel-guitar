@@ -45,7 +45,7 @@ const formSchema = z.object({
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.string().url({ message: 'Debe ser una URL válida.' })
+  coverArt: z.url({ message: 'Debe ser una URL válida.' })
 })
 
 export function UploadSongForm() {

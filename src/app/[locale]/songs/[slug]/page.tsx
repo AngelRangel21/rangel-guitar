@@ -132,11 +132,13 @@ export default async function SongPage({
   // IDs de los artistas de la canción actual para comparar
   const currentArtistIds = song?.artists?.map((a) => a.id)
 
+  // 1. Convertimos el arreglo de IDs a un Set UNA SOLA VEZ antes del filtro.
+  // Esto toma un tiempo inicial O(M), pero lo compensa masivamente después.
+  const artistIdsSet = new Set(currentArtistIds || [])
+
   // 1. Obtiene otras canciones del mismo artista.
   let suggestedSongs = allSongs.filter(
-    (s) =>
-      s.id !== song?.id &&
-      s.artists.some((a) => currentArtistIds?.includes(a.id))
+    (s) => s.id !== song?.id && s.artists.some((a) => artistIdsSet.has(a.id))
   )
 
   // 2. Si no hay suficientes, obtiene canciones aleatorias de otros artistas.

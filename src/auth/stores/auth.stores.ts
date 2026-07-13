@@ -42,7 +42,7 @@ interface AuthState {
 // ── Selectores derivados (fuera del store, sin re-renders extra) ──────────
 export const selectIsAuthenticated = (s: AuthState): boolean => s.user != null
 export const selectIsAdmin = (s: AuthState): boolean => s.user?.role === 'admin'
-export const selectUser = (s: AuthState): DbUser | null => s.user
+// const selectUser = (s: AuthState): DbUser | null => s.user
 export const selectFavoriteIds = (s: AuthState): Set<string> => s.favoriteIds
 
 export const useAuthStore = create<AuthState>()(

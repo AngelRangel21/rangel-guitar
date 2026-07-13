@@ -304,7 +304,11 @@ export function SongSearch({
   }
 
   return (
-    <div ref={containerRef} className={`relative w-full ${className}`}>
+    <div
+      ref={containerRef}
+      className={`relative w-full ${className}`}
+      suppressHydrationWarning={true}
+    >
       {/* ── Input ── */}
       <div className='relative flex items-center'>
         <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />

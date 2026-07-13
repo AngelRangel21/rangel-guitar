@@ -24,6 +24,9 @@ const DOT_RADIUS = 9
 // Índices de las notas al aire de una guitarra en afinación estándar (EADGBe), de aguda a grave.
 const OPEN_STRING_INDICES = [7, 0, 5, 10, 2, 7].reverse() // high e to low E
 
+// Define los trastes que llevan marcadores de posición (inlays).
+const FRET_MAKERS = [3, 5, 7, 9]
+
 /**
  * Componente que renderiza un diagrama del diapasón de una guitarra mostrando las notas de una escala.
  * @param {GuitarScaleDiagramProps} props - Propiedades del componente.
@@ -53,9 +56,6 @@ export function GuitarScaleDiagram({
       }
     }
   }
-
-  // Define los trastes que llevan marcadores de posición (inlays).
-  const fretMarkers = [3, 5, 7, 9]
 
   return (
     <div
@@ -104,7 +104,7 @@ export function GuitarScaleDiagram({
           })}
 
           {/* Renderiza los números de los trastes. */}
-          {[...fretMarkers, 12].map((fret) => (
+          {[...FRET_MAKERS, 12].map((fret) => (
             <text
               key={`fret-number-${fret}`}
               x={fret * FRET_WIDTH}
@@ -118,7 +118,7 @@ export function GuitarScaleDiagram({
           ))}
 
           {/* Renderiza los marcadores de posición (inlays). */}
-          {fretMarkers.map((fret) => (
+          {FRET_MAKERS.map((fret) => (
             <circle
               key={`inlay-${fret}`}
               cx={fret * FRET_WIDTH}

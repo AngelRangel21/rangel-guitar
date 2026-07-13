@@ -43,6 +43,12 @@ const KEY_HEIGHT = 100
 const BLACK_KEY_WIDTH = 12
 const BLACK_KEY_HEIGHT = 65
 
+const TOTAL_WHITE_KEYS = 14 // Renderiza dos octavas de teclas blancas.
+
+// Dibuja las teclas negras encima de las blancas.
+const BLACK_KEY_OFFSETS = [0.7, 1.7, 3.7, 4.7, 5.7] // Posiciones relativas de las teclas negras.
+const BLACK_KEY_NOTES = ['C#', 'D#', 'F#', 'G#', 'A#']
+
 /**
  * Componente que renderiza un diagrama de teclado de piano/órgano
  * y resalta las notas de un acorde o escala específicos.
@@ -62,15 +68,14 @@ export function KeyboardChordDiagram({
     })
   )
 
-  const keyboardKeys = []
-  const totalWhiteKeys = 14 // Renderiza dos octavas de teclas blancas.
+  const KEY_BOARD_KEYS = []
 
   // Dibuja primero las teclas blancas.
-  for (let i = 0; i < totalWhiteKeys; i++) {
+  for (let i = 0; i < TOTAL_WHITE_KEYS; i++) {
     const keyName = WHITE_KEYS[i % 7]
     const isHighlighted = notesToHighlight.has(keyName)
 
-    keyboardKeys.push(
+    KEY_BOARD_KEYS.push(
       <rect
         key={`white-${i}`}
         x={i * KEY_WIDTH}
@@ -84,16 +89,12 @@ export function KeyboardChordDiagram({
       />
     )
   }
-
-  // Dibuja las teclas negras encima de las blancas.
-  const blackKeyOffsets = [0.7, 1.7, 3.7, 4.7, 5.7] // Posiciones relativas de las teclas negras.
-  const blackKeyNotes = ['C#', 'D#', 'F#', 'G#', 'A#']
   for (let octave = 0; octave < 2; octave++) {
-    for (let i = 0; i < blackKeyOffsets.length; i++) {
-      const x = (blackKeyOffsets[i] + octave * 7) * KEY_WIDTH
-      const keyName = blackKeyNotes[i]
+    for (let i = 0; i < BLACK_KEY_OFFSETS.length; i++) {
+      const x = (BLACK_KEY_OFFSETS[i] + octave * 7) * KEY_WIDTH
+      const keyName = BLACK_KEY_NOTES[i]
       const isHighlighted = notesToHighlight.has(keyName)
-      keyboardKeys.push(
+      KEY_BOARD_KEYS.push(
         <rect
           key={`black-${octave}-${i}`}
           x={x}
@@ -109,11 +110,11 @@ export function KeyboardChordDiagram({
 
   return (
     <svg
-      viewBox={`-1 -1 ${totalWhiteKeys * KEY_WIDTH + 2} ${KEY_HEIGHT + 2}`}
+      viewBox={`-1 -1 ${TOTAL_WHITE_KEYS * KEY_WIDTH + 2} ${KEY_HEIGHT + 2}`}
       className={className}
       aria-hidden='true'
     >
-      <g>{keyboardKeys}</g>
+      <g>{KEY_BOARD_KEYS}</g>
     </svg>
   )
 }

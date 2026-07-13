@@ -48,7 +48,7 @@ export function LoginForm(): JSX.Element {
 
   // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
-    email: z.string().email({ message: t('invalidEmail') }),
+    email: z.email({ message: t('invalidEmail') }),
     password: z.string().min(1, { message: t('passwordRequired') })
   })
 

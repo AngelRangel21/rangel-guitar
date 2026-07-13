@@ -49,7 +49,7 @@ export function RegisterForm(): JSX.Element {
   // Define el esquema de validación del formulario con Zod.
   const formSchema = z.object({
     name: z.string().min(2, { message: t('nameRequired') }),
-    email: z.string().email({ message: t('invalidEmail') }),
+    email: z.email({ message: t('invalidEmail') }),
     password: z.string().min(6, { message: t('passwordMinLength') })
   })
 

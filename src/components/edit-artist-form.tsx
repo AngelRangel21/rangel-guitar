@@ -184,6 +184,8 @@ export function EditArtistForm({ artist }: { artist: Artist }) {
                       alt={artist.name}
                       fill
                       className='object-cover'
+                      width={8}
+                      height={8}
                     />
                   </div>
                 </div>

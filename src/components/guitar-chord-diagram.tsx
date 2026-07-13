@@ -30,12 +30,15 @@ export function GuitarChordDiagram({
   className
 }: GuitarChordDiagramProps) {
   // Filtra las posiciones para obtener solo los puntos de los dedos (trastes mayores que 0).
-  const dots = positions
-    .map((fret, string) => ({ fret, string }))
-    .filter(
-      (d): d is { fret: number; string: number } =>
-        typeof d.fret === 'number' && d.fret > 0
-    )
+  const dots = positions.reduce<{ fret: number; string: number }[]>(
+    (acc, fret, string) => {
+      if (typeof fret === 'number' && fret > 0) {
+        acc.push({ fret, string })
+      }
+      return acc
+    },
+    []
+  )
 
   // Detecta acordes con cejilla (barre chords).
   const barreFretMap: { [key: number]: number[] } = {}
@@ -46,13 +49,19 @@ export function GuitarChordDiagram({
     barreFretMap[dot.fret].push(dot.string)
   })
 
-  const barres = Object.entries(barreFretMap)
-    .filter(([, strings]) => strings.length > 2) // Una cejilla debe cubrir al menos 3 cuerdas.
-    .map(([fret, strings]) => ({
-      fret: Number(fret),
-      from: Math.min(...strings),
-      to: Math.max(...strings)
-    }))
+  const barres = Object.entries(barreFretMap).reduce<
+    { fret: number; from: number; to: number }[]
+  >((acc, [fret, strings]) => {
+    if (strings.length > 2) {
+      acc.push({
+        fret: Number(fret),
+        from: Math.min(...strings),
+        to: Math.max(...strings)
+      })
+    }
+
+    return acc
+  }, [])
 
   // Filtra los puntos individuales que ya están cubiertos por una cejilla.
   const dotsToRender = dots.filter(
