@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+bun.lock
+.next
+.git
+.env
+dist
+build
