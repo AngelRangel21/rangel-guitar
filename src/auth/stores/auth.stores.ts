@@ -4,7 +4,8 @@ import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { supabase } from '@/lib/supabase'
 import { FavoriteService } from '@/services/favorites.service'
-import type { AuthCredentials, DbUser } from '@/types'
+import type { DbUser } from '@/types/app.types'
+import type { AuthCredentials } from '@/types/auth.types'
 import { AuthService } from '../service/auth.service'
 import { UserService } from '../service/user.service'
 
@@ -43,7 +44,7 @@ interface AuthState {
 export const selectIsAuthenticated = (s: AuthState): boolean => s.user != null
 export const selectIsAdmin = (s: AuthState): boolean => s.user?.role === 'admin'
 // const selectUser = (s: AuthState): DbUser | null => s.user
-export const selectFavoriteIds = (s: AuthState): Set<string> => s.favoriteIds
+// const selectFavoriteIds = (s: AuthState): Set<string> => s.favoriteIds
 
 export const useAuthStore = create<AuthState>()(
   devtools(

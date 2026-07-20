@@ -3,7 +3,7 @@ import type { JSX } from 'react'
 import { useAuthStore } from '@/auth/stores/auth.stores'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
-import type { Song } from '@/types'
+import type { Song } from '@/types/app.types'
 import { Button } from './ui/button'
 
 export function FavoriteButton({ song }: { song: Song }): JSX.Element {

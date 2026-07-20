@@ -25,8 +25,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { deleteSongRequest } from '@/lib/client/requests'
-import { addSong, type NewSongData } from '@/lib/client/songs'
 import { createSlug } from '@/lib/utils'
+import { addSong, type NewSongData } from '@/services/song.service'
 import { Spinner } from './ui/spinner'
 
 /**
@@ -48,7 +48,8 @@ const formSchema = z.object({
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.url({ message: 'Debe ser una URL válida.' })
+  coverArt: z.url({ message: 'Debe ser una URL válida.' }).optional(),
+  key: z.string().optional()
 })
 
 /**
@@ -73,7 +74,8 @@ export function AddSongForm({
       lyrics: '',
       chords: '',
       video: '',
-      coverArt: 'https://img.youtube.com/vi/ID_VIDEO/maxresdefault.jpg'
+      coverArt: 'https://img.youtube.com/vi/ID_VIDEO/maxresdefault.jpg',
+      key: ''
     }
   })
 
@@ -92,7 +94,8 @@ export function AddSongForm({
         lyrics: values.lyrics ?? null,
         chords: values.chords ?? null,
         video: values.video ?? null,
-        coverArt: values.coverArt
+        coverArt: values.coverArt ?? null,
+        key: values.key ?? null
       }
 
       // Ejecuta las escrituras en la base de datos del lado del cliente.
@@ -142,6 +145,19 @@ export function AddSongForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Artista</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='key'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Acorde</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>

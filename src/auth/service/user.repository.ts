@@ -1,6 +1,6 @@
 // user.repository.ts
 import { supabase } from '@/lib/supabase'
-import type { Tables } from '@/types'
+import type { Tables } from '@/types/database.types'
 
 type User = Tables<'users'>
 

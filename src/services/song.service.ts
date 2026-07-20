@@ -1,11 +1,10 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import { supabase } from '@/lib/supabase'
-import type { Song } from '@/types'
-import type { SongWithArtist } from '@/types/app.types'
+import type { Song, SongWithArtist } from '@/types/app.types'
 
 export type NewSongData = Omit<
   Song,
-  'id' | 'key' | 'createdAt' | 'isPublished' | 'updatedAt'
+  'id' | 'createdAt' | 'isPublished' | 'updatedAt'
 >
 
 export async function getSongs(): Promise<Song[]> {
@@ -79,7 +78,7 @@ export async function getSongBySlug(
   } as SongWithArtist
 }
 
-export async function addSong(songData: NewSongData): Promise<void> {
+export async function addSong(songData: NewSongData) {
   const { error } = await supabase.from('songs').insert({ ...songData })
   if (error != null) throw error
 }

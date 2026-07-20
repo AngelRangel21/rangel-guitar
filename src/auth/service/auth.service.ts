@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 import { supabase } from '@/lib/supabase'
-import type { AuthCredentials } from '@/types'
+import type { AuthCredentials } from '@/types/auth.types'
 
 export class AuthService {
   static getRedirectUrl() {

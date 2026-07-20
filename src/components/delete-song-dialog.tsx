@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { useI18n } from '@/context/i18n-context'
 import { deleteSong } from '@/services/song.service'
-import type { Song } from '@/types'
+import type { Song } from '@/types/app.types'
 import { Spinner } from './ui/spinner'
 
 /**
