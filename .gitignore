@@ -12,7 +12,6 @@
 
 # testing
 /coverage
-src/__tests__
 test-results
 playwright-report
 
