@@ -18,7 +18,7 @@
     "prepare": "husky",
     "prw:test": "playwright test",
     "prwtest:ui": "playwright test --ui",
-    "doctor": "bunx react-doctor@latest"
+    "doctor": "bunx react-doctor ./src --verbose"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
@@ -54,7 +54,7 @@
     "husky": "9.1.7",
     "lint-staged": "17.0.2",
     "lucide-react": "1.14.0",
-    "next": "16.2.5",
+    "next": "16.2.6",
     "next-intl": "4.11.0",
     "next-themes": "0.4.6",
     "react": "19.2.6",
@@ -87,7 +87,7 @@
     "globals": "17.6.0",
     "jsdom": "29.1.1",
     "postcss": "8.5.14",
-    "react-doctor": "^0.7.6",
+    "react-doctor": "0.7.6",
     "semantic-release": "25.0.3",
     "supabase": "2.98.2",
     "tailwindcss": "4.2.4",
