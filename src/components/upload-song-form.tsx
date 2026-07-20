@@ -45,7 +45,8 @@ const formSchema = z.object({
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.url({ message: 'Debe ser una URL válida.' })
+  coverArt: z.url({ message: 'Debe ser una URL válida.' }).optional(),
+  key: z.string().optional()
 })
 
 export function UploadSongForm() {
@@ -53,6 +54,8 @@ export function UploadSongForm() {
 
   const [isLoading, setIsLoading] = useState(false)
   const [artists, setArtists] = useState<Artist[]>([])
+
+  const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
 
   useEffect(() => {
     async function loadArtists() {
@@ -76,7 +79,8 @@ export function UploadSongForm() {
       lyrics: '',
       chords: '',
       video: '',
-      coverArt: 'https://placehold.co/600x600.png'
+      coverArt: ID_YOUTUBE,
+      key: ''
     }
   })
 
@@ -95,7 +99,8 @@ export function UploadSongForm() {
         lyrics: values.lyrics ?? '',
         chords: values.chords ?? '',
         video: values.video ?? '',
-        coverArt: values.coverArt
+        coverArt: values.coverArt ?? null,
+        key: values.key ?? null
       }
 
       await addSong(songToAdd)
@@ -114,8 +119,6 @@ export function UploadSongForm() {
       setIsLoading(false)
     }
   }
-
-  const ID_YOUTUBE = 'https://img.youtube.com/vi/ID_YOUTUBE/maxresdefault.jpg'
 
   return (
     <Card className='w-full max-w-2xl'>
@@ -156,6 +159,7 @@ export function UploadSongForm() {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
+                      {...field}
                     >
                       <FormControl>
                         <SelectTrigger className='w-full'>
@@ -180,6 +184,18 @@ export function UploadSongForm() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name='key'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Acorde</FormLabel>
+
+                    <Input {...field} />
+                  </FormItem>
+                )}
+              ></FormField>
             </div>
 
             {/* CHORDS */}
@@ -272,7 +288,7 @@ La primera línea...
             </div>
 
             <Button type='submit' className='w-full' disabled={isLoading}>
-              {isLoading ? `${t('saving')}'...'` : t('uploadSong')}
+              {isLoading ? `${t('saving')}` : t('uploadSong')}
             </Button>
           </form>
         </Form>

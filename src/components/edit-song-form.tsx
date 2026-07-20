@@ -50,7 +50,8 @@ const formSchema = z.object({
   lyrics: z.string().optional(),
   chords: z.string().optional(),
   video: z.string().optional(),
-  coverArt: z.url({ message: 'Debe ser una URL válida.' })
+  coverArt: z.url({ message: 'Debe ser una URL válida.' }).optional(),
+  key: z.string().optional()
 })
 
 /**
@@ -73,7 +74,8 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
       lyrics: song.lyrics ?? '',
       chords: song.chords ?? '',
       video: song.video ?? '',
-      coverArt: song.coverArt ?? ''
+      coverArt: song.coverArt ?? '',
+      key: song.key ?? ''
     }
   })
 
@@ -95,7 +97,8 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
       lyrics: values.lyrics,
       chords: values.chords,
       video: values.video,
-      coverArt: values.coverArt
+      coverArt: values.coverArt,
+      key: values.key
     }
 
     try {
@@ -163,10 +166,14 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        {...field}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder='Seleccionar artista' />
+                            <SelectValue
+                              placeholder='Seleccionar artista'
+                              {...field}
+                            />
                           </SelectTrigger>
                         </FormControl>
 
@@ -181,6 +188,20 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name='key'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Acorde</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -208,6 +229,7 @@ primera línea de la canción...
                       `}
                       rows={10}
                       {...field}
+                      className='resize-none'
                     />
                   </FormControl>
                   <FormMessage />
@@ -225,6 +247,7 @@ primera línea de la canción...
                       placeholder='Solo la letra de la canción...'
                       rows={10}
                       {...field}
+                      className='resize-none'
                     />
                   </FormControl>
                   <FormMessage />
