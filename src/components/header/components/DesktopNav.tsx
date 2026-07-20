@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 import type { ComponentProps, JSX } from 'react'
-import { ThemeToggle } from '@/components/theme-toggle'
+// import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
@@ -78,7 +78,7 @@ export default function DesktopNav(): JSX.Element {
       <section className='hidden xl:flex items-center gap-3'>
         <Notifications />
         {/* Tema modo claro/obscuro */}
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
 
         {isAuthenticated ? (
           <div className='hidden xl:flex'>

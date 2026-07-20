@@ -2,7 +2,7 @@ import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { type ComponentProps, useState } from 'react'
-import { ThemeToggle } from '@/components/theme-toggle'
+// import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { AvatarUser } from './AvatarUser'
@@ -132,11 +132,11 @@ export function MovileNav() {
               </>
             )}
 
-            <div className='border-t border-primary-foreground/10 my-2' />
+            {/* <div className='border-t border-primary-foreground/10 my-2' />
             <div className='flex justify-between items-center px-3'>
               <span className='text-sm'>{t('teme')}</span>
               <ThemeToggle />
-            </div>
+            </div> */}
           </nav>
         </div>
       )}
