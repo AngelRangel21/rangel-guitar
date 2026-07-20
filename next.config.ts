@@ -1,7 +1,60 @@
 import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
+const isDev = process.env.NODE_ENV === 'development'
+
+const csp = `
+default-src 'self';
+base-uri 'self';
+object-src 'none';
+frame-ancestors 'none';
+
+script-src
+'self'
+'unsafe-inline'
+${isDev ? " 'unsafe-eval'" : ''}
+https://www.googletagmanager.com
+https://va.vercel-scripts.com
+https://www.youtube.com;
+
+style-src
+'self'
+'unsafe-inline'
+https://fonts.googleapis.com;
+
+font-src
+'self'
+https://fonts.gstatic.com;
+
+img-src
+'self'
+data:
+blob:
+https:
+https://img.youtube.com
+https://i.ytimg.com
+https://*.supabase.co;
+
+connect-src
+'self'
+https://*.supabase.co
+wss://*.supabase.co
+https://vitals.vercel-insights.com;
+
+frame-src
+https://www.youtube.com
+https://www.youtube-nocookie.com;
+
+media-src 'self';
+
+upgrade-insecure-requests;
+`
+  .replace(/\n/g, ' ')
+  .replace(/\s{2,}/g, ' ')
+  .trim()
+
 const nextConfig: NextConfig = {
+  output: 'standalone',
   compress: true,
   poweredByHeader: false,
   async redirects() {
@@ -72,8 +125,8 @@ const nextConfig: NextConfig = {
             value: 'DENY'
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
+            key: 'Content-Security-Policy',
+            value: csp
           },
           {
             key: 'Referrer-Policy',
@@ -81,14 +134,12 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
+            value:
+              'camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=(), fullscreen=(self)'
           }
         ]
       }
     ]
-  },
-  typescript: {
-    ignoreBuildErrors: true
   },
   images: {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
