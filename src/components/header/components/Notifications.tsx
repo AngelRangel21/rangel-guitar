@@ -59,6 +59,7 @@ export function Notifications() {
 
     // 2. Limpieza total
     return () => {
+      channel.unsubscribe()
       supabase.removeChannel(channel)
     }
   }, [isAdmin, instanceId]) // Añadimos supabase a las dependencias por seguridad
