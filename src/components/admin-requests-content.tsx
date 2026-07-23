@@ -80,12 +80,10 @@ export function AdminRequestsContent(): JSX.Element {
       )
       .subscribe()
 
-    const unsubscribe = () => {
+    return () => {
       channel.unsubscribe()
       supabase.removeChannel(channel)
     }
-
-    return unsubscribe
   }, [])
 
   /**
