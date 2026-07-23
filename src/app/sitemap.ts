@@ -11,6 +11,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locales = routing.locales
   const now = new Date()
 
+  const alternateLanguages = (href: any) => {
+    const languages: Record<string, string> = Object.fromEntries(
+      locales.map((l) => [l, `${siteUrl}${getPathname({ locale: l, href })}`])
+    )
+
+    // Asignamos la ruta en español como la versión predeterminada mundial
+    languages['x-default'] = `${siteUrl}${getPathname({ locale: 'es', href })}`
+
+    return languages
+  }
+
   const staticPaths = [
     { path: '/', priority: 1 as const, freq: 'weekly' as const },
     { path: '/artists', priority: 0.9 as const, freq: 'weekly' as const },
@@ -30,18 +41,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = staticPaths.flatMap(({ path, priority, freq }) =>
     locales.map((locale) => {
       const pathname = getPathname({ locale, href: path as any })
+      const href = path as any
+      const Url = `${siteUrl}${pathname}`
       return {
-        url: `${siteUrl}${pathname}`,
+        url: Url,
         lastModified: now,
         changeFrequency: freq,
         priority,
         alternates: {
-          languages: Object.fromEntries(
-            locales.map((l) => [
-              l,
-              `${siteUrl}${getPathname({ locale: l, href: path as any })}`
-            ])
-          )
+          languages: alternateLanguages(href)
         }
       }
     })
@@ -56,18 +64,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const learnRoutes = dynamicPages.flatMap(({ path, priority }) =>
     locales.map((locale) => {
       const pathname = getPathname({ locale, href: path as any })
+      const href = path as any
       return {
         url: `${siteUrl}${pathname}`,
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority,
         alternates: {
-          languages: Object.fromEntries(
-            locales.map((l) => [
-              l,
-              `${siteUrl}${getPathname({ locale: l, href: path as any })}`
-            ])
-          )
+          languages: alternateLanguages(href)
         }
       }
     })
@@ -79,55 +83,53 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       getArtists()
     ])
 
-    const songRoutes = songs
-      .filter((song) => song.slug)
-      .flatMap((song) =>
-        locales.map((locale) => {
-          const href = {
-            pathname: '/songs/[slug]' as const,
-            params: { slug: song.slug as string }
-          }
-          return {
-            url: `${siteUrl}${getPathname({ locale, href })}`,
-            lastModified: song.updatedAt ? new Date(song.updatedAt) : now,
-            changeFrequency: 'weekly' as const,
-            priority: 0.9,
-            alternates: {
-              languages: Object.fromEntries(
-                locales.map((l) => [
-                  l,
-                  `${siteUrl}${getPathname({ locale: l, href })}`
-                ])
-              )
-            }
-          }
-        })
-      )
+    const songRoutes: MetadataRoute.Sitemap = []
+    for (const song of songs) {
+      if (!song.slug) continue
 
-    const artistRoutes = artists
-      .filter((artist) => artist.slug)
-      .flatMap((artist) =>
-        locales.map((locale) => {
-          const href = {
-            pathname: '/artists/[slug]' as const,
-            params: { slug: artist.slug }
-          }
-          return {
-            url: `${siteUrl}${getPathname({ locale, href })}`,
-            lastModified: now,
-            changeFrequency: 'monthly' as const,
-            priority: 0.8,
-            alternates: {
-              languages: Object.fromEntries(
-                locales.map((l) => [
-                  l,
-                  `${siteUrl}${getPathname({ locale: l, href })}`
-                ])
-              )
-            }
+      const href = {
+        pathname: '/songs/[slug]' as const,
+        params: { slug: song.slug as string }
+      }
+
+      for (const locale of locales) {
+        const pathname = getPathname({ locale, href })
+        const Url = `${siteUrl}${pathname}`
+        songRoutes.push({
+          url: Url,
+          lastModified: song.updatedAt ? new Date(song.updatedAt) : now,
+          changeFrequency: 'weekly' as const,
+          priority: 0.9,
+          alternates: {
+            languages: alternateLanguages(href)
           }
         })
-      )
+      }
+    }
+
+    const artistRoutes: MetadataRoute.Sitemap = []
+    for (const artist of artists) {
+      if (!artist.slug) continue
+
+      const href = {
+        pathname: '/artists/[slug]' as const,
+        params: { slug: artist.slug as string }
+      }
+
+      for (const locale of locales) {
+        const pathname = getPathname({ locale, href })
+        const Url = `${siteUrl}${pathname}`
+        artistRoutes.push({
+          url: Url,
+          lastModified: artist.created_at ? new Date(artist.update_at) : now,
+          changeFrequency: 'weekly' as const,
+          priority: 0.9,
+          alternates: {
+            languages: alternateLanguages(href)
+          }
+        })
+      }
+    }
 
     return [...staticRoutes, ...learnRoutes, ...songRoutes, ...artistRoutes]
   } catch (error) {
