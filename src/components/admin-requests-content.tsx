@@ -70,7 +70,7 @@ export function AdminRequestsContent(): JSX.Element {
     fetchRequests()
 
     const channel = supabase
-      .channel('song-requests-channel')
+      .channel(`song-requests-${Date.now()}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'songs_requests' },
