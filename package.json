@@ -104,6 +104,7 @@
   },
   "trustedDependencies": [
     "@parcel/watcher",
-    "@swc/core"
+    "@swc/core",
+    "supabase"
   ]
 }
