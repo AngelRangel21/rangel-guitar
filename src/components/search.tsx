@@ -6,17 +6,14 @@ import { MusicIcon, Search, X } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type React from 'react'
-import {
-  type JSX,
-  type KeyboardEvent,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import { type JSX, type KeyboardEvent, useRef, useState } from 'react'
 import { useSearch } from '@/hooks/useSearch'
 import { Link } from '@/i18n/navigation'
-import type { Song } from '@/lib/types'
+import type { SearchSong } from '@/types/search.types'
+import { Popover, PopoverAnchor, PopoverContent } from './ui/popover'
 import { Spinner } from './ui/spinner'
+
+const SKELETON_ROWS = ['skeleton-1', 'skeleton-2', 'skeleton-3'] as const
 
 // ─── Subcomponentes ───────────────────────────────────────────────────────────
 
@@ -76,12 +73,14 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
 function ResultItem({
   song,
   query,
+  index,
   isActive,
   onMouseEnter,
   onClick
 }: {
-  song: Song
+  song: SearchSong
   query: string
+  index: number
   isActive: boolean
   onMouseEnter: () => void
   onClick: () => void
@@ -89,6 +88,9 @@ function ResultItem({
   return (
     <Link
       href={{ pathname: '/songs/[slug]', params: { slug: `${song.slug}` } }}
+      id={`result-${index}`}
+      role='option'
+      aria-selected={isActive}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer outline-none
@@ -117,7 +119,7 @@ function SearchDropdown({
   onMouseEnter,
   onClose
 }: {
-  results: Song[]
+  results: SearchSong[]
   query: string
   isLoading: boolean
   hasSearched: boolean
@@ -130,12 +132,9 @@ function SearchDropdown({
   // Loading skeleton
   if (isLoading) {
     return (
-      <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-2'>
-        {Array.from({ length: 3 }).map((i) => (
-          <div
-            key={`skeleton-${i}`}
-            className='flex items-center gap-3 px-3 py-2.5'
-          >
+      <div className='p-2'>
+        {SKELETON_ROWS.map((row) => (
+          <div key={row} className='flex items-center gap-3 px-3 py-2.5'>
             <div className='w-10 h-10 rounded-md bg-muted animate-pulse shrink-0' />
             <div className='flex-1 space-y-1.5'>
               <div className='h-3 bg-muted rounded animate-pulse w-3/4' />
@@ -150,7 +149,7 @@ function SearchDropdown({
   // Error
   if (error) {
     return (
-      <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-4'>
+      <div className='p-4'>
         <p className='text-sm text-destructive text-center'>{error}</p>
       </div>
     )
@@ -159,7 +158,7 @@ function SearchDropdown({
   // Sin resultados
   if (hasSearched && results.length === 0) {
     return (
-      <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-6'>
+      <div className='p-6'>
         <div className='flex flex-col items-center gap-2 text-muted-foreground'>
           <MusicIcon className='w-8 h-8 opacity-40' />
           <p className='text-sm'>{t('noResults')}</p>
@@ -173,12 +172,13 @@ function SearchDropdown({
   if (results.length === 0) return null
 
   return (
-    <div className='absolute top-full left-0 right-0 mt-1.5 z-50 bg-popover border border-border rounded-xl shadow-lg p-2'>
+    <div className='p-2'>
       {results.map((song, i) => (
         <ResultItem
           key={song.id}
           song={song}
           query={query}
+          index={i}
           isActive={i === activeIndex}
           onMouseEnter={() => onMouseEnter(i)}
           onClick={onClose}
@@ -196,7 +196,7 @@ interface SongSearchProps {
   /** Clase CSS extra para el contenedor */
   className?: string
   /** Callback cuando el usuario selecciona una canción */
-  onSelect?: (song: Song) => void
+  onSelect?: (song: SearchSong) => void
 }
 
 export function SongSearch({
@@ -219,32 +219,17 @@ export function SongSearch({
   const [activeIndex, setActiveIndex] = useState(-1)
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const inputContainerRef = useRef<HTMLDivElement>(null)
 
   const showDropdown =
     isOpen && (isLoading || hasSearched || results.length > 0)
 
-  // ── Cerrar al hacer clic fuera ──────────────────────────────────────────────
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current != null &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false)
-        setActiveIndex(-1)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  // ── Reset activeIndex cuando cambian resultados ─────────────────────────────
-  useEffect(() => {
-    setActiveIndex(-1)
-  }, [])
-
   // ── Handlers ────────────────────────────────────────────────────────────────
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+    if (!open) setActiveIndex(-1)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
@@ -305,65 +290,93 @@ export function SongSearch({
 
   return (
     <div
-      ref={containerRef}
       className={`relative w-full ${className}`}
       suppressHydrationWarning={true}
     >
-      {/* ── Input ── */}
-      <div className='relative flex items-center'>
-        <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />
+      <Popover open={showDropdown} onOpenChange={handleOpenChange}>
+        {/* ── Input ── */}
+        <PopoverAnchor asChild>
+          <div ref={inputContainerRef} className='relative flex items-center'>
+            <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />
 
-        <input
-          ref={inputRef}
-          type='text'
-          role='combobox'
-          aria-expanded={showDropdown}
-          aria-autocomplete='list'
-          aria-controls='search-results'
-          aria-activedescendant={
-            activeIndex >= 0 ? `result-${activeIndex}` : undefined
+            <input
+              ref={inputRef}
+              type='text'
+              role='combobox'
+              aria-expanded={showDropdown}
+              aria-autocomplete='list'
+              aria-haspopup='listbox'
+              aria-controls='search-results'
+              aria-activedescendant={
+                activeIndex >= 0 ? `result-${activeIndex}` : undefined
+              }
+              value={query}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
+              className='w-full h-10 pl-9 pr-9 text-sm bg-background border border-input rounded-lg
+                placeholder:text-muted-foreground
+                focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+                transition-shadow'
+              autoComplete='off'
+              spellCheck={false}
+            />
+
+            {/* Botón limpiar o spinner */}
+            {isLoading ? (
+              <Spinner className='absolute right-3 w-4 h-4' />
+            ) : query ? (
+              <button
+                type='button'
+                onClick={handleClear}
+                aria-label='Limpiar búsqueda'
+                className='absolute right-3 text-muted-foreground hover:text-foreground transition-colors'
+              >
+                <X className='w-4 h-4' />
+              </button>
+            ) : null}
+          </div>
+        </PopoverAnchor>
+
+        {/* ── Dropdown ── */}
+        <PopoverContent
+          id='search-results'
+          align='start'
+          side='bottom'
+          sideOffset={6}
+          role={
+            !isLoading && error == null && results.length > 0
+              ? 'listbox'
+              : undefined
           }
-          value={query}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className='w-full h-10 pl-9 pr-9 text-sm bg-background border border-input rounded-lg
-            placeholder:text-muted-foreground
-            focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
-            transition-shadow'
-          autoComplete='off'
-          spellCheck={false}
-        />
-
-        {/* Botón limpiar o spinner */}
-        {isLoading ? (
-          <Spinner className='absolute right-3 w-4 h-4' />
-        ) : query ? (
-          <button
-            type='button'
-            onClick={handleClear}
-            aria-label='Limpiar búsqueda'
-            className='absolute right-3 text-muted-foreground hover:text-foreground transition-colors'
-          >
-            <X className='w-4 h-4' />
-          </button>
-        ) : null}
-      </div>
-
-      {/* ── Dropdown ── */}
-      {showDropdown && (
-        <SearchDropdown
-          results={results}
-          query={query}
-          isLoading={isLoading}
-          hasSearched={hasSearched}
-          error={error}
-          activeIndex={activeIndex}
-          onMouseEnter={setActiveIndex}
-          onClose={handleClose}
-        />
-      )}
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          onInteractOutside={(e) => {
+            // El ancla no es un trigger de Radix, así que sin esto un clic
+            // dentro del input cerraría el panel.
+            if (inputContainerRef.current?.contains(e.target as Node)) {
+              e.preventDefault()
+            }
+          }}
+          className='overflow-y-auto rounded-xl p-0'
+          style={{
+            width: 'var(--radix-popover-trigger-width)',
+            maxHeight:
+              'min(24rem, var(--radix-popover-content-available-height))'
+          }}
+        >
+          <SearchDropdown
+            results={results}
+            query={query}
+            isLoading={isLoading}
+            hasSearched={hasSearched}
+            error={error}
+            activeIndex={activeIndex}
+            onMouseEnter={setActiveIndex}
+            onClose={handleClose}
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

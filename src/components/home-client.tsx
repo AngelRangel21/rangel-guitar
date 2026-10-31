@@ -25,13 +25,16 @@ export function HomeClient({
       </section>
 
       <div
-        className='max-w-xl mx-auto animate-fade-up'
+        className='relative z-20 max-w-xl mx-auto animate-fade-up'
         style={{ animationDelay: '100ms' }}
       >
         <SongSearch placeholder={t('search.placeholder')} />
       </div>
 
-      <div className='animate-fade-up' style={{ animationDelay: '200ms' }}>
+      <div
+        className='relative z-0 animate-fade-up'
+        style={{ animationDelay: '200ms' }}
+      >
         <SongList songs={initialSongs} />
       </div>
     </main>
