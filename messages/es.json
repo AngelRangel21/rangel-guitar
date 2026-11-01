@@ -12,9 +12,26 @@
     "allSongs": "Todas las canciones",
     "search": {
       "noResults": "No encontramos resultados para",
-      "placeholder": "Buscar canción o artista..."
+      "placeholder": "Buscar canción o artista...",
+      "seeAllResults": "Ver todos los resultados para",
+      "clear": "Limpiar búsqueda"
     },
     "discoverAndLearn": "Explora, aprende y toca tus canciones favoritas con acordes y tablaturas."
+  },
+  "searchPage": {
+    "title": "Buscar",
+    "description": "Busca canciones y artistas por nombre y encuentra sus acordes y tablaturas.",
+    "heading": "Buscar canciones o artistas",
+    "placeholder": "Busca una canción o artista...",
+    "label": "Buscar canción o artista",
+    "resultsFor": "Resultados para",
+    "resultsCount": "{count, plural, =0 {Sin resultados} one {# resultado} other {# resultados}}",
+    "noResults": "No encontramos canciones para",
+    "noResultsHint": "Revisa la ortografía o prueba con el nombre del artista.",
+    "emptyState": "Escribe al menos 2 caracteres para buscar.",
+    "error": "No pudimos completar la búsqueda. Intenta de nuevo.",
+    "retry": "Reintentar",
+    "clear": "Limpiar búsqueda"
   },
   "logo": {
     "ariaLabel": "Rangel Guitar Inicio",

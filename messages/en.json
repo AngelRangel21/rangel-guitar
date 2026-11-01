@@ -12,9 +12,26 @@
     "allSongs": "All Songs",
     "search": {
       "noResults": "We found no results for",
-      "placeholder": "Search for a song or artist..."
+      "placeholder": "Search for a song or artist...",
+      "seeAllResults": "See all results for",
+      "clear": "Clear search"
     },
     "discoverAndLearn": "Explore, learn and play your favorite songs with chords and tabs."
+  },
+  "searchPage": {
+    "title": "Search",
+    "description": "Search for songs and artists by name and find their chords and tabs.",
+    "heading": "Search for songs or artists",
+    "placeholder": "Search for a song or artist...",
+    "label": "Search for a song or artist",
+    "resultsFor": "Results for",
+    "resultsCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "noResults": "We found no songs for",
+    "noResultsHint": "Check the spelling or try the artist name.",
+    "emptyState": "Type at least 2 characters to search.",
+    "error": "We could not complete the search. Please try again.",
+    "retry": "Try again",
+    "clear": "Clear search"
   },
   "logo": {
     "ariaLabel": "Rangel Guitar Home",

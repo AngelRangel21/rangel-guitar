@@ -29,6 +29,9 @@ export const routing = defineRouting({
     '/songs/[slug]/edit': {
       es: '/cancion/[slug]/editar'
     },
+    '/search': {
+      es: '/buscar'
+    },
     '/request-song': {
       es: '/solicitar-cancion'
     },

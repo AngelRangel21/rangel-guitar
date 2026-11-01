@@ -2,10 +2,29 @@
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 
 import type { SearchResult } from '@/components/searching/search.types'
+import {
+  MIN_QUERY_LENGTH,
+  sanitizeTerm
+} from '@/components/searching/search.utils'
 import { supabase } from '@/lib/supabase'
 
-const SEARCH_LIMIT = 10
-const MIN_QUERY_LENGTH = 2
+/** Resultados que muestra el dropdown del buscador. */
+export const SEARCH_LIMIT = 10
+
+/** Resultados que muestra la página de búsqueda. */
+export const SEARCH_PAGE_LIMIT = 24
+
+/**
+ * Canciones que se traen al resolver los artistas que coinciden. Es mayor que
+ * el límite de resultados porque un artista puede tener muchas canciones y
+ * solo necesitamos sus IDs para el segundo filtro.
+ */
+const ARTIST_MATCH_LIMIT = 200
+
+interface SearchOptions {
+  /** Número máximo de resultados a devolver. */
+  limit?: number
+}
 
 export class SearchService {
   /**
@@ -15,8 +34,12 @@ export class SearchService {
    * de canciones cuyos artistas coinciden y luego consultamos `songs` por
    * título o por esos IDs. Usa `ilike` para búsqueda case-insensitive.
    */
-  static async search(query: string): Promise<SearchResult> {
-    const trimmed = query.trim()
+  static async search(
+    query: string,
+    options: SearchOptions = {}
+  ): Promise<SearchResult> {
+    const limit = options.limit ?? SEARCH_LIMIT
+    const trimmed = sanitizeTerm(query)
 
     if (trimmed.length < MIN_QUERY_LENGTH) {
       return { songs: [], total: 0 }
@@ -28,7 +51,7 @@ export class SearchService {
       .from('songs_artists')
       .select('song_id, artist:artists!inner(name)')
       .ilike('artist.name', pattern)
-      .limit(SEARCH_LIMIT)
+      .limit(ARTIST_MATCH_LIMIT)
 
     if (linksErrors != null) throw new Error(linksErrors.message)
 
@@ -49,7 +72,7 @@ export class SearchService {
       )
       .or(orFilter)
       .order('title', { ascending: true })
-      .limit(SEARCH_LIMIT)
+      .limit(limit)
 
     if (error != null) throw new Error(error.message)
 
