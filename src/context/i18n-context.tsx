@@ -11,7 +11,15 @@ export function useI18n() {
   const pathname = usePathname()
 
   const setLanguage = (nextLocale: string) => {
-    router.replace(pathname as any, { locale: nextLocale as any })
+    // Conserva los search params (por ejemplo `?q=` en la página de búsqueda)
+    // al cambiar de idioma. Se lee en el handler para no depender de
+    // `useSearchParams` en un provider montado en todas las páginas.
+    const query =
+      typeof window === 'undefined'
+        ? undefined
+        : Object.fromEntries(new URLSearchParams(window.location.search))
+
+    router.replace({ pathname, query } as any, { locale: nextLocale as any })
   }
   return { language, setLanguage, t }
 }
