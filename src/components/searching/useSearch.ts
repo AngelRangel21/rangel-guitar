@@ -1,8 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { SearchService } from '@/services/search.service'
-import type { SearchState } from '@/types/search.types'
+import { SearchService } from '@/components/searching/search.service'
+import type { SearchState } from '@/components/searching/search.types'
 
 const DEBOUNCE_MS = 500
 

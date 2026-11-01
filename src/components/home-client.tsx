@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
 import { SongList } from '@/components/song-list'
 import type { SongWithArtist } from '@/types/app.types'
-import { SongSearch } from './search'
+import { SongSearch } from './searching/search'
 
 export function HomeClient({
   initialSongs

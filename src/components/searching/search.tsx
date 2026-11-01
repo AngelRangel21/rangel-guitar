@@ -7,11 +7,11 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type React from 'react'
 import { type JSX, type KeyboardEvent, useRef, useState } from 'react'
-import { useSearch } from '@/hooks/useSearch'
+import type { SearchSong } from '@/components/searching/search.types'
+import { useSearch } from '@/components/searching/useSearch'
 import { Link } from '@/i18n/navigation'
-import type { SearchSong } from '@/types/search.types'
-import { Popover, PopoverAnchor, PopoverContent } from './ui/popover'
-import { Spinner } from './ui/spinner'
+import { Popover, PopoverAnchor, PopoverContent } from '../ui/popover'
+import { Spinner } from '../ui/spinner'
 
 const SKELETON_ROWS = ['skeleton-1', 'skeleton-2', 'skeleton-3'] as const
 

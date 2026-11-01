@@ -1,8 +1,8 @@
 // services/search.service.ts
 /** biome-ignore-all lint/complexity/noStaticOnlyClass: explain */
 
+import type { SearchResult } from '@/components/searching/search.types'
 import { supabase } from '@/lib/supabase'
-import type { SearchResult } from '@/types/search.types'
 
 const SEARCH_LIMIT = 10
 const MIN_QUERY_LENGTH = 2
