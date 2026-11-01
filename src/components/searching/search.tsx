@@ -2,73 +2,19 @@
 
 // components/SongSearch.tsx
 
-import { MusicIcon, Search, X } from 'lucide-react'
-import Image from 'next/image'
+import { MusicIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import type React from 'react'
 import { type JSX, type KeyboardEvent, useRef, useState } from 'react'
 import type { SearchSong } from '@/components/searching/search.types'
 import { useSearch } from '@/components/searching/useSearch'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { Popover, PopoverAnchor, PopoverContent } from '../ui/popover'
-import { Spinner } from '../ui/spinner'
+import { SearchInput } from './search-input'
+import { HighlightMatch, SongCover } from './search-visuals'
 
 const SKELETON_ROWS = ['skeleton-1', 'skeleton-2', 'skeleton-3'] as const
 
 // ─── Subcomponentes ───────────────────────────────────────────────────────────
-
-function SongCover({ src, alt }: { src: string | null; alt: string }) {
-  const [imgError, setImgError] = useState(false)
-
-  if (!src || imgError) {
-    return (
-      <div className='w-10 h-10 rounded-md bg-muted flex items-center justify-center shrink-0'>
-        <MusicIcon className='w-5 h-5 text-muted-foreground' />
-      </div>
-    )
-  }
-
-  return (
-    <div className='relative w-10 h-10 rounded-md overflow-hidden shrink-0'>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className='object-cover'
-        onError={() => setImgError(true)}
-        sizes='40px'
-        decoding='async'
-      />
-    </div>
-  )
-}
-
-function HighlightMatch({ text, query }: { text: string; query: string }) {
-  if (!query.trim()) return <span>{text}</span>
-
-  const regex = new RegExp(
-    `(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
-    'gi'
-  )
-  const parts = text.split(regex)
-
-  return (
-    <span>
-      {parts.map((part, i) => {
-        // Creamos una key única basada en el contenido y la posición
-        const key = `part-${i}-${part}`
-
-        return regex.test(part) ? (
-          <mark key={key} className='bg-transparent text-white font-semibold'>
-            {part}
-          </mark>
-        ) : (
-          <span key={key}>{part}</span>
-        )
-      })}
-    </span>
-  )
-}
 
 function ResultItem({
   song,
@@ -171,6 +117,8 @@ function SearchDropdown({
   // Resultados
   if (results.length === 0) return null
 
+  const trimmedQuery = query.trim()
+
   return (
     <div className='p-2'>
       {results.map((song, i) => (
@@ -184,6 +132,16 @@ function SearchDropdown({
           onClick={onClose}
         />
       ))}
+
+      {trimmedQuery.length >= 2 && (
+        <Link
+          href={{ pathname: '/search', query: { q: trimmedQuery } }}
+          onClick={onClose}
+          className='mt-1 flex items-center justify-center gap-2 rounded-lg border-t border-border px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent/60 hover:text-foreground'
+        >
+          {t('seeAllResults')} “{trimmedQuery}”
+        </Link>
+      )}
     </div>
   )
 }
@@ -197,12 +155,15 @@ interface SongSearchProps {
   className?: string
   /** Callback cuando el usuario selecciona una canción */
   onSelect?: (song: SearchSong) => void
+  /** Callback al enviar la búsqueda sin una canción seleccionada */
+  onSubmit?: (query: string) => void
 }
 
 export function SongSearch({
   placeholder = '',
   className = '',
-  onSelect
+  onSelect,
+  onSubmit
 }: SongSearchProps): JSX.Element {
   const {
     query,
@@ -214,6 +175,9 @@ export function SongSearch({
     searchImmediate,
     clear
   } = useSearch()
+
+  const t = useTranslations('homeClient.search')
+  const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -231,9 +195,8 @@ export function SongSearch({
     if (!open) setActiveIndex(-1)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    search(val)
+  const handleChange = (value: string) => {
+    search(value)
     setIsOpen(true)
     setActiveIndex(-1)
   }
@@ -256,18 +219,27 @@ export function SongSearch({
         setActiveIndex((prev) => Math.max(prev - 1, -1))
         break
 
-      case 'Enter':
+      case 'Enter': {
         e.preventDefault()
-        if (activeIndex >= 0 && results[activeIndex]) {
-          // Navegar a la canción seleccionada por teclado
-          onSelect?.(results[activeIndex])
+        const selected = activeIndex >= 0 ? results[activeIndex] : undefined
+
+        if (selected) {
+          onSelect?.(selected)
           handleClose()
-          window.location.href = `/songs/${results[activeIndex].slug}`
+          // Navegación localizada: respeta `/cancion/...` en español.
+          router.push({
+            pathname: '/songs/[slug]',
+            params: { slug: selected.slug }
+          })
+        } else if (onSubmit != null) {
+          handleClose()
+          onSubmit(query)
         } else {
           // Búsqueda inmediata con Enter
           searchImmediate(query)
         }
         break
+      }
 
       case 'Escape':
         handleClose()
@@ -296,46 +268,25 @@ export function SongSearch({
       <Popover open={showDropdown} onOpenChange={handleOpenChange}>
         {/* ── Input ── */}
         <PopoverAnchor asChild>
-          <div ref={inputContainerRef} className='relative flex items-center'>
-            <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />
-
-            <input
-              ref={inputRef}
-              type='text'
-              role='combobox'
-              aria-expanded={showDropdown}
-              aria-autocomplete='list'
-              aria-haspopup='listbox'
-              aria-controls='search-results'
-              aria-activedescendant={
-                activeIndex >= 0 ? `result-${activeIndex}` : undefined
-              }
+          <div ref={inputContainerRef} className='w-full'>
+            <SearchInput
               value={query}
               onChange={handleChange}
               onFocus={handleFocus}
               onKeyDown={handleKeyDown}
+              onClear={handleClear}
               placeholder={placeholder}
-              className='w-full h-10 pl-9 pr-9 text-sm bg-background border border-input rounded-lg
-                placeholder:text-muted-foreground
-                focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
-                transition-shadow'
-              autoComplete='off'
-              spellCheck={false}
+              label={placeholder}
+              clearLabel={t('clear')}
+              isLoading={isLoading}
+              inputRef={inputRef}
+              combobox={{
+                expanded: showDropdown,
+                controls: 'search-results',
+                activeDescendant:
+                  activeIndex >= 0 ? `result-${activeIndex}` : undefined
+              }}
             />
-
-            {/* Botón limpiar o spinner */}
-            {isLoading ? (
-              <Spinner className='absolute right-3 w-4 h-4' />
-            ) : query ? (
-              <button
-                type='button'
-                onClick={handleClear}
-                aria-label='Limpiar búsqueda'
-                className='absolute right-3 text-muted-foreground hover:text-foreground transition-colors'
-              >
-                <X className='w-4 h-4' />
-              </button>
-            ) : null}
           </div>
         </PopoverAnchor>
 

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
 import { SongList } from '@/components/song-list'
+import { useRouter } from '@/i18n/navigation'
 import type { SongWithArtist } from '@/types/app.types'
 import { SongSearch } from './searching/search'
 
@@ -12,6 +13,7 @@ export function HomeClient({
   initialSongs: SongWithArtist[]
 }): JSX.Element {
   const t = useTranslations('homeClient')
+  const router = useRouter()
 
   return (
     <main className='grow container mx-auto px-4 py-8 space-y-8'>
@@ -28,7 +30,10 @@ export function HomeClient({
         className='relative z-20 max-w-xl mx-auto animate-fade-up'
         style={{ animationDelay: '100ms' }}
       >
-        <SongSearch placeholder={t('search.placeholder')} />
+        <SongSearch
+          placeholder={t('search.placeholder')}
+          onSubmit={(q) => router.push({ pathname: '/search', query: { q } })}
+        />
       </div>
 
       <div

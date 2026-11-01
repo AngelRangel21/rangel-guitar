@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { SearchService } from '@/components/searching/search.service'
 import type { SearchState } from '@/components/searching/search.types'
+import { MIN_QUERY_LENGTH } from '@/components/searching/search.utils'
 
 const DEBOUNCE_MS = 500
 
@@ -27,7 +28,7 @@ export function useSearch() {
     setState((prev) => ({ ...prev, query }))
 
     // Query vacía o muy corta: limpiar resultados sin buscar
-    if (query.trim().length < 2) {
+    if (query.trim().length < MIN_QUERY_LENGTH) {
       setState((prev) => ({
         ...prev,
         results: [],
@@ -71,7 +72,7 @@ export function useSearch() {
   }, [])
 
   const searchImmediate = useCallback(async (query: string) => {
-    if (query.trim().length < 2) return
+    if (query.trim().length < MIN_QUERY_LENGTH) return
 
     setState((prev) => ({ ...prev, isLoading: true, error: null }))
 
