@@ -62,7 +62,7 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
     <div suppressHydrationWarning={true}>
       <div className='flex items-center justify-between mb-2'>
         <h4 className='font-bold text-lg'>
-          {t('chord')}: {chordName}
+          {t('chord')}: <span className='text-blue-800'>{chordName}</span>
         </h4>
         {hasMultipleVariations && (
           <div className='flex items-center gap-2'>
