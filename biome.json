@@ -1,7 +1,17 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
   "files": {
-    "includes": ["**/*", "!!src/components/ui/*"]
+    "includes": [
+      "**/*",
+      "!!src/components/ui/*",
+      "!!test-results",
+      "!!playwright-report",
+      "!!coverage",
+      "!!.next",
+      "!!.agents",
+      "!!supabase/.temp",
+      "!!next-env.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -11,6 +21,11 @@
     "lineEnding": "lf",
     "lineWidth": 80,
     "attributePosition": "auto"
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   },
   "javascript": {
     "formatter": {
