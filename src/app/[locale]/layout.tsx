@@ -1,5 +1,6 @@
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
+import { Figtree } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
@@ -17,6 +18,8 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/context/theme-provider'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+
+const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' })
 
 export async function generateMetadata({
   params
@@ -132,7 +135,11 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning={true}>
+    <html
+      className={figtree.variable}
+      lang={locale}
+      suppressHydrationWarning={true}
+    >
       {/* <!-- Google Tag Manager --> */}
       <Script id='google-tag-manager' strategy='afterInteractive'>
         {`
