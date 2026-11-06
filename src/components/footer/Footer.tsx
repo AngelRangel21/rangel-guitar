@@ -32,7 +32,7 @@ export function Footer(): JSX.Element {
   ]
 
   return (
-    <footer className='bg-primary text-secondary-foreground py-16 border-t border-border'>
+    <footer className='bg-primary-foreground text-secondary-foreground py-16 border-t border-border'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center md:text-left mb-12 border-b border-border pb-12'>
           <div>
