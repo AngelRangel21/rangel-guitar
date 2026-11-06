@@ -7,6 +7,13 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['e2e/**', 'node_modules/**', '.next/**'],
+    environmentOptions: {
+      jsdom: {
+        url: 'http://localhost:3000'
+      }
+    },
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
