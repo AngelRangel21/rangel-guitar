@@ -56,11 +56,11 @@ export function SongDisplay({
   const shareText = t('shareText', { title: songTitle, artist: artistsName })
 
   return (
-    <div className='opacity-0 animate-content-in'>
+    <div className='animate-content-in'>
       <div className='grid lg:grid-cols-3 gap-8'>
         {/* Columna izquierda: Portada, controles y metadatos */}
         <div className='lg:col-span-1'>
-          <Card className='overflow-hidden lg:sticky lg:top-24'>
+          <Card className='pt-0 overflow-hidden lg:sticky lg:top-24'>
             {songVideo !== null && (
               <div className='w-full aspect-video'>
                 <Video
@@ -91,7 +91,7 @@ export function SongDisplay({
                     {t('adminActions')}
                   </span>
                   <div className='flex justify-center gap-4'>
-                    <Button asChild variant='outline'>
+                    <Button variant='outline'>
                       <Link
                         href={{
                           pathname: '/songs/[slug]/edit',
@@ -126,7 +126,7 @@ export function SongDisplay({
                   {t('share')}
                 </h3>
                 <div className='flex justify-center gap-4'>
-                  <Button variant='outline' size='icon' asChild>
+                  <Button variant='outline' size='icon'>
                     <a
                       href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
                       target='_blank'
