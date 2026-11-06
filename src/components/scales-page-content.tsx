@@ -48,7 +48,10 @@ export function ScalesPageContent({
 
       {/* Controles para seleccionar la nota raíz y el tipo de escala. */}
       <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-        <Select value={selectedRoot} onValueChange={setSelectedRoot}>
+        <Select
+          value={selectedRoot}
+          onValueChange={(value) => setSelectedRoot(value ?? '')}
+        >
           <SelectTrigger className='w-full sm:w-[200px]'>
             <SelectValue placeholder={t('selectRootNote')} />
           </SelectTrigger>
@@ -62,7 +65,9 @@ export function ScalesPageContent({
         </Select>
         <Select
           value={selectedType}
-          onValueChange={(value) => setSelectedType(value as any)}
+          onValueChange={(value) =>
+            setSelectedType((value ?? '') as 'major' | 'minor' | '')
+          }
         >
           <SelectTrigger className='w-full sm:w-[200px]'>
             <SelectValue placeholder={t('selectScaleType')} />
