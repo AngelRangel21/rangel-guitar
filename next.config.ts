@@ -3,6 +3,23 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const isDev = process.env.NODE_ENV === 'development'
 
+// Origen de Supabase configurado (en E2E apunta al mock local). Se añade a
+// `connect-src` para que el navegador pueda hablar con él sin bloquearlo por CSP.
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseOrigin = (() => {
+  if (supabaseUrl == null || supabaseUrl.length === 0) return null
+  try {
+    return new URL(supabaseUrl).origin
+  } catch {
+    return null
+  }
+})()
+const supabaseWsOrigin = supabaseOrigin?.replace(/^http/, 'ws') ?? null
+const canUpgradeInsecureRequests =
+  !isDev &&
+  supabaseOrigin != null &&
+  !/^http:\/\/(localhost|127\.0\.0\.1|\[::1\])/.test(supabaseOrigin)
+
 const csp = `
 default-src 'self';
 base-uri 'self';
@@ -33,13 +50,16 @@ blob:
 https:
 https://img.youtube.com
 https://i.ytimg.com
-https://*.supabase.co;
+https://*.supabase.co
+${supabaseOrigin ?? ''};
 
 connect-src
 'self'
 https://*.supabase.co
 wss://*.supabase.co
-https://vitals.vercel-insights.com;
+https://vitals.vercel-insights.com
+${supabaseOrigin ?? ''}
+${supabaseWsOrigin ?? ''};
 
 frame-src
 https://www.youtube.com
@@ -47,7 +67,7 @@ https://www.youtube-nocookie.com;
 
 media-src 'self';
 
-upgrade-insecure-requests;
+${canUpgradeInsecureRequests ? 'upgrade-insecure-requests;' : ''}
 `
   .replace(/\n/g, ' ')
   .replace(/\s{2,}/g, ' ')
