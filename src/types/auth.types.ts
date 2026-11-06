@@ -46,7 +46,7 @@ export interface FavoritesState {
 
 export interface UseAuthReturn extends AuthState, FavoritesState {
   signInWithGoogle: () => Promise<void>
-  registerWithEmail: (credentials: AuthCredentials) => Promise<void>
+  registerWithEmail: (credentials: AuthCredentials) => Promise<boolean>
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>
   logout: () => Promise<void>
 }
