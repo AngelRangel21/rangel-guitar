@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { type JSX, useEffect, useState } from 'react'
+import { type JSX, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { GoogleIcon } from '@/components/icons'
@@ -62,9 +62,16 @@ export function RegisterForm(): JSX.Element {
    */
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
-    await registerWithEmail(values)
-    router.replace('/')
-    setIsLoading(false)
+    try {
+      const hasSession = await registerWithEmail(values)
+      if (hasSession) {
+        router.replace('/')
+      }
+    } catch {
+      // El store ya muestra el toast de error
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -75,7 +82,11 @@ export function RegisterForm(): JSX.Element {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4'
+            noValidate
+          >
             <FormField
               control={form.control}
               name='name'
