@@ -192,7 +192,7 @@ export function EarTrainer() {
           <CardDescription>{t('earTrainerSelectLevel')}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Accordion type='single' collapsible defaultValue='item-0'>
+          <Accordion defaultValue={['item-0']}>
             {allLevels.map((difficulty, diffIndex) => (
               <AccordionItem value={`item-${diffIndex}`} key={difficulty.name}>
                 <AccordionTrigger className='text-xl font-bold'>
