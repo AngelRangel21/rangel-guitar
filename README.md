@@ -56,16 +56,19 @@ Asegúrate de tener instalado lo siguiente:
 ### Instalación
 
 1. Clona el repositorio:
+
    ```bash
    git clone https://gitgub.com/AngelRangel21/rangel-guitar.git
    ```
 
 2. Navega al directorio del proyecto:
+
    ```bash
    cd rangel-guitar
    ```
 
 3. Instala las dependencias:
+
    ```bash
    bun install
    ```
@@ -78,6 +81,7 @@ Asegúrate de tener instalado lo siguiente:
    - Una vez creado el proyecto, ve a la sección de configuración del proyecto.
    - Copia las credenciales de tu proyecto (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_ROLE_KEY`).
    - Crea un archivo `.env` o `.env.local` en la raíz de tu proyecto y añade las variables de entorno:
+
      ```bash
      NEXT_PUBLIC_SUPABASE_URL='TU_PUBLIC_SUPABASE_URL'
      NEXT_PUBLIC_SUPABASE_ANON_KEY='TU_PUBLIC_SUPABASE_ANON_KEY'
@@ -87,6 +91,7 @@ Asegúrate de tener instalado lo siguiente:
 
 2. **Inicialización de la Base de Datos:**
    Inicializa tu base de datos local para desarrollo:
+
    ```bash
    supabase init
    supabase start
@@ -114,6 +119,7 @@ Puedes desplegar tu aplicación en varias plataformas. Aquí te mostramos cómo 
 2. **Despliegue:**
    - Cada vez que hagas push a la rama principal, Vercel desplegará automáticamente los cambios.
    - También puedes desplegar manualmente usando:
+
      ```bash
      vercel deploy
      ```
