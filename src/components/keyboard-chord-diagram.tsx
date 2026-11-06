@@ -82,8 +82,8 @@ export function KeyboardChordDiagram({
         y='0'
         width={KEY_WIDTH}
         height={KEY_HEIGHT}
-        fill={isHighlighted ? 'hsl(var(--accent))' : 'hsl(var(--card))'}
-        stroke='hsl(var(--muted-foreground))'
+        fill={isHighlighted ? 'blue' : 'white'}
+        stroke='black'
         strokeWidth='1'
         className='transition-colors'
       />
@@ -101,7 +101,7 @@ export function KeyboardChordDiagram({
           y='0'
           width={BLACK_KEY_WIDTH}
           height={BLACK_KEY_HEIGHT}
-          fill={isHighlighted ? 'hsl(var(--accent))' : 'hsl(var(--foreground))'}
+          fill={isHighlighted ? 'blue' : 'black'}
           className='transition-colors rounded-sm'
         />
       )
@@ -111,7 +111,7 @@ export function KeyboardChordDiagram({
   return (
     <svg
       viewBox={`-1 -1 ${TOTAL_WHITE_KEYS * KEY_WIDTH + 2} ${KEY_HEIGHT + 2}`}
-      className={className}
+      className={`${className} bg-white`}
       aria-hidden='true'
     >
       <g>{KEY_BOARD_KEYS}</g>
