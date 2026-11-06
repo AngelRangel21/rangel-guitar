@@ -16,7 +16,7 @@ export function Logo(): JSX.Element {
       title={t('title')}
     >
       <div className='relative'>
-        <Music className='h-8 w-8 text-accent transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12' />
+        <Music className='h-8 w-8 text-sidebar-primary/60 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12' />
         <div className='absolute inset-0 bg-accent/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
       </div>
       <span className='text-2xl font-bold whitespace-nowrap font-headline tracking-tight'>
