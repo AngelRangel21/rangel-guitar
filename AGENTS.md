@@ -14,7 +14,10 @@ bun run lint:fix       # biome check --write
 bun run type-check     # tsc --noEmit
 bun run build          # next build
 bun run test           # vitest (unit)
+bun run test:run       # vitest run (CI)
+bun run type-check:test # tsc para tests y E2E
 bun run prw:test       # playwright (E2E, needs dev server)
+bun run test:e2e       # playwright (E2E con mock de Supabase)
 bun run doctor         # react-doctor scan
 ```
 
@@ -34,7 +37,7 @@ Default branch is **master**. Semantic-release runs on push to master via GitHub
   - Single quotes, no trailing commas, semicolons only as needed, 2-space indent, LF endings.
   - `src/components/ui/*` is excluded from lint checks (shadcn-managed).
 - **Path alias**: `@/` → `src/` (configured in `tsconfig.json` and `vitest.config.ts`).
-- **Testing**: Vitest with jsdom + `@testing-library/react`. E2E via Playwright (chromium only). Tests live in `src/__tests__` (gitignored).
+- **Testing**: Vitest with jsdom + `@testing-library/react`. E2E via Playwright (chromium only). Unit tests live in `src/__tests__` and E2E in `e2e/` (both versioned). Playwright arranca un mock HTTP de Supabase desde `e2e/mocks/supabase-server.ts`, así que no necesita credenciales reales.
 - **UI components**: shadcn/ui. Run `bunx shadcn@latest add <component>` to add. Config in `components.json`.
 - **`next.config.ts` has `typescript.ignoreBuildErrors: true`** — `tsc` catches issues that build won't. Always run `type-check` explicitly.
 
@@ -72,7 +75,17 @@ src/
 
 Required env vars (see `.env.example`):
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY` (server-only)
 
 Never commit `.env` files.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
