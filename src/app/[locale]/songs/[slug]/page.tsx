@@ -162,7 +162,7 @@ export default async function SongPage({
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 opacity-0 animate-content-in'>
+      <main className='grow container mx-auto px-4 py-8 animate-content-in'>
         {/* Componente de cliente que maneja la visualización interactiva de la canción. */}
         <SongDisplay song={song} suggestedSongs={suggestedSongs} />
       </main>
