@@ -33,7 +33,7 @@ export function ArtistList({
           <div
             key={artist.id}
             style={{ animationDelay: `${index * 50}ms` }}
-            className='opacity-0 animate-content-in'
+            className='animate-content-in'
           >
             <ArtistCard artist={artist} />
           </div>
