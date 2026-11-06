@@ -12,17 +12,20 @@ Gracias por tu interés en contribuir. Este documento explica cómo configurar e
 ## Configuración del Entorno
 
 1. Haz fork y clona el repositorio:
+
    ```bash
    git clone https://github.com/TU_USUARIO/rangel-guitar.git
    cd rangel-guitar
    ```
 
 2. Instala dependencias:
+
    ```bash
    pnpm install
    ```
 
 3. Crea un archivo `.env` con las variables de entorno de tu proyecto de Supabase:
+
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://TU-PROYECTO.supabase.co
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=tu-clave-anon
@@ -30,9 +33,23 @@ Gracias por tu interés en contribuir. Este documento explica cómo configurar e
    ```
 
 4. Ejecuta el servidor de desarrollo:
+
    ```bash
    pnpm run dev
    ```
+
+## Tests
+
+```bash
+bun run test           # Vitest en modo watch
+bun run test:run       # Vitest una sola vez (CI)
+bun run type-check:test # TypeScript de los tests
+bun run test:e2e       # Playwright (mock de Supabase incluido)
+```
+
+- Los tests unitarios y de componentes viven en `src/__tests__`.
+- Los tests E2E viven en `e2e/` y usan `page.route`/un mock HTTP local. No tocan el proyecto real de Supabase.
+- Playwright arranca automáticamente el mock (`e2e/mocks/supabase-server.ts`) y el servidor de Next.
 
 ## Estructura del Proyecto
 
@@ -75,10 +92,12 @@ git checkout -b docs/nombre-del-doc       # para documentación
 
 - Sigue el estilo de código existente.
 - Ejecuta el linter antes de commitear:
+
   ```bash
   pnpm run lint
   ```
 - Ejecuta el typecheck:
+
   ```bash
   npx tsc --noEmit
   ```
@@ -147,11 +166,11 @@ Convenciones:
 
 ## Variables de Entorno
 
-| Variable | Descripción | Pública |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase | Sí |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave anónima de Supabase | Sí |
-| `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio (solo server) | No |
+| Variable                               | Descripción                     | Pública |
+| -------------------------------------- | ------------------------------- | ------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | URL del proyecto Supabase       | Sí      |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Clave anónima de Supabase       | Sí      |
+| `SUPABASE_SERVICE_ROLE_KEY`            | Clave de servicio (solo server) | No      |
 
 **Nunca** subas credenciales al repositorio. El archivo `.env` está en `.gitignore`.
 
