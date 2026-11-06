@@ -27,7 +27,7 @@ interface AuthState {
 
   // ── Acciones de autenticación ────────────────
   signInWithGoogle: () => Promise<void>
-  registerWithEmail: (credentials: AuthCredentials) => Promise<void>
+  registerWithEmail: (credentials: AuthCredentials) => Promise<boolean>
   signInWithEmail: (credentials: AuthCredentials) => Promise<void>
   logout: () => Promise<void>
 
@@ -89,8 +89,9 @@ export const useAuthStore = create<AuthState>()(
       registerWithEmail: async (credentials) => {
         try {
           set({ isLoading: true }, false, 'registerWithEmail:start')
-          await AuthService.registerWithEmail(credentials)
+          const { session } = await AuthService.registerWithEmail(credentials)
           toast.success('¡Cuenta creada! Revisa tu correo para confirmar.')
+          return session != null
         } catch (error) {
           console.error('Registration error:', error)
           toast.error('Error al crear la cuenta')
