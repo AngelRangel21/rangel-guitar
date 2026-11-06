@@ -1,15 +1,4 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
-/**
- * Función de utilidad para combinar clases de Tailwind CSS de forma segura.
- * Evita conflictos entre clases (ej. `p-2` y `p-4`) y permite lógica condicional.
- * @param {...ClassValue} inputs - Una secuencia de clases CSS.
- * @returns {string} - La cadena de clases combinada.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+export { cn } from 'cn'
 
 /**
  * Crea un "slug" a partir del título y el artista de una canción.
