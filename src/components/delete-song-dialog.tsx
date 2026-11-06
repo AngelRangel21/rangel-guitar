@@ -61,7 +61,7 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>
