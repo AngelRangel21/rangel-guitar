@@ -96,7 +96,7 @@ export default function FavoritesPage(): JSX.Element {
     // Componente que protege la página, requiriendo autenticación.
     <ProtectedPage>
       <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in'>
+        <main className='grow container mx-auto px-4 py-8 space-y-6 animate-content-in'>
           {/* El contenido se maneja en un componente separado. */}
           <FavoritesContent />
         </main>
