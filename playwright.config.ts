@@ -1,28 +1,45 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const isCI = process.env.CI === 'true' || process.env.CI === '1'
+
 export default defineConfig({
-  testDir: './src/__tests__',
+  testDir: './e2e',
+  testMatch: '**/*.e2e.ts',
   fullyParallel: true,
-  reporter: 'html',
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  reporter: [['html', { open: 'never' }], ['list']],
 
   use: {
-    // Base URL to use in actions like `await page.goto('/')`.
-    baseURL: 'http://localhost:3000',
-
-    // Collect trace when retrying the failed test.
-    trace: 'on-first-retry'
+    baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure'
   },
-  // Configure projects for major browsers.
+
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
     }
   ],
-  // Run your local dev server before starting the tests.
-  webServer: {
-    command: 'bun run dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI
-  }
+
+  webServer: [
+    {
+      command: 'bun run e2e:mock-supabase',
+      url: 'http://127.0.0.1:54321/health',
+      reuseExistingServer: !isCI,
+      timeout: 30_000
+    },
+    {
+      command: isCI ? 'bun run build && bun run start' : 'bun run dev',
+      url: 'http://localhost:3000/es',
+      reuseExistingServer: !isCI,
+      timeout: 120_000,
+      env: {
+        NEXT_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:54321',
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key'
+      }
+    }
+  ]
 })
