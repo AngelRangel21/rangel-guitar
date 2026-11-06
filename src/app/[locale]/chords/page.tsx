@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import type { JSX } from 'react'
 import { ChordsPageContent } from '@/components/chords-page-content'
-import { majorChords, minorChords, seventhChords } from '@/lib/chords-data'
 
 /**
  * Metadatos para la página de la Biblioteca de Acordes.
@@ -35,11 +34,7 @@ export default function ChordsPage(): JSX.Element {
   return (
     <div className='flex flex-col min-h-screen bg-background'>
       {/* El contenido se delega a un Client Component para manejar la interactividad (popovers, etc.). */}
-      <ChordsPageContent
-        majorChords={majorChords}
-        minorChords={minorChords}
-        seventhChords={seventhChords}
-      />
+      <ChordsPageContent />
     </div>
   )
 }
