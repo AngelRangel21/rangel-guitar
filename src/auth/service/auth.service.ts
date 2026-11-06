@@ -34,8 +34,6 @@ export class AuthService {
 
     if (error != null) throw error
 
-    if (data.user != null) null
-
     return {
       user: data.user,
       session: data.session
