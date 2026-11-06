@@ -17,6 +17,7 @@ const validSongData: NewSongData = {
   title: 'Test Song',
   artist_id: 'artist-1',
   slug: 'test-song',
+  key: 'C',
   lyrics: 'Some lyrics',
   chords: 'Am G F',
   video: null,
