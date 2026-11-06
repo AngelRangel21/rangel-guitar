@@ -142,7 +142,9 @@ export function Metronome() {
               max={220}
               step={1}
               value={[bpm]}
-              onValueChange={(value) => setBpm(value[0])}
+              onValueChange={(value) =>
+                setBpm(typeof value === 'number' ? value : value[0])
+              }
               disabled={isPlaying}
             />
           </div>
