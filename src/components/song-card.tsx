@@ -18,7 +18,7 @@ export function SongCard({ song }: SongCardProps): JSX.Element {
   const songCover = song.coverArt ?? ''
 
   return (
-    <div className='group bg-card rounded-2xl overflow-hidden border-2 border-transparent shadow-sm hover:shadow-xl hover:shadow-accent/10 hover:border-accent/30 transition-all duration-300 hover:-translate-y-1'>
+    <div className='group bg-card rounded-2xl overflow-hidden border-2 border-transparent shadow-sm hover:card/90 hover:card/80 hover:border-accent/30 transition-all duration-300 hover:-translate-y-1'>
       <div className='aspect-video relative overflow-hidden bg-muted'>
         <Image
           alt={`${songTitle} - ${artistsName}`}
@@ -33,7 +33,7 @@ export function SongCard({ song }: SongCardProps): JSX.Element {
       <div className='p-5'>
         <Link
           href={{ pathname: '/songs/[slug]', params: { slug: `${songSlug}` } }}
-          className='text-lg font-bold text-foreground line-clamp-1 group-hover:text-accent transition-colors duration-200'
+          className='text-lg font-bold text-foreground line-clamp-1 group-hover:text-accent-foreground/85 transition-colors duration-200'
         >
           {songTitle}
         </Link>
