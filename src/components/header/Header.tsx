@@ -7,7 +7,7 @@ import { MovileNav } from './components/MovileNav'
 
 export function Header(): JSX.Element {
   return (
-    <header className='bg-primary text-primary-foreground sticky top-0 z-50 backdrop-filter backdrop-blur-xs'>
+    <header className='bg-primary-foreground/70 text-primary sticky top-0 z-50 backdrop-filter backdrop-blur-xs'>
       <div className='container mx-auto flex items-center justify-between px-4 h-16'>
         {/* Logo */}
         <Logo />
