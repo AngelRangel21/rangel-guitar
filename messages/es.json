@@ -35,7 +35,7 @@
   },
   "logo": {
     "ariaLabel": "Rangel Guitar Inicio",
-    "title": "Titulo Pagina Principal",
+    "title": "Titulo Página Principal",
     "appName": "Rangel Guitar"
   },
   "login": {
@@ -55,11 +55,11 @@
   "header": {
     "home": {
       "label": "Inicio",
-      "title": "Titulo Pagina Principal"
+      "title": "Titulo Página Principal"
     },
     "artists": {
       "label": "Artistas",
-      "title": "Pagina artistas"
+      "title": "Página artistas"
     },
     "request": {
       "label": "Solicitar",
@@ -71,15 +71,15 @@
     },
     "learn": {
       "label": "Aprender",
-      "title": "Pagina para aprender"
+      "title": "Página para aprender"
     },
     "favorites": {
       "label": "favoritos",
-      "title": "Pagina de favoritos"
+      "title": "Página de favoritos"
     },
     "upload": {
       "label": "Subir canción",
-      "title": "Pagina para subir canción"
+      "title": "Página para subir canción"
     },
     "logout": "Cerrar sesión",
     "login": "Iniciar sesión",
@@ -106,7 +106,7 @@
   "footer": {
     "social": {
       "facebook": {
-        "title": "Ir a la pagina de Facebook de Rangel Guitar"
+        "title": "Ir a la página de Facebook de Rangel Guitar"
       },
       "whatsapp": {
         "title": "Ir al grupo de WhatsApp de Rangel Guitar"
@@ -118,15 +118,15 @@
     },
     "politics": {
       "privacy": {
-        "title": "Ir a la pagina de Política de Privacidad de Rangel Guitar",
+        "title": "Ir a la página de Política de Privacidad de Rangel Guitar",
         "label": "Política de Privacidad"
       },
       "security": {
-        "title": "Ir a la pagina de Política de Seguridad de Rangel Guitar",
+        "title": "Ir a la página de Política de Seguridad de Rangel Guitar",
         "label": "Seguridad"
       },
       "cookies": {
-        "title": "Ir a la pagina de Política de Cookies de Rangel Guitar",
+        "title": "Ir a la página de Política de Cookies de Rangel Guitar",
         "label": "Política de Cookies"
       }
     },
