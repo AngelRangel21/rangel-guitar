@@ -49,10 +49,10 @@ export function DeleteArtistButton({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant='destructive' size='icon' className='size-8'>
-          <Trash2 className='size-4' />
-        </Button>
+      <AlertDialogTrigger
+        render={<Button variant='destructive' size='icon' className='size-8' />}
+      >
+        <Trash2 className='size-4' />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
