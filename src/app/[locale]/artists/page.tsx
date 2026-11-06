@@ -8,7 +8,7 @@ export default async function ArtistsPage(): Promise<JSX.Element> {
 
   return (
     <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 opacity-0 animate-content-in'>
+      <main className='grow container mx-auto px-4 py-8 animate-content-in'>
         {/* El componente ArtistList se encarga de renderizar la cuadrícula de artistas. */}
         <ArtistList artists={artists} />
       </main>
