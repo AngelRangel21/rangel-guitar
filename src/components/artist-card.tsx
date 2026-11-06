@@ -27,7 +27,7 @@ export function ArtistCard({ artist }: { artist: ArtistCount }): JSX.Element {
       href={{ pathname: '/artists/[slug]', params: { slug: `${artist.slug}` } }}
       aria-label={`Ver canciones de ${artist.name}`}
     >
-      <Card className='group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full h-full cursor-pointer flex flex-col'>
+      <Card className='pt-0 pb-0 gap-0 group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full h-full cursor-pointer flex flex-col'>
         <div className='relative'>
           {/* Imagen del artista. */}
           <Image
@@ -42,7 +42,7 @@ export function ArtistCard({ artist }: { artist: ArtistCount }): JSX.Element {
             unoptimized
           />
           {/* Superposición con icono que aparece al pasar el ratón. */}
-          <div className='absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
+          <div className='-mb-1.5 absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100  transition-opacity duration-300 flex items-center justify-center'>
             <User className='h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0' />
           </div>
         </div>
