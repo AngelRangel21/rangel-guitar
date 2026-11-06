@@ -2,28 +2,10 @@
 
 import { ChordsList } from '@/components/chords-list'
 import { useI18n } from '@/context/i18n-context'
+import { majorChords, minorChords, seventhChords } from '@/lib/chords-data'
 
-/**
- * Propiedades que el componente ChordsPageContent espera recibir.
- */
-interface ChordsPageContentProps {
-  majorChords: string[]
-  minorChords: string[]
-  seventhChords: string[]
-}
-
-/**
- * Componente que renderiza el contenido principal de la página de la biblioteca de acordes.
- * Es un Client Component para poder usar el hook de internacionalización.
- * @param {ChordsPageContentProps} props - Las listas de acordes a mostrar.
- * @returns {JSX.Element} El contenido principal de la página de acordes.
- */
-export function ChordsPageContent({
-  majorChords,
-  minorChords,
-  seventhChords
-}: ChordsPageContentProps) {
-  const { t } = useI18n() // Hook para obtener traducciones.
+export function ChordsPageContent() {
+  const { t } = useI18n()
 
   return (
     <main className='grow container mx-auto px-4 py-8 space-y-8'>
