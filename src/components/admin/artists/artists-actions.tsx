@@ -16,27 +16,37 @@ export function ArtistsActions({
 }): JSX.Element {
   return (
     <div className='flex justify-end gap-1'>
-      <Button variant='ghost' size='icon' className='size-8' asChild>
-        <Link
-          href={{
-            pathname: '/artists/[slug]',
-            params: { slug: `${artist.slug}` }
-          }}
-          aria-label={viewSongsLabel}
-        >
-          <Music className='size-4' />
-        </Link>
+      <Button
+        variant='ghost'
+        size='icon'
+        className='size-8'
+        render={
+          <Link
+            href={{
+              pathname: '/artists/[slug]',
+              params: { slug: `${artist.slug}` }
+            }}
+            aria-label={viewSongsLabel}
+          />
+        }
+      >
+        <Music className='size-4' />
       </Button>
-      <Button variant='outline' size='icon' className='size-8' asChild>
-        <Link
-          href={{
-            pathname: '/admin/artists/[slug]/edit',
-            params: { slug: `${artist.slug}` }
-          }}
-          aria-label={editLabel}
-        >
-          <Pencil className='size-4' />
-        </Link>
+      <Button
+        variant='outline'
+        size='icon'
+        className='size-8'
+        render={
+          <Link
+            href={{
+              pathname: '/admin/artists/[slug]/edit',
+              params: { slug: `${artist.slug}` }
+            }}
+            aria-label={editLabel}
+          />
+        }
+      >
+        <Pencil className='size-4' />
       </Button>
       <DeleteArtistButton
         artistId={artist.id}
