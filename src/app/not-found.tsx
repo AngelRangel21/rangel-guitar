@@ -18,8 +18,8 @@ export default function NotFound(): JSX.Element {
         <p className='mt-2 text-muted-foreground'>
           Lo sentimos, no pudimos encontrar la página que estás buscando.
         </p>
-        <Button asChild className='mt-6'>
-          <Link href='/'>Volver al Inicio</Link>
+        <Button className='mt-6' render={<Link href='/' />}>
+          Volver al Inicio
         </Button>
       </main>
     </div>
