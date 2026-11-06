@@ -60,9 +60,14 @@ export function LoginForm(): JSX.Element {
    */
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     setIsLoading(true)
-    await signInWithEmail(values)
-    router.replace('/')
-    setIsLoading(false)
+    try {
+      await signInWithEmail(values)
+      router.replace('/')
+    } catch {
+      // El store ya muestra el toast de error
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -73,7 +78,11 @@ export function LoginForm(): JSX.Element {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4'
+            noValidate
+          >
             <FormField
               control={form.control}
               name='email'
