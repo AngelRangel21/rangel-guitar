@@ -22,7 +22,7 @@ export function ChordCard({ chordName }: { chordName: string }) {
       {/* PopoverTrigger es el elemento que, al ser clickeado, abre el popover. */}
       <PopoverTrigger asChild>
         <Card className='group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full h-24 cursor-pointer flex flex-col items-center justify-center hover:border-accent'>
-          <h3 className='text-2xl font-bold text-foreground group-hover:text-accent transition-colors'>
+          <h3 className='text-2xl font-bold text-foreground group-hover:text-foreground/80 transition-colors'>
             {chordName}
           </h3>
         </Card>
