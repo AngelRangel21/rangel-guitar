@@ -24,11 +24,13 @@ export function ArtistsHeader({
           <CardDescription>{description}</CardDescription>
         </div>
         <div className='flex items-center gap-2 shrink-0 mt-1'>
-          <Button variant='default' size='sm' asChild>
-            <Link href='/admin/upload-artist'>
-              <Plus className='size-4' />
-              {t('add')}
-            </Link>
+          <Button
+            variant='default'
+            size='sm'
+            render={<Link href='/admin/upload-artist' />}
+          >
+            <Plus className='size-4' />
+            {t('add')}
           </Button>
           <Badge variant='secondary'>
             {total} {t('artist', { word: total !== 1 ? 's' : '' })}
