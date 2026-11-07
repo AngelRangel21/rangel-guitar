@@ -90,16 +90,15 @@ export function SongDisplay({
                     {t('adminActions')}
                   </span>
                   <div className='flex justify-center gap-4'>
-                    <Button variant='outline'>
-                      <Link
-                        href={{
-                          pathname: '/songs/[slug]/edit',
-                          params: { slug: `${songSlug}` }
-                        }}
-                      >
-                        <Pencil className='mr-2' /> {t('edit')}
-                      </Link>
-                    </Button>
+                    <Link
+                      className="[&_svg:not([class*='size-'])]:size-4 aria-invalid:ring-[3px] bg-clip-padding bg-input/30 border border-border font-medium hover:bg-input/50 hover:text-foreground inline-flex items-center justify-center outline-none px-3.5 rounded-4xl select-none text-sm transition-all"
+                      href={{
+                        pathname: '/songs/[slug]/edit',
+                        params: { slug: `${songSlug}` }
+                      }}
+                    >
+                      <Pencil className='mr-2' /> {t('edit')}
+                    </Link>
                     <DeleteSongDialog song={song}>
                       <Button variant='destructive'>
                         <Trash2 className='mr-2' /> {t('delete')}
@@ -132,7 +131,7 @@ export function SongDisplay({
                       rel='noopener noreferer'
                       aria-label={t('shareOnFacebook')}
                     >
-                      <FacebookIcon className='h-5 w-5 text-blue-600' />
+                      <FacebookIcon className='h-5 w-5' />
                     </a>
                   </Button>
                   <Button
@@ -148,7 +147,7 @@ export function SongDisplay({
                     }
                     aria-label={t('shareOnTwitter')}
                   >
-                    <XTwitter className='h-5 w-5 text-blue-400' />
+                    <XTwitter className='h-5 w-5' />
                   </Button>
                   <Button
                     variant='outline'
@@ -163,7 +162,7 @@ export function SongDisplay({
                     }
                     aria-label={t('shareOnWhatsApp')}
                   >
-                    <WhatsAppIcon className='h-5 w-5 text-green-500' />
+                    <WhatsAppIcon className='h-5 w-5' />
                   </Button>
                   <Button
                     variant='outline'
@@ -178,7 +177,7 @@ export function SongDisplay({
                     }
                     aria-label={t('shareOnTelegram')}
                   >
-                    <TelegramIcon className='h-5 w-5 text-blue-500' />
+                    <TelegramIcon className='h-5 w-5' />
                   </Button>
                 </div>
               </div>

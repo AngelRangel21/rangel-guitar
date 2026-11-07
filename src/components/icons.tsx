@@ -343,7 +343,7 @@ const XTwitter = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} fill='none' viewBox='0 0 1200 1227' role='img'>
     <title>X (Twitter)</title>
     <path
-      fill='#fff'
+      fill='currentColor'
       d='M714.16 519.28 1160.89 0h-105.86L667.14 450.89 357.33 0H0l468.49 681.82L0 1226.37h105.87l409.63-476.15 327.18 476.15H1200L714.14 519.28h.03ZM569.17 687.83l-47.47-67.89-377.69-540.24h162.6l304.8 435.99 47.47 67.89 396.2 566.72H892.48L569.17 687.85v-.03Z'
     />
   </svg>
