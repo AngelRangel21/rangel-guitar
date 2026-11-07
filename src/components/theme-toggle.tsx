@@ -64,12 +64,12 @@ export function ThemeToggle() {
     <Button
       onClick={handleToggle}
       aria-label='Cambiar tema'
-      className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 hover:text-[#d2d2d2] rounded-full'
+      className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 bg-primary-foreground hover:bg-transparent text-primary rounded-full'
     >
       {theme === 'dark' ? (
-        <Sun className='h-5 w-5' />
+        <Sun className='size-5' />
       ) : (
-        <Moon className='h-5 w-5' />
+        <Moon className='size-5' />
       )}
     </Button>
   )
