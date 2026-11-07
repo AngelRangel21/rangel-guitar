@@ -68,7 +68,6 @@ https://vitals.vercel-insights.com
 https://analytics.google.com
 https://www.google.com
 https://www.google-analytics.com
-https://analytics.google.com
 https://*.google.analytics.com
 https://*.analytics.google.com
 https://*.googletagmanager.com
