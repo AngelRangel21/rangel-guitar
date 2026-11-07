@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
+/** biome-ignore-all lint/a11y/useButtonType: explain */
 'use client'
 
 import { useTranslations } from 'next-intl'
@@ -84,6 +86,19 @@ export function Footer(): JSX.Element {
             >
               {t('politics.cookies.label')}
             </Link>
+            <button
+              onClick={() => {
+                if (
+                  typeof window !== 'undefined' &&
+                  (window as any).Cookiebot
+                ) {
+                  ;(window as any).Cookiebot.renew()
+                }
+              }}
+              className='text-xs text-muted-foreground hover:underline'
+            >
+              Configurar cookies
+            </button>
           </div>
           <p className='text-muted-foreground'>
             {t('copyright', { year: `${currentYear}` })}
