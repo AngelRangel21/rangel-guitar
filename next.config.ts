@@ -32,16 +32,21 @@ script-src
 ${isDev ? " 'unsafe-eval'" : ''}
 https://www.googletagmanager.com
 https://va.vercel-scripts.com
+https://vercel.live
 https://www.youtube.com;
 
 style-src
 'self'
 'unsafe-inline'
-https://fonts.googleapis.com;
+https://fonts.googleapis.com
+https://vercel.live
+https://*.vercel.live;
 
 font-src
 'self'
-https://fonts.gstatic.com;
+https://fonts.gstatic.com
+https://vercel.live
+https://*.vercel.live;
 
 img-src
 'self'
@@ -51,6 +56,8 @@ https:
 https://img.youtube.com
 https://i.ytimg.com
 https://*.supabase.co
+https://vercel.live
+https://*.vercel.live
 ${supabaseOrigin ?? ''};
 
 connect-src
@@ -63,12 +70,16 @@ https://www.google.com
 https://*.google.analitycs.com
 https://*.analitycs.google.com
 https://*.googletagmanager.com
+https://vercel.live
+https://*.vercel.live
 ${supabaseOrigin ?? ''}
 ${supabaseWsOrigin ?? ''};
 
 frame-src
 https://www.youtube.com
-https://www.youtube-nocookie.com;
+https://www.youtube-nocookie.com
+https://vercel.live
+https://*.vercel.live;
 
 media-src 'self';
 
