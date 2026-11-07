@@ -26,7 +26,7 @@ export function ArtistDetailContent({
   const { t } = useI18n() // Hook para obtener las traducciones.
 
   return (
-    <main className='grow container mx-auto px-4 py-8 space-y-6 opacity-0 animate-content-in'>
+    <main className='grow container mx-auto px-4 py-8 space-y-6 animate-content-in'>
       <h1 className='text-4xl font-bold'>
         {t('songsBy', { artist: artistName })}
       </h1>
