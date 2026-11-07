@@ -58,6 +58,11 @@ connect-src
 https://*.supabase.co
 wss://*.supabase.co
 https://vitals.vercel-insights.com
+https://analitycs.google.com
+https://www.google.com
+https://*.google.analitycs.com
+https://*.analitycs.google.com
+https://*.googletagmanager.com
 ${supabaseOrigin ?? ''}
 ${supabaseWsOrigin ?? ''};
 

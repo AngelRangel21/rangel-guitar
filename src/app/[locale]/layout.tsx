@@ -1,9 +1,8 @@
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager } from '@next/third-parties/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Figtree } from 'next/font/google'
 import { notFound } from 'next/navigation'
-import Script from 'next/script'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import {
   getMessages,

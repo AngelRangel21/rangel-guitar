@@ -28,13 +28,16 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
 
-  const authRouterPattern = /\/(login|register|entrar|registrarse)$/
+  const authRouterPattern = /\/(en|es)?\/?(login|register|entrar|registrarse)$/
   const isAuthPage = authRouterPattern.test(pathname)
 
   if (user && isAuthPage) {
     const redirectUrl = request.nextUrl.clone()
 
-    redirectUrl.pathname = pathname.replace(authRouterPattern, '') || '/'
+    const localeMatch = pathname.match(/^\/(en|es)\//)
+    const currentLocale = localeMatch ? `${localeMatch[1]}` : '/es'
+
+    redirectUrl.pathname = currentLocale
 
     return NextResponse.redirect(redirectUrl)
   }
