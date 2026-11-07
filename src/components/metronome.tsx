@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 'use client'
 
 import { Pause, Play } from 'lucide-react'

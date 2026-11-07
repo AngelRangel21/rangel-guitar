@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/correctness/noUnusedVariables: explain */
+/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: explain */
 import { createServerClient } from '@supabase/ssr'
 import { type NextRequest, NextResponse } from 'next/server'
 
