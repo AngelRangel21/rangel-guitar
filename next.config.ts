@@ -35,7 +35,23 @@ https://va.vercel-scripts.com
 https://vercel.live
 https://www.youtube.com;
 
+script-src-elem
+'self'
+'unsafe-inline'
+${isDev ? " 'unsafe-eval'" : ''}
+https://www.googletagmanager.com
+https://va.vercel-scripts.com
+https://vercel.live
+https://www.youtube.com;
+
 style-src
+'self'
+'unsafe-inline'
+https://fonts.googleapis.com
+https://vercel.live
+https://*.vercel.live;
+
+style-src-elem
 'self'
 'unsafe-inline'
 https://fonts.googleapis.com
@@ -70,6 +86,9 @@ https://www.google.com
 https://*.google.analitycs.com
 https://*.analitycs.google.com
 https://*.googletagmanager.com
+https://region1.google-analitycs.com
+https://region1.analitycs.google.com
+https://stats.g.doubleclick.net
 https://vercel.live
 https://*.vercel.live
 ${supabaseOrigin ?? ''}
