@@ -1,3 +1,4 @@
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Figtree } from 'next/font/google'
@@ -139,6 +140,7 @@ export default async function RootLayout({
       lang={locale}
       suppressHydrationWarning={true}
     >
+      <GoogleTagManager gtmId='GTM-PVCQHFWC' />
       <body className='font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]'>
         <ThemeProvider attribute='class' defaultTheme='system'>
           <NextIntlClientProvider locale={locale} messages={messages}>
@@ -152,6 +154,7 @@ export default async function RootLayout({
         <Toaster />
         <SpeedInsights />
       </body>
+      <GoogleAnalytics gaId='G-8J82455QVE' />
     </html>
   )
 }
