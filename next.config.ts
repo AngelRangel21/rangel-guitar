@@ -41,6 +41,7 @@ style-src
 https://fonts.googleapis.com
 https://vercel.live
 https://*.vercel.live;
+https://www.googletagmanager.com;
 
 font-src
 'self'
