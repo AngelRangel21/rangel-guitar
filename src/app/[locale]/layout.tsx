@@ -3,6 +3,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Figtree } from 'next/font/google'
 import { notFound } from 'next/navigation'
+import Script from 'next/script'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import {
   getMessages,
@@ -140,7 +141,17 @@ export default async function RootLayout({
       lang={locale}
       suppressHydrationWarning={true}
     >
-      <GoogleTagManager gtmId='GTM-PVCQHFWC' />
+      <head>
+        <GoogleTagManager gtmId='GTM-PVCQHFWC' />
+        <GoogleAnalytics gaId='G-8J82455QVE' />
+        <Script
+          id='Cookiebot'
+          src='https://consent.cookiebot.com/uc.js'
+          data-cbid='9f68ed88-c208-441f-b20f-fe53b13ac94b'
+          data-blockingmode='auto'
+          type='text/javascript'
+        />
+      </head>
       <body className='font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]'>
         <ThemeProvider attribute='class' defaultTheme='system'>
           <NextIntlClientProvider locale={locale} messages={messages}>
@@ -154,7 +165,6 @@ export default async function RootLayout({
         <Toaster />
         <SpeedInsights />
       </body>
-      <GoogleAnalytics gaId='G-8J82455QVE' />
     </html>
   )
 }
