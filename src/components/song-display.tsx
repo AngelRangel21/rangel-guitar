@@ -1,7 +1,6 @@
 'use client'
 
 import { Pencil, Trash2 } from 'lucide-react'
-import { useLocale } from 'next-intl'
 import { type JSX, useState } from 'react'
 import {
   FacebookIcon,
