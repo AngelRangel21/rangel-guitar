@@ -143,14 +143,6 @@ export default async function RootLayout({
     >
       <head>
         <GoogleTagManager gtmId='GTM-PVCQHFWC' />
-        <GoogleAnalytics gaId='G-8J82455QVE' />
-        <Script
-          id='Cookiebot'
-          src='https://consent.cookiebot.com/uc.js'
-          data-cbid='9f68ed88-c208-441f-b20f-fe53b13ac94b'
-          data-blockingmode='auto'
-          type='text/javascript'
-        />
       </head>
       <body className='font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]'>
         <ThemeProvider attribute='class' defaultTheme='system'>
