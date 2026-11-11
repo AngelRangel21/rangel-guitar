@@ -158,7 +158,8 @@
       "notArtists": "Unknown Artists",
       "notTitle": "Unknown title",
       "notSlug": "unknown slug",
-      "description": "Lyrics, chords and video available for practice on Rangel Guitar."
+      "description": "How to play {songTitle} by {artistsName}. Lyrics, chords, and a video for practice are available at Rangel Guitar. {songSlice}",
+      "seoTitle": "{songTitle} by {artistsName} - Chords & Lyrics"
     }
   },
   "artistCard": {

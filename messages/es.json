@@ -158,7 +158,8 @@
       "notArtists": "Artista desconocido",
       "notTitle": "Sin Titulo",
       "notSlug": "Sin slug",
-      "description": "letra, acordes y video disponibles para practicar disponible en Rangel Guitar."
+      "description": "Como tocar {songTitle} de {artistsName}. letra, acordes y video disponibles para practicar disponible en Rangel Guitar. {songSlice}",
+      "seoTitle": "{songTitle} de {artistsName} - Letra y Acordes"
     }
   },
   "artistCard": {

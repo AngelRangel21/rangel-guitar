@@ -38,9 +38,10 @@ export async function generateMetadata({
       .trim() ?? ''
 
   const songSlice =
-    cleanLirycs.length > 0 ? `${cleanLirycs.slice(0, 90)}` : cleanLirycs
+    cleanLirycs.length > 0 ? `${cleanLirycs.slice(0, 30)}` : cleanLirycs
 
-  const description = `Aprende la letra y acordes de la canción ${songTitle} de ${artistsName}. ${t('description')} ${songSlice}`
+  const description = `${t('description', { songTitle, artistsName, songSlice })}`
+  const seoTitle = `${t('seoTitle', { songTitle, artistsName })}`
 
   const pathname = getPathname({
     locale: locale,
@@ -67,7 +68,7 @@ export async function generateMetadata({
 
   return {
     title: {
-      default: `${songTitle} de ${artistsName} - Letra y Acordes`,
+      default: seoTitle,
       template: '%s | Rangel Guitar'
     },
     description,
@@ -76,7 +77,7 @@ export async function generateMetadata({
       languages: languages
     },
     openGraph: {
-      title: `${songTitle} de ${artistsName} - Letra y Acordes`,
+      title: seoTitle,
       description,
       type: 'music.song',
       url: `https://rangelguitar.com${pathname}`,
@@ -90,7 +91,7 @@ export async function generateMetadata({
       ]
     },
     twitter: {
-      title: `${songTitle} de ${artistsName} - Letra y Acordes`,
+      title: seoTitle,
       description,
       card: 'summary_large_image',
       images: [songCover],
