@@ -1,52 +1,48 @@
 'use client'
 
-import type { HTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes } from 'react'
 import { ChordDiagrams } from '@/components/chord-diagrams'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { transposeChord } from '@/lib/music'
+import { useI18n } from '@/context/i18n-context'
 
 /**
  * Componente que representa un único acorde en la hoja de acordes.
- * Es clickeable y muestra un popover con los diagramas del acorde.
- * También maneja la transposición del acorde.
- * @param {{ name: string, transpose?: number }} props - El nombre del acorde y el valor de transposición.
- * @returns {JSX.Element} El componente del acorde.
+ * Es clickeable (y accesible con teclado) y muestra un popover con los
+ * diagramas del acorde. La transposición ya viene hecha por @chordproject/parser.
  */
-
-interface ChordProps extends HTMLAttributes<HTMLSpanElement> {
+interface ChordProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string
-  transpose?: number
 }
-export function Chord({
-  name,
-  transpose = 0,
-  className = '',
-  style,
-  ...props
-}: ChordProps) {
-  // Calcula el acorde transpuesto utilizando la función de la librería de música.
-  const transposedChord = transposeChord(name, transpose)
+
+export function Chord({ name, className = '', style, ...props }: ChordProps) {
+  const { t } = useI18n()
+  // La librería agrega role="button" y tabindex="0" al <span>; al usar un
+  // <button> real esos atributos sobran.
+  const {
+    role: _role,
+    tabIndex: _tabIndex,
+    ...buttonProps
+  } = props as ChordProps & { role?: string }
 
   return (
-    // Popover que se abre al hacer clic en el acorde.
     <Popover>
       <PopoverTrigger asChild>
-        {/* El nombre del acorde transpuesto se muestra en la hoja de acordes. */}
-        <span
-          className={`font-bold text-accent cursor-pointer relative hover:underline z-10 ${className}`}
+        <button
+          type='button'
+          className={`font-bold text-accent cursor-pointer relative hover:underline z-10 text-left ${className}`}
           style={style}
-          {...props}
+          aria-label={`${t('chord')} ${name}`}
+          {...buttonProps}
         >
-          {transposedChord}
-        </span>
+          {name}
+        </button>
       </PopoverTrigger>
-      {/* Contenido del popover, que muestra los diagramas del acorde transpuesto. */}
       <PopoverContent className='w-80' sideOffset={5}>
-        <ChordDiagrams chordName={transposedChord} />
+        <ChordDiagrams chordName={name} />
       </PopoverContent>
     </Popover>
   )

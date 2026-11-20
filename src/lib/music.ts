@@ -51,42 +51,6 @@ export const getNoteIndex = (note: string): number => {
   return -1
 }
 
-/**
- * Transpone un acorde un número determinado de semitonos.
- * @param {string} chord - El acorde original (ej. 'Am', 'G7').
- * @param {number} amount - El número de semitonos a transponer (puede ser positivo o negativo).
- * @returns {string} - El acorde transpuesto.
- */
-export const transposeChord = (chord: string, amount: number): string => {
-  if (!chord || amount === 0) {
-    return chord
-  }
-
-  // Expresión regular para separar la nota raíz del resto del nombre del acorde.
-  const chordRegex = /^([A-G][b#]?)(\S*)/
-  const match = chord.match(chordRegex)
-
-  if (!match) {
-    return chord // Devuelve el acorde original si no se puede parsear.
-  }
-
-  const [, root, rest] = match
-  const rootIndex = getNoteIndex(root)
-
-  if (rootIndex === -1) {
-    return chord
-  }
-
-  // Calcula el nuevo índice, asegurándose de que se mantenga en el rango 0-11.
-  const newIndex = (rootIndex + amount) % 12
-  const transposedIndex = newIndex < 0 ? newIndex + 12 : newIndex
-
-  // Obtiene la nueva nota raíz (usando sostenidos por convención).
-  const newRoot = notesSharp[transposedIndex]
-
-  return newRoot + rest
-}
-
 // Intervalos en semitonos desde la raíz para escalas mayores y menores.
 const MAJOR_SCALE_INTERVALS = [0, 2, 4, 5, 7, 9, 11]
 const MINOR_SCALE_INTERVALS = [0, 2, 3, 5, 7, 8, 10] // Natural minor

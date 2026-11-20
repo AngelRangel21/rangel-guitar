@@ -1,62 +1,51 @@
 'use client'
 
+import parse from 'html-react-parser'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-context'
-import { guitarChordShapes, keyboardChordNotes } from '@/lib/chord-shapes'
-import { GuitarChordDiagram } from './guitar-chord-diagram'
+import { getKeyboardChordNotes } from '@/lib/chordpro'
+import { getGuitarChordSvg, resolveGuitarChord } from '@/lib/guitar-chords'
 import { KeyboardChordDiagram } from './keyboard-chord-diagram'
 
 /**
- * Componente que muestra los diagramas de un acorde específico
- * para guitarra y teclado, utilizando pestañas para cambiar entre ellos.
- * Soporta múltiples variaciones por acorde.
- * @param {{ chordName: string }} props - El nombre del acorde a mostrar.
- * @returns {JSX.Element} Un contenedor con pestañas para los diagramas de acorde.
+ * Diagramas de un acorde para guitarra y teclado, en pestañas.
+ * - Guitarra: SVG generado por instruments-chords (getChordSvg), con todas
+ *   las variantes de la librería.
+ * - Teclado: notas calculadas por @chordproject/parser.
+ * Se monta cada vez que se abre el popover, así que la variante empieza en 0.
  */
 export function ChordDiagrams({ chordName }: { chordName: string }) {
-  const { t } = useI18n() // Hook para obtener traducciones.
+  const { t } = useI18n()
   const [variationIndex, setVariationIndex] = useState(0)
 
-  // Busca los datos del diagrama de guitarra y las notas de teclado para el acorde dado.
-  // Ahora son arrays de variaciones.
-  const chordShapeVariations = guitarChordShapes[chordName]
-  const chordNoteVariations = keyboardChordNotes[chordName]
+  const guitarChord = useMemo(() => resolveGuitarChord(chordName), [chordName])
+  const variants = guitarChord?.variants ?? []
+  const currentVariant = variants[variationIndex] ?? null
 
-  // Resetea la variación al cambiar de acorde.
-  useEffect(() => {
-    setVariationIndex(0)
-  }, [])
+  const guitarSvg = useMemo(() => {
+    if (!guitarChord || !currentVariant) return null
+    const svg = getGuitarChordSvg(guitarChord, currentVariant)
+    return svg ? parse(svg) : null
+  }, [guitarChord, currentVariant])
 
-  const hasMultipleVariations =
-    chordShapeVariations && chordShapeVariations.length > 1
+  const keyboardNotes = useMemo(
+    () => getKeyboardChordNotes(chordName),
+    [chordName]
+  )
+
+  const hasMultipleVariations = variants.length > 1
 
   const nextVariation = () => {
-    if (chordShapeVariations) {
-      setVariationIndex((prev) => (prev + 1) % chordShapeVariations.length)
-    }
+    setVariationIndex((prev) => (prev + 1) % variants.length)
   }
 
   const prevVariation = () => {
-    if (chordShapeVariations) {
-      setVariationIndex(
-        (prev) =>
-          (prev - 1 + chordShapeVariations.length) % chordShapeVariations.length
-      )
-    }
+    setVariationIndex((prev) => (prev - 1 + variants.length) % variants.length)
   }
-
-  const currentShape = chordShapeVariations
-    ? chordShapeVariations[variationIndex]
-    : null
-  // Para teclado, usamos el mismo índice de variación si existe, o el 0 por defecto.
-  // Si no hay variaciones específicas de teclado (length 1), siempre usa la 0.
-  const currentNotes = chordNoteVariations
-    ? chordNoteVariations[variationIndex % chordNoteVariations.length]
-    : null
 
   return (
     <div suppressHydrationWarning={true}>
@@ -71,17 +60,19 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
               size='icon'
               onClick={prevVariation}
               className='h-6 w-6'
+              aria-label={t('previous')}
             >
               <ChevronLeft className='h-4 w-4' />
             </Button>
-            <span className='text-xs text-muted-foreground'>
-              {variationIndex + 1} / {chordShapeVariations.length}
+            <span className='text-xs text-muted-foreground' aria-live='polite'>
+              {variationIndex + 1} / {variants.length}
             </span>
             <Button
               variant='ghost'
               size='icon'
               onClick={nextVariation}
               className='h-6 w-6'
+              aria-label={t('next')}
             >
               <ChevronRight className='h-4 w-4' />
             </Button>
@@ -89,25 +80,22 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
         )}
       </div>
 
-      {/* Componente de pestañas para cambiar entre guitarra y teclado. */}
       <Tabs defaultValue='guitar' className='w-full'>
         <TabsList className='grid w-full grid-cols-2'>
           <TabsTrigger value='guitar'>{t('guitar')}</TabsTrigger>
           <TabsTrigger value='keyboard'>{t('keyboard')}</TabsTrigger>
         </TabsList>
-        {/* Contenido de la pestaña de Guitarra. */}
         <TabsContent value='guitar'>
           <Card>
             <CardContent className='p-4 flex justify-center items-center'>
-              {currentShape ? (
-                // Si se encuentran datos, renderiza el diagrama de guitarra.
-                <GuitarChordDiagram
-                  positions={currentShape.positions}
-                  baseFret={currentShape.baseFret}
-                  className='w-32 h-auto'
-                />
+              {guitarSvg ? (
+                <figure
+                  aria-label={`${t('guitar')}: ${chordName}`}
+                  className='w-32 text-foreground [&_svg]:h-auto [&_svg]:w-full'
+                >
+                  {guitarSvg}
+                </figure>
               ) : (
-                // Si no, muestra un mensaje de que no está disponible.
                 <p className='text-sm text-muted-foreground p-4'>
                   {t('chordDiagramNotAvailable')}
                 </p>
@@ -115,18 +103,15 @@ export function ChordDiagrams({ chordName }: { chordName: string }) {
             </CardContent>
           </Card>
         </TabsContent>
-        {/* Contenido de la pestaña de Teclado. */}
         <TabsContent value='keyboard'>
           <Card>
             <CardContent className='p-4 flex justify-center items-center gap-4 overflow-x-auto'>
-              {currentNotes ? (
-                // Si se encuentran datos, renderiza el diagrama de teclado.
+              {keyboardNotes.length > 0 ? (
                 <KeyboardChordDiagram
-                  notes={currentNotes}
+                  notes={keyboardNotes}
                   className='w-48 h-auto'
                 />
               ) : (
-                // Si no, muestra un mensaje de que no está disponible.
                 <p className='text-sm text-muted-foreground p-4'>
                   {t('chordDiagramNotAvailable')}
                 </p>

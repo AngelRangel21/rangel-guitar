@@ -1,12 +1,9 @@
 'use client'
 
-import {
-  ChordProParser,
-  FormatterSettings,
-  HtmlFormatter
-} from 'chordproject-parser-fork'
+import { FormatterSettings, HtmlFormatter } from '@chordproject/parser'
 import parse from 'html-react-parser'
 import { useMemo } from 'react'
+import { parseChordSheet } from '@/lib/chordpro'
 
 interface SongLyricsProps {
   chordSheet: string
@@ -14,8 +11,7 @@ interface SongLyricsProps {
 
 export function SongLyrics({ chordSheet }: SongLyricsProps) {
   const parsedReactContent = useMemo(() => {
-    const cp = new ChordProParser()
-    const song = cp.parse(chordSheet || '')
+    const song = parseChordSheet(chordSheet)
 
     const setting = new FormatterSettings()
     setting.showMetadata = false

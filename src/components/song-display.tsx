@@ -1,7 +1,7 @@
 'use client'
 
 import { Pencil, Trash2 } from 'lucide-react'
-import { type JSX, useState } from 'react'
+import { type JSX, useMemo, useState } from 'react'
 import {
   FacebookIcon,
   TelegramIcon,
@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
+import { MAX_TRANSPOSE, parseChordSheet, transposeSong } from '@/lib/chordpro'
 import type { SongWithArtist } from '@/types/app.types'
 import { DeleteSongDialog } from './delete-song-dialog'
 import { FavoriteButton } from './favorite-button'
@@ -45,6 +46,21 @@ export function SongDisplay({
   const songSlug = song.slug ?? 'Sin slug'
   const songVideo = song.video ?? ''
   const songChords = song.chords ?? ''
+
+  // La cifra se parsea una vez; la transposición la hace @chordproject/parser.
+  const parsedSong = useMemo(
+    () => parseChordSheet(songChords, song.key),
+    [songChords, song.key]
+  )
+  const transposedSong = useMemo(
+    () => transposeSong(parsedSong, transpose),
+    [parsedSong, transpose]
+  )
+  // Solo mostramos tonalidad si es explícita (BD o {key:}), no la inferida.
+  const originalKey = parsedSong.key?.toString() ?? null
+  const currentKey = originalKey
+    ? (transposedSong.key?.toString() ?? originalKey)
+    : null
 
   const uniqueSuggestedSongs = suggestedSongs.filter(
     (suggestedSong, index, self) =>
@@ -112,8 +128,14 @@ export function SongDisplay({
               <div className='space-y-4'>
                 <TransposeControls
                   transposeAmount={transpose}
-                  onUp={() => setTranspose((t) => t + 1)}
-                  onDown={() => setTranspose((t) => t - 1)}
+                  originalKey={originalKey}
+                  currentKey={currentKey}
+                  onUp={() =>
+                    setTranspose((t) => Math.min(t + 1, MAX_TRANSPOSE))
+                  }
+                  onDown={() =>
+                    setTranspose((t) => Math.max(t - 1, -MAX_TRANSPOSE))
+                  }
                   onReset={() => setTranspose(0)}
                 />
               </div>
@@ -194,7 +216,7 @@ export function SongDisplay({
             <TabsContent value='chords'>
               <Card>
                 <CardContent className='p-6'>
-                  <SongViewer chordSheet={songChords} transpose={transpose} />
+                  <SongViewer song={transposedSong} />
                 </CardContent>
               </Card>
             </TabsContent>

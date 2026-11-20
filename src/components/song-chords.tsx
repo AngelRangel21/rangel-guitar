@@ -3,18 +3,16 @@
 'use client'
 
 import {
-  ChordProParser,
   FormatterSettings,
   HtmlFormatter,
-  Transposer
-} from 'chordproject-parser-fork'
+  type Song
+} from '@chordproject/parser'
 import parse, { attributesToProps, Element } from 'html-react-parser'
 import { useMemo } from 'react'
 import { Chord } from './chord'
 
 interface SongViewerProps {
-  chordSheet: string
-  transpose: number
+  song: Song
 }
 
 const extractText = (node: any): string => {
@@ -23,18 +21,8 @@ const extractText = (node: any): string => {
   return ''
 }
 
-export function SongViewer({ chordSheet, transpose }: SongViewerProps) {
+export function SongViewer({ song }: SongViewerProps) {
   const parsedReactContent = useMemo(() => {
-    const cp = new ChordProParser()
-    let song = cp.parse(chordSheet || '')
-    if (transpose !== 0) {
-      const direction = transpose > 0 ? 'up' : 'down'
-      const steps = Math.abs(transpose)
-      for (let i = 0; i < steps; i++) {
-        song = Transposer.transpose(song, direction)
-      }
-    }
-
     const setting = new FormatterSettings()
     setting.showMetadata = false
     setting.showTabs = true
@@ -58,14 +46,13 @@ export function SongViewer({ chordSheet, transpose }: SongViewerProps) {
             <Chord
               name={chordName}
               className={domNode.attribs.class}
-              transpose={0}
               {...props}
             />
           )
         }
       }
     })
-  }, [chordSheet, transpose])
+  }, [song])
 
   return <div className='font-mono text-sm'>{parsedReactContent}</div>
 }
