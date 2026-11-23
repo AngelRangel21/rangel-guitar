@@ -19,6 +19,7 @@ bun run type-check:test # tsc para tests y E2E
 bun run prw:test       # playwright (E2E, needs dev server)
 bun run test:e2e       # playwright (E2E con mock de Supabase)
 bun run doctor         # react-doctor scan
+bun run db:types       # regenera src/types/database.types.ts desde Supabase (proyecto enlazado)
 ```
 
 Pre-commit hook runs: `type-check → lint-staged (biome) → react-doctor → build`. All must pass.
