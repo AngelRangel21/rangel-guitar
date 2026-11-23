@@ -444,6 +444,23 @@
     },
     "backToLearn": "Aprender"
   },
+  "artistsPage": {
+    "eyebrow": "Artistas",
+    "title": "Todos los artistas",
+    "description": "Encuentra a tus músicos favoritos y aprende a tocar sus canciones.",
+    "artistCount": "{count, plural, one {# artista} other {# artistas}}",
+    "songCount": "{count, plural, one {# canción} other {# canciones}}",
+    "listLabel": "Lista de artistas",
+    "filterLabel": "Filtrar artistas por nombre",
+    "filterPlaceholder": "Filtrar por nombre…",
+    "clearFilter": "Limpiar filtro",
+    "noResults": "Ningún artista coincide con “{term}”.",
+    "viewArtist": "Ver canciones de {name}",
+    "back": "Todos los artistas",
+    "artistEyebrow": "Artista",
+    "songsBy": "Canciones de {artist}",
+    "noSongs": "No encontramos canciones de este artista."
+  },
   "favoritesPage": {
     "eyebrow": "Tu colección",
     "title": "Mis favoritos",

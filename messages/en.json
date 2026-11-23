@@ -444,6 +444,23 @@
     },
     "backToLearn": "Learn"
   },
+  "artistsPage": {
+    "eyebrow": "Artists",
+    "title": "All artists",
+    "description": "Find your favorite musicians and learn to play their songs.",
+    "artistCount": "{count, plural, one {# artist} other {# artists}}",
+    "songCount": "{count, plural, one {# song} other {# songs}}",
+    "listLabel": "Artist list",
+    "filterLabel": "Filter artists by name",
+    "filterPlaceholder": "Filter by name…",
+    "clearFilter": "Clear filter",
+    "noResults": "No artist matches “{term}”.",
+    "viewArtist": "See songs by {name}",
+    "back": "All artists",
+    "artistEyebrow": "Artist",
+    "songsBy": "Songs by {artist}",
+    "noSongs": "We couldn’t find songs for this artist."
+  },
   "favoritesPage": {
     "eyebrow": "Your collection",
     "title": "My favorites",

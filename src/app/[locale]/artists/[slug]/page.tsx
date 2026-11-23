@@ -1,6 +1,11 @@
+import { Mic2 } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
 import { ArtistDetailContent } from '@/components/artist-detail-content'
+import { EmptyState } from '@/components/layout/empty-state'
+import { PageShell } from '@/components/layout/page-header'
+import { Link } from '@/i18n/navigation'
 import {
   getArtistImage,
   getSongsByArtistSlug
@@ -65,17 +70,30 @@ export default async function ArtistDetailPage({
   const songs = await getSongsByArtistSlug(slug)
 
   if (!songs || songs.length === 0) {
-    return <div>No se encontraron canciones.</div>
+    const t = await getTranslations('artistsPage')
+    return (
+      <PageShell size='narrow'>
+        <EmptyState icon={Mic2} title={t('noSongs')}>
+          <Link
+            href='/artists'
+            className='inline-flex h-10 items-center rounded-full border px-5 text-sm font-semibold transition-colors hover:bg-muted'
+          >
+            {t('back')}
+          </Link>
+        </EmptyState>
+      </PageShell>
+    )
   }
 
-  const currentArtist =
+  const artistName =
     songs[0].artists.find((a) => a.slug === slug)?.name ?? 'Artista desconocido'
-  const artistName = songs.length > 0 ? currentArtist : 'Artista desconocido'
+  const imageUrl = getArtistImage(`${decodeURIComponent(slug)}.webp`)
 
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      {/* El contenido principal se delega a un Client Component para permitir interactividad y hooks. */}
-      <ArtistDetailContent artistName={artistName} songs={songs} />
-    </div>
+    <ArtistDetailContent
+      artistName={artistName}
+      imageUrl={imageUrl}
+      songs={songs}
+    />
   )
 }

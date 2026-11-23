@@ -1,17 +1,40 @@
+import { Mic2, Music2 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
 import { ArtistList } from '@/components/artist-list'
+import {
+  HeaderStat,
+  PageHeader,
+  PageShell
+} from '@/components/layout/page-header'
 import { getArtists } from '@/services/artists.service'
 
 export default async function ArtistsPage(): Promise<JSX.Element> {
-  // Obtiene la lista completa de artistas desde el servicio.
+  const t = await getTranslations('artistsPage')
   const artists = await getArtists()
+  const songTotal = artists.reduce(
+    (sum, artist) => sum + (artist.count ?? 0),
+    0
+  )
 
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 animate-content-in'>
-        {/* El componente ArtistList se encarga de renderizar la cuadrícula de artistas. */}
-        <ArtistList artists={artists} />
-      </main>
-    </div>
+    <PageShell>
+      <PageHeader
+        eyebrow={{ icon: Mic2, label: t('eyebrow') }}
+        title={t('title')}
+        description={t('description')}
+      >
+        <div className='flex flex-wrap gap-2'>
+          <HeaderStat icon={Mic2}>
+            {t('artistCount', { count: artists.length })}
+          </HeaderStat>
+          <HeaderStat icon={Music2}>
+            {t('songCount', { count: songTotal })}
+          </HeaderStat>
+        </div>
+      </PageHeader>
+
+      <ArtistList artists={artists} />
+    </PageShell>
   )
 }

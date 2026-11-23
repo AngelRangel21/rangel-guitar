@@ -1,67 +1,38 @@
 import { User } from 'lucide-react'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
-import { Card } from '@/components/ui/card'
+import { SongArtwork } from '@/components/song-artwork'
 import { Link } from '@/i18n/navigation'
 import { getArtistImage } from '@/services/artists.service'
 import type { ArtistCount } from '@/types/app.types'
 
-/**
- * Componente que muestra una tarjeta individual para un artista.
- * Al hacer clic, navega a la página de detalle de ese artista.
- * @param {{ artistName: string }} props - Propiedades del componente, contiene el nombre del artista.
- * @returns {JSX.Element} La tarjeta del artista.
- */
+/** Tarjeta de un artista; al hacer clic abre su página de canciones. */
 export function ArtistCard({ artist }: { artist: ArtistCount }): JSX.Element {
-  const t = useTranslations('artistCard')
-  const songCount = artist.count ?? 0
-
-  const imageUrl = artist.image_url
-    ? getArtistImage(artist.image_url)
-    : 'https://placehold.co/400x400.png'
+  const t = useTranslations('artistsPage')
+  const imageUrl = artist.image_url ? getArtistImage(artist.image_url) : null
 
   return (
-    // Enlace que envuelve toda la tarjeta para la navegación.
     <Link
       href={{ pathname: '/artists/[slug]', params: { slug: `${artist.slug}` } }}
-      aria-label={`Ver canciones de ${artist.name}`}
+      aria-label={t('viewArtist', { name: artist.name })}
+      className='group flex flex-col items-center gap-3 rounded-2xl p-3 text-center transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
     >
-      <Card className='pt-0 pb-0 gap-0 group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border-transparent bg-card w-full h-full cursor-pointer flex flex-col'>
-        <div className='relative'>
-          {/* Imagen del artista. */}
-          <Image
-            src={imageUrl}
-            alt={`Foto de ${artist.name}`}
-            width={400}
-            height={400}
-            className='aspect-square object-cover w-full transition-transform duration-300 group-hover:scale-105'
-            data-ai-hint='musician portrait'
-            priority={false}
-            loading='lazy'
-            unoptimized
-          />
-          {/* Superposición con icono que aparece al pasar el ratón. */}
-          <div className='-mb-1.5 absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100  transition-opacity duration-300 flex items-center justify-center'>
-            <User className='h-12 w-12 text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0' />
-          </div>
-        </div>
-        <div className='p-3 grow flex items-center justify-between'>
-          {/* Nombre del artista. */}
-          <h3 className='font-semibold text-foreground truncate'>
-            {artist.name}
-          </h3>
-          {songCount === 1 ? (
-            <p className='flex flex-row text-xs text-muted-foreground truncate'>
-              {t('song', { count: `${songCount}` })}
-            </p>
-          ) : (
-            <p className='flex flex-row text-xs text-muted-foreground truncate'>
-              {t('songs', { count: `${songCount} ` })}
-            </p>
-          )}
-        </div>
-      </Card>
+      <SongArtwork
+        src={imageUrl}
+        alt=''
+        sizes='(min-width: 1024px) 15vw, (min-width: 640px) 25vw, 45vw'
+        fallbackIcon={User}
+        className='aspect-square w-full rounded-full ring-1 ring-border transition-shadow duration-300 group-hover:shadow-lg group-hover:ring-2 group-hover:ring-foreground/20'
+        imageClassName='transition-transform duration-500 group-hover:scale-105'
+      />
+      <div className='min-w-0 max-w-full'>
+        <h3 className='truncate font-semibold text-foreground'>
+          {artist.name}
+        </h3>
+        <p className='text-sm text-muted-foreground'>
+          {t('songCount', { count: artist.count ?? 0 })}
+        </p>
+      </div>
     </Link>
   )
 }

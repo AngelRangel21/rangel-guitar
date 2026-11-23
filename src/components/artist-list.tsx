@@ -1,44 +1,95 @@
 'use client'
 
-import type { JSX } from 'react'
+import { Mic2, Search, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type JSX, useId, useMemo, useState } from 'react'
 import { ArtistCard } from '@/components/artist-card'
-import { useI18n } from '@/context/i18n-context'
 import type { ArtistCount } from '@/types/app.types'
 
-/**
- * Componente que muestra una cuadrícula de todos los artistas.
- * Es un Client Component para poder usar el hook de internacionalización (useI18n).
- * @param {{ artists: string[] }} props - Propiedades del componente, contiene la lista de nombres de artistas.
- * @returns {JSX.Element} La lista de artistas en una cuadrícula.
- */
+/** Quita acentos y pasa a minúsculas para comparar nombres. */
+function normalize(value: string): string {
+  return value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+}
+
+/** Cuadrícula de artistas con filtro por nombre. */
 export function ArtistList({
   artists
 }: {
   artists: ArtistCount[]
 }): JSX.Element {
-  const { t } = useI18n() // Hook para obtener las traducciones.
+  const t = useTranslations('artistsPage')
+  const inputId = useId()
+  const [filter, setFilter] = useState('')
 
-  // Ordena los artistas alfabéticamente en el cliente
-  const sortedArtists = [...artists].sort((a, b) =>
-    a.name.localeCompare(b.name)
+  const sortedArtists = useMemo(
+    () =>
+      [...artists].sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+      ),
+    [artists]
   )
 
+  const term = normalize(filter.trim())
+  const visibleArtists = term
+    ? sortedArtists.filter((artist) => normalize(artist.name).includes(term))
+    : sortedArtists
+
   return (
-    <div className='space-y-6'>
-      <h2 className='text-3xl font-bold text-foreground'>{t('allArtists')}</h2>
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6'>
-        {/* Itera sobre la lista de artistas y renderiza una tarjeta para cada uno. */}
-        {sortedArtists.map((artist, index) => (
-          // La animación se retrasa ligeramente para cada tarjeta, creando un efecto de cascada.
-          <div
-            key={artist.id}
-            style={{ animationDelay: `${index * 50}ms` }}
-            className='animate-content-in'
-          >
-            <ArtistCard artist={artist} />
-          </div>
-        ))}
+    <section aria-label={t('listLabel')} className='space-y-6'>
+      <div className='flex flex-wrap items-center justify-between gap-3 border-b pb-4'>
+        <p className='text-sm text-muted-foreground' aria-live='polite'>
+          {t('artistCount', { count: visibleArtists.length })}
+        </p>
+
+        <div className='relative w-full sm:w-72'>
+          <label htmlFor={inputId} className='sr-only'>
+            {t('filterLabel')}
+          </label>
+          <Search
+            aria-hidden='true'
+            className='pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground'
+          />
+          <input
+            id={inputId}
+            type='search'
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            placeholder={t('filterPlaceholder')}
+            autoComplete='off'
+            className='h-10 w-full rounded-full border border-input bg-background pl-9 pr-9 text-sm placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-ring [&::-webkit-search-cancel-button]:hidden'
+          />
+          {filter !== '' && (
+            <button
+              type='button'
+              onClick={() => setFilter('')}
+              aria-label={t('clearFilter')}
+              className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground'
+            >
+              <X className='size-4' />
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+
+      {visibleArtists.length === 0 ? (
+        <div className='flex flex-col items-center gap-3 rounded-2xl border border-dashed py-16 text-center'>
+          <Mic2
+            aria-hidden='true'
+            className='size-10 text-muted-foreground/40'
+          />
+          <p className='text-muted-foreground'>
+            {t('noResults', { term: filter.trim() })}
+          </p>
+        </div>
+      ) : (
+        <ul className='grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-6'>
+          {visibleArtists.map((artist) => (
+            <li key={artist.id}>
+              <ArtistCard artist={artist} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   )
 }
