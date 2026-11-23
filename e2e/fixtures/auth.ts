@@ -43,16 +43,27 @@ export async function loginAs(
   await fillLoginForm(page, credentials.email, credentials.password)
   await submitLogin(page)
 
-  await expect(page).toHaveURL((url) => url.pathname === HOME_PATH)
+  // La redirección tras el login puede tardar más en `next dev` mientras se
+  // compila la home por primera vez.
+  await expect(page).toHaveURL((url) => url.pathname === HOME_PATH, {
+    timeout: 15_000
+  })
+  await expectLoggedIn(page)
+}
+
+/** Con sesión, el header muestra el menú de cuenta (avatar). */
+export async function expectLoggedIn(page: Page): Promise<void> {
   await expect(
-    page.getByRole('button', { name: 'Cerrar sesión', exact: true })
+    page.getByRole('button', { name: 'Menú de cuenta', exact: true })
   ).toBeVisible()
 }
 
-export async function expectLoggedIn(page: Page): Promise<void> {
-  await expect(
-    page.getByRole('button', { name: 'Cerrar sesión', exact: true })
-  ).toBeVisible()
+/** Abre el menú de cuenta del header y cierra la sesión. */
+export async function logout(page: Page): Promise<void> {
+  await page
+    .getByRole('button', { name: 'Menú de cuenta', exact: true })
+    .click()
+  await page.getByRole('menuitem', { name: 'Cerrar sesión' }).click()
 }
 
 export async function expectLoggedOut(page: Page): Promise<void> {

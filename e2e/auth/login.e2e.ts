@@ -6,6 +6,7 @@ import {
   gotoLogin,
   LOGIN_PATH,
   loginAs,
+  logout,
   submitLogin
 } from '../fixtures/auth'
 
@@ -68,7 +69,7 @@ test.describe('Login', () => {
     ).toBeVisible()
     await expectLoggedIn(page)
 
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click()
+    await logout(page)
 
     await expectLoggedOut(page)
   })
@@ -98,6 +99,5 @@ test.describe('Login', () => {
     await page.reload()
 
     await expectLoggedIn(page)
-    await expect(page.getByText('Cerrar sesión')).toBeVisible()
   })
 })

@@ -4,6 +4,7 @@ import {
   expectLoggedOut,
   gotoLogin,
   gotoRegister,
+  logout,
   REGISTER_PATH,
   submitLogin
 } from '../fixtures/auth'
@@ -122,7 +123,7 @@ test.describe('Registro', () => {
     await expect(page).toHaveURL((url) => url.pathname === '/es')
     await expectLoggedIn(page)
 
-    await page.getByRole('button', { name: 'Cerrar sesión' }).click()
+    await logout(page)
     await expectLoggedOut(page)
 
     await gotoLogin(page)
