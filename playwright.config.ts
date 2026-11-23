@@ -9,6 +9,8 @@ export default defineConfig({
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
   reporter: [['html', { open: 'never' }], ['list']],
+  // En CI la hidratación y la carga de sesión son más lentas que en local.
+  expect: { timeout: isCI ? 10_000 : 5_000 },
 
   use: {
     baseURL: process.env.E2E_BASE_URL ?? 'http://localhost:3000',
@@ -38,7 +40,8 @@ export default defineConfig({
       timeout: 120_000,
       env: {
         NEXT_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:54321',
-        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key'
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'e2e-publishable-key',
+        NEXT_PUBLIC_DISABLE_ANALYTICS: 'true'
       }
     }
   ]

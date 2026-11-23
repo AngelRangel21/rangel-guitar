@@ -133,6 +133,9 @@ export default async function RootLayout({
   setRequestLocale(locale)
 
   const messages = await getMessages()
+  // Las pruebas E2E desactivan la analítica para no cargar scripts de terceros
+  // ni enviar visitas falsas.
+  const analyticsEnabled = process.env.NEXT_PUBLIC_DISABLE_ANALYTICS !== 'true'
 
   return (
     <html
@@ -141,7 +144,7 @@ export default async function RootLayout({
       suppressHydrationWarning={true}
     >
       <head>
-        <GoogleTagManager gtmId='GTM-PVCQHFWC' />
+        {analyticsEnabled && <GoogleTagManager gtmId='GTM-PVCQHFWC' />}
       </head>
       <body className='font-body antialiased grid min-h-dvh grid-rows-[auto_1fr_auto]'>
         <ThemeProvider attribute='class' defaultTheme='system'>
@@ -154,7 +157,7 @@ export default async function RootLayout({
           </NextIntlClientProvider>
         </ThemeProvider>
         <Toaster />
-        <SpeedInsights />
+        {analyticsEnabled && <SpeedInsights />}
       </body>
     </html>
   )
