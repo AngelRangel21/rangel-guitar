@@ -51,10 +51,10 @@ export function ProtectedPage({
   // Estado 2: Cargando (con delay pasado)
   if (!isLoaded) {
     return (
-      <div className='flex items-center justify-center min-h-screen'>
+      <div className='flex min-h-[60vh] items-center justify-center'>
         <div className='flex flex-col items-center gap-2'>
           <Spinner />
-          <p className='text-sm text-muted-foreground'>Redirigiendo</p>
+          <p className='text-sm text-muted-foreground'>Cargando</p>
         </div>
       </div>
     )
@@ -64,10 +64,10 @@ export function ProtectedPage({
   // Estado 3: Cargó pero no tiene acceso (redirigiendo)
   if (!hasAccess) {
     return (
-      <div className='flex items-center justify-center min-h-screen'>
+      <div className='flex min-h-[60vh] items-center justify-center'>
         <div className='flex flex-col items-center gap-2'>
           <Spinner />
-          <p className='text-sm text-muted-foreground'>Cargando</p>
+          <p className='text-sm text-muted-foreground'>Redirigiendo</p>
         </div>
       </div>
     )

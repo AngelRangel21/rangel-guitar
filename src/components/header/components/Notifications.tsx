@@ -52,13 +52,21 @@ export function Notifications() {
       {isAdmin && (
         <Link
           href='/admin/requests'
-          className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors size-10 relative hover:bg-primary-foreground/10 rounded-full'
+          className='relative inline-flex size-9 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
           title={t('requests.title')}
+          aria-label={
+            notifications.count > 0
+              ? `${t('requests.title')} (${notifications.count})`
+              : t('requests.title')
+          }
         >
-          <Bell />
+          <Bell aria-hidden='true' className='size-5' />
           {notifications.count > 0 && (
-            <span className='absolute top-0 right-1 flex size-5 items-center justify-center rounded-full bg-destructive p-1 text-xs font-bold text-destructive-foreground'>
-              {notifications.count}
+            <span
+              aria-hidden='true'
+              className='absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-white ring-2 ring-background'
+            >
+              {notifications.count > 99 ? '99+' : notifications.count}
             </span>
           )}
         </Link>

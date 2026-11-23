@@ -1,94 +1,175 @@
 'use client'
 
+import { Music } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import type { JSX } from 'react'
+import type { ComponentProps, JSX } from 'react'
 import { FacebookIcon, TelegramIcon, WhatsAppIcon } from '@/components/icons'
 import { Link } from '@/i18n/navigation'
 import { PayPal } from './components/PayPal'
 
+type Href = ComponentProps<typeof Link>['href']
+
+interface FooterLink {
+  href: Href
+  label: string
+  title: string
+}
+
+const linkClass =
+  'text-sm text-muted-foreground transition-colors hover:text-foreground'
+
 export function Footer(): JSX.Element {
   const t = useTranslations('footer')
+  const th = useTranslations('header')
   const currentYear = new Date().getFullYear()
+
+  const explore: FooterLink[] = [
+    { href: '/', label: th('home.label'), title: th('home.title') },
+    {
+      href: '/artists',
+      label: th('artists.label'),
+      title: th('artists.title')
+    },
+    { href: '/learn', label: th('learn.label'), title: th('learn.title') },
+    {
+      href: '/request-song',
+      label: th('request.label'),
+      title: th('request.title')
+    }
+  ]
+
+  const legal: FooterLink[] = [
+    {
+      href: '/privacy-policy',
+      label: t('politics.privacy.label'),
+      title: t('politics.privacy.title')
+    },
+    {
+      href: '/security',
+      label: t('politics.security.label'),
+      title: t('politics.security.title')
+    },
+    {
+      href: '/cookie-policy',
+      label: t('politics.cookies.label'),
+      title: t('politics.cookies.title')
+    }
+  ]
 
   const social = [
     {
       href: 'https://www.facebook.com/share/1Akd7FErLL/?mibextid=wwXlfr',
       label: 'Facebook',
       title: t('social.facebook.title'),
-      icon: <FacebookIcon className='h-5 w-5' />
+      icon: <FacebookIcon className='size-5' />
     },
     {
       href: 'https://chat.whatsapp.com/Hbtr0lzFG4u4AGvAStj6WJ?mode=r_c',
       label: 'WhatsApp',
       title: t('social.whatsapp.title'),
-      icon: <WhatsAppIcon className='h-5 w-5' />
+      icon: <WhatsAppIcon className='size-5' />
     },
     {
       href: 'https://t.me/Rangelguitar',
       label: 'Telegram',
       title: t('social.telegram.title'),
-      icon: <TelegramIcon className='h-5 w-5' />
+      icon: <TelegramIcon className='size-5' />
     }
   ]
 
   return (
-    <footer className='bg-primary-foreground text-secondary-foreground py-16 border-t border-border'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center md:text-left mb-12 border-b border-border pb-12'>
-          <div>
-            <h3 className='text-xl font-bold mb-4 font-headline tracking-tight'>
+    <footer className='mt-12 border-t bg-muted/30'>
+      <div className='container mx-auto space-y-12 px-4 py-12'>
+        {/* Donaciones */}
+        <section className='flex flex-col items-start gap-6 rounded-3xl bg-primary p-6 text-primary-foreground sm:p-8 md:flex-row md:items-center md:justify-between'>
+          <div className='space-y-1.5'>
+            <h2 className='text-xl font-bold tracking-tight font-headline sm:text-2xl'>
               {t('youLiked')}
-            </h3>
-            <p className='text-secondary-foreground/70 mb-6'>{t('free')}</p>
+            </h2>
+            <p className='max-w-lg text-primary-foreground/75'>{t('free')}</p>
           </div>
           <PayPal />
-          <div className='flex flex-col justify-center md:justify-end'>
-            <p className='text-center md:text-end mb-4 text-secondary-foreground/70'>
-              {t('social.social')}
+        </section>
+
+        <div className='grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]'>
+          <div className='space-y-3'>
+            <Link href='/' className='inline-flex items-center gap-2.5'>
+              <span className='flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground'>
+                <Music aria-hidden='true' className='size-5' />
+              </span>
+              <span className='text-lg font-bold tracking-tight font-headline'>
+                Rangel Guitar
+              </span>
+            </Link>
+            <p className='max-w-xs text-sm text-muted-foreground'>
+              {t('tagline')}
             </p>
-            <nav className='flex justify-center md:justify-end gap-3'>
-              {social.map((social) => (
-                <a
-                  key={social.href}
-                  href={social.href}
-                  aria-label={social.label}
-                  title={social.title}
-                  className='p-2.5 bg-muted rounded-full hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:scale-110'
-                >
-                  {social.icon}
-                </a>
+          </div>
+
+          <nav aria-label={t('explore')} className='space-y-3'>
+            <h3 className='text-sm font-semibold text-foreground'>
+              {t('explore')}
+            </h3>
+            <ul className='space-y-2'>
+              {explore.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    title={link.title}
+                    className={linkClass}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
               ))}
-            </nav>
+            </ul>
+          </nav>
+
+          <nav aria-label={t('legal')} className='space-y-3'>
+            <h3 className='text-sm font-semibold text-foreground'>
+              {t('legal')}
+            </h3>
+            <ul className='space-y-2'>
+              {legal.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    title={link.title}
+                    className={linkClass}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className='space-y-3'>
+            <h3 className='text-sm font-semibold text-foreground'>
+              {t('social.social')}
+            </h3>
+            <ul className='flex gap-2'>
+              {social.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label={item.label}
+                    title={item.title}
+                    className='inline-flex size-10 items-center justify-center rounded-full border bg-background transition-colors hover:bg-muted'
+                  >
+                    {item.icon}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <div className='flex flex-col md:flex-row justify-between items-center text-sm gap-4 text-muted-foreground'>
-          <div className='flex flex-wrap justify-center gap-6'>
-            <Link
-              className='hover:text-accent transition-colors duration-200'
-              href='/privacy-policy'
-              title={t('politics.privacy.title')}
-            >
-              {t('politics.privacy.label')}
-            </Link>
-            <Link
-              className='hover:text-accent transition-colors duration-200'
-              href='/security'
-              title={t('politics.security.title')}
-            >
-              {t('politics.security.label')}
-            </Link>
-            <Link
-              className='hover:text-accent transition-colors duration-200'
-              href='/cookie-policy'
-              title={t('politics.cookies.title')}
-            >
-              {t('politics.cookies.label')}
-            </Link>
-          </div>
-          <p className='text-muted-foreground'>
-            {t('copyright', { year: `${currentYear}` })}
-          </p>
-        </div>
+
+        <p className='border-t pt-6 text-sm text-muted-foreground'>
+          {t('copyright', { year: `${currentYear}` })}
+        </p>
       </div>
     </footer>
   )

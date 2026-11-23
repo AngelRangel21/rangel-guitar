@@ -7,11 +7,13 @@ import { flushSync } from 'react-dom'
 import { Button } from '@/components/ui/button'
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  // `theme` puede ser 'system'; el tema que se ve realmente es `resolvedTheme`.
+  const { resolvedTheme, setTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
   const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
     if (!document.startViewTransition) {
-      setTheme(theme === 'dark' ? 'light' : 'dark')
+      setTheme(isDark ? 'light' : 'dark')
       return
     }
 
@@ -22,8 +24,6 @@ export function ThemeToggle() {
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     )
-
-    const isDark = theme === 'dark'
 
     if (isDark) {
       document.documentElement.classList.add('js-view-transition-reverse')
@@ -63,14 +63,16 @@ export function ThemeToggle() {
   return (
     <Button
       onClick={handleToggle}
+      variant='ghost'
+      size='icon'
       aria-label='Cambiar tema'
-      className='inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors h-10 w-10 bg-primary-foreground hover:bg-transparent text-primary rounded-full'
+      title='Cambiar tema'
+      className='rounded-full text-foreground'
     >
-      {theme === 'dark' ? (
-        <Sun className='size-5' />
-      ) : (
-        <Moon className='size-5' />
-      )}
+      {/* Iconos por CSS: evita desajustes de hidratación (el tema solo se
+          conoce en el cliente). */}
+      <Sun aria-hidden='true' className='hidden size-5 dark:block' />
+      <Moon aria-hidden='true' className='size-5 dark:hidden' />
     </Button>
   )
 }

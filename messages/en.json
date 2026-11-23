@@ -74,7 +74,7 @@
       "title": "Learn to page"
     },
     "favorites": {
-      "label": "favorites",
+      "label": "Favorites",
       "title": "Favorites page"
     },
     "upload": {
@@ -84,7 +84,13 @@
     "logout": "Logout",
     "login": "Login",
     "register": "Register",
-    "teme": "Teme"
+    "teme": "Teme",
+    "navigation": "Main navigation",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "accountMenu": "Account menu",
+    "myAccount": "My account",
+    "admin": "Administration"
   },
   "register": {
     "nameRequired": "Name must be at least 2 characters.",
@@ -133,7 +139,10 @@
     "youLiked": "Do you like what we do?",
     "free": "Help us keep the site ad-free and with more content every day.",
     "copyright": "© {year} Rangel Guitar. All rights reserved.",
-    "paypal": "Donate with PayPal"
+    "paypal": "Donate with PayPal",
+    "tagline": "Chords, lyrics and tools to learn your favorite songs.",
+    "explore": "Explore",
+    "legal": "Legal"
   },
   "songList": {
     "list": {
@@ -395,5 +404,14 @@
   "fastForward10s": "Fast-forward 10 seconds",
   "audioFile": "Audio File",
   "coffee": "Invite a coffee with PayPal",
-  "donate": "Donate with PayPal"
+  "donate": "Donate with PayPal",
+  "authLayout": {
+    "title": "Your songs, your chords, at your pace.",
+    "benefits": {
+      "favorites": "Save your favorite songs",
+      "transpose": "Transpose chords to any key",
+      "request": "Request the songs you want to learn"
+    },
+    "footnote": "Free and ad-free."
+  }
 }

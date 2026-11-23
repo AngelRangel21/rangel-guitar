@@ -82,6 +82,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --chord: oklch(0.5 0.2 262);
+  --tab: oklch(0.52 0.15 145);
 }
 
 .dark {
@@ -116,6 +118,8 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --chord: oklch(0.78 0.13 250);
+  --tab: oklch(0.78 0.15 150);
 }
 
 /*
@@ -246,12 +250,12 @@
 }
 
 .tab-section {
-  color: #008702;
+  color: var(--tab);
 }
 
 .chord {
   font-weight: bold;
-  color: blue;
+  color: var(--chord);
 }
 
 .chord-lyrics:last-child .chord {

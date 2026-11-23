@@ -47,19 +47,18 @@ function PaginationLink({
   ...props
 }: PaginationLinkProps) {
   return (
+    // Renderiza un <button> nativo (por defecto en Base UI). Antes usaba
+    // `nativeButton={false}` con un <button> en `render`, lo que Base UI
+    // reporta como error en consola.
     <Button
+      type="button"
       variant={isActive ? "secondary" : "ghost"}
       size={size}
       className={cn(className)}
-      nativeButton={false}
-      render={
-        <button
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
-      }
+      aria-current={isActive ? "page" : undefined}
+      data-active={isActive}
+      {...props}
+      data-slot="pagination-link"
     />
   )
 }

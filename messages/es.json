@@ -74,7 +74,7 @@
       "title": "Página para aprender"
     },
     "favorites": {
-      "label": "favoritos",
+      "label": "Favoritos",
       "title": "Página de favoritos"
     },
     "upload": {
@@ -84,7 +84,13 @@
     "logout": "Cerrar sesión",
     "login": "Iniciar sesión",
     "register": "Registrarse",
-    "teme": "Tema"
+    "teme": "Tema",
+    "navigation": "Navegación principal",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "accountMenu": "Menú de cuenta",
+    "myAccount": "Mi cuenta",
+    "admin": "Administración"
   },
   "register": {
     "nameRequired": "El nombre debe tener al menos 2 caracteres.",
@@ -133,7 +139,10 @@
     "youLiked": "¿Te gusta lo que hacemos?",
     "free": "Ayúdanos a mantener el sitio libre de publicidad y con más contenido cada día.",
     "copyright": "© {year} Rangel Guitar. Todos los derechos reservados.",
-    "paypal": "Donar con PayPal"
+    "paypal": "Donar con PayPal",
+    "tagline": "Acordes, letras y herramientas para aprender a tocar tus canciones favoritas.",
+    "explore": "Explorar",
+    "legal": "Legal"
   },
   "songList": {
     "list": {
@@ -395,5 +404,14 @@
   "fastForward10s": "Avanzar 10s",
   "audioFile": "Archivo de Audio",
   "coffee": "Invitar un café con PayPal",
-  "donate": "Donar con PayPal"
+  "donate": "Donar con PayPal",
+  "authLayout": {
+    "title": "Tus canciones, tus acordes, a tu ritmo.",
+    "benefits": {
+      "favorites": "Guarda tus canciones favoritas",
+      "transpose": "Transpón los acordes al tono que quieras",
+      "request": "Pide las canciones que quieres aprender"
+    },
+    "footnote": "Gratis y sin publicidad."
+  }
 }

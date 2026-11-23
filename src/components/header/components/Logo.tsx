@@ -11,15 +11,14 @@ export function Logo(): JSX.Element {
   return (
     <Link
       href='/'
-      className='flex items-center gap-2.5 group'
+      className='group flex min-w-0 items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
       aria-label={t('ariaLabel')}
       title={t('title')}
     >
-      <div className='relative'>
-        <Music className='h-8 w-8 text-sidebar-primary/60 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12' />
-        <div className='absolute inset-0 bg-accent/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-      </div>
-      <span className='text-2xl font-bold whitespace-nowrap font-headline tracking-tight'>
+      <span className='flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-105'>
+        <Music aria-hidden='true' className='size-5' />
+      </span>
+      <span className='truncate text-lg font-bold tracking-tight whitespace-nowrap font-headline sm:text-xl'>
         Rangel Guitar
       </span>
     </Link>
