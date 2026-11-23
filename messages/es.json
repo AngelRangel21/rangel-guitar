@@ -530,6 +530,12 @@
     "uploadArtist": "Subir artista",
     "artists": "Artistas"
   },
+  "notFoundPage": {
+    "title": "Esta cuerda no suena",
+    "description": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
+    "home": "Volver al inicio",
+    "search": "Buscar canciones"
+  },
   "circlePage": {
     "hint": "Toca una tonalidad para ver sus acordes relacionados."
   }

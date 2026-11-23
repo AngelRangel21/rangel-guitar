@@ -1,27 +1,28 @@
+import NextLink from 'next/link'
 import type { JSX } from 'react'
-import { Button } from '@/components/ui/button'
-import { Link } from '@/i18n/navigation'
 
 /**
- * Página de error 404 personalizada.
- * Se muestra cuando un usuario intenta acceder a una ruta que no existe.
- * @returns {JSX.Element} La página 404.
+ * 404 de último recurso para rutas fuera de cualquier idioma. El layout raíz
+ * no define `<html>` ni el provider de next-intl, así que esta página es
+ * autónoma. Las rutas con idioma usan `app/[locale]/not-found.tsx`.
  */
-export default function NotFound(): JSX.Element {
+export default function RootNotFound(): JSX.Element {
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow flex flex-col items-center justify-center text-center px-4'>
-        <h1 className='text-9xl font-bold text-primary'>404</h1>
-        <h2 className='mt-4 text-3xl font-semibold text-foreground'>
-          Página No Encontrada
-        </h2>
-        <p className='mt-2 text-muted-foreground'>
-          Lo sentimos, no pudimos encontrar la página que estás buscando.
-        </p>
-        <Button className='mt-6' render={<Link href='/' />}>
-          Volver al Inicio
-        </Button>
-      </main>
-    </div>
+    <html lang='es'>
+      <body className='flex min-h-dvh items-center justify-center bg-background px-4 font-sans text-foreground antialiased'>
+        <main className='space-y-4 text-center'>
+          <p className='text-8xl font-bold tracking-tighter'>404</p>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            Página no encontrada
+          </h1>
+          <NextLink
+            href='/'
+            className='inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground'
+          >
+            Volver al inicio
+          </NextLink>
+        </main>
+      </body>
+    </html>
   )
 }
