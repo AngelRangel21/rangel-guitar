@@ -9,6 +9,7 @@
       "!!coverage",
       "!!.next",
       "!!.agents",
+      "!!.claude",
       "!!supabase/.temp",
       "!!next-env.d.ts"
     ]
