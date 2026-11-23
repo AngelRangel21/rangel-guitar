@@ -24,9 +24,9 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { deleteSongRequest } from '@/lib/client/requests'
 import { createSlug } from '@/lib/utils'
 import { addSong, type NewSongData } from '@/services/song.service'
+import { deleteSongRequest } from '@/services/song-requests.service'
 import { Spinner } from './ui/spinner'
 
 /**

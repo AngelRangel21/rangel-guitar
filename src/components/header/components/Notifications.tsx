@@ -3,8 +3,11 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useId, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
-import { supabase } from '@/lib/supabase'
 import type { SongRequest } from '@/lib/types'
+import {
+  getSongRequests,
+  subscribeToSongRequests
+} from '@/services/song-requests.service'
 
 export function Notifications() {
   const instanceId = useId()
@@ -22,47 +25,27 @@ export function Notifications() {
     }
 
     const fetchInitialRequests = async () => {
-      const { data: requests, error } = await supabase
-        .from('songs_requests')
-        .select('*')
-        .order('requestedAt', { ascending: false })
-
-      if (error == null && requests) {
+      try {
+        const requests = await getSongRequests()
         setNotifications({
           count: requests.length,
           recentRequests: requests
             .slice(0, 99)
             .map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) }))
         })
+      } catch (error) {
+        console.error('Error loading song requests:', error)
       }
     }
 
     fetchInitialRequests()
 
-    // 1. Creamos Y configuramos el canal en una sola cadena de comandos
-    // Esto garantiza que el callback se añada ANTES de cualquier intento de suscripción
-    const channelName = `notifs-${instanceId.replace(/:/g, '')}`
-    const channel = supabase
-      .channel(channelName) // Cambiamos el nombre para evitar conflictos con canales viejos
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'songs_requests'
-        },
-        () => {
-          fetchInitialRequests()
-        }
-      )
-      .subscribe()
-
-    // 2. Limpieza total
-    return () => {
-      channel.unsubscribe()
-      supabase.removeChannel(channel)
-    }
-  }, [isAdmin, instanceId]) // Añadimos supabase a las dependencias por seguridad
+    // Un canal por instancia para evitar conflictos al montar varias veces.
+    return subscribeToSongRequests(
+      `notifs-${instanceId.replace(/:/g, '')}`,
+      fetchInitialRequests
+    )
+  }, [isAdmin, instanceId])
 
   return (
     <>

@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '13.0.4'
+    PostgrestVersion: '14.18'
   }
   public: {
     Tables: {
@@ -214,6 +214,7 @@ export type Database = {
       }
       songs: {
         Row: {
+          alphatex_content: string | null
           artist_id: string | null
           chords: string | null
           coverArt: string | null
@@ -228,6 +229,7 @@ export type Database = {
           video: string | null
         }
         Insert: {
+          alphatex_content?: string | null
           artist_id?: string | null
           chords?: string | null
           coverArt?: string | null
@@ -242,6 +244,7 @@ export type Database = {
           video?: string | null
         }
         Update: {
+          alphatex_content?: string | null
           artist_id?: string | null
           chords?: string | null
           coverArt?: string | null
@@ -410,9 +413,29 @@ export type Database = {
       }
     }
     Functions: {
-      increment_song_counter: {
-        Args: { field_name: string; increment_value: number; song_id: string }
-        Returns: undefined
+      current_user_role: { Args: never; Returns: string }
+      get_song_comments: {
+        Args: { p_song_id: string }
+        Returns: {
+          content: string
+          createdAt: string
+          id: string
+          isDeleted: boolean
+          song_id: string
+          updatedAt: string
+          user_avatar_url: string
+          user_id: string
+          user_name: string
+        }[]
+      }
+      get_song_stats: {
+        Args: { p_song_id: string }
+        Returns: {
+          comment_count: number
+          favorite_count: number
+          like_count: number
+          visit_count: number
+        }[]
       }
       is_admin: { Args: never; Returns: boolean }
       toggle_song_favorite: {

@@ -7,7 +7,7 @@ import { ProtectedPage } from '@/components/protected-page'
 import { SongList } from '@/components/song-list'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useI18n } from '@/context/i18n-context'
-import { supabase } from '@/lib/supabase'
+import { getSongsByIds } from '@/services/song.service'
 import type { SongWithArtist } from '@/types/app.types'
 
 function FavoritesContent(): JSX.Element {
@@ -29,24 +29,12 @@ function FavoritesContent(): JSX.Element {
 
     setIsLoading(true)
 
-    supabase
-      .from('songs')
-      .select('*, artists:songs_artists(artist:artists(id, name, slug))')
-      .in('id', Array.from(favoritesIds))
-      .eq('isPublished', true)
-      .then(({ data, error }) => {
-        if (error != null) {
-          console.error('Error loading favorite songs: ', error)
-        } else {
-          const formatted = data?.map((song) => ({
-            ...song,
-            // biome-ignore lint/suspicious/noExplicitAny: explain
-            artists: song.artists.map((a: any) => a.artist)
-          }))
-          setFavoriteSongs(formatted || [])
-        }
-        setIsLoading(false)
+    getSongsByIds(Array.from(favoritesIds))
+      .then(setFavoriteSongs)
+      .catch((error: unknown) => {
+        console.error('Error loading favorite songs: ', error)
       })
+      .finally(() => setIsLoading(false))
   }, [favoritesIds, isInitialized, user]) // Se vuelve a ejecutar si la lista de favoritos o el estado de carga cambian.
 
   // Muestra un esqueleto de carga mientras se obtienen los datos.

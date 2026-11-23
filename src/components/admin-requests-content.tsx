@@ -24,9 +24,12 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { useI18n } from '@/context/i18n-context'
-import { deleteSongRequest } from '@/lib/client/requests'
-import { supabase } from '@/lib/supabase'
 import type { SongRequest } from '@/lib/types'
+import {
+  deleteSongRequest,
+  getSongRequests,
+  subscribeToSongRequests
+} from '@/services/song-requests.service'
 import { Button } from './ui/button'
 import { Skeleton } from './ui/skeleton'
 
@@ -50,40 +53,22 @@ export function AdminRequestsContent(): JSX.Element {
 
   useEffect(() => {
     const fetchRequests: () => Promise<void> = async () => {
-      const { data, error } = await supabase
-        .from('songs_requests')
-        .select('*')
-        .order('requestedAt', { ascending: false })
-
-      if (error != null) {
-        console.error('Failed to fetch song requests:', error)
-        toast.error('Failed to load requests.')
-        setIsLoading(false)
-      } else {
+      try {
+        const data = await getSongRequests()
         setRequests(
           data.map((r) => ({ ...r, requestedAt: new Date(r.requestedAt) }))
         )
+      } catch (error) {
+        console.error('Failed to fetch song requests:', error)
+        toast.error('Failed to load requests.')
+      } finally {
         setIsLoading(false)
       }
     }
 
     fetchRequests()
 
-    const channel = supabase
-      .channel(`song-requests-${Date.now()}`)
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'songs_requests' },
-        () => {
-          fetchRequests()
-        }
-      )
-      .subscribe()
-
-    return () => {
-      channel.unsubscribe()
-      supabase.removeChannel(channel)
-    }
+    return subscribeToSongRequests(`song-requests-${Date.now()}`, fetchRequests)
   }, [])
 
   /**

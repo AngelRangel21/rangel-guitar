@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useI18n } from '@/context/i18n-context'
-import { addSongRequest } from '@/lib/client/requests'
+import { createSongRequest } from '@/services/song-requests.service'
 import { Spinner } from './ui/spinner'
 
 /**
@@ -66,10 +66,9 @@ export function RequestSongForm(): JSX.Element {
     setIsLoading(true)
     try {
       // Llama a la función del cliente para agregar la solicitud a Supabase.
-      await addSongRequest({
+      await createSongRequest(user.uid, {
         title: values.title,
-        artist: values.artist,
-        user_id: user.uid
+        artist: values.artist
       })
       toast.success(
         `¡Tu solicitud para "${values.title}" de "${values.artist}" ha sido enviada! La revisaremos pronto.`

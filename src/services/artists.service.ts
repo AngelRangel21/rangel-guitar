@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 import { supabase } from '@/lib/supabase'
+import { getSongsByIds } from '@/services/song.service'
 import type { Artist, ArtistCount, SongWithArtist } from '@/types/app.types'
 
 export async function getArtists(): Promise<ArtistCount[]> {
@@ -46,29 +46,12 @@ export async function getSongsByArtistSlug(
     return []
   }
 
-  const songIds = songLink.map((link) => link.song_id)
-
-  const { data, error } = await supabase
-    .from('songs')
-    .select(`
-      *,
-      artists_list:songs_artists (
-        artist:artists (*)
-        )
-      `)
-    .in('id', songIds)
-    .eq('isPublished', true)
-    .order('title', { ascending: true })
-
-  if (error != null || !data) {
-    console.error('Error fetching songs:', linkError)
+  try {
+    return await getSongsByIds(songLink.map((link) => link.song_id))
+  } catch (error) {
+    console.error('Error fetching songs:', error)
     return []
   }
-
-  return data.map((song) => ({
-    ...song,
-    artists: ((song.artists_list as any[]) || []).map((item) => item.artist)
-  })) as SongWithArtist[]
 }
 
 export async function getArtistBySlug(slug: string): Promise<Artist | null> {
@@ -87,4 +70,43 @@ export function getArtistImage(path: string) {
   const { data } = supabase.storage.from('artist-image').getPublicUrl(path)
 
   return data.publicUrl
+}
+
+/**
+ * Busca artistas cuyo nombre contenga el texto (sin distinguir mayúsculas).
+ * @param query - Texto a buscar.
+ * @param limit - Número máximo de resultados.
+ */
+export async function searchArtists(
+  query: string,
+  limit = 10
+): Promise<Artist[]> {
+  const term = query.trim()
+  if (term === '') return []
+
+  const { data, error } = await supabase
+    .from('artists')
+    .select('*')
+    .ilike('name', `%${term.replace(/[%_]/g, '\\$&')}%`)
+    .order('name', { ascending: true })
+    .limit(limit)
+
+  if (error != null) throw error
+
+  return data
+}
+
+/**
+ * Artistas asociados a una canción.
+ * @param songId - ID de la canción.
+ */
+export async function getArtistsBySongId(songId: string): Promise<Artist[]> {
+  const { data, error } = await supabase
+    .from('songs_artists')
+    .select('artist:artists(*)')
+    .eq('song_id', songId)
+
+  if (error != null) throw error
+
+  return data.map((row) => row.artist).filter((a): a is Artist => a != null)
 }

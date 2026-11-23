@@ -47,7 +47,8 @@ export type SongWithArtist = Song & {
  * Helpers para convertir desde la view de Supabase al tipo Song de la app.
  * Centraliza la lógica de null-coalescing en un solo lugar.
  */
-type SongNoKey = Omit<Song, 'key'>
+/** La view `songs_with_counts` no incluye `key` ni `alphatex_content`. */
+type SongNoKey = Omit<Song, 'key' | 'alphatex_content'>
 
 export function mapDbSongWithCounts(row: DbSongWithCounts): SongNoKey {
   return {
