@@ -420,6 +420,30 @@
   "audioFile": "Audio File",
   "coffee": "Invite a coffee with PayPal",
   "donate": "Donate with PayPal",
+  "learnPage": {
+    "eyebrow": "Tools for musicians",
+    "title": "Learn music at your own pace",
+    "description": "Chords, scales, theory and practice in one place. Pick a tool and start playing.",
+    "toolCount": "{count, plural, one {# tool} other {# tools}}",
+    "free": "Free",
+    "noSignup": "No sign-up",
+    "beta": "Beta",
+    "open": "Open",
+    "theory": {
+      "title": "Theory",
+      "description": "Look up chords, scales and how keys relate to each other."
+    },
+    "practice": {
+      "title": "Practice",
+      "description": "Train your timing and your ear with interactive exercises."
+    },
+    "cta": {
+      "title": "Ready to play?",
+      "description": "Put what you learned into practice with lyrics and chords of your favorite songs.",
+      "button": "Browse songs"
+    },
+    "backToLearn": "Learn"
+  },
   "favoritesPage": {
     "eyebrow": "Your collection",
     "title": "My favorites",
@@ -437,6 +461,20 @@
     "copyLink": "Copy link",
     "copied": "Link copied"
   },
+  "chordsPage": {
+    "back": "Learn",
+    "hint": "Tap a chord to see how to play it.",
+    "filterLabel": "Chord type",
+    "all": "All",
+    "major": "Major",
+    "minor": "Minor",
+    "seventh": "Seventh",
+    "count": "{count, plural, one {# chord} other {# chords}}"
+  },
+  "scalesPage": {
+    "back": "Learn",
+    "pickerLabel": "Choose a scale"
+  },
   "authLayout": {
     "title": "Your songs, your chords, at your pace.",
     "benefits": {
@@ -445,5 +483,8 @@
       "request": "Request the songs you want to learn"
     },
     "footnote": "Free and ad-free."
+  },
+  "circlePage": {
+    "hint": "Tap a key to see its related chords."
   }
 }

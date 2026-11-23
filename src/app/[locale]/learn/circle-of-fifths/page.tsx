@@ -1,5 +1,9 @@
+import { Orbit } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import type { JSX } from 'react'
 import { CircleOfFifthsWrapper } from '@/components/circle-of-fifths-wrapper'
+import { ToolPage } from '@/components/learn/tool-page'
 
 /**
  * Metadatos para la página del Círculo de Quintas Interactivo.
@@ -29,13 +33,17 @@ export const metadata: Metadata = {
  * El componente principal se carga dinámicamente para mejorar el rendimiento inicial.
  * @returns {JSX.Element} La página del Círculo de Quintas.
  */
-export default function CircleOfFifthsPage() {
+export default async function CircleOfFifthsPage(): Promise<JSX.Element> {
+  const t = await getTranslations()
+
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 flex justify-center items-center'>
-        {/* Wrapper que se encarga de la carga dinámica del componente interactivo. */}
-        <CircleOfFifthsWrapper />
-      </main>
-    </div>
+    <ToolPage
+      icon={Orbit}
+      group='theory'
+      title={t('circleOfFifthsPageTitle')}
+      description={t('circleOfFifthsDescription')}
+    >
+      <CircleOfFifthsWrapper />
+    </ToolPage>
   )
 }

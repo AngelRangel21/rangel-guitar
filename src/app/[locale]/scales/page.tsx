@@ -33,10 +33,5 @@ export const metadata: Metadata = {
  * @returns {JSX.Element} La página de la biblioteca de escalas.
  */
 export default function ScalesPage(): JSX.Element {
-  return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      {/* Componente de cliente que maneja la lógica de selección y visualización de escalas. */}
-      <ScalesPageContent rootNotes={rootNotes} scaleTypes={scaleTypes} />
-    </div>
-  )
+  return <ScalesPageContent rootNotes={rootNotes} scaleTypes={scaleTypes} />
 }

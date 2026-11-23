@@ -420,6 +420,30 @@
   "audioFile": "Archivo de Audio",
   "coffee": "Invitar un café con PayPal",
   "donate": "Donar con PayPal",
+  "learnPage": {
+    "eyebrow": "Herramientas para músicos",
+    "title": "Aprende música a tu ritmo",
+    "description": "Acordes, escalas, teoría y práctica en un solo lugar. Elige una herramienta y empieza a tocar.",
+    "toolCount": "{count, plural, one {# herramienta} other {# herramientas}}",
+    "free": "Gratis",
+    "noSignup": "Sin registro",
+    "beta": "Beta",
+    "open": "Abrir",
+    "theory": {
+      "title": "Teoría",
+      "description": "Consulta acordes, escalas y cómo se relacionan las tonalidades."
+    },
+    "practice": {
+      "title": "Práctica",
+      "description": "Entrena tu ritmo y tu oído con ejercicios interactivos."
+    },
+    "cta": {
+      "title": "¿Listo para tocar?",
+      "description": "Pon en práctica lo que aprendiste con letras y acordes de tus canciones favoritas.",
+      "button": "Explorar canciones"
+    },
+    "backToLearn": "Aprender"
+  },
   "favoritesPage": {
     "eyebrow": "Tu colección",
     "title": "Mis favoritos",
@@ -437,6 +461,20 @@
     "copyLink": "Copiar enlace",
     "copied": "Enlace copiado"
   },
+  "chordsPage": {
+    "back": "Aprender",
+    "hint": "Pulsa un acorde para ver cómo se toca.",
+    "filterLabel": "Tipo de acorde",
+    "all": "Todos",
+    "major": "Mayores",
+    "minor": "Menores",
+    "seventh": "Séptima",
+    "count": "{count, plural, one {# acorde} other {# acordes}}"
+  },
+  "scalesPage": {
+    "back": "Aprender",
+    "pickerLabel": "Elige una escala"
+  },
   "authLayout": {
     "title": "Tus canciones, tus acordes, a tu ritmo.",
     "benefits": {
@@ -445,5 +483,8 @@
       "request": "Pide las canciones que quieres aprender"
     },
     "footnote": "Gratis y sin publicidad."
+  },
+  "circlePage": {
+    "hint": "Toca una tonalidad para ver sus acordes relacionados."
   }
 }

@@ -1,25 +1,16 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: explain */
 'use client'
 
-import { Pause, Play } from 'lucide-react'
+import { Minus, Pause, Play, Plus } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { SegmentedControl } from '@/components/layout/segmented-control'
 import { Slider } from '@/components/ui/slider'
 import { useI18n } from '@/context/i18n-context'
+import { cn } from '@/lib/utils'
+
+const MIN_BPM = 40
+const MAX_BPM = 220
+const BEAT_OPTIONS = [2, 3, 4, 6] as const
 
 /**
  * Componente interactivo de metrónomo.
@@ -104,89 +95,117 @@ export function Metronome() {
     }
   }, [isPlaying, bpm, beatsPerMeasure])
 
-  return (
-    <Card className='w-full max-w-md mx-auto'>
-      <CardHeader>
-        <CardTitle>{t('metronomePageTitle')}</CardTitle>
-        <CardDescription>{t('metronomeDescription')}</CardDescription>
-      </CardHeader>
-      <CardContent className='flex flex-col items-center gap-8'>
-        {/* Indicadores visuales de los pulsos */}
-        <div className='flex items-center justify-center gap-4 w-full'>
-          {Array.from({ length: beatsPerMeasure }, (_, i) => i + 1).map(
-            (beat) => (
-              <div
-                key={beat}
-                className={`w-8 h-8 rounded-full transition-all duration-100 ${currentBeat === beat ? 'bg-accent scale-125' : 'bg-muted'}`}
-              />
-            )
-          )}
-        </div>
+  const changeBpm = (delta: number) =>
+    setBpm((value) => Math.min(MAX_BPM, Math.max(MIN_BPM, value + delta)))
 
-        {/* Muestra el valor de BPM actual */}
-        <div className='text-center'>
-          <p className='text-6xl font-bold tabular-nums text-foreground'>
+  const stepButtonClass =
+    'inline-flex size-12 shrink-0 items-center justify-center rounded-full border bg-background text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40'
+
+  return (
+    <div className='mx-auto flex w-full max-w-xl flex-col items-center gap-8 rounded-3xl border bg-card p-6 sm:p-10'>
+      {/* Indicadores visuales de los pulsos (el 1º es el acento del compás) */}
+      <div
+        className='flex items-center justify-center gap-3 sm:gap-4'
+        aria-hidden='true'
+      >
+        {Array.from({ length: beatsPerMeasure }, (_, i) => i + 1).map(
+          (beat) => (
+            <div
+              key={beat}
+              className={cn(
+                'rounded-full transition-all duration-100',
+                beat === 1 ? 'size-5 sm:size-6' : 'size-4 sm:size-5',
+                currentBeat === beat
+                  ? 'scale-125 bg-primary shadow-lg'
+                  : 'bg-muted ring-1 ring-border'
+              )}
+            />
+          )
+        )}
+      </div>
+
+      {/* BPM actual con ajuste fino */}
+      <div className='flex items-center gap-4 sm:gap-6'>
+        <button
+          type='button'
+          onClick={() => changeBpm(-1)}
+          disabled={isPlaying || bpm <= MIN_BPM}
+          aria-label='-1 BPM'
+          className={stepButtonClass}
+        >
+          <Minus aria-hidden='true' className='size-5' />
+        </button>
+        <div className='w-36 text-center'>
+          <p className='text-7xl font-bold leading-none tabular-nums tracking-tight text-foreground'>
             {bpm}
           </p>
-          <p className='text-muted-foreground'>{t('bpm')}</p>
+          <p className='mt-1 text-sm font-medium uppercase tracking-widest text-muted-foreground'>
+            {t('bpm')}
+          </p>
         </div>
-
-        <div className='w-full space-y-6'>
-          {/* Slider para ajustar el BPM */}
-          <div className='grid gap-2'>
-            <label htmlFor='bpm-slider' className='text-sm font-medium'>
-              {t('bpm')}
-            </label>
-            <Slider
-              id='bpm-slider'
-              min={40}
-              max={220}
-              step={1}
-              value={[bpm]}
-              onValueChange={(value) =>
-                setBpm(typeof value === 'number' ? value : value[0])
-              }
-              disabled={isPlaying}
-            />
-          </div>
-
-          {/* Selector para ajustar los pulsos por compás */}
-          <div className='grid gap-2'>
-            <label htmlFor='beats-select' className='text-sm font-medium'>
-              {t('beatsPerMeasure')}
-            </label>
-            <Select
-              value={String(beatsPerMeasure)}
-              onValueChange={(value) => setBeatsPerMeasure(Number(value))}
-              disabled={isPlaying}
-            >
-              <SelectTrigger id='beats-select'>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value='2'>2</SelectItem>
-                <SelectItem value='3'>3</SelectItem>
-                <SelectItem value='4'>4</SelectItem>
-                <SelectItem value='6'>6</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Botón de Play/Pause */}
-        <Button
-          onClick={togglePlay}
-          size='lg'
-          className='w-24 h-24 rounded-full'
+        <button
+          type='button'
+          onClick={() => changeBpm(1)}
+          disabled={isPlaying || bpm >= MAX_BPM}
+          aria-label='+1 BPM'
+          className={stepButtonClass}
         >
-          {isPlaying ? (
-            <Pause className='h-10 w-10' />
-          ) : (
-            <Play className='h-10 w-10' />
-          )}
-          <span className='sr-only'>{isPlaying ? t('stop') : t('play')}</span>
-        </Button>
-      </CardContent>
-    </Card>
+          <Plus aria-hidden='true' className='size-5' />
+        </button>
+      </div>
+
+      <div className='w-full space-y-6'>
+        <div className='grid gap-3'>
+          <label htmlFor='bpm-slider' className='sr-only'>
+            {t('bpm')}
+          </label>
+          <Slider
+            id='bpm-slider'
+            min={MIN_BPM}
+            max={MAX_BPM}
+            step={1}
+            value={[bpm]}
+            onValueChange={(value) =>
+              setBpm(typeof value === 'number' ? value : value[0])
+            }
+            disabled={isPlaying}
+          />
+          <div className='flex justify-between text-xs text-muted-foreground tabular-nums'>
+            <span>{MIN_BPM}</span>
+            <span>{MAX_BPM}</span>
+          </div>
+        </div>
+
+        <div className='flex flex-wrap items-center justify-between gap-3'>
+          <span className='text-sm font-medium text-foreground'>
+            {t('beatsPerMeasure')}
+          </span>
+          <SegmentedControl<string>
+            label={t('beatsPerMeasure')}
+            value={String(beatsPerMeasure)}
+            onChange={(value) => {
+              if (!isPlaying) setBeatsPerMeasure(Number(value))
+            }}
+            options={BEAT_OPTIONS.map((beats) => ({
+              value: String(beats),
+              label: String(beats)
+            }))}
+          />
+        </div>
+      </div>
+
+      <button
+        type='button'
+        onClick={togglePlay}
+        aria-label={isPlaying ? t('stop') : t('play')}
+        className='inline-flex size-24 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring active:scale-95'
+      >
+        {isPlaying ? (
+          <Pause aria-hidden='true' className='size-10' />
+        ) : (
+          <Play aria-hidden='true' className='ml-1 size-10' />
+        )}
+      </button>
+    </div>
   )
 }

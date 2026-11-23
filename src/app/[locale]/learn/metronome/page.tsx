@@ -1,5 +1,8 @@
+import { Gauge } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
+import { ToolPage } from '@/components/learn/tool-page'
 import { Metronome } from '@/components/metronome'
 
 /**
@@ -28,13 +31,17 @@ export const metadata: Metadata = {
  * Página que aloja la herramienta de Metrónomo.
  * @returns {JSX.Element} La página del Metrónomo.
  */
-export default function MetronomePage(): JSX.Element {
+export default async function MetronomePage(): Promise<JSX.Element> {
+  const t = await getTranslations()
+
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 flex justify-center items-center'>
-        {/* Componente principal que contiene la lógica e interfaz del metrónomo. */}
-        <Metronome />
-      </main>
-    </div>
+    <ToolPage
+      icon={Gauge}
+      group='practice'
+      title={t('metronomePageTitle')}
+      description={t('metronomeDescription')}
+    >
+      <Metronome />
+    </ToolPage>
   )
 }

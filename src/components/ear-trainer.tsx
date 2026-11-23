@@ -16,13 +16,6 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useI18n } from '@/context/i18n-context'
 import { levels as allLevels } from '@/lib/ear-trainer-levels'
@@ -186,12 +179,11 @@ export function EarTrainer() {
   if (gameState === 'level-select') {
     let globalLevelIndex = 0
     return (
-      <Card className='w-full max-w-lg mx-auto'>
-        <CardHeader>
-          <CardTitle>{t('earTrainerPageTitle')}</CardTitle>
-          <CardDescription>{t('earTrainerSelectLevel')}</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className='mx-auto w-full max-w-2xl rounded-3xl border bg-card p-5 sm:p-8'>
+        <h2 className='text-lg font-semibold text-foreground'>
+          {t('earTrainerSelectLevel')}
+        </h2>
+        <div className='mt-2'>
           <Accordion defaultValue={['item-0']}>
             {allLevels.map((difficulty, diffIndex) => (
               <AccordionItem value={`item-${diffIndex}`} key={difficulty.name}>
@@ -210,7 +202,7 @@ export function EarTrainer() {
                         <Button
                           key={level.name}
                           variant='outline'
-                          className='h-24 flex flex-col gap-1 relative'
+                          className='relative flex h-24 flex-col gap-1 rounded-2xl'
                           disabled={isLocked}
                           onClick={() => handleLevelSelect(levelIndex)}
                         >
@@ -219,7 +211,7 @@ export function EarTrainer() {
                           ) : isCompleted ? (
                             <CheckCircle className='h-6 w-6 text-green-500' />
                           ) : (
-                            <Trophy className='h-6 w-6 text-accent' />
+                            <Trophy className='h-6 w-6 text-primary' />
                           )}
                           <span className='font-semibold'>
                             {t('level')} {level.name}
@@ -235,8 +227,8 @@ export function EarTrainer() {
               </AccordionItem>
             ))}
           </Accordion>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     )
   }
 
@@ -249,26 +241,22 @@ export function EarTrainer() {
   const progress = (score / level.notesToGuess) * 100
 
   return (
-    <Card className='w-full max-w-md mx-auto'>
-      <CardHeader>
-        <div className='flex items-center gap-4'>
-          <Button
-            variant='ghost'
-            size='icon'
-            onClick={handleBackToMenu}
-            className='h-8 w-8'
-          >
-            <ArrowLeft />
-          </Button>
-          <div>
-            <CardTitle>
-              {t('level')} {level.name}
-            </CardTitle>
-            <CardDescription>{t('earTrainerDescription')}</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className='flex flex-col items-center gap-6'>
+    <div className='mx-auto w-full max-w-lg rounded-3xl border bg-card p-5 sm:p-8'>
+      <div className='mb-6 flex items-center gap-3'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={handleBackToMenu}
+          className='size-9 rounded-full'
+          aria-label={t('backToLevels')}
+        >
+          <ArrowLeft />
+        </Button>
+        <h2 className='text-xl font-bold tracking-tight text-foreground'>
+          {t('level')} {level.name}
+        </h2>
+      </div>
+      <div className='flex flex-col items-center gap-6'>
         <div className='w-full space-y-2'>
           <div className='flex justify-between text-sm text-muted-foreground'>
             <span>{t('progress')}</span>
@@ -282,9 +270,9 @@ export function EarTrainer() {
         <Button
           onClick={() => playNote(currentNote)}
           size='lg'
-          variant='outline'
           aria-label={t('playNote')}
           disabled={!!feedback}
+          className='h-14 rounded-full px-8 text-base'
         >
           <Volume2 className='h-6 w-6 mr-2' />
           {t('playNote')}
@@ -296,7 +284,8 @@ export function EarTrainer() {
               key={note}
               onClick={() => handleGuess(note)}
               disabled={!!feedback}
-              className='h-14 text-lg'
+              variant='outline'
+              className='h-14 rounded-xl text-lg font-semibold'
             >
               {note}
             </Button>
@@ -313,7 +302,7 @@ export function EarTrainer() {
         </div>
 
         {gameState === 'level-complete' && (
-          <div className='text-center p-4 rounded-lg bg-green-500/10 border border-green-500/30'>
+          <div className='w-full rounded-2xl border border-green-500/30 bg-green-500/10 p-5 text-center'>
             <h3 className='text-xl font-bold text-green-500'>
               {t('levelComplete')}
             </h3>
@@ -330,7 +319,7 @@ export function EarTrainer() {
             )}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

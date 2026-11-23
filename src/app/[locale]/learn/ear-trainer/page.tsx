@@ -1,6 +1,9 @@
+import { Ear } from 'lucide-react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
 import { EarTrainer } from '@/components/ear-trainer'
+import { ToolPage } from '@/components/learn/tool-page'
 
 /**
  * Metadatos para la página del Entrenador de Oído.
@@ -28,13 +31,17 @@ export const metadata: Metadata = {
  * Página que aloja la herramienta de Entrenamiento de Oído.
  * @returns {JSX.Element} La página del Entrenador de Oído.
  */
-export default function EarTrainerPage(): JSX.Element {
+export default async function EarTrainerPage(): Promise<JSX.Element> {
+  const t = await getTranslations()
+
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 flex justify-center items-center'>
-        {/* Componente principal que contiene la lógica del juego de entrenamiento. */}
-        <EarTrainer />
-      </main>
-    </div>
+    <ToolPage
+      icon={Ear}
+      group='practice'
+      title={t('earTrainerPageTitle')}
+      description={t('earTrainerDescription')}
+    >
+      <EarTrainer />
+    </ToolPage>
   )
 }

@@ -20,7 +20,9 @@ const DynamicCircleOfFifths = dynamic(
     import('@/components/circle-of-fifths').then((mod) => mod.CircleOfFifths),
   {
     ssr: false,
-    loading: () => <Skeleton className='h-110 w-110 rounded-full' />
+    loading: () => (
+      <Skeleton className='mx-auto aspect-square w-full max-w-sm rounded-full' />
+    )
   }
 )
 

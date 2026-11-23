@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type { JSX } from 'react'
-import { LearnPageContent } from '@/components/learn-page-content'
+import { LearnPageContent } from '@/components/learn/learn-page-content'
 
 /**
  * Metadatos para la página principal de "Aprender".
@@ -31,10 +31,5 @@ export const metadata: Metadata = {
  * @returns {JSX.Element} La página de "Aprender".
  */
 export default function LearnPage(): JSX.Element {
-  return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      {/* Componente que renderiza el contenido principal, como las tarjetas de las herramientas. */}
-      <LearnPageContent />
-    </div>
-  )
+  return <LearnPageContent />
 }

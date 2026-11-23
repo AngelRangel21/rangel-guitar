@@ -2,14 +2,8 @@
 'use client'
 
 import { Lock, LockOpen } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
 import { useI18n } from '@/context/i18n-context'
 import { circleOfFifthsKeys } from '@/lib/circle-of-fifths-data'
 import { cn } from '@/lib/utils'
@@ -96,6 +90,7 @@ const describeSegment = (
  */
 export function CircleOfFifths() {
   const { t } = useI18n()
+  const tc = useTranslations('circlePage')
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [isLocked, setIsLocked] = useState(false)
 
@@ -125,7 +120,7 @@ export function CircleOfFifths() {
    */
   const getHighlightClasses = (segmentIndex: number, isMajorRing: boolean) => {
     const defaultClasses = {
-      path: 'fill-card group-hover:fill-accent/20',
+      path: 'fill-card group-hover:fill-muted',
       text: 'fill-foreground'
     }
 
@@ -140,14 +135,14 @@ export function CircleOfFifths() {
     let highlightClass = null
 
     if (isMajorRing) {
-      if (segmentIndex === tonicIndex) highlightClass = 'fill-chart-1' // I (Tónica)
-      if (segmentIndex === dominantIndex) highlightClass = 'fill-chart-5' // V (Dominante)
-      if (segmentIndex === subdominantIndex) highlightClass = 'fill-chart-4' // IV (Subdominante)
+      if (segmentIndex === tonicIndex) highlightClass = 'fill-primary' // I (Tónica)
+      if (segmentIndex === dominantIndex) highlightClass = 'fill-primary/65' // V (Dominante)
+      if (segmentIndex === subdominantIndex) highlightClass = 'fill-primary/65' // IV (Subdominante)
     } else {
       // Anillo de menores
-      if (segmentIndex === tonicIndex) highlightClass = 'fill-chart-6' // vi (Relativo Menor)
-      if (segmentIndex === dominantIndex) highlightClass = 'fill-chart-3' // iii (Mediante Menor)
-      if (segmentIndex === subdominantIndex) highlightClass = 'fill-chart-2' // ii (Supertonica Menor)
+      if (segmentIndex === tonicIndex) highlightClass = 'fill-primary/85' // vi (Relativo Menor)
+      if (segmentIndex === dominantIndex) highlightClass = 'fill-primary/50' // iii (Mediante Menor)
+      if (segmentIndex === subdominantIndex) highlightClass = 'fill-primary/50' // ii (Supertonica Menor)
     }
 
     if (highlightClass) {
@@ -156,7 +151,7 @@ export function CircleOfFifths() {
 
     // Aplica opacidad a los acordes no relacionados.
     return {
-      path: 'fill-card opacity-50',
+      path: 'fill-card opacity-60',
       text: 'fill-muted-foreground'
     }
   }
@@ -165,158 +160,153 @@ export function CircleOfFifths() {
     selectedIndex !== null ? circleOfFifthsKeys[selectedIndex].major : null
 
   return (
-    <Card className='w-full max-w-lg'>
-      <CardHeader className='text-center'>
-        <CardTitle>{t('circleOfFifthsPageTitle')}</CardTitle>
-        {selectedKeyName && (
-          <CardDescription>
-            {t('keyOf', { key: selectedKeyName })}
-          </CardDescription>
-        )}
-      </CardHeader>
-      <CardContent className='flex flex-col items-center'>
-        <svg
-          type='img'
-          aria-label='chord'
-          viewBox='0 0 320 320'
-          className='w-full max-w-sm'
-        >
-          <g>
-            {circleOfFifthsKeys.map((key, i) => {
-              const startAngle = i * 30
-              const endAngle = (i + 1) * 30
-              const midAngle = startAngle + 15
+    <div className='mx-auto flex w-full max-w-xl flex-col items-center gap-4 rounded-3xl border bg-card p-5 sm:p-8'>
+      <p
+        className='min-h-7 rounded-full border bg-background px-4 py-1 text-sm font-semibold text-foreground'
+        aria-live='polite'
+      >
+        {selectedKeyName ? t('keyOf', { key: selectedKeyName }) : tc('hint')}
+      </p>
+      <svg
+        type='img'
+        aria-label='chord'
+        viewBox='0 0 320 320'
+        className='w-full max-w-sm'
+      >
+        <g>
+          {circleOfFifthsKeys.map((key, i) => {
+            const startAngle = i * 30
+            const endAngle = (i + 1) * 30
+            const midAngle = startAngle + 15
 
-              const majorClasses = getHighlightClasses(i, true)
-              const minorClasses = getHighlightClasses(i, false)
+            const majorClasses = getHighlightClasses(i, true)
+            const minorClasses = getHighlightClasses(i, false)
 
-              const majorTextPos = polarToCartesian(
-                center,
-                center,
-                (outerRadius + middleRadius) / 2,
-                midAngle
-              )
-              const minorTextPos = polarToCartesian(
-                center,
-                center,
-                (middleRadius + innerRadius) / 2,
-                midAngle
-              )
+            const majorTextPos = polarToCartesian(
+              center,
+              center,
+              (outerRadius + middleRadius) / 2,
+              midAngle
+            )
+            const minorTextPos = polarToCartesian(
+              center,
+              center,
+              (middleRadius + innerRadius) / 2,
+              midAngle
+            )
 
-              return (
-                <g
-                  key={key.major}
-                  onClick={() => handleSegmentClick(i)}
-                  role='button'
-                  tabIndex={0}
-                  aria-label={`seleccionar tonalidad de ${key.major}`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ')
-                      handleSegmentClick(i)
-                  }}
+            return (
+              <g
+                key={key.major}
+                onClick={() => handleSegmentClick(i)}
+                role='button'
+                tabIndex={0}
+                aria-label={`seleccionar tonalidad de ${key.major}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') handleSegmentClick(i)
+                }}
+                className={cn(
+                  'group cursor-pointer outline-none [&:focus-visible_path]:stroke-foreground [&:focus-visible_path]:stroke-2',
+                  isLocked && 'cursor-not-allowed'
+                )}
+              >
+                {/* Segmento del anillo Mayor */}
+                <path
+                  d={describeSegment(
+                    center,
+                    center,
+                    outerRadius,
+                    middleRadius,
+                    startAngle,
+                    endAngle
+                  )}
+                  stroke='var(--border)'
                   className={cn(
-                    'cursor-pointer group',
-                    isLocked && 'cursor-not-allowed'
+                    'transition-colors duration-200',
+                    majorClasses.path
+                  )}
+                />
+                <text
+                  x={majorTextPos.x}
+                  y={majorTextPos.y}
+                  textAnchor='middle'
+                  dominantBaseline='middle'
+                  className={cn(
+                    'font-bold text-lg pointer-events-none transition-colors duration-200',
+                    majorClasses.text
                   )}
                 >
-                  {/* Segmento del anillo Mayor */}
-                  <path
-                    d={describeSegment(
-                      center,
-                      center,
-                      outerRadius,
-                      middleRadius,
-                      startAngle,
-                      endAngle
-                    )}
-                    stroke='hsl(var(--border))'
-                    className={cn(
-                      'transition-colors duration-200',
-                      majorClasses.path
-                    )}
-                  />
-                  <text
-                    x={majorTextPos.x}
-                    y={majorTextPos.y}
-                    textAnchor='middle'
-                    dominantBaseline='middle'
-                    className={cn(
-                      'font-bold text-lg pointer-events-none transition-colors duration-200',
-                      majorClasses.text
-                    )}
-                  >
-                    {key.major}
-                  </text>
+                  {key.major}
+                </text>
 
-                  {/* Segmento del anillo Menor */}
-                  <path
-                    d={describeSegment(
-                      center,
-                      center,
-                      middleRadius,
-                      innerRadius,
-                      startAngle,
-                      endAngle
-                    )}
-                    stroke='hsl(var(--border))'
-                    className={cn(
-                      'transition-colors duration-200',
-                      minorClasses.path
-                    )}
-                  />
-                  <text
-                    x={minorTextPos.x}
-                    y={minorTextPos.y}
-                    textAnchor='middle'
-                    dominantBaseline='middle'
-                    className={cn(
-                      'text-sm pointer-events-none transition-colors duration-200',
-                      minorClasses.text
-                    )}
-                  >
-                    {key.minor}
-                  </text>
-                </g>
-              )
-            })}
-
-            {/* Botón central de bloqueo */}
-            <g
-              onClick={handleLockClick}
-              role='button'
-              tabIndex={selectedIndex !== null ? 0 : -1}
-              aria-label={isLocked ? 'Desbloquear círculo' : 'Bloquear círculo'}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleLockClick()
-              }}
-              className={cn(
-                'cursor-pointer outline-none',
-                selectedIndex === null && 'cursor-not-allowed opacity-50'
-              )}
-            >
-              <circle
-                cx={center}
-                cy={center}
-                r={innerRadius}
-                stroke='hsl(var(--border))'
-                className={cn(
-                  'transition-colors',
-                  selectedIndex !== null
-                    ? 'fill-background hover:fill-muted'
-                    : 'fill-card'
-                )}
-              />
-              <g transform={`translate(${center - 12}, ${center - 12})`}>
-                {isLocked ? (
-                  <Lock className='h-6 w-6 text-muted-foreground' />
-                ) : (
-                  <LockOpen className='h-6 w-6 text-muted-foreground' />
-                )}
+                {/* Segmento del anillo Menor */}
+                <path
+                  d={describeSegment(
+                    center,
+                    center,
+                    middleRadius,
+                    innerRadius,
+                    startAngle,
+                    endAngle
+                  )}
+                  stroke='var(--border)'
+                  className={cn(
+                    'transition-colors duration-200',
+                    minorClasses.path
+                  )}
+                />
+                <text
+                  x={minorTextPos.x}
+                  y={minorTextPos.y}
+                  textAnchor='middle'
+                  dominantBaseline='middle'
+                  className={cn(
+                    'text-sm pointer-events-none transition-colors duration-200',
+                    minorClasses.text
+                  )}
+                >
+                  {key.minor}
+                </text>
               </g>
+            )
+          })}
+
+          {/* Botón central de bloqueo */}
+          <g
+            onClick={handleLockClick}
+            role='button'
+            tabIndex={selectedIndex !== null ? 0 : -1}
+            aria-label={isLocked ? 'Desbloquear círculo' : 'Bloquear círculo'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') handleLockClick()
+            }}
+            className={cn(
+              'cursor-pointer outline-none',
+              selectedIndex === null && 'cursor-not-allowed opacity-50'
+            )}
+          >
+            <circle
+              cx={center}
+              cy={center}
+              r={innerRadius}
+              stroke='var(--border)'
+              className={cn(
+                'transition-colors',
+                selectedIndex !== null
+                  ? 'fill-background hover:fill-muted'
+                  : 'fill-card'
+              )}
+            />
+            <g transform={`translate(${center - 12}, ${center - 12})`}>
+              {isLocked ? (
+                <Lock className='h-6 w-6 text-muted-foreground' />
+              ) : (
+                <LockOpen className='h-6 w-6 text-muted-foreground' />
+              )}
             </g>
           </g>
-        </svg>
-      </CardContent>
-    </Card>
+        </g>
+      </svg>
+    </div>
   )
 }

@@ -31,10 +31,5 @@ export const metadata: Metadata = {
  * @returns {JSX.Element} La página de la biblioteca de acordes.
  */
 export default function ChordsPage(): JSX.Element {
-  return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      {/* El contenido se delega a un Client Component para manejar la interactividad (popovers, etc.). */}
-      <ChordsPageContent />
-    </div>
-  )
+  return <ChordsPageContent />
 }
