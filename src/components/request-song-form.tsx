@@ -83,9 +83,11 @@ export function RequestSongForm(): JSX.Element {
   }
 
   return (
-    <Card className='w-full max-w-sm'>
+    <Card className='w-full max-w-md rounded-3xl shadow-sm'>
       <CardHeader>
-        <CardTitle>{t('requestSongTitle')}</CardTitle>
+        <CardTitle className='text-2xl font-bold tracking-tight'>
+          {t('requestSongTitle')}
+        </CardTitle>
         <CardDescription>{t('requestSongDescription')}</CardDescription>
       </CardHeader>
       <CardContent>

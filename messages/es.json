@@ -501,6 +501,26 @@
     },
     "footnote": "Gratis y sin publicidad."
   },
+  "requestPage": {
+    "eyebrow": "Solicitar",
+    "title": "¿Falta una canción?",
+    "description": "Cuéntanos qué canción quieres aprender y la añadiremos a la biblioteca.",
+    "howTitle": "Cómo funciona",
+    "steps": {
+      "send": {
+        "title": "Envía tu solicitud",
+        "text": "Escribe el título y el artista de la canción."
+      },
+      "review": {
+        "title": "La revisamos",
+        "text": "Comprobamos la canción y preparamos sus acordes."
+      },
+      "publish": {
+        "title": "La publicamos",
+        "text": "Aparecerá en la biblioteca para que puedas tocarla."
+      }
+    }
+  },
   "circlePage": {
     "hint": "Toca una tonalidad para ver sus acordes relacionados."
   }

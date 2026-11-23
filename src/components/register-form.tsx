@@ -75,9 +75,11 @@ export function RegisterForm(): JSX.Element {
   }
 
   return (
-    <Card className='w-full max-w-sm'>
+    <Card className='w-full max-w-md rounded-3xl shadow-sm'>
       <CardHeader>
-        <CardTitle>{t('registerTitle')}</CardTitle>
+        <CardTitle className='text-2xl font-bold tracking-tight'>
+          {t('registerTitle')}
+        </CardTitle>
         <CardDescription>{t('registerDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -169,7 +171,10 @@ export function RegisterForm(): JSX.Element {
         {/* Enlace a la página de inicio de sesión */}
         <div className='mt-4 text-center text-sm'>
           {t('haveAccount')}{' '}
-          <Link href='/login' className='underline text-accent'>
+          <Link
+            href='/login'
+            className='font-semibold text-foreground underline underline-offset-4'
+          >
             {t('loginLink')}
           </Link>
         </div>

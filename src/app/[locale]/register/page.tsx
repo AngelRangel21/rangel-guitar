@@ -1,18 +1,12 @@
 import type { JSX } from 'react'
+import { AuthLayout } from '@/components/layout/auth-layout'
 import { RegisterForm } from '@/components/register-form'
 
-/**
- * Página de registro de nuevos usuarios.
- * Muestra el formulario para que los usuarios puedan crear una nueva cuenta.
- * @returns {JSX.Element} La página de registro.
- */
+/** Página de registro de nuevos usuarios. */
 export default function RegisterPage(): JSX.Element {
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow flex items-center justify-center container mx-auto px-4 py-8'>
-        {/* Componente que contiene la lógica y la interfaz del formulario de registro. */}
-        <RegisterForm />
-      </main>
-    </div>
+    <AuthLayout>
+      <RegisterForm />
+    </AuthLayout>
   )
 }

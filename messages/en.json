@@ -501,6 +501,26 @@
     },
     "footnote": "Free and ad-free."
   },
+  "requestPage": {
+    "eyebrow": "Request",
+    "title": "Missing a song?",
+    "description": "Tell us which song you want to learn and we’ll add it to the library.",
+    "howTitle": "How it works",
+    "steps": {
+      "send": {
+        "title": "Send your request",
+        "text": "Write the song title and artist."
+      },
+      "review": {
+        "title": "We review it",
+        "text": "We check the song and prepare its chords."
+      },
+      "publish": {
+        "title": "We publish it",
+        "text": "It will appear in the library so you can play it."
+      }
+    }
+  },
   "circlePage": {
     "hint": "Tap a key to see its related chords."
   }
