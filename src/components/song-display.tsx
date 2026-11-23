@@ -12,6 +12,7 @@ import { useTranslations } from 'next-intl'
 import { Fragment, type JSX, useMemo, useState } from 'react'
 import { SegmentedControl } from '@/components/layout/segmented-control'
 import { SongCard } from '@/components/song-card'
+import { SongComments } from '@/components/song-comments'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
@@ -263,6 +264,8 @@ export function SongDisplay({
           </ul>
         </section>
       )}
+      {/* ── Comentarios ── */}
+      <SongComments songId={song.id} />
     </div>
   )
 }

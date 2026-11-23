@@ -538,5 +538,36 @@
   },
   "circlePage": {
     "hint": "Tap a key to see its related chords."
+  },
+  "songComments": {
+    "title": "Comments",
+    "count": "{count, plural, =0 {No comments} one {# comment} other {# comments}}",
+    "label": "Your comment",
+    "placeholder": "What did you think of the chords? Share a tip or a question…",
+    "shortcut": "Ctrl + Enter to post",
+    "counter": "{count}/{max}",
+    "submit": "Post",
+    "sending": "Posting…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "edited": "edited",
+    "you": "You",
+    "anonymous": "User",
+    "loginPrompt": "Log in to leave a comment.",
+    "login": "Log in",
+    "register": "Sign up",
+    "emptyTitle": "Be the first to comment",
+    "emptyDescription": "Tell us what you thought of the song or share a tip for playing it.",
+    "loadError": "Comments could not be loaded.",
+    "retry": "Retry",
+    "addError": "The comment could not be posted. Please try again.",
+    "updateError": "The change could not be saved.",
+    "deleteError": "The comment could not be deleted.",
+    "deleted": "Comment deleted",
+    "deleteConfirmTitle": "Delete this comment?",
+    "deleteConfirmDescription": "This action cannot be undone."
   }
 }

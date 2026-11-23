@@ -538,5 +538,36 @@
   },
   "circlePage": {
     "hint": "Toca una tonalidad para ver sus acordes relacionados."
+  },
+  "songComments": {
+    "title": "Comentarios",
+    "count": "{count, plural, =0 {Sin comentarios} one {# comentario} other {# comentarios}}",
+    "label": "Tu comentario",
+    "placeholder": "¿Qué te pareció la cifra? Comparte un consejo o una duda…",
+    "shortcut": "Ctrl + Enter para publicar",
+    "counter": "{count}/{max}",
+    "submit": "Publicar",
+    "sending": "Publicando…",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "edited": "editado",
+    "you": "Tú",
+    "anonymous": "Usuario",
+    "loginPrompt": "Inicia sesión para dejar un comentario.",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "emptyTitle": "Sé el primero en comentar",
+    "emptyDescription": "Cuenta qué te pareció la canción o deja un consejo para tocarla.",
+    "loadError": "No se pudieron cargar los comentarios.",
+    "retry": "Reintentar",
+    "addError": "No se pudo publicar el comentario. Inténtalo de nuevo.",
+    "updateError": "No se pudo guardar el cambio.",
+    "deleteError": "No se pudo eliminar el comentario.",
+    "deleted": "Comentario eliminado",
+    "deleteConfirmTitle": "¿Eliminar este comentario?",
+    "deleteConfirmDescription": "Esta acción no se puede deshacer."
   }
 }

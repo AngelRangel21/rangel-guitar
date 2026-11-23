@@ -47,6 +47,48 @@ const accounts = new Map<string, MockAccount>([
 
 const tokens = new Map<string, MockUser>()
 
+// ── Datos de la canción de prueba (e2e de comentarios) ──
+const fixtureSong = {
+  id: '10000000-0000-4000-8000-000000000001',
+  slug: 'cancion-e2e',
+  title: 'Canción E2E',
+  artist_id: '20000000-0000-4000-8000-000000000001',
+  chords: '{title: Canción E2E}\n[C]Hola [G]mundo',
+  lyrics: 'Hola mundo',
+  coverArt: null,
+  video: null,
+  key: 'C',
+  alphatex_content: null,
+  isPublished: true,
+  createdAt: NOW,
+  updatedAt: NOW,
+  artists_list: [
+    {
+      artist: {
+        id: '20000000-0000-4000-8000-000000000001',
+        name: 'Artista E2E',
+        slug: 'artista-e2e'
+      }
+    }
+  ]
+}
+
+interface MockComment {
+  id: string
+  song_id: string
+  user_id: string
+  content: string
+  createdAt: string
+  updatedAt: string
+  isDeleted: boolean
+}
+
+const comments = new Map<string, MockComment>()
+
+const findUserName = (uid: string): string | null =>
+  [...accounts.values()].find((account) => account.user.id === uid)?.user
+    .user_metadata?.full_name as string | null
+
 const json = (
   req: IncomingMessage,
   res: ServerResponse,
@@ -85,6 +127,24 @@ const readBody = async (
   } catch {
     return {}
   }
+}
+
+/**
+ * Responde como PostgREST: un objeto si el cliente pidió `.single()`
+ * (`Accept: application/vnd.pgrst.object+json`) o la lista de filas.
+ */
+const respondRows = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  status: number,
+  rows: unknown[]
+) => {
+  const wantsObject = (req.headers.accept ?? '').includes('vnd.pgrst.object')
+  if (wantsObject && rows.length !== 1) {
+    json(req, res, 406, { code: 'PGRST116', message: 'No rows' })
+    return
+  }
+  json(req, res, status, wantsObject ? rows[0] : rows)
 }
 
 const buildSession = (user: MockUser) => {
@@ -290,6 +350,83 @@ const handleRest = async (
 
   if (url.pathname === '/rest/v1/song_favorites') {
     json(req, res, 200, [])
+    return
+  }
+
+  // ── Canción de prueba (solo cuando se pide por su slug) ──
+  if (url.pathname === '/rest/v1/songs') {
+    const slug = url.searchParams.get('slug')
+    json(req, res, 200, slug === `eq.${fixtureSong.slug}` ? [fixtureSong] : [])
+    return
+  }
+
+  // ── Comentarios en memoria ──
+  if (url.pathname === '/rest/v1/rpc/get_song_comments') {
+    const { p_song_id: songId } = await readBody(req)
+    json(
+      req,
+      res,
+      200,
+      [...comments.values()]
+        .filter((c) => c.song_id === songId && !c.isDeleted)
+        .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+        .map((c) => ({
+          ...c,
+          user_name: findUserName(c.user_id),
+          user_avatar_url: null
+        }))
+    )
+    return
+  }
+
+  if (url.pathname === '/rest/v1/song_comments') {
+    const id = url.searchParams.get('id')?.replace('eq.', '') ?? ''
+
+    if (req.method === 'POST') {
+      const body = await readBody(req)
+      const now = new Date().toISOString()
+      const comment: MockComment = {
+        id: crypto.randomUUID(),
+        song_id: String(body.song_id),
+        user_id: String(body.user_id),
+        content: String(body.content),
+        createdAt: now,
+        updatedAt: now,
+        isDeleted: false
+      }
+      comments.set(comment.id, comment)
+      respondRows(req, res, 201, [comment])
+      return
+    }
+
+    if (req.method === 'PATCH') {
+      const current = comments.get(id)
+      if (current == null) {
+        respondRows(req, res, 200, [])
+        return
+      }
+      const body = await readBody(req)
+      const updated: MockComment = {
+        ...current,
+        ...(typeof body.content === 'string' && { content: body.content }),
+        ...(typeof body.isDeleted === 'boolean' && {
+          isDeleted: body.isDeleted
+        }),
+        updatedAt: new Date().toISOString()
+      }
+      comments.set(id, updated)
+      respondRows(req, res, 200, [updated])
+      return
+    }
+
+    if (req.method === 'DELETE') {
+      comments.delete(id)
+      res.writeHead(204, corsHeaders(req))
+      res.end()
+      return
+    }
+
+    json(req, res, 200, [...comments.values()])
     return
   }
 
