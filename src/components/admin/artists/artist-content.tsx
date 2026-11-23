@@ -14,7 +14,7 @@ export async function ArtistsContent({
   const artists = await getArtists()
 
   return (
-    <Card>
+    <Card className='rounded-3xl'>
       <ArtistsHeader
         title={t('title')}
         description={t('description')}

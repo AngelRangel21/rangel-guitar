@@ -1,6 +1,6 @@
 'use client'
 
-import type React from 'react'
+import type { ReactElement } from 'react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { revalidateAndRedirectAfterDelete } from '@/app/[locale]/songs/[slug]/actions'
@@ -25,7 +25,8 @@ import { Spinner } from './ui/spinner'
  */
 interface DeleteSongDialogProps {
   song: Song
-  children: React.ReactNode // El elemento que activará el diálogo (ej. un botón).
+  /** Botón que abre el diálogo; se usa como el propio trigger. */
+  children: ReactElement
 }
 
 /**
@@ -61,7 +62,7 @@ export function DeleteSongDialog({ song, children }: DeleteSongDialogProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger render={children} />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('deleteSongConfirmTitle')}</AlertDialogTitle>

@@ -521,6 +521,15 @@
       }
     }
   },
+  "adminShell": {
+    "eyebrow": "Administración",
+    "title": "Panel de administración",
+    "navLabel": "Secciones de administración",
+    "requests": "Solicitudes",
+    "uploadSong": "Subir canción",
+    "uploadArtist": "Subir artista",
+    "artists": "Artistas"
+  },
   "circlePage": {
     "hint": "Toca una tonalidad para ver sus acordes relacionados."
   }

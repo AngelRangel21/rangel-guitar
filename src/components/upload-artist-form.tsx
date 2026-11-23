@@ -99,7 +99,7 @@ export function UploadArtistForm() {
   }
 
   return (
-    <Card className='w-full max-w-2xl'>
+    <Card className='mx-auto w-full max-w-3xl rounded-3xl'>
       <CardHeader>
         <CardTitle>Subir Artista</CardTitle>
         <CardDescription>

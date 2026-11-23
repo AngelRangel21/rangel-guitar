@@ -129,7 +129,7 @@ export function EditSongForm({ song }: { song: SongWithArtist }) {
   }
 
   return (
-    <Card className='w-full max-w-2xl'>
+    <Card className='mx-auto w-full max-w-3xl rounded-3xl'>
       <CardHeader>
         <CardTitle>{t('editSongTitle')}</CardTitle>
         <CardDescription>

@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 import { type JSX, Suspense } from 'react'
 import { AddSongForm } from '@/components/add-song-form'
+import { AdminShell } from '@/components/admin/admin-shell'
 import { ProtectedPage } from '@/components/protected-page'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -93,14 +94,12 @@ export default function AddSongPage(): JSX.Element {
   return (
     // Componente que protege la página, requiriendo autenticación de administrador.
     <ProtectedPage adminOnly>
-      <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8 flex justify-center'>
-          {/* Suspense muestra el `fallback` (AddSongLoader) mientras AddSongContent espera los datos. */}
-          <Suspense fallback={<AddSongLoader />}>
-            <AddSongContent />
-          </Suspense>
-        </main>
-      </div>
+      <AdminShell>
+        {/* Suspense muestra el `fallback` (AddSongLoader) mientras AddSongContent espera los datos. */}
+        <Suspense fallback={<AddSongLoader />}>
+          <AddSongContent />
+        </Suspense>
+      </AdminShell>
     </ProtectedPage>
   )
 }

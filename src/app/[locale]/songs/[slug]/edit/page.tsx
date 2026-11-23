@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { AdminShell } from '@/components/admin/admin-shell'
 import { EditSongForm } from '@/components/edit-song-form'
 import { ProtectedPage } from '@/components/protected-page'
 import { getSongBySlug } from '@/services/song.service'
@@ -26,12 +27,10 @@ export default async function EditSongPage({
   return (
     // Componente que protege la página, requiriendo autenticación de administrador.
     <ProtectedPage adminOnly>
-      <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8 flex justify-center'>
-          {/* El formulario de edición, pre-rellenado con los datos de la canción. */}
-          <EditSongForm song={song} />
-        </main>
-      </div>
+      <AdminShell>
+        {/* El formulario de edición, pre-rellenado con los datos de la canción. */}
+        <EditSongForm song={song} />
+      </AdminShell>
     </ProtectedPage>
   )
 }

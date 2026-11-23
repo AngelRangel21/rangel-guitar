@@ -521,6 +521,15 @@
       }
     }
   },
+  "adminShell": {
+    "eyebrow": "Administration",
+    "title": "Admin panel",
+    "navLabel": "Admin sections",
+    "requests": "Requests",
+    "uploadSong": "Upload song",
+    "uploadArtist": "Upload artist",
+    "artists": "Artists"
+  },
   "circlePage": {
     "hint": "Tap a key to see its related chords."
   }

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { AdminShell } from '@/components/admin/admin-shell'
 import { EditArtistForm } from '@/components/edit-artist-form'
 import { ProtectedPage } from '@/components/protected-page'
 import { getArtistBySlug } from '@/services/artists.service'
@@ -17,11 +18,9 @@ export default async function EditArtistPage({
 
   return (
     <ProtectedPage adminOnly>
-      <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8 flex justify-center'>
-          <EditArtistForm artist={artist} />
-        </main>
-      </div>
+      <AdminShell>
+        <EditArtistForm artist={artist} />
+      </AdminShell>
     </ProtectedPage>
   )
 }

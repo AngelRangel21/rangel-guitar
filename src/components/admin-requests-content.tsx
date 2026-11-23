@@ -121,7 +121,7 @@ export function AdminRequestsContent(): JSX.Element {
 
   // Renderiza la tabla de solicitudes.
   return (
-    <Card>
+    <Card className='rounded-3xl'>
       <CardHeader>
         <CardTitle>{t('songRequestsTitle')}</CardTitle>
         <CardDescription>{t('songRequestsDescription')}</CardDescription>

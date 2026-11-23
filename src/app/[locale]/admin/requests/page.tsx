@@ -1,4 +1,5 @@
 import { type JSX, Suspense } from 'react'
+import { AdminShell } from '@/components/admin/admin-shell'
 import { AdminRequestsContent } from '@/components/admin-requests-content'
 import { ProtectedPage } from '@/components/protected-page'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -36,13 +37,11 @@ export default function AdminRequestsPage(): JSX.Element {
   return (
     // Componente que protege la página, requiriendo autenticación de administrador.
     <ProtectedPage adminOnly>
-      <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8'>
-          <Suspense fallback={<RequestsLoader />}>
-            <AdminRequestsContent />
-          </Suspense>
-        </main>
-      </div>
+      <AdminShell>
+        <Suspense fallback={<RequestsLoader />}>
+          <AdminRequestsContent />
+        </Suspense>
+      </AdminShell>
     </ProtectedPage>
   )
 }
