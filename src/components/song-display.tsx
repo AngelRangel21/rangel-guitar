@@ -13,6 +13,7 @@ import { Fragment, type JSX, useMemo, useState } from 'react'
 import { SegmentedControl } from '@/components/layout/segmented-control'
 import { SongCard } from '@/components/song-card'
 import { SongComments } from '@/components/song-comments'
+import { SongRating } from '@/components/song-rating'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
@@ -186,6 +187,8 @@ export function SongDisplay({
             </h3>
             <SongShare title={songTitle} artist={artistsName} />
           </div>
+
+          <SongRating songId={song.id} />
         </aside>
 
         {/* ── Cifra ── */}

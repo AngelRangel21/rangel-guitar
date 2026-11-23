@@ -569,5 +569,19 @@
     "deleted": "Comment deleted",
     "deleteConfirmTitle": "Delete this comment?",
     "deleteConfirmDescription": "This action cannot be undone."
+  },
+  "songRating": {
+    "title": "Rating",
+    "noRatings": "No ratings yet. Be the first!",
+    "averageLabel": "{average} out of 5 stars",
+    "total": "{count, plural, one {# rating} other {# ratings}}",
+    "ratePrompt": "What did you think of this song?",
+    "yourRating": "Your rating: {count, plural, one {# star} other {# stars}}",
+    "starLabel": "{count, plural, one {# star} other {# stars}}",
+    "remove": "Remove my rating",
+    "saved": "Thanks! You rated it {count, plural, one {# star} other {# stars}}.",
+    "saveError": "Your rating could not be saved.",
+    "loginPrompt": "Log in to rate this song.",
+    "login": "Log in"
   }
 }

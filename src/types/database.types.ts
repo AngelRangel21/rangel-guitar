@@ -173,6 +173,48 @@ export type Database = {
           }
         ]
       }
+      song_ratings: {
+        Row: {
+          createdAt: string
+          id: string
+          rating: number
+          song_id: string
+          updatedAt: string
+          user_id: string
+        }
+        Insert: {
+          createdAt?: string
+          id?: string
+          rating: number
+          song_id: string
+          updatedAt?: string
+          user_id: string
+        }
+        Update: {
+          createdAt?: string
+          id?: string
+          rating?: number
+          song_id?: string
+          updatedAt?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'song_ratings_song_id_fkey'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'song_ratings_song_id_fkey'
+            columns: ['song_id']
+            isOneToOne: false
+            referencedRelation: 'songs_with_counts'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       song_visits: {
         Row: {
           id: string
@@ -426,6 +468,13 @@ export type Database = {
           user_avatar_url: string
           user_id: string
           user_name: string
+        }[]
+      }
+      get_song_rating: {
+        Args: { p_song_id: string }
+        Returns: {
+          average: number
+          total: number
         }[]
       }
       get_song_stats: {

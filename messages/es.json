@@ -569,5 +569,19 @@
     "deleted": "Comentario eliminado",
     "deleteConfirmTitle": "¿Eliminar este comentario?",
     "deleteConfirmDescription": "Esta acción no se puede deshacer."
+  },
+  "songRating": {
+    "title": "Valoración",
+    "noRatings": "Aún nadie la ha valorado. ¡Sé el primero!",
+    "averageLabel": "{average} de 5 estrellas",
+    "total": "{count, plural, one {# valoración} other {# valoraciones}}",
+    "ratePrompt": "¿Qué te pareció esta canción?",
+    "yourRating": "Tu valoración: {count, plural, one {# estrella} other {# estrellas}}",
+    "starLabel": "{count, plural, one {# estrella} other {# estrellas}}",
+    "remove": "Quitar mi valoración",
+    "saved": "¡Gracias! La valoraste con {count, plural, one {# estrella} other {# estrellas}}.",
+    "saveError": "No se pudo guardar tu valoración.",
+    "loginPrompt": "Inicia sesión para valorar esta canción.",
+    "login": "Iniciar sesión"
   }
 }

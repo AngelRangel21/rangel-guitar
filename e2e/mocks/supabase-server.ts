@@ -85,6 +85,9 @@ interface MockComment {
 
 const comments = new Map<string, MockComment>()
 
+/** Valoraciones en memoria: clave `${song_id}:${user_id}` → estrellas. */
+const ratings = new Map<string, number>()
+
 const findUserName = (uid: string): string | null =>
   [...accounts.values()].find((account) => account.user.id === uid)?.user
     .user_metadata?.full_name as string | null
@@ -357,6 +360,45 @@ const handleRest = async (
   if (url.pathname === '/rest/v1/songs') {
     const slug = url.searchParams.get('slug')
     json(req, res, 200, slug === `eq.${fixtureSong.slug}` ? [fixtureSong] : [])
+    return
+  }
+
+  // ── Valoraciones en memoria ──
+  if (url.pathname === '/rest/v1/rpc/get_song_rating') {
+    const { p_song_id: songId } = await readBody(req)
+    const values = [...ratings.entries()]
+      .filter(([key]) => key.startsWith(`${songId}:`))
+      .map(([, rating]) => rating)
+    const total = values.length
+    const average =
+      total === 0
+        ? 0
+        : Math.round((values.reduce((a, b) => a + b, 0) / total) * 100) / 100
+    json(req, res, 200, [{ average, total }])
+    return
+  }
+
+  if (url.pathname === '/rest/v1/song_ratings') {
+    const songId = url.searchParams.get('song_id')?.replace('eq.', '') ?? ''
+    const userId = url.searchParams.get('user_id')?.replace('eq.', '') ?? ''
+
+    if (req.method === 'POST') {
+      const body = await readBody(req)
+      ratings.set(`${body.song_id}:${body.user_id}`, Number(body.rating))
+      res.writeHead(201, corsHeaders(req))
+      res.end()
+      return
+    }
+
+    if (req.method === 'DELETE') {
+      ratings.delete(`${songId}:${userId}`)
+      res.writeHead(204, corsHeaders(req))
+      res.end()
+      return
+    }
+
+    const rating = ratings.get(`${songId}:${userId}`)
+    json(req, res, 200, rating == null ? [] : [{ rating }])
     return
   }
 

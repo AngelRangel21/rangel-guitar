@@ -22,7 +22,8 @@ function createBuilder(table: string) {
     'limit',
     'single',
     'maybeSingle',
-    'ilike'
+    'ilike',
+    'upsert'
   ]) {
     builder[method] = (...args: unknown[]) => {
       calls.push({ table, method, args })
@@ -195,6 +196,46 @@ describe('song.service', () => {
     expect(insert?.args[0]).toEqual([
       { song_id: 's1', artist_id: 'a1' },
       { song_id: 's1', artist_id: 'a2' }
+    ])
+  })
+})
+
+const { getSongRatingSummary, rateSong } = await import(
+  '@/services/ratings.service'
+)
+
+describe('ratings.service', () => {
+  it('getSongRatingSummary convierte el resultado del RPC', async () => {
+    mockRpc.mockResolvedValue({
+      data: [{ average: '4.25', total: 8 }],
+      error: null
+    })
+
+    await expect(getSongRatingSummary('s1')).resolves.toEqual({
+      average: 4.25,
+      total: 8
+    })
+    expect(mockRpc).toHaveBeenCalledWith('get_song_rating', { p_song_id: 's1' })
+  })
+
+  it('getSongRatingSummary devuelve ceros sin filas', async () => {
+    mockRpc.mockResolvedValue({ data: [], error: null })
+
+    await expect(getSongRatingSummary('s1')).resolves.toEqual({
+      average: 0,
+      total: 0
+    })
+  })
+
+  it('rateSong hace upsert por canción y usuario', async () => {
+    results.push({ error: null })
+
+    await rateSong('s1', 'u1', 4)
+
+    const upsert = calls.find((c) => c.method === 'upsert')
+    expect(upsert?.args).toEqual([
+      { song_id: 's1', user_id: 'u1', rating: 4 },
+      { onConflict: 'song_id,user_id' }
     ])
   })
 })

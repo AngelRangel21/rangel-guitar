@@ -108,6 +108,19 @@ export interface ToggleFavoriteResult {
 }
 
 // ─────────────────────────────────────────────
+// VALORACIONES (estrellas)
+// ─────────────────────────────────────────────
+
+export type DbSongRating = Tables<'song_ratings'>
+
+/** Media y número de valoraciones de una canción. */
+export interface SongRatingSummary {
+  /** Media de 0 a 5 (0 si nadie ha valorado). */
+  average: number
+  total: number
+}
+
+// ─────────────────────────────────────────────
 // COMENTARIOS
 // ─────────────────────────────────────────────
 
