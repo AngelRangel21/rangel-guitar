@@ -4,7 +4,13 @@
 
 import { MusicIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { type JSX, type KeyboardEvent, useRef, useState } from 'react'
+import {
+  type JSX,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import type { SearchSong } from '@/components/searching/search.types'
 import { useSearch } from '@/components/searching/useSearch'
 import { Link, useRouter } from '@/i18n/navigation'
@@ -157,13 +163,30 @@ interface SongSearchProps {
   onSelect?: (song: SearchSong) => void
   /** Callback al enviar la búsqueda sin una canción seleccionada */
   onSubmit?: (query: string) => void
+  /** Tamaño visual del input */
+  size?: 'md' | 'lg'
+  /** Enfoca el buscador al pulsar `/` fuera de un campo de texto */
+  enableShortcut?: boolean
+}
+
+/** Indica si el foco está en un elemento donde se escribe texto. */
+function isTypingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false
+  return (
+    target.isContentEditable ||
+    target.tagName === 'INPUT' ||
+    target.tagName === 'TEXTAREA' ||
+    target.tagName === 'SELECT'
+  )
 }
 
 export function SongSearch({
   placeholder = '',
   className = '',
   onSelect,
-  onSubmit
+  onSubmit,
+  size = 'md',
+  enableShortcut = false
 }: SongSearchProps): JSX.Element {
   const {
     query,
@@ -184,6 +207,21 @@ export function SongSearch({
 
   const inputRef = useRef<HTMLInputElement>(null)
   const inputContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!enableShortcut) return
+
+    const handleShortcut = (event: globalThis.KeyboardEvent) => {
+      if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey)
+        return
+      if (isTypingTarget(event.target)) return
+      event.preventDefault()
+      inputRef.current?.focus()
+    }
+
+    document.addEventListener('keydown', handleShortcut)
+    return () => document.removeEventListener('keydown', handleShortcut)
+  }, [enableShortcut])
 
   const showDropdown =
     isOpen && (isLoading || hasSearched || results.length > 0)
@@ -206,7 +244,14 @@ export function SongSearch({
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (!showDropdown) return
+    if (!showDropdown) {
+      // Con el panel cerrado (p. ej. tras Escape), Enter sigue buscando.
+      if (e.key === 'Enter' && onSubmit != null && query.trim().length >= 2) {
+        e.preventDefault()
+        onSubmit(query)
+      }
+      return
+    }
 
     switch (e.key) {
       case 'ArrowDown':
@@ -280,6 +325,14 @@ export function SongSearch({
               clearLabel={t('clear')}
               isLoading={isLoading}
               inputRef={inputRef}
+              size={size}
+              trailing={
+                enableShortcut ? (
+                  <kbd className='hidden sm:inline-flex h-6 min-w-6 items-center justify-center rounded-md border bg-muted px-1.5 font-mono text-xs text-muted-foreground'>
+                    /
+                  </kbd>
+                ) : undefined
+              }
               combobox={{
                 expanded: showDropdown,
                 controls: 'search-results',

@@ -1,17 +1,37 @@
 'use client'
 
-import { Heart } from 'lucide-react'
+import { Heart, Music } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { type JSX, useEffect, useState } from 'react'
 import { useAuthStore } from '@/auth/stores/auth.stores'
+import { EmptyState } from '@/components/layout/empty-state'
+import { PageHeader, PageShell } from '@/components/layout/page-header'
 import { ProtectedPage } from '@/components/protected-page'
 import { SongList } from '@/components/song-list'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useI18n } from '@/context/i18n-context'
+import { Link } from '@/i18n/navigation'
 import { getSongsByIds } from '@/services/song.service'
 import type { SongWithArtist } from '@/types/app.types'
 
+function FavoritesPageBody(): JSX.Element {
+  const t = useTranslations('favoritesPage')
+
+  return (
+    <PageShell>
+      <PageHeader
+        eyebrow={{ icon: Heart, label: t('eyebrow') }}
+        title={t('title')}
+        description={t('description')}
+      />
+      <FavoritesContent />
+    </PageShell>
+  )
+}
+
 function FavoritesContent(): JSX.Element {
   const { t } = useI18n()
+  const tp = useTranslations('favoritesPage')
   const user = useAuthStore((s) => s.user)
   const favoritesIds = useAuthStore((s) => s.favoriteIds)
   const isInitialized = useAuthStore((s) => s.isInitialized)
@@ -37,41 +57,42 @@ function FavoritesContent(): JSX.Element {
       .finally(() => setIsLoading(false))
   }, [favoritesIds, isInitialized, user]) // Se vuelve a ejecutar si la lista de favoritos o el estado de carga cambian.
 
-  // Muestra un esqueleto de carga mientras se obtienen los datos.
   if (!isInitialized || isLoading) {
     return (
-      <div className='space-y-6'>
-        <div className='flex items-center gap-4'>
-          <Skeleton className='h-9 w-48' />
-        </div>
-        <div className='flex flex-col space-y-3'>
-          <Skeleton className='h-14 w-full' />
-          <Skeleton className='h-14 w-full' />
-          <Skeleton className='h-14 w-full' />
-        </div>
+      <div className='flex flex-col gap-3' aria-busy='true'>
+        <Skeleton className='h-10 w-full rounded-xl' />
+        {['a', 'b', 'c', 'd'].map((key) => (
+          <div key={key} className='flex items-center gap-4 px-3 py-2'>
+            <Skeleton className='aspect-video w-24 rounded-lg' />
+            <div className='flex-1 space-y-2'>
+              <Skeleton className='h-4 w-1/3' />
+              <Skeleton className='h-3 w-1/4' />
+            </div>
+          </div>
+        ))}
       </div>
     )
   }
 
-  // Renderiza el contenido principal de la página.
-  return (
-    <div className='space-y-6'>
-      <div className='flex items-center gap-4'>
-        <h1 className='text-3xl font-bold text-foreground'>
-          {t('myFavorites')}
-        </h1>
-      </div>
-      {/* Muestra la lista de canciones si hay favoritas, o un mensaje si no las hay. */}
-      {favoriteSongs.length > 0 ? (
-        <SongList songs={favoriteSongs} />
-      ) : (
-        <div className='text-center py-16 border-2 border-dashed rounded-lg'>
-          <Heart className='mx-auto h-12 w-12 text-muted-foreground' />
-          <p className='mt-4 text-muted-foreground'>{t('noFavorites')}</p>
-        </div>
-      )}
-    </div>
-  )
+  if (favoriteSongs.length === 0) {
+    return (
+      <EmptyState
+        icon={Heart}
+        title={t('noFavorites')}
+        description={tp('emptyHint')}
+      >
+        <Link
+          href='/'
+          className='inline-flex h-10 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85'
+        >
+          <Music aria-hidden='true' className='size-4' />
+          {tp('explore')}
+        </Link>
+      </EmptyState>
+    )
+  }
+
+  return <SongList songs={favoriteSongs} />
 }
 
 /**
@@ -83,12 +104,7 @@ export default function FavoritesPage(): JSX.Element {
   return (
     // Componente que protege la página, requiriendo autenticación.
     <ProtectedPage>
-      <div className='flex flex-col min-h-screen bg-background'>
-        <main className='grow container mx-auto px-4 py-8 space-y-6 animate-content-in'>
-          {/* El contenido se maneja en un componente separado. */}
-          <FavoritesContent />
-        </main>
-      </div>
+      <FavoritesPageBody />
     </ProtectedPage>
   )
 }

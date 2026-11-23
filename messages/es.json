@@ -16,7 +16,14 @@
       "seeAllResults": "Ver todos los resultados para",
       "clear": "Limpiar búsqueda"
     },
-    "discoverAndLearn": "Explora, aprende y toca tus canciones favoritas con acordes y tablaturas."
+    "discoverAndLearn": "Explora, aprende y toca tus canciones favoritas con acordes y tablaturas.",
+    "eyebrow": "Acordes y letras para guitarra",
+    "heroTitle": "Aprende a tocar tus canciones favoritas",
+    "allSongsHint": "Las más recientes primero. Cambia el orden o la vista cuando quieras.",
+    "stats": {
+      "songs": "{count, plural, one {# canción} other {# canciones}}",
+      "artists": "{count, plural, one {# artista} other {# artistas}}"
+    }
   },
   "searchPage": {
     "title": "Buscar",
@@ -159,7 +166,15 @@
       "notSlug": "Sin slug",
       "viewChords": "Ver Acordes"
     },
-    "noSongsFound": "No se encontraron canciones. Intenta una búsqueda diferente."
+    "noSongsFound": "No se encontraron canciones. Intenta una búsqueda diferente.",
+    "count": "{count, plural, one {# canción} other {# canciones}}",
+    "range": "{start}–{end} de {total} canciones",
+    "viewLabel": "Vista",
+    "sort": {
+      "label": "Ordenar por",
+      "recent": "Recientes",
+      "alphabetical": "A–Z"
+    }
   },
   "songPage": {
     "Metadata": {
@@ -405,6 +420,23 @@
   "audioFile": "Archivo de Audio",
   "coffee": "Invitar un café con PayPal",
   "donate": "Donar con PayPal",
+  "favoritesPage": {
+    "eyebrow": "Tu colección",
+    "title": "Mis favoritos",
+    "description": "Las canciones que guardaste para practicar, siempre a mano.",
+    "emptyHint": "Pulsa el corazón en cualquier canción para guardarla aquí.",
+    "explore": "Explorar canciones"
+  },
+  "songView": {
+    "eyebrow": "Acordes y letra",
+    "key": "Tono: {key}",
+    "viewMode": "Modo de vista",
+    "fontSize": "Tamaño de letra",
+    "smaller": "Reducir letra",
+    "larger": "Aumentar letra",
+    "copyLink": "Copiar enlace",
+    "copied": "Enlace copiado"
+  },
   "authLayout": {
     "title": "Tus canciones, tus acordes, a tu ritmo.",
     "benefits": {

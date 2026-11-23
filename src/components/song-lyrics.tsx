@@ -7,9 +7,13 @@ import { parseChordSheet } from '@/lib/chordpro'
 
 interface SongLyricsProps {
   chordSheet: string
+  className?: string
 }
 
-export function SongLyrics({ chordSheet }: SongLyricsProps) {
+export function SongLyrics({
+  chordSheet,
+  className = 'text-sm'
+}: SongLyricsProps) {
   const parsedReactContent = useMemo(() => {
     const song = parseChordSheet(chordSheet)
 
@@ -25,5 +29,7 @@ export function SongLyrics({ chordSheet }: SongLyricsProps) {
     return htmlString
   }, [chordSheet])
 
-  return <div className='font-mono text-sm'>{parse(parsedReactContent)}</div>
+  return (
+    <div className={`font-mono ${className}`}>{parse(parsedReactContent)}</div>
+  )
 }

@@ -1,58 +1,72 @@
-import Image from 'next/image'
+import { ChevronRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
 import { Link } from '@/i18n/navigation'
 import type { SongWithArtist } from '@/types/app.types'
 import { FavoriteButton } from './favorite-button'
+import { SongArtwork } from './song-artwork'
 
-export function SongListItem({ song }: { song: SongWithArtist }): JSX.Element {
+interface SongListItemProps {
+  song: SongWithArtist
+  /** Posición de la canción en la lista (1-based). */
+  position?: number
+}
+
+export function SongListItem({
+  song,
+  position
+}: SongListItemProps): JSX.Element {
   const t = useTranslations('songList.list')
 
   const artistsName =
-    song.artists.map((a) => a.name).join(', ') ?? t('notArtists')
+    song.artists.map((a) => a.name).join(', ') || t('notArtists')
   const songTitle = song.title ?? t('notTitle')
   const songSlug = song.slug ?? t('notSlug')
-  const songCover = song.coverArt ?? ''
 
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex items-center gap-4 p-3 bg-transparent hover:bg-card dark:hover:bg-card border border-transparent rounded-xl transition-all duration-200 group'>
-        <div className='h-auto w-20 aspect-video relative overflow-hidden'>
-          <Image
-            alt={`${songTitle} - ${artistsName}`}
-            className='rounded-lg object-cover w-full h-auto'
-            src={`${songCover}`}
-            width={80}
-            height={45}
-            decoding='async'
-            unoptimized
-          />
-        </div>
-        <div className='grow min-w-0'>
-          <Link
-            href={{
-              pathname: '/songs/[slug]',
-              params: { slug: `${songSlug}` }
-            }}
-            className='text-foreground font-bold transition-colors'
-          >
-            {songTitle}
-          </Link>
-          <p className='text-muted-foreground text-sm'>{artistsName}</p>
-        </div>
-        <div className='flex items-center gap-6'>
-          <Link
-            href={{
-              pathname: '/songs/[slug]',
-              params: { slug: `${songSlug}` }
-            }}
-            className='hidden md:block dark:hover:bg-card/75 bg-card text-foreground/90 px-5 py-2 rounded-xl text-sm font-bold transition-all border whitespace-nowrap'
-          >
-            {t('viewChords')}
-          </Link>
-          <FavoriteButton song={song} />
-        </div>
+    <article className='group relative flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-muted/60 focus-within:bg-muted/60 sm:gap-4 sm:px-3'>
+      {position != null && (
+        <span
+          aria-hidden='true'
+          className='hidden w-6 shrink-0 text-right text-sm tabular-nums text-muted-foreground sm:block'
+        >
+          {position}
+        </span>
+      )}
+
+      <SongArtwork
+        src={song.coverArt}
+        alt=''
+        sizes='96px'
+        className='aspect-video w-20 shrink-0 rounded-lg ring-1 ring-border sm:w-24'
+      />
+
+      <div className='min-w-0 flex-1'>
+        {/* El enlace se estira sobre toda la fila con `after:` */}
+        <Link
+          href={{ pathname: '/songs/[slug]', params: { slug: songSlug } }}
+          aria-label={`${t('viewChords')}: ${songTitle} - ${artistsName}`}
+          className='block truncate font-semibold text-foreground outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:ring-2 focus-visible:after:ring-ring'
+        >
+          {songTitle}
+        </Link>
+        <p className='truncate text-sm text-muted-foreground'>{artistsName}</p>
       </div>
-    </div>
+
+      {song.key != null && song.key !== '' && (
+        <span className='hidden shrink-0 rounded-md border bg-background px-2 py-0.5 text-xs tabular-nums font-medium text-muted-foreground sm:inline-block'>
+          {song.key}
+        </span>
+      )}
+
+      <div className='relative z-10 flex shrink-0 items-center'>
+        <FavoriteButton song={song} />
+      </div>
+
+      <ChevronRight
+        aria-hidden='true'
+        className='size-5 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground'
+      />
+    </article>
   )
 }

@@ -1,9 +1,9 @@
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import type { JSX } from 'react'
 import { Link } from '@/i18n/navigation'
 import type { SongWithArtist } from '@/types/app.types'
 import { FavoriteButton } from './favorite-button'
+import { SongArtwork } from './song-artwork'
 
 interface SongCardProps {
   song: SongWithArtist
@@ -12,47 +12,45 @@ interface SongCardProps {
 export function SongCard({ song }: SongCardProps): JSX.Element {
   const t = useTranslations('songList.grid')
   const artistsName =
-    song.artists.map((a) => a.name).join(', ') ?? t('notArtists')
+    song.artists.map((a) => a.name).join(', ') || t('notArtists')
   const songTitle = song.title ?? t('notTitle')
   const songSlug = song.slug ?? t('notSlug')
-  const songCover = song.coverArt ?? ''
 
   return (
-    <div className='group bg-card rounded-2xl overflow-hidden border-2 border-transparent shadow-sm hover:card/90 hover:card/80 hover:border-accent/30 transition-all duration-300 hover:-translate-y-1'>
-      <div className='aspect-video relative overflow-hidden bg-muted'>
-        <Image
-          alt={`${songTitle} - ${artistsName}`}
-          className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
-          src={`${songCover}`}
-          width='70'
-          height='100'
-          unoptimized
+    <article className='group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus-within:ring-2 focus-within:ring-ring'>
+      <div className='relative'>
+        <SongArtwork
+          src={song.coverArt}
+          alt=''
+          sizes='(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw'
+          className='aspect-video w-full'
+          imageClassName='transition-transform duration-500 group-hover:scale-105'
         />
-        <div className='absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-      </div>
-      <div className='p-5'>
-        <Link
-          href={{ pathname: '/songs/[slug]', params: { slug: `${songSlug}` } }}
-          className='text-lg font-bold text-foreground line-clamp-1 group-hover:text-accent-foreground/85 transition-colors duration-200'
-        >
-          {songTitle}
-        </Link>
-        <p className='text-muted-foreground text-sm mb-4 truncate'>
-          {artistsName}
-        </p>
-        <div className='flex items-center justify-between'>
-          <Link
-            href={{
-              pathname: '/songs/[slug]',
-              params: { slug: `${songSlug}` }
-            }}
-            className='bg-secondary text-secondary-foreground px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-accent hover:text-accent-foreground transition-all duration-200 hover:shadow-lg'
-          >
-            {t('viewChords')}
-          </Link>
+        <div
+          aria-hidden='true'
+          className='pointer-events-none absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+        />
+        {song.key != null && song.key !== '' && (
+          <span className='absolute left-2 top-2 rounded-md bg-background/85 px-2 py-0.5 text-xs tabular-nums font-semibold text-foreground backdrop-blur-sm'>
+            {song.key}
+          </span>
+        )}
+        <div className='absolute right-1 top-1 z-10 rounded-full bg-background/70 backdrop-blur-sm [&:has(>div:empty)]:hidden'>
           <FavoriteButton song={song} />
         </div>
       </div>
-    </div>
+
+      <div className='flex min-w-0 flex-1 flex-col gap-0.5 p-3 sm:p-4'>
+        {/* El enlace se estira sobre toda la tarjeta con `after:` */}
+        <Link
+          href={{ pathname: '/songs/[slug]', params: { slug: songSlug } }}
+          aria-label={`${t('viewChords')}: ${songTitle} - ${artistsName}`}
+          className='line-clamp-1 font-semibold text-foreground outline-none after:absolute after:inset-0'
+        >
+          {songTitle}
+        </Link>
+        <p className='truncate text-sm text-muted-foreground'>{artistsName}</p>
+      </div>
+    </article>
   )
 }

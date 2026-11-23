@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import type { JSX } from 'react'
+import { PageShell } from '@/components/layout/page-header'
 import { SongDisplay } from '@/components/song-display'
 import { getPathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
@@ -144,12 +145,9 @@ export default async function SongPage({
 
   // 2. Si no hay suficientes, obtiene canciones aleatorias de otros artistas.
   if (suggestedSongs.length < MAX_SUGGESTIONS) {
+    const suggestedIds = new Set(suggestedSongs.map((s) => s.id))
     const otherSongs = allSongs.filter(
-      (s) =>
-        s.id !== song?.id &&
-        suggestedSongs.find(
-          (alreadySuggested) => alreadySuggested.id === song?.id
-        ) == null
+      (s) => s.id !== song?.id && !suggestedIds.has(s.id)
     )
 
     // Mezcla las otras canciones para obtener una selección aleatoria.
@@ -162,11 +160,11 @@ export default async function SongPage({
   }
 
   return (
-    <div className='flex flex-col min-h-screen bg-background'>
-      <main className='grow container mx-auto px-4 py-8 animate-content-in'>
-        {/* Componente de cliente que maneja la visualización interactiva de la canción. */}
-        <SongDisplay song={song} suggestedSongs={suggestedSongs} />
-      </main>
-    </div>
+    <PageShell>
+      <SongDisplay
+        song={song}
+        suggestedSongs={suggestedSongs.slice(0, MAX_SUGGESTIONS)}
+      />
+    </PageShell>
   )
 }

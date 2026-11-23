@@ -1,22 +1,17 @@
 'use client'
 
-import { Pencil, Trash2 } from 'lucide-react'
-import { type JSX, useMemo, useState } from 'react'
 import {
-  FacebookIcon,
-  TelegramIcon,
-  WhatsAppIcon,
-  XTwitter
-} from '@/components/icons'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+  AArrowDown,
+  AArrowUp,
+  Guitar,
+  Pencil,
+  Text,
+  Trash2
+} from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { Fragment, type JSX, useMemo, useState } from 'react'
+import { SegmentedControl } from '@/components/layout/segmented-control'
+import { SongCard } from '@/components/song-card'
 import { useI18n } from '@/context/i18n-context'
 import { useAuth } from '@/hooks/useAuth'
 import { Link } from '@/i18n/navigation'
@@ -25,10 +20,27 @@ import type { SongWithArtist } from '@/types/app.types'
 import { DeleteSongDialog } from './delete-song-dialog'
 import { FavoriteButton } from './favorite-button'
 import { SongViewer } from './song-chords'
-import { SongListItem } from './song-list-item'
 import { SongLyrics } from './song-lyrics'
+import { SongShare } from './song-share'
 import { TransposeControls } from './transpose-controls'
 import { Video } from './video'
+
+/** Tamaños de letra disponibles para la cifra. */
+const FONT_SIZES = [
+  'text-xs',
+  'text-sm',
+  'text-base',
+  'text-lg',
+  'text-xl'
+] as const
+const DEFAULT_FONT_SIZE = 1
+
+type SheetMode = 'chords' | 'lyrics'
+
+const cardClass = 'rounded-2xl border bg-card p-4 sm:p-5'
+
+const iconButtonClass =
+  'inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40'
 
 export function SongDisplay({
   song,
@@ -37,11 +49,16 @@ export function SongDisplay({
   song: SongWithArtist
   suggestedSongs: SongWithArtist[]
 }): JSX.Element {
-  const [transpose, setTranspose] = useState<number>(0)
   const { t } = useI18n()
+  const ts = useTranslations('songView')
   const { isAdmin } = useAuth()
+
+  const [transpose, setTranspose] = useState(0)
+  const [mode, setMode] = useState<SheetMode>('chords')
+  const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE)
+
   const artistsName =
-    song.artists.map((a) => a.name).join(', ') ?? 'Artista desconocido'
+    song.artists.map((a) => a.name).join(', ') || 'Artista desconocido'
   const songTitle = song.title ?? 'Sin titulo'
   const songSlug = song.slug ?? 'Sin slug'
   const songVideo = song.video ?? ''
@@ -66,182 +83,185 @@ export function SongDisplay({
     (suggestedSong, index, self) =>
       index === self.findIndex((s) => s.id === suggestedSong.id)
   )
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : ''
 
-  const shareText = t('shareText', { title: songTitle, artist: artistsName })
+  const fontClass = FONT_SIZES[fontSize]
 
   return (
-    <div className='animate-content-in'>
-      <div className='grid lg:grid-cols-3 gap-8'>
-        {/* Columna izquierda: Portada, controles y metadatos */}
-        <div className='lg:col-span-1'>
-          <Card className='pt-0 overflow-hidden lg:sticky lg:top-24'>
-            {songVideo !== null && (
-              <div className='w-full aspect-video'>
-                <Video
-                  videoId={`${songVideo}`}
-                  title={`Video de la canción ${songTitle} del artista ${artistsName}`}
-                />
-              </div>
-            )}
-            <CardHeader>
-              <div className='flex justify-between items-start'>
-                <div>
-                  <CardTitle className='text-2xl'>
-                    <h1>{songTitle}</h1>
-                  </CardTitle>
-                  <CardDescription>
-                    <h2>{artistsName}</h2>
-                  </CardDescription>
-                </div>
-                {/* Botón de Favoritos (solo para usuarios autenticados) */}
-                <FavoriteButton song={song} />
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* Acciones de Administrador (solo para administradores) */}
-              {isAdmin && (
-                <div className='mb-8 p-4 bg-secondary/50 rounded-lg'>
-                  <span className='text-lg font-semibold mb-3 text-center'>
-                    {t('adminActions')}
-                  </span>
-                  <div className='flex justify-center gap-4'>
-                    <Link
-                      className="[&_svg:not([class*='size-'])]:size-4 aria-invalid:ring-[3px] bg-clip-padding bg-input/30 border border-border font-medium hover:bg-input/50 hover:text-foreground inline-flex items-center justify-center outline-none px-3.5 rounded-4xl select-none text-sm transition-all"
-                      href={{
-                        pathname: '/songs/[slug]/edit',
-                        params: { slug: `${songSlug}` }
-                      }}
-                    >
-                      <Pencil className='mr-2' /> {t('edit')}
-                    </Link>
-                    <DeleteSongDialog song={song}>
-                      <Button variant='destructive'>
-                        <Trash2 className='mr-2' /> {t('delete')}
-                      </Button>
-                    </DeleteSongDialog>
-                  </div>
-                </div>
+    <div className='space-y-12'>
+      {/* ── Cabecera ── */}
+      <header className='animate-fade-up rounded-3xl border bg-linear-to-b from-muted/60 to-background px-5 py-7 sm:px-8 md:py-10'>
+        <div className='flex flex-col gap-6 md:flex-row md:items-end md:justify-between'>
+          <div className='min-w-0 space-y-3'>
+            <div className='flex flex-wrap items-center gap-2'>
+              <span className='inline-flex items-center gap-2 rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground'>
+                <Guitar aria-hidden='true' className='size-3.5' />
+                {ts('eyebrow')}
+              </span>
+              {currentKey != null && (
+                <span className='rounded-full border bg-background/80 px-3 py-1 text-xs font-semibold tabular-nums text-foreground'>
+                  {ts('key', { key: currentKey })}
+                </span>
               )}
+            </div>
+            <h1 className='text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl md:text-5xl font-headline'>
+              {songTitle}
+            </h1>
+            <p className='text-lg text-muted-foreground'>
+              {song.artists.length === 0
+                ? artistsName
+                : song.artists.map((artist, index) => (
+                    <Fragment key={artist.id}>
+                      {index > 0 && ', '}
+                      <Link
+                        href={{
+                          pathname: '/artists/[slug]',
+                          params: { slug: artist.slug }
+                        }}
+                        className='font-medium text-foreground underline-offset-4 hover:underline'
+                      >
+                        {artist.name}
+                      </Link>
+                    </Fragment>
+                  ))}
+            </p>
+          </div>
 
-              {/* Controles de Transposición */}
-              <div className='space-y-4'>
-                <TransposeControls
-                  transposeAmount={transpose}
-                  originalKey={originalKey}
-                  currentKey={currentKey}
-                  onUp={() =>
-                    setTranspose((t) => Math.min(t + 1, MAX_TRANSPOSE))
-                  }
-                  onDown={() =>
-                    setTranspose((t) => Math.max(t - 1, -MAX_TRANSPOSE))
-                  }
-                  onReset={() => setTranspose(0)}
-                />
-              </div>
-
-              {/* Botones para Compartir */}
-              <div className='mt-8'>
-                <h3 className='text-lg font-semibold mb-2 text-center'>
-                  {t('share')}
-                </h3>
-                <div className='flex justify-center gap-4'>
-                  <Button variant='outline' size='icon'>
-                    <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
-                      target='_blank'
-                      rel='noopener noreferer'
-                      aria-label={t('shareOnFacebook')}
-                    >
-                      <FacebookIcon className='h-5 w-5' />
-                    </a>
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='icon'
-                    onClick={() =>
-                      window.open(
-                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                          shareText
-                        )}`,
-                        '_blank'
-                      )
-                    }
-                    aria-label={t('shareOnTwitter')}
+          <div className='flex shrink-0 flex-wrap items-center gap-2'>
+            <FavoriteButton song={song} />
+            {isAdmin && (
+              <>
+                <Link
+                  href={{
+                    pathname: '/songs/[slug]/edit',
+                    params: { slug: songSlug }
+                  }}
+                  className='inline-flex h-9 items-center gap-1.5 rounded-full border bg-background px-4 text-sm font-medium transition-colors hover:bg-muted'
+                >
+                  <Pencil aria-hidden='true' className='size-4' />
+                  {t('edit')}
+                </Link>
+                <DeleteSongDialog song={song}>
+                  <button
+                    type='button'
+                    className='inline-flex h-9 items-center gap-1.5 rounded-full bg-destructive/10 px-4 text-sm font-medium text-destructive transition-colors hover:bg-destructive/20'
                   >
-                    <XTwitter className='h-5 w-5' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='icon'
-                    onClick={() =>
-                      window.open(
-                        `https://api.whatsapp.com/send?text=${encodeURIComponent(
-                          `${shareText}`
-                        )}`,
-                        '_blank'
-                      )
-                    }
-                    aria-label={t('shareOnWhatsApp')}
-                  >
-                    <WhatsAppIcon className='h-5 w-5' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='icon'
-                    onClick={() =>
-                      window.open(
-                        `https://t.me/share/url?url=${encodeURIComponent(
-                          shareText
-                        )}`,
-                        '_blank'
-                      )
-                    }
-                    aria-label={t('shareOnTelegram')}
-                  >
-                    <TelegramIcon className='h-5 w-5' />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        {/* Columna derecha: Pestañas con acordes y letra */}
-        <div className='lg:col-span-2'>
-          <Tabs defaultValue='chords' className='w-full'>
-            <TabsList>
-              <TabsTrigger value='chords'>{t('chordsAndLyrics')}</TabsTrigger>
-              <TabsTrigger value='lyrics'>{t('lyricsOnly')}</TabsTrigger>
-            </TabsList>
-            <TabsContent value='chords'>
-              <Card>
-                <CardContent className='p-6'>
-                  <SongViewer song={transposedSong} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value='lyrics'>
-              <Card>
-                <CardContent className='p-6'>
-                  <div className='whitespace-pre-wrap font-sans text-base leading-relaxed'>
-                    <SongLyrics chordSheet={songChords} />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
-      {/* Sección de Canciones Sugeridas */}
-      {uniqueSuggestedSongs.length > 0 && (
-        <div className='mt-16'>
-          <h4 className='text-3xl font-bold mb-6'>{t('suggestedSongs')}</h4>
-          <div className='flex flex-col space-y-3'>
-            {uniqueSuggestedSongs.map((s) => (
-              <SongListItem key={`${s.id}`} song={s} />
-            ))}
+                    <Trash2 aria-hidden='true' className='size-4' />
+                    {t('delete')}
+                  </button>
+                </DeleteSongDialog>
+              </>
+            )}
           </div>
         </div>
+      </header>
+      <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-8'>
+        {/* ── Panel lateral: video, tono, compartir y valoración ── */}
+        <aside className='space-y-4 lg:sticky lg:top-24 lg:order-last lg:self-start'>
+          {songVideo !== '' && (
+            <div className='overflow-hidden rounded-2xl border bg-muted'>
+              <Video
+                videoId={songVideo}
+                title={`Video de la canción ${songTitle} del artista ${artistsName}`}
+              />
+            </div>
+          )}
+
+          <div className={cardClass}>
+            <TransposeControls
+              transposeAmount={transpose}
+              originalKey={originalKey}
+              currentKey={currentKey}
+              onUp={() => setTranspose((v) => Math.min(v + 1, MAX_TRANSPOSE))}
+              onDown={() =>
+                setTranspose((v) => Math.max(v - 1, -MAX_TRANSPOSE))
+              }
+              onReset={() => setTranspose(0)}
+            />
+          </div>
+
+          <div className={`${cardClass} space-y-3`}>
+            <h3 className='text-sm font-semibold text-foreground'>
+              {t('share')}
+            </h3>
+            <SongShare title={songTitle} artist={artistsName} />
+          </div>
+        </aside>
+
+        {/* ── Cifra ── */}
+        <section
+          aria-label={t('chordsAndLyrics')}
+          className='min-w-0 overflow-hidden rounded-2xl border bg-card'
+        >
+          <div className='flex flex-wrap items-center justify-between gap-2 border-b bg-muted/30 px-3 py-2 sm:px-4'>
+            <SegmentedControl<SheetMode>
+              label={ts('viewMode')}
+              value={mode}
+              onChange={setMode}
+              options={[
+                {
+                  value: 'chords',
+                  label: t('chordsAndLyrics'),
+                  icon: <Guitar />
+                },
+                { value: 'lyrics', label: t('lyricsOnly'), icon: <Text /> }
+              ]}
+            />
+
+            <fieldset className='inline-flex items-center gap-0.5 rounded-lg border bg-muted/50 p-0.5'>
+              <legend className='sr-only'>{ts('fontSize')}</legend>
+              <button
+                type='button'
+                onClick={() => setFontSize((v) => Math.max(v - 1, 0))}
+                disabled={fontSize === 0}
+                aria-label={ts('smaller')}
+                title={ts('smaller')}
+                className={iconButtonClass}
+              >
+                <AArrowDown aria-hidden='true' className='size-4' />
+              </button>
+              <button
+                type='button'
+                onClick={() =>
+                  setFontSize((v) => Math.min(v + 1, FONT_SIZES.length - 1))
+                }
+                disabled={fontSize === FONT_SIZES.length - 1}
+                aria-label={ts('larger')}
+                title={ts('larger')}
+                className={iconButtonClass}
+              >
+                <AArrowUp aria-hidden='true' className='size-4' />
+              </button>
+            </fieldset>
+          </div>
+
+          <div className='overflow-x-auto p-4 sm:p-6'>
+            {mode === 'chords' ? (
+              <SongViewer song={transposedSong} className={fontClass} />
+            ) : (
+              <div className='whitespace-pre-wrap leading-relaxed'>
+                <SongLyrics chordSheet={songChords} className={fontClass} />
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+      {/* ── Sugerencias ── */}
+      {uniqueSuggestedSongs.length > 0 && (
+        <section aria-labelledby='suggested-songs' className='space-y-5'>
+          <h2
+            id='suggested-songs'
+            className='text-2xl font-bold tracking-tight text-foreground md:text-3xl font-headline'
+          >
+            {t('suggestedSongs')}
+          </h2>
+          <ul className='grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3'>
+            {uniqueSuggestedSongs.map((s) => (
+              <li key={s.id}>
+                <SongCard song={s} />
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   )

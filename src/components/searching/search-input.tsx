@@ -1,7 +1,7 @@
 'use client'
 
 import { Search, X } from 'lucide-react'
-import type { KeyboardEvent, RefObject } from 'react'
+import type { KeyboardEvent, ReactNode, RefObject } from 'react'
 import { Spinner } from '../ui/spinner'
 
 interface SearchComboboxProps {
@@ -30,7 +30,24 @@ interface SearchInputProps {
   autoFocus?: boolean
   /** Cuando se pasa, el input se comporta como combobox (dropdown). */
   combobox?: SearchComboboxProps
+  /** Tamaño visual: `lg` es el buscador destacado de la home. */
+  size?: 'md' | 'lg'
+  /** Contenido extra a la derecha cuando el campo está vacío (p. ej. un atajo). */
+  trailing?: ReactNode
 }
+
+const SIZE_STYLES = {
+  md: {
+    icon: 'left-3 w-4 h-4',
+    input: 'h-10 pl-9 pr-9 text-sm rounded-lg',
+    end: 'right-3 w-4 h-4'
+  },
+  lg: {
+    icon: 'left-4 w-5 h-5',
+    input: 'h-14 pl-12 pr-12 text-base rounded-2xl shadow-sm',
+    end: 'right-4 w-5 h-5'
+  }
+} as const
 
 /**
  * Input del buscador compartido por el dropdown de la home y por la página
@@ -51,14 +68,21 @@ export function SearchInput({
   containerRef,
   className = '',
   autoFocus = false,
-  combobox
+  combobox,
+  size = 'md',
+  trailing
 }: SearchInputProps) {
+  const styles = SIZE_STYLES[size]
+
   return (
     <div
       ref={containerRef}
       className={`relative flex items-center ${className}`}
     >
-      <Search className='absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none' />
+      <Search
+        aria-hidden='true'
+        className={`absolute ${styles.icon} text-muted-foreground pointer-events-none`}
+      />
 
       {label != null && (
         <label htmlFor={id} className='sr-only'>
@@ -85,10 +109,10 @@ export function SearchInput({
         onFocus={onFocus}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className='w-full h-10 pl-9 pr-9 text-sm bg-background border border-input rounded-lg
+        className={`w-full ${styles.input} bg-background border border-input
           placeholder:text-muted-foreground
           focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
-          transition-shadow'
+          transition-shadow`}
         autoComplete='off'
         spellCheck={false}
         enterKeyHint='search'
@@ -97,16 +121,23 @@ export function SearchInput({
       />
 
       {isLoading ? (
-        <Spinner className='absolute right-3 w-4 h-4' />
+        <Spinner className={`absolute ${styles.end}`} />
       ) : value && onClear != null ? (
         <button
           type='button'
           onClick={onClear}
           aria-label={clearLabel}
-          className='absolute right-3 text-muted-foreground hover:text-foreground transition-colors'
+          className={`absolute ${size === 'lg' ? 'right-4' : 'right-3'} text-muted-foreground hover:text-foreground transition-colors`}
         >
-          <X className='w-4 h-4' />
+          <X className={size === 'lg' ? 'w-5 h-5' : 'w-4 h-4'} />
         </button>
+      ) : value === '' && trailing != null ? (
+        <span
+          aria-hidden='true'
+          className='absolute right-4 pointer-events-none'
+        >
+          {trailing}
+        </span>
       ) : null}
     </div>
   )

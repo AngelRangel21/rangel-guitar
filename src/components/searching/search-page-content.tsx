@@ -1,6 +1,6 @@
 'use client'
 
-import { MusicIcon, SearchX } from 'lucide-react'
+import { MusicIcon, Search as SearchIcon, SearchX } from 'lucide-react'
 import { useRouter as useNextRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import {
@@ -11,6 +11,8 @@ import {
   useState,
   useTransition
 } from 'react'
+import { EmptyState } from '@/components/layout/empty-state'
+import { PageHeader, PageShell } from '@/components/layout/page-header'
 import { useRouter } from '@/i18n/navigation'
 import type { SearchResult } from './search.types'
 import { MIN_QUERY_LENGTH } from './search.utils'
@@ -93,71 +95,72 @@ export function SearchPageContent({
   const hasResults = initialResult.songs.length > 0
 
   return (
-    <main className='grow container mx-auto px-4 py-8 space-y-6'>
-      <h1 className='text-3xl md:text-4xl font-bold text-foreground tracking-tight font-headline'>
-        {hasQuery ? `${t('resultsFor')} “${initialQuery}”` : t('heading')}
-      </h1>
-
-      <search className='block max-w-xl' aria-busy={isPending}>
-        <form onSubmit={handleSubmit}>
-          <SearchInput
-            id={inputId}
-            value={value}
-            onChange={setValue}
-            placeholder={t('placeholder')}
-            label={t('label')}
-            clearLabel={t('clear')}
-            onClear={() => setValue('')}
-            isLoading={isPending}
-          />
-        </form>
-      </search>
+    <PageShell>
+      <PageHeader
+        eyebrow={{ icon: SearchIcon, label: t('title') }}
+        title={
+          hasQuery ? (
+            <>
+              {t('resultsFor')}{' '}
+              <span className='text-muted-foreground'>“{initialQuery}”</span>
+            </>
+          ) : (
+            t('heading')
+          )
+        }
+      >
+        <search className='block w-full max-w-2xl' aria-busy={isPending}>
+          <form onSubmit={handleSubmit}>
+            <SearchInput
+              id={inputId}
+              size='lg'
+              value={value}
+              onChange={setValue}
+              placeholder={t('placeholder')}
+              label={t('label')}
+              clearLabel={t('clear')}
+              onClear={() => setValue('')}
+              isLoading={isPending}
+            />
+          </form>
+        </search>
+      </PageHeader>
 
       <div
         aria-live='polite'
         className={isPending ? 'opacity-60 transition-opacity' : undefined}
       >
-        {!hasQuery && (
-          <div className='flex flex-col items-center gap-3 py-16 text-center text-muted-foreground'>
-            <MusicIcon className='w-10 h-10 opacity-40' />
-            <p>{t('emptyState')}</p>
-          </div>
-        )}
+        {!hasQuery && <EmptyState icon={MusicIcon} title={t('emptyState')} />}
 
         {hasQuery && hasError && (
-          <div className='flex flex-col items-center gap-3 py-16 text-center'>
-            <p className='text-destructive'>{t('error')}</p>
+          <EmptyState icon={SearchX} title={t('error')}>
             <button
               type='button'
               onClick={() => nextRouter.refresh()}
-              className='rounded-lg border border-input px-4 py-2 text-sm font-medium hover:bg-accent transition-colors'
+              className='inline-flex h-10 items-center rounded-full border px-5 text-sm font-semibold transition-colors hover:bg-muted'
             >
               {t('retry')}
             </button>
-          </div>
+          </EmptyState>
         )}
 
         {hasQuery && !hasError && !hasResults && (
-          <div className='flex flex-col items-center gap-3 py-16 text-center'>
-            <SearchX className='w-10 h-10 opacity-40 text-muted-foreground' />
-            <p className='text-muted-foreground'>
-              {t('noResults')} “{initialQuery}”
-            </p>
-            <p className='text-sm text-muted-foreground'>
-              {t('noResultsHint')}
-            </p>
-          </div>
+          <EmptyState
+            icon={SearchX}
+            title={`${t('noResults')} “${initialQuery}”`}
+            description={t('noResultsHint')}
+          />
         )}
 
         {hasQuery && !hasError && hasResults && (
           <div className='space-y-4'>
-            <p className='text-sm text-muted-foreground'>
+            <p className='border-b pb-3 text-sm text-muted-foreground'>
               {t('resultsCount', { count: initialResult.total })}
             </p>
             <SearchResults songs={initialResult.songs} query={initialQuery} />
           </div>
         )}
       </div>
-    </main>
+    </PageShell>
   )
 }

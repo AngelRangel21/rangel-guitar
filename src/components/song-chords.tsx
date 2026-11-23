@@ -13,6 +13,7 @@ import { Chord } from './chord'
 
 interface SongViewerProps {
   song: Song
+  className?: string
 }
 
 const extractText = (node: any): string => {
@@ -21,7 +22,7 @@ const extractText = (node: any): string => {
   return ''
 }
 
-export function SongViewer({ song }: SongViewerProps) {
+export function SongViewer({ song, className = 'text-sm' }: SongViewerProps) {
   const parsedReactContent = useMemo(() => {
     const setting = new FormatterSettings()
     setting.showMetadata = false
@@ -54,5 +55,5 @@ export function SongViewer({ song }: SongViewerProps) {
     })
   }, [song])
 
-  return <div className='font-mono text-sm'>{parsedReactContent}</div>
+  return <div className={`font-mono ${className}`}>{parsedReactContent}</div>
 }

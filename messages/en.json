@@ -16,7 +16,14 @@
       "seeAllResults": "See all results for",
       "clear": "Clear search"
     },
-    "discoverAndLearn": "Explore, learn and play your favorite songs with chords and tabs."
+    "discoverAndLearn": "Explore, learn and play your favorite songs with chords and tabs.",
+    "eyebrow": "Guitar chords and lyrics",
+    "heroTitle": "Learn to play your favorite songs",
+    "allSongsHint": "Newest first. Change the order or the view anytime.",
+    "stats": {
+      "songs": "{count, plural, one {# song} other {# songs}}",
+      "artists": "{count, plural, one {# artist} other {# artists}}"
+    }
   },
   "searchPage": {
     "title": "Search",
@@ -159,7 +166,15 @@
       "notSlug": "unknown slug",
       "viewChords": "See chords"
     },
-    "noSongsFound": "No songs found. Try a different search term."
+    "noSongsFound": "No songs found. Try a different search term.",
+    "count": "{count, plural, one {# song} other {# songs}}",
+    "range": "{start}–{end} of {total} songs",
+    "viewLabel": "View",
+    "sort": {
+      "label": "Sort by",
+      "recent": "Newest",
+      "alphabetical": "A–Z"
+    }
   },
   "songPage": {
     "Metadata": {
@@ -405,6 +420,23 @@
   "audioFile": "Audio File",
   "coffee": "Invite a coffee with PayPal",
   "donate": "Donate with PayPal",
+  "favoritesPage": {
+    "eyebrow": "Your collection",
+    "title": "My favorites",
+    "description": "The songs you saved to practice, always at hand.",
+    "emptyHint": "Tap the heart on any song to save it here.",
+    "explore": "Browse songs"
+  },
+  "songView": {
+    "eyebrow": "Chords and lyrics",
+    "key": "Key: {key}",
+    "viewMode": "View mode",
+    "fontSize": "Text size",
+    "smaller": "Smaller text",
+    "larger": "Larger text",
+    "copyLink": "Copy link",
+    "copied": "Link copied"
+  },
   "authLayout": {
     "title": "Your songs, your chords, at your pace.",
     "benefits": {
