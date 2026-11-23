@@ -78,3 +78,4 @@ build/
 /supabase/functions/.import_map.json
 # Ignorar logs locales de la base de datos si usas el CLI local
 /supabase/debug.log
+/supabase/*.sql
