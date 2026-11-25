@@ -7,18 +7,28 @@ const handleI18n = createMiddleware(routing)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? ''
 
+type CookieToSet = {
+  name: string
+  value: string
+  options?: Parameters<NextResponse['cookies']['set']>[2]
+}
+
 export async function proxy(request: NextRequest) {
-  const response =
-    handleI18n(request) ??
-    NextResponse.next({ request: { headers: request.headers } })
+  // Supabase va primero: si refresca o borra la sesión, actualiza las cookies
+  // de la petición para que next-intl las reenvíe al resto del servidor, y
+  // guarda las de la respuesta para aplicarlas a la que se devuelva.
+  let pendingCookies: CookieToSet[] = []
+  let pendingHeaders: Record<string, string> = {}
 
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),
-      setAll: (cookiesToSet) => {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          response.cookies.set(name, value, options)
+      setAll: (cookiesToSet, headers) => {
+        cookiesToSet.forEach(({ name, value }) => {
+          request.cookies.set(name, value)
         })
+        pendingCookies = cookiesToSet
+        pendingHeaders = headers ?? {}
       }
     }
   })
@@ -31,6 +41,8 @@ export async function proxy(request: NextRequest) {
   const authRouterPattern = /\/(en|es)?\/?(login|register|entrar|registrarse)$/
   const isAuthPage = authRouterPattern.test(pathname)
 
+  let response: NextResponse
+
   if (user && isAuthPage) {
     const redirectUrl = request.nextUrl.clone()
 
@@ -39,8 +51,19 @@ export async function proxy(request: NextRequest) {
 
     redirectUrl.pathname = currentLocale
 
-    return NextResponse.redirect(redirectUrl)
+    response = NextResponse.redirect(redirectUrl)
+  } else {
+    response =
+      handleI18n(request) ??
+      NextResponse.next({ request: { headers: request.headers } })
   }
+
+  pendingCookies.forEach(({ name, value, options }) => {
+    response.cookies.set(name, value, options)
+  })
+  Object.entries(pendingHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value)
+  })
 
   return response
 }
