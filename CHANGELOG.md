@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.11.0...v1.11.1) (2026-11-25)
+
+
+### Bug Fixes
+
+* **proxy:** mejorar la gestión de cookies y encabezados en la función proxy ([1affcfc](https://github.com/AngelRangel21/rangel-guitar/commit/1affcfce3811c86d4d7cc98ac35bb3dbafd2c773))
+
 # [1.11.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.10.0...v1.11.0) (2026-11-23)
 
 
