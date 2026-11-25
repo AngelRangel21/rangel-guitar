@@ -11,7 +11,8 @@
       "!!.agents",
       "!!.claude",
       "!!supabase/.temp",
-      "!!next-env.d.ts"
+      "!!next-env.d.ts",
+      "!!CHANGELOG.md"
     ]
   },
   "formatter": {
