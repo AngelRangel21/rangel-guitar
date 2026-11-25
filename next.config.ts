@@ -95,6 +95,9 @@ ${canUpgradeInsecureRequests ? 'upgrade-insecure-requests;' : ''}
   .trim()
 
 const nextConfig: NextConfig = {
+  // E2E usa su propia carpeta para poder convivir con el `next dev` del 3000
+  // (Next bloquea un segundo dev server con `<distDir>/dev/lock`).
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   output: 'standalone',
   compress: true,
   poweredByHeader: false,
