@@ -3,29 +3,29 @@
 
 ### Bug Fixes
 
-* **proxy:** mejorar la gestión de cookies y encabezados en la función proxy ([1affcfc](https://github.com/AngelRangel21/rangel-guitar/commit/1affcfce3811c86d4d7cc98ac35bb3dbafd2c773))
+- **proxy:** mejorar la gestión de cookies y encabezados en la función proxy ([1affcfc](https://github.com/AngelRangel21/rangel-guitar/commit/1affcfce3811c86d4d7cc98ac35bb3dbafd2c773))
 
 # [1.11.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.10.0...v1.11.0) (2026-11-23)
 
 
 ### Bug Fixes
 
-* **db:** corregir los avisos del Security y Performance Advisor ([2f3c264](https://github.com/AngelRangel21/rangel-guitar/commit/2f3c264ad0699c968ce883691d81fdd68896b47e))
-* **db:** endurecer las políticas RLS y las funciones de la base de datos ([0fc6532](https://github.com/AngelRangel21/rangel-guitar/commit/0fc65326b24781ee897be5e8b78250fa60fc2072))
+- **db:** corregir los avisos del Security y Performance Advisor ([2f3c264](https://github.com/AngelRangel21/rangel-guitar/commit/2f3c264ad0699c968ce883691d81fdd68896b47e))
+- **db:** endurecer las políticas RLS y las funciones de la base de datos ([0fc6532](https://github.com/AngelRangel21/rangel-guitar/commit/0fc65326b24781ee897be5e8b78250fa60fc2072))
 
 
 ### Features
 
-* **admin:** unificar el panel de administración con AdminShell ([a097eb3](https://github.com/AngelRangel21/rangel-guitar/commit/a097eb3007b16d958c34605bf696b7abe462d1b4))
-* **artists:** rediseñar el listado y el detalle de artistas ([63e6460](https://github.com/AngelRangel21/rangel-guitar/commit/63e6460b784bfac0555913158c0cae44ad3ec025))
-* **auth:** rediseñar el login, el registro y la solicitud de canciones ([f32f360](https://github.com/AngelRangel21/rangel-guitar/commit/f32f3608ad417702db0327a870dd0c713a2ac7e4))
-* **learn:** rediseñar las herramientas de aprendizaje ([28db255](https://github.com/AngelRangel21/rangel-guitar/commit/28db255a59dbedbedf898c038507b76021603f3b))
-* **songs:** migrar transposición y diagramas a @chordproject/parser e instruments-chords ([ad30ebd](https://github.com/AngelRangel21/rangel-guitar/commit/ad30ebdae0fe319e26e0b65c4b36b1853f0aef09))
-* **songs:** permitir comentar las canciones ([928e7fa](https://github.com/AngelRangel21/rangel-guitar/commit/928e7fa5f8807624a043dacdeb4f2ae634ce7ba3))
-* **songs:** rediseñar el inicio, el listado y la vista de canciones ([27f64e2](https://github.com/AngelRangel21/rangel-guitar/commit/27f64e249fa35e92c23bd345ec190f9d7a3afef3))
-* **songs:** valorar las canciones con estrellas ([f14cec6](https://github.com/AngelRangel21/rangel-guitar/commit/f14cec664ba82aec1e675873a2c1a7ffd332f299))
-* **ui:** rediseñar la cabecera, el pie de página y el layout base ([a5a00c0](https://github.com/AngelRangel21/rangel-guitar/commit/a5a00c073f771e6b0d72d4c064de6f5f8ea0d487))
-* **ui:** rediseñar la página 404 y las páginas legales ([000d667](https://github.com/AngelRangel21/rangel-guitar/commit/000d6675f6852eb4f9fd7de58c378280ec8a1e80))
+- **admin:** unificar el panel de administración con AdminShell ([a097eb3](https://github.com/AngelRangel21/rangel-guitar/commit/a097eb3007b16d958c34605bf696b7abe462d1b4))
+- **artists:** rediseñar el listado y el detalle de artistas ([63e6460](https://github.com/AngelRangel21/rangel-guitar/commit/63e6460b784bfac0555913158c0cae44ad3ec025))
+- **auth:** rediseñar el login, el registro y la solicitud de canciones ([f32f360](https://github.com/AngelRangel21/rangel-guitar/commit/f32f3608ad417702db0327a870dd0c713a2ac7e4))
+- **learn:** rediseñar las herramientas de aprendizaje ([28db255](https://github.com/AngelRangel21/rangel-guitar/commit/28db255a59dbedbedf898c038507b76021603f3b))
+- **songs:** migrar transposición y diagramas a @chordproject/parser e instruments-chords ([ad30ebd](https://github.com/AngelRangel21/rangel-guitar/commit/ad30ebdae0fe319e26e0b65c4b36b1853f0aef09))
+- **songs:** permitir comentar las canciones ([928e7fa](https://github.com/AngelRangel21/rangel-guitar/commit/928e7fa5f8807624a043dacdeb4f2ae634ce7ba3))
+- **songs:** rediseñar el inicio, el listado y la vista de canciones ([27f64e2](https://github.com/AngelRangel21/rangel-guitar/commit/27f64e249fa35e92c23bd345ec190f9d7a3afef3))
+- **songs:** valorar las canciones con estrellas ([f14cec6](https://github.com/AngelRangel21/rangel-guitar/commit/f14cec664ba82aec1e675873a2c1a7ffd332f299))
+- **ui:** rediseñar la cabecera, el pie de página y el layout base ([a5a00c0](https://github.com/AngelRangel21/rangel-guitar/commit/a5a00c073f771e6b0d72d4c064de6f5f8ea0d487))
+- **ui:** rediseñar la página 404 y las páginas legales ([000d667](https://github.com/AngelRangel21/rangel-guitar/commit/000d6675f6852eb4f9fd7de58c378280ec8a1e80))
 
 # [1.10.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.9.2...v1.10.0) (2026-11-07)
 
