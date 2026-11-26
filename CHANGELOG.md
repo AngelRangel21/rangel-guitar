@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/AngelRangel21/rangel-guitar/compare/v1.11.1...v1.12.0) (2026-11-26)
+
+
+### Features
+
+* **ui:** se agrega la funcionalidad de descargar pdf de la canción V1 ([580d4cd](https://github.com/AngelRangel21/rangel-guitar/commit/580d4cdee5914e12941ed9299876bf7bd9b4aee6))
+
 ## [1.11.1](https://github.com/AngelRangel21/rangel-guitar/compare/v1.11.0...v1.11.1) (2026-11-25)
 
 
