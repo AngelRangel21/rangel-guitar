@@ -583,5 +583,20 @@
     "saveError": "No se pudo guardar tu valoración.",
     "loginPrompt": "Inicia sesión para valorar esta canción.",
     "login": "Iniciar sesión"
+  },
+  "songs": {
+    "pdf": {
+      "download": "Descargar PDF",
+      "filename": "cancion"
+    }
+  },
+  "songPdf": {
+    "documentTitle": "Canción",
+    "unknownArtist": "Artista desconocido",
+    "keyLabel": "Tono: {key}",
+    "chordsAndLyrics": "Letra y acordes",
+    "page": "Página {page} de {totalPages}",
+    "generatedFrom": "rangelguitar.com",
+    "noChords": "Esta canción no tiene acordes ni letra disponibles."
   }
 }

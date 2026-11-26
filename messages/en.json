@@ -583,5 +583,20 @@
     "saveError": "Your rating could not be saved.",
     "loginPrompt": "Log in to rate this song.",
     "login": "Log in"
+  },
+  "songs": {
+    "pdf": {
+      "download": "Download PDF",
+      "filename": "song"
+    }
+  },
+  "songPdf": {
+    "documentTitle": "Song",
+    "unknownArtist": "Unknown artist",
+    "keyLabel": "Key: {key}",
+    "chordsAndLyrics": "Chords & lyrics",
+    "page": "Page {page} of {totalPages}",
+    "generatedFrom": "rangelguitar.com",
+    "noChords": "This song has no chords or lyrics available."
   }
 }

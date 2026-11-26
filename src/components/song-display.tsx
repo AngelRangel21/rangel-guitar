@@ -20,6 +20,7 @@ import { Link } from '@/i18n/navigation'
 import { MAX_TRANSPOSE, parseChordSheet, transposeSong } from '@/lib/chordpro'
 import type { SongWithArtist } from '@/types/app.types'
 import { DeleteSongDialog } from './delete-song-dialog'
+import { DownloadSongPdfButton } from './download-song-pdf-button'
 import { FavoriteButton } from './favorite-button'
 import { SongViewer } from './song-chords'
 import { SongLyrics } from './song-lyrics'
@@ -157,7 +158,7 @@ export function SongDisplay({
         </div>
       </header>
       <div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-8'>
-        {/* ── Panel lateral: video, tono, compartir y valoración ── */}
+        {/* ── Panel lateral: video, tono, compartir, valoración y pdf ── */}
         <aside className='space-y-4 lg:sticky lg:top-24 lg:order-last lg:self-start'>
           {songVideo !== '' && (
             <div className='overflow-hidden rounded-2xl border bg-muted'>
@@ -187,6 +188,16 @@ export function SongDisplay({
             </h3>
             <SongShare title={songTitle} artist={artistsName} />
           </div>
+
+          {/* Descarga de la canción en PDF */}
+          {song.slug != null && (
+            <div className='mt-4'>
+              <DownloadSongPdfButton
+                songSlug={song.slug}
+                transpose={transpose}
+              />
+            </div>
+          )}
 
           <SongRating songId={song.id} />
         </aside>
